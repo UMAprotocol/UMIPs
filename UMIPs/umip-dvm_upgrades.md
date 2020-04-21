@@ -13,7 +13,7 @@ If this UMIP is approved, the code that incorporates these merged pull requests 
 ## Motivation
 The OpenZeppelin audit flagged a number of vulnerabilities that are addressed in this UMIP. 
 The audit will be included in this UMIP when available. 
-The UMA team also added some modifications prior to the audit to improve code-readability, security, speed, and flexibility.
+The UMA team also added some modifications to improve code-readability, security, speed, and flexibility.
 
 ## Technical Specification
 0058016 [P1-N16] Mark contracts not meant to be instantiated as `abstract` (#1201)
