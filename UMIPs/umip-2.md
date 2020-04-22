@@ -16,7 +16,7 @@ Cost: Pricing for this index is easy to access through open centralized exchange
 Opportunity: A synthetic token that tracks ETHBTC could be used as a hedging tool. It can also be used to create synthetic bitcoin or synthetic ETH.
 
 ## Technical Specification
-The definition of this identifier should be the median of the ETHBTC trading pair price from 3 exchanges’ public APIs: Coinbase, Binance, and Bitstamp, unless that median value differs from “Broad Market Consensus” as defined by the DVM’s decentralized human judgment. The calculation of median should not include observation of ETHUSD or BTCUSD directly, and instead only look at the ETHBTC trading pair on each exchange. The precision should be to [n] decimals with timestamp granularity to 1 second.
+The definition of this identifier should be the median of the ETHBTC trading pair price from 3 exchanges’ public APIs: Coinbase, Binance, and Bitstamp, unless that median value differs from “Broad Market Consensus” as defined by the DVM’s decentralized human judgment. The calculation of median should not include observation of ETHUSD or BTCUSD directly, and instead only look at the ETHBTC trading pair on each exchange. The precision should be to 5 decimals with timestamp granularity to 60 seconds.
 
 ## Rationale
 We explored two primary alternative designs:
