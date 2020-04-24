@@ -170,8 +170,7 @@ caee497 Add methods to `VotingInterface` to eliminate imports of `Voting` (#933)
 
 257551a Separate finder into interface and implementation (#928)
 
-e374e9a FixedPoint new functions: add mulCeil, divCeil, isGreaterThanOrEqual, isEqual(Unsigned, unint), and isLessThanOrEqual 
-(#907)
+e374e9a FixedPoint new functions: add mulCeil, divCeil, isGreaterThanOrEqual, isEqual(Unsigned, unint), and isLessThanOrEqual (#907)
 
 d3fc564 PricelessPositionManager to use Token factory to create new Synthetic Token Contracts (#923)
 
@@ -209,8 +208,7 @@ af49c53 NFCT cleanup test refactor (#886)
 
 cabb203 Registry contract refactor (#834)
 
-05ab535 MVP of Multi-party, expiring, financial template minus connection to DVM and redemption & withdrawals at position 
-expiry (#837)
+05ab535 MVP of Multi-party, expiring, financial template minus connection to DVM and redemption & withdrawals at position expiry (#837)
 
 6184de0 Add getPriceRequestStatuses view method (#838)
 
