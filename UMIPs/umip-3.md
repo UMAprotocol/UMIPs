@@ -5,14 +5,14 @@ UMIP title: Upgrade DVM
 
 Author: Matt Rice (matt@umaproject.org), Prasad Tare (prasad@umaproject.org), Chris Maree (chris@umaproject.org), Nick Pai (nick@umaproject.org), Regina Cai (regina@umaproject.org)
 
-Status: Draft
+Status: Approved
 
 Created: April 21, 2020
 
 ## Summary
 This UMIP reflects upgrades to the DVM that address issues raised by the OpenZeppelin audit as well as other minor code changes since the first deployment including expiring voting rewards. 
 
-It covers 55 pull requests that have already been made to the UMA [protocol repo](https://github.com/UMAprotocol/protocol).
+It covers 101 pull requests that have already been made to the UMA [protocol repo](https://github.com/UMAprotocol/protocol).
 
 If this UMIP is approved, the code that incorporates these merged pull requests will be deployed to mainnet and become the canonical UMA DVM. 
 
@@ -234,7 +234,9 @@ f0eda85 Vote timing refactor (#821)
 Please see the individual PRs for the rationale behind each PR. 
 
 ## Implementation
-Please see the individual PRs for implementation details. 
+Please see the individual PRs for implementation details.
+
+This UMIP is implemented in proposal `Admin 1`. Voting will begin on Sunday, April 26th at midnight UTC.
 
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. 
