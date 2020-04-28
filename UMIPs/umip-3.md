@@ -5,7 +5,7 @@ UMIP title: Upgrade DVM
 
 Author: Matt Rice (matt@umaproject.org), Prasad Tare (prasad@umaproject.org), Chris Maree (chris@umaproject.org), Nick Pai (nick@umaproject.org), Regina Cai (regina@umaproject.org)
 
-Status: Approved
+Status: Final
 
 Created: April 21, 2020
 
