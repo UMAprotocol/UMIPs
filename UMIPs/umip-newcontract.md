@@ -48,7 +48,7 @@ A deployment of a priceless synthetic token is defined by the following paramete
 - sponsorDisputeRewardPct
 - disputerDisputeRewardPct
 - minSponsorTokens
-- timerAddress
+- timerAddress: Hardcoded to 0x0000000000000000000000000000000000000000.
 - withdrawalLiveness: Hardcoded to 120 min.
 - liquidationLiveness: Hardcoded to 120 min.
 
