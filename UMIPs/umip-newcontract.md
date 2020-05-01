@@ -1,5 +1,5 @@
 # Headers
-| UMIP #     |                                                                                                                                          |
+| UMIP-4     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Register new financial contract with DVM                                                                                                 |
 | Authors    | Matt Rice (matt@umaproject.org), Prasad Tare (prasad@umaproject.org), Chris Maree (chris@umaproject.org), Nick Pai (nick@umaproject.org) |
@@ -9,7 +9,7 @@
 
 # Summary
 
-This UMIP registers a new financial contract template with the DVM. 
+This UMIP registers the `ExpiringMultiParty` template with the DVM. 
 This financial contract template enables the creation of priceless synthetic tokens, as described [here](https://docs.umaproject.org/uma/synthetic_tokens/explainer.html). 
 
 Synthetic tokens are collateral-backed tokens whose value fluctuates depending on the tokens’ reference index. 
@@ -137,4 +137,3 @@ Please see this [repo](https://github.com/UMAprotocol/protocol/tree/master/core/
 # Security considerations
 
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo will be audited by OpenZeppelin, and the audit report will be made available [here](https://docs.umaproject.org/uma/index.html).  
-
