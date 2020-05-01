@@ -132,7 +132,8 @@ Please see the individual PRs for the rationale behind each PR.
 
 # Implementation
 
-Please see this [repo](https://github.com/UMAprotocol/protocol/tree/master/core/contracts/financial-templates/implementation) for the implementation of this financial contract template. 
+Please see this [directory](https://github.com/UMAprotocol/protocol/tree/master/core/contracts/financial-templates/implementation). 
+The directory contains both the [implementation](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/financial-templates/implementation/ExpiringMultiParty.sol) of the `ExpiringMultiParty` template and the [deployer contract](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/financial-templates/implementation/ExpiringMultiPartyCreator.sol) that will be registered with the DVM to allow users to deploy their own `ExpiringMultiParty` contract.
 
 # Security considerations
 
