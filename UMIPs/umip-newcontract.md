@@ -9,7 +9,7 @@
 
 # Summary
 
-This UMIP registers the `ExpiringMultiParty` template with the DVM. 
+This UMIP provisionally registers the `ExpiringMultiParty` template with the DVM. 
 This financial contract template enables the creation of priceless synthetic tokens, as described [here](https://docs.umaproject.org/uma/synthetic_tokens/explainer.html). 
 
 Synthetic tokens are collateral-backed tokens whose value fluctuates depending on the tokens’ reference index. 
@@ -39,7 +39,7 @@ This is the first “priceless” financial contract template to be registered w
 A deployment of a priceless synthetic token is defined by the following parameters. The contract template that is registered with the UMA DVM will hardcode or restrict some of these parameters, as indicated below. All other parameters can be customized in individual deployments of the contract. 
 
 - expirationTimestamp: These are discretized to monthly expires on the 1st day of each month at 12:00:00 UTC. The maximum timestamp is June 30, 2021. 
-- collateralAddress
+- collateralAddress: DAI. To register USDC in the future, a new factory contract that has the USDC address in the collateral address line would need to be deployed. To stop supporting DAI the future, this factory and any other factory with DAI as the collateralAddress would have to be de-registered. 
 - priceFeedIdentifier
 - syntheticName
 - syntheticSymbol
@@ -138,3 +138,11 @@ The directory contains both the [implementation](https://github.com/UMAprotocol/
 # Security considerations
 
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo will be audited by OpenZeppelin, and the audit report will be made available [here](https://docs.umaproject.org/uma/index.html).  
+
+Anyone deploying a new priceless token contract should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. 
+Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
+
+If approved, this would be the first contract factory registered with the DVM on mainnet. 
+Although extensive security reviews indicate that the factory contract poses no threat to ecosystem security, registration should only be provisional and usage should be limited. 
+$UMA-holders should evaluate the health and solvency of token contracts deployed from this factory contract and contemplate de-registering this factory if any contract counterparty security holes are identified, or if the aggregate amount of user funds at risk in token contracts deployed from this factory exceeds 1M dai before July 1, 2020. 
+Additional identifiers should not be registered for use with this factory contract or the DVM until a solvent and functioning synthetic token contract is on mainnet for at least 30 days.
