@@ -67,7 +67,7 @@ While it's important for tokenholders to have redundancy in their sources, bots 
 interact with the system in realtime need fast sources of price information. In these cases, it can
 be assumed that the exchange median is accurate enough.
 
-Here(LINK_TBD) is a refernce implementation for an offchain price feed based on the
+Here(LINK_TBD) is a reference implementation for an offchain price feed based on the
 [CryptoWatch API](https://docs.cryptowat.ch/rest-api/). This feed should be used as a convenient
 way to query the price in realtime, but should not be used as a canonical source of truth for
 voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
