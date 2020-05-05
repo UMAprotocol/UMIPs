@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Register new financial contract with DVM                                                                                                 |
 | Authors    | Matt Rice (matt@umaproject.org), Prasad Tare (prasad@umaproject.org), Chris Maree (chris@umaproject.org), Nick Pai (nick@umaproject.org) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last call                                                                                                                                    |
 | Created    | April 30, 2020                                                                                                                           |
 
 
@@ -22,24 +22,31 @@ The proposed contract design has the following features:
 
 # Motivation
 
-Up until now, other synthetic token designs have required the smart contract to know the value of the collateral at all times, as reported by an on-chain price feed. 
-This is a problem because it is costly to maintain from a gas and DevOps perspective and leaves contracts open to price-feed manipulation attacks.
-“Priceless” synthetic tokens differ because they do not require an on-chain price feed to indicate whether the contract is properly collateralized. 
-Instead, they have a liquidation mechanism that allows anyone to liquidate an undercollateralized position. 
-They can do so by providing rewards to counterparties or third parties for identifying improperly collateralized positions. 
-To confirm that these positions are improperly collateralized, these contracts may rely on a “Data Verification Mechanism” (DVM). 
-This makes the proposed design more decentralized and resilient against manipulation.
+Up until now, other synthetic token designs have required the smart contract to know the value of the collateral at 
+all times, as reported by an on-chain price feed. This is a problem because on-chain oracles are costly to maintain 
+from a gas and DevOps perspective and leaves contracts open to price-feed manipulation attacks. “Priceless” synthetic 
+tokens differ because they do not require an on-chain price feed to indicate whether the contract is properly collateralized. 
+Instead, they have a liquidation mechanism that allows anyone to liquidate an undercollateralized position. They can 
+do so by providing rewards to counterparties or third parties for identifying improperly collateralized positions. 
+To confirm that these positions are improperly collateralized, these contracts may rely on a “Data Verification 
+Mechanism” (DVM). This makes the proposed design more decentralized and resilient against manipulation.
 
 This is the first “priceless” financial contract template to be registered with the DVM. 
 
 # Technical Specification
 
-“Priceless” synthetic tokens are synthetic tokens that are securely collateralized without an on-chain price feed. These tokens are designed with mechanisms to incentivize token sponsors (those who create synthetic tokens) to properly collateralize their positions. These mechanisms include a liquidation and dispute process that allows token holders to be rewarded for identifying improperly collateralized token sponsor positions. The dispute process relies on an oracle, the UMA DVM, to settle disputes regarding liquidations.
+“Priceless” synthetic tokens are synthetic tokens that are securely collateralized without an on-chain price feed. 
+These tokens are designed with mechanisms to incentivize token sponsors (those who create synthetic tokens) to properly
+collateralize their positions. These mechanisms include a liquidation and dispute process that allows token holders to be
+rewarded for identifying improperly collateralized token sponsor positions. The dispute process relies on an oracle, 
+the UMA DVM, to settle disputes regarding liquidations.
 
-A deployment of a priceless synthetic token is defined by the following parameters. The contract template that is registered with the UMA DVM will hardcode or restrict some of these parameters, as indicated below. All other parameters can be customized in individual deployments of the contract. 
+A deployment of a priceless synthetic token is defined by the following parameters. The contract template that is 
+registered with the UMA DVM will hardcode or restrict some of these parameters, as indicated below. All other 
+parameters can be customized in individual deployments of the contract. 
 
-- expirationTimestamp: These are discretized to monthly expires on the 1st day of each month at 12:00:00 UTC. The maximum timestamp is June 30, 2021. 
-- collateralAddress: DAI. To register USDC in the future, a new factory contract that has the USDC address in the collateral address line would need to be deployed. To stop supporting DAI the future, this factory and any other factory with DAI as the collateralAddress would have to be de-registered. 
+- expirationTimestamp: These are discretized to monthly expires on the 1st day of each month at 12:00:01 UTC. The max timestamp is June 30, 2021. 
+- collateralAddress: DAI (0x6b175474e89094c44da98b954eedeac495271d0f). To register additional collateral currencies (e.g. USDC), a new factory contract that has the USDC address in the collateralAddress line would need to be registered and approved by $UMA-holders. To stop supporting DAI, this factory and any other factory with DAI as the collateralAddress would have to be de-registered by $UMA-holder vote. 
 - priceFeedIdentifier
 - syntheticName
 - syntheticSymbol
@@ -48,19 +55,36 @@ A deployment of a priceless synthetic token is defined by the following paramete
 - sponsorDisputeRewardPct
 - disputerDisputeRewardPct
 - minSponsorTokens
-- timerAddress: Hardcoded to 0x0000000000000000000000000000000000000000.
+- timerAddress: Hardcoded to 0x0000000000000000000000000000000000000000
 - withdrawalLiveness: Hardcoded to 120 min.
 - liquidationLiveness: Hardcoded to 120 min.
 
+Since this is the first token factory that proposes using Dai as the collateralAddress, this proposal also includes 
+initializing the finalFees for Dai to 10 Dai for all contracts that use Dai as the collateral currency. The finalFee 
+parameter is an adjustable DVM parameter controlled by $UMA holders to establish a minimum fee for each price request 
+that a contract makes. It is intended to introduce a cost to prevent malicious users from spamming the DVM and overloading 
+it with price requests, but not be so high as to deter disputers from performing their work. 
+
+In proposing that Dai is used as the collateral currency for the synthetic token factory, factors were considered 
+including: smart contract security, broad usability and acceptability, and on-chain liquidity. These factors are 
+important because the value of Dai will be used by $UMA-holders to determine the amount of PfC, or profit-from-corruption, 
+that exists in the UMA ecosystem; therefore $UMA-holders must be able to objectively determine the valuation of Dai. 
+Additionally, token contracts deployed from this factory will pay fees in Dai to the DVM Store, which will be used to 
+buy-and-burn $UMA tokens; therefore, Dai liquidity is an important consideration in the approval process. 
+
 ## Launching a New Synthetic Token
 
-To launch a new type of synthetic token for which an existing market does not yet exist, that synthetic token’s smart contract must first be parameterized and deployed. Anyone (a “Contract Deployer”) can parameterize and deploy this contract. 
+To launch a new type of synthetic token for which an existing market does not yet exist, that synthetic token’s smart 
+contract must first be parameterized and deployed. Anyone (a “Contract Deployer”) can parameterize and deploy this contract. 
 After the contract is deployed, anyone (“Token Sponsors”) can interact with the contract to create synthetic tokens.
 
-Token Sponsors deposit collateral into the contract to collateralize synthetic tokens, which they can then withdraw and trade with others. 
-The first token sponsor to create synthetic tokens is able to immediately withdraw synthetic tokens from the contract. 
-Any following token sponsors must collateralize their positions by at least as much as the system’s average collateralization ratio among all token sponsor positions that have not been liquidated (“GCR”). 
-Requiring new token sponsors to collateralize their positions by as much as the GCR provides some assurances that so long as those token sponsors collateralized below the GCR have not yet been liquidated, those above the GCR need not be at risk of liquidation.
+Token Sponsors deposit collateral into the contract to collateralize synthetic tokens, which they can then withdraw 
+and trade with others. The first token sponsor to create synthetic tokens is able to immediately withdraw synthetic tokens 
+from the contract. Any following token sponsors must collateralize their positions by at least as much as the system’s 
+average collateralization ratio among all token sponsor positions that have not been liquidated (“GCR," or global 
+collateralization ratio). Requiring new token sponsors to collateralize their positions by as much as the GCR provides 
+some assurances that so long as those token sponsors collateralized below the GCR have not yet been liquidated, those 
+above the GCR need not be at risk of liquidation.
 
 ## Managing Token Sponsor Positions
 
@@ -73,18 +97,22 @@ Requiring withdrawals to result in collateralization at least as high as the GCR
 
 ### “Slow” withdrawal:
 
-If the token sponsor wishes to withdraw collateral from his position that would bring his collateralization below the global collateralization ratio, he can do so via a “slow” withdrawal. 
-Because withdrawing this amount of collateral could potentially jeopardize the solvency of the fungible synthetic tokens, this “slow”, 2-part, withdrawal process allows other token holders to flag if a withdrawal would render the token sponsor insolvent.
+If the token sponsor wishes to withdraw collateral from his position that would bring his collateralization below the 
+global collateralization ratio, he can do so via a “slow” withdrawal. Because withdrawing this amount of collateral 
+could potentially jeopardize the solvency of the fungible synthetic tokens, this “slow”, 2-part, withdrawal process 
+allows other token holders to flag if a withdrawal would render the token sponsor insolvent.
 
 In a “slow” withdrawal, there are two parts: The token sponsor submits a withdrawal request to the contract indicating the amount of collateral he wishes to withdraw and the timestamp of the request.
 
-During this period, any token holder can liquidate the token sponsor’s position if they believe a withdrawal of the amount indicated in the withdrawal request would bring the token sponsor’s collateralization below the “collateralization requirement” at the time of liquidation. 
-If the “withdrawal liveness period” of 2 hours passes without a token holder liquidating the token sponsor, the token sponsor may withdraw collateral from his position up to the amount requested.
+During this period, any token holder can liquidate the token sponsor’s position if they believe a withdrawal of the amount
+indicated in the withdrawal request would bring the token sponsor’s collateralization below the “collateralization 
+requirement” at the time of liquidation. If the “withdrawal liveness period” of 2 hours passes without a token holder 
+liquidating the token sponsor, the token sponsor may withdraw collateral from his position up to the amount requested.
 
 ## Liquidation and Dispute
 
-At any time, a token holder may liquidate a token sponsor’s position. Liquidations happen immediately without calling the oracle.
-Anyone may dispute a liquidation within the “liquidation liveness period” of 2 hours.
+At any time, a token holder may liquidate a token sponsor’s position. Liquidations happen immediately without calling 
+the oracle. Anyone may dispute a liquidation within the “liquidation liveness period” of 2 hours.
 
 To liquidate a token sponsor position, a token holder submits tokens to the contract and posts a liquidation bond. 
 The liquidation bond covers the cost of calling the DVM if the liquidation is disputed. 
@@ -137,12 +165,20 @@ The directory contains both the [implementation](https://github.com/UMAprotocol/
 
 # Security considerations
 
-Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo will be audited by OpenZeppelin, and the audit report will be made available [here](https://docs.umaproject.org/uma/index.html).  
+Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin, and the final audit report will be made available [here](https://docs.umaproject.org/uma/index.html).  
 
-Anyone deploying a new priceless token contract should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. 
-Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
+Anyone deploying a new priceless token contract should take care to parameterize the contract appropriately to avoid the 
+loss of funds for users. Additionally, the contract deployer should ensure that there is a network of liquidators and 
+disputers ready to perform the services necessary to keep the contract solvent.
 
-If approved, this would be the first contract factory registered with the DVM on mainnet. 
-Although extensive security reviews indicate that the factory contract poses no threat to ecosystem security, registration should only be provisional and usage should be limited. 
-$UMA-holders should evaluate the health and solvency of token contracts deployed from this factory contract and contemplate de-registering this factory if any contract counterparty security holes are identified, or if the aggregate amount of user funds at risk in token contracts deployed from this factory exceeds 1M dai before July 1, 2020. 
-Additional identifiers should not be registered for use with this factory contract or the DVM until a solvent and functioning synthetic token contract is on mainnet for at least 30 days.
+If approved, this would be the first contract factory registered with the DVM on mainnet. Although extensive security 
+reviews indicate that the factory contract poses no threat to ecosystem security, registration should be provisional and 
+usage should be limited. $UMA-holders should evaluate the health and solvency of token contracts deployed from this factory 
+contract and contemplate de-registering this factory if contract security holes are identified, or if the aggregate amount 
+of user funds at risk in token contracts deployed from this factory exceeds 1M dai before July 1, 2020. However, the ultimate 
+responsibility for ensuring user safety is the users themselves and $UMA holders are not expected to safeguard the 
+circumstances around every token contract deployed from this factory, such as third party promotional efforts, contract 
+parameterization, user knowledge, etc. 
+
+It is suggested that additional identifiers not be registered for use with this token factory until a solvent and functioning 
+synthetic token contract is on mainnet for at least 30 days.
