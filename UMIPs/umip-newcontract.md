@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Register new financial contract with DVM                                                                                                 |
 | Authors    | Matt Rice (matt@umaproject.org), Prasad Tare (prasad@umaproject.org), Chris Maree (chris@umaproject.org), Nick Pai (nick@umaproject.org) |
-| Status     | Last call                                                                                                                                    |
+| Status     | Final                                                                                                                                    |
 | Created    | April 30, 2020                                                                                                                           |
 
 
@@ -45,7 +45,7 @@ A deployment of a priceless synthetic token is defined by the following paramete
 registered with the UMA DVM will hardcode or restrict some of these parameters, as indicated below. All other 
 parameters can be customized in individual deployments of the contract. 
 
-- expirationTimestamp: These are discretized to monthly expires on the 1st day of each month at 12:00:01 UTC. The max timestamp is June 30, 2021. 
+- expirationTimestamp: These are discretized to monthly expires on the 1st day of each month at 12:00:00 UTC. The max timestamp is June 30, 2021. 
 - collateralAddress: DAI (0x6b175474e89094c44da98b954eedeac495271d0f). To register additional collateral currencies (e.g. USDC), a new factory contract that has the USDC address in the collateralAddress line would need to be registered and approved by $UMA-holders. To stop supporting DAI, this factory and any other factory with DAI as the collateralAddress would have to be de-registered by $UMA-holder vote. 
 - priceFeedIdentifier
 - syntheticName
@@ -169,7 +169,9 @@ Please see the individual PRs for details on how each affects the security of th
 
 Anyone deploying a new priceless token contract should take care to parameterize the contract appropriately to avoid the 
 loss of funds for users. Additionally, the contract deployer should ensure that there is a network of liquidators and 
-disputers ready to perform the services necessary to keep the contract solvent.
+disputers ready to perform the services necessary to keep the contract solvent. Anyone planning to use a synthetic token 
+(as a sponsor or tokenholder) should validate that the token is solvent and well-parameterized before using since there are 
+configurations and states that make the proposed contract unsafe.
 
 If approved, this would be the first contract factory registered with the DVM on mainnet. Although extensive security 
 reviews indicate that the factory contract poses no threat to ecosystem security, registration should be provisional and 
