@@ -26,7 +26,7 @@ If the UMIP requires code changes, the core devs must review the UMIP.
 A successful UMIP will be in "Last Call" status for a reasonable period of time for comments and be merged (if necessary) before moving to a tokenholder vote. 
 
 ## Final
-A UMIP that successfully passes the "Last Call" will move to the "Finalized" state and be put to UMA tokenholder vote. 
+A UMIP that successfully passes the "Last Call" will move to the "Final" state and be put to UMA tokenholder vote. 
 
 ## Approved
 If tokenholders approve the proposal, the live protocol will be updated to reflect it. 
