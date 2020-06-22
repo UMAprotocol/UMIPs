@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add COMP/USD as a price identifier                                                                                                 |
 | Authors    | Allison Lu, allison@umaproject.org |
-| Status     | Draft                                                                                                                                    |
+| Status     | Final                                                                                                                                    |
 | Created    | June 19, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
