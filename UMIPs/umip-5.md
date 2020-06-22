@@ -7,7 +7,7 @@ Author: Allison Lu, allison@umaproject.org
 
 Status: Draft
 
-Created: June 19, 2020
+Created: June 20, 2020
 
 ## Summary (2-5 sentences)
 The DVM should support price requests for the ETH/BTC price index. 
