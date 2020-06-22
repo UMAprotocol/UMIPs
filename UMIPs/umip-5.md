@@ -22,13 +22,15 @@ The definition of this identifier should be:
 - Identifier name: COMPUSD
 - Base Currency: USD(T)
 - Quote Currency: COMP
-- Exchanges: Coinbase (COMPUSD), Poloniex (COMPUSDT), FTX (COMPUSD)
+- Exchanges: Coinbase Pro (COMPUSD), Poloniex (COMPUSDT), FTX (COMPUSD)
 - Result Processing: Median
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 0.00001 (5 decimals in more general trading format)
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
+
+As of the time of writing, the Coinbase Pro market for $COMPUSD is not yet live, though it is expected to go live on Monday, June 22, 2020. Until the Coinbase Pro market officially goes live and starts trading, the technical specification of this identifier is to take the median of available exchanges (eg Poloniex COMPUSDT and FTX COMPUSD). Once Coinbase Pro is live and stable, the technical specification of this identifier will be the median across Coinbase Pro, Poloniex, and FTX.
 
 ## Rationale
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized. 
@@ -56,5 +58,3 @@ voters. Users are encouraged to build their own offchain price feeds that depend
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified. As noted above, $UMA-holders should also consider re-defining this identifier as liquidity in the underlying asset changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation. 
- 
-As of the time of writing, the Coinbase Pro market for $COMPUSD is not yet live, though it is expected to go live on Monday, June 22, 2020. To prevent confusion, a vote to approve this UMIP will not be proposed until after the Coinbase Pro market is officially live and trading. 
