@@ -1,16 +1,16 @@
 # Headers
 | UMIP-5     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add COMP/USD as a price identifier                                                                                                 |
+| UMIP Title | Add COMPUSD as a price identifier                                                                                                 |
 | Authors    | Allison Lu, allison@umaproject.org |
 | Status     | Final                                                                                                                                    |
 | Created    | June 19, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
-The DVM should support price requests for the $COMP/USD price index. 
+The DVM should support price requests for the $COMPUSD price index. 
 
 ## Motivation
-The DVM currently does not support the $COMP/USD index.
+The DVM currently does not support the $COMPUSD index.
 
 Cost: Pricing for this index is easy to access through open centralized exchange APIs. Current liquidity is low, and cross-exchange price discrepancies are 5%+. Over time, as more $COMP supply becomes available, we anticipate that cross-exchange price discrepancies will be reduced.
 
