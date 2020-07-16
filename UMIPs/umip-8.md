@@ -20,7 +20,7 @@ To accomplish this upgrade, a few actions will need to be taken:
 	- The Governor contract should be this contract’s owner.
 	- Note: because Dai is already used as a collateral currency, Dai will be included in this whitelist from the start without requiring a separate vote.
 - A transaction will need to be proposed to add this new AddressWhitelist’s address to the Finder contract under the name “CollateralWhitelist”.
- - This is how other contracts will find the collateral whitelist and reference it.
+	- This is how other contracts will find the collateral whitelist and reference it.
 
 Note: this change will only create the whitelist. New financial contract templates that *respect* this whitelist will need to be deployed for it to become useful.
 
