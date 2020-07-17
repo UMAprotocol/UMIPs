@@ -23,7 +23,7 @@ To accomplish this upgrade, two changes need to be made:
 
 The rationale behind this change is giving deployers more useful collateral currency options.  WETH needs to be used instead of ETH due to it being an ERC20, whereas native ETH is not.
 
-0.1 was chosen because it is about twice as large as the current DAI final fee, which accounts for the fact that WETH is a much more volatile asset. Voters cannot change the final fees immediately when the price changes on collateral assets, so this additional cushioning helps protect the system from DoS attacks in times of volatility.
+0.1 was chosen because 0.1 WETH is about twice as large as the current DAI final fee (10 DAI). This accounts for the fact that WETH is a much more volatile asset. Voters cannot change the final fees immediately when the price changes on collateral assets, so this additional cushioning helps protect the system from DoS attacks in times of volatility.
 
 ## Implementation
 
