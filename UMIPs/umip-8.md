@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add Global Collateral Currency Whitelist              |
 | Authors    | Matt Rice (matt@umaproject.org), Clayton Roche (clayton@umaproject.org) |
-| Status     | Final                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | July 16, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
