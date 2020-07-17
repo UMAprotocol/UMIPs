@@ -54,8 +54,6 @@ Binance and Coinbase are both USD pairs, and Bitstamp is an USDT pair.  Includin
 We also considered an alternative set of exchanges.  However, based on reports from Bitwise, Cointelegraph, and other news reports, we believe that many crypto exchange volumes had been overreported in the past and the three that we selected had some of the highest genuine volumes in the industry.
 
 
-
-
 ## Implementation
 
 The value BTCUSD for a given timestamp should be determined by querying for the price from Coinbase, Bitstamp, and Binance for that timestamp, taking the median, and determining whether that median differs from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
@@ -77,4 +75,3 @@ voters. Users are encouraged to build their own offchain price feeds that depend
 Adding these new identifiers by themselves pose little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
  
 There is very high liquidity across these pairs, as well as many resources for UMA holders to access in the event they need to determine broad market consensus due to an issue on any of the exchanges.  For this same reason, there is not much potential for profitable market manipulation relating to these price identifiers.
-
