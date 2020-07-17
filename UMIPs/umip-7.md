@@ -13,7 +13,7 @@ The DVM should support price requests for the BTC/USD and USD/BTC price indexes.
 ## Motivation
 The DVM currently does not support the BTC/USD or USD/BTC indexes.
 
-Supporting the USDBTC price identifier would enable the creation of zero-coupon fixed-rate dollar loans, if collateralized by wBTC.  This creates positions similar to using wBTC in the MakerDAO system to mint Dai.  To give a measure of market size at the date of writing, MakerDAO has 4,947 wBTC locked in this fashion.  
+Supporting the USDBTC price identifier would enable the creation of zero-coupon fixed-rate dollar loans, if collateralized by wBTC.  This creates positions similar to using wBTC in the MakerDAO system to mint Dai. To give a measure of market size at the date of writing, MakerDAO has 4,947 wBTC locked in this fashion.  
 
 Supporting the BTCUSD price identifier would enable the creation of synthetic BTC.  It enables token minters to go levered short BTC.
 
@@ -77,5 +77,4 @@ voters. Users are encouraged to build their own offchain price feeds that depend
 Adding these new identifiers by themselves pose little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
  
 There is very high liquidity across these pairs, as well as many resources for UMA holders to access in the event they need to determine broad market consensus due to an issue on any of the exchanges.  For this same reason, there is not much potential for profitable market manipulation relating to these price identifiers.
-
 
