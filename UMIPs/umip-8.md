@@ -19,7 +19,7 @@ To accomplish this upgrade, a few actions will need to be taken:
 - A new `AddressWhitelist` contract will need to be deployed.
 	- The Governor contract should be this contract’s owner.
 	- Note: because Dai is already used as a collateral currency, Dai will be included in this whitelist from the start without requiring a separate vote.
-- A transaction will need to be proposed to add this new AddressWhitelist’s address to the Finder contract under the name “CollateralWhitelist”.
+- A transaction will need to be proposed to add this new `AddressWhitelist`’s address to the `Finder` contract under the name `“CollateralWhitelist”`.
 	- This is how other contracts will find the collateral whitelist and reference it.
 
 Note: this change will only create the whitelist. New financial contract templates that *respect* this whitelist will need to be deployed for it to become useful.
@@ -35,7 +35,7 @@ The rationale behind this change is that it fits into a larger goal of making it
 
 ## Implementation
 
-The AddressWhitelist contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/common/implementation/AddressWhitelist.sol). It has been audited and will require no changes.
+The `AddressWhitelist` contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/common/implementation/AddressWhitelist.sol). It has been audited and will require no changes.
 
 
 
