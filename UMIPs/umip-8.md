@@ -16,7 +16,7 @@ Up until now, to update the collateral currencies, one would need to deploy a ne
 
 ## Technical Specification
 To accomplish this upgrade, a few actions will need to be taken:
-- A new AddressWhitelist contract will need to be deployed.
+- A new `AddressWhitelist` contract will need to be deployed.
 	- The Governor contract should be this contract’s owner.
 	- Note: because Dai is already used as a collateral currency, Dai will be included in this whitelist from the start without requiring a separate vote.
 - A transaction will need to be proposed to add this new AddressWhitelist’s address to the Finder contract under the name “CollateralWhitelist”.
@@ -43,7 +43,6 @@ The AddressWhitelist contract can be found [here](https://github.com/UMAprotocol
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin, and the final audit report will be made available [here](https://docs.umaproject.org/uma/index.html).
 
 This security consideration already existed, but it’s worth noting in this change. Any collateral currencies that are whitelisted but have a small or 0 final fee will open the UMA voting system to DoS attacks. DoS attacks will not break the smart contracts, but they could make voting impractical in the short term while the community discusses how to stop the attack and disregard (or discard) the troublesome requests.
-
 
 
 
