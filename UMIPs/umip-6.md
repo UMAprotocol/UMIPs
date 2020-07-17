@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ETHUSD and USDETH as price identifiers              |
 | Authors    | Clayton Roche, clayton@umaproject.org |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | July 10, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
@@ -70,4 +70,3 @@ voters. Users are encouraged to build their own offchain price feeds that depend
 Adding these new identifiers by themselves pose little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
  
 There is very high liquidity across these pairs, as well as many resources for UMA holders to access in the event they need to determine broad market consensus due to an issue on any of the exchanges.  For this same reason, there is not much potential for profitable market manipulation relating to these price identifiers.
-
