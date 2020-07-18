@@ -22,6 +22,7 @@ To accomplish this upgrade, a new financial contract template must be deployed:
 	- On each attempted deployment, this contract should query the `“CollateralWhitelist”` address using the `Finder` contract to find the whitelist address. Then it should verify that the provided collateral currency is on said whitelist.
 	- On each attempted deployment, this contract should allow any timestamp to be provided as the expiry. Note: the `ExpiringMultiParty` contract has a check that requires the timestamp to be in the future at deployment time.
 	- On each attempted deployment, this contract should allow the deployer to pass in the withdrawal and liquidation liveness, and it should check that they are both > 0.
+	- The EMP that is deployed by the creator will have minor changes in the events it produces detailed [here](https://github.com/UMAprotocol/protocol/pull/1753).
 
 After deployment, this new `ExpiringMutltiPartyCreator` contract should be approved as a ContractCreator in the Registry.
 
@@ -35,7 +36,11 @@ Part of the rationale behind this change is that it’s simpler to deploy one `E
 
 Please see this [directory](https://github.com/UMAprotocol/protocol/tree/master/core/contracts/financial-templates/expiring-multiparty). The directory contains both the [implementation](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/financial-templates/expiring-multiparty/ExpiringMultiParty.sol) of the `ExpiringMultiParty` template and the [deployer contract](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/financial-templates/expiring-multiparty/ExpiringMultiPartyCreator.sol) that will be registered with the DVM to allow users to deploy their own `ExpiringMultiParty` contract. Note: the changes specified above are currently in progress, so the current version may not match the specification yet.
 
+The new `ExpiringMultiPartyCreator` contract changes since the previously approved version were implemented [here](https://github.com/UMAprotocol/protocol/pull/1746). Additionally, the minor event changes that were made to the `ExpiringMultiParty` contract are implemented [here](https://github.com/UMAprotocol/protocol/pull/1753). These are the only changes that have been made since the previous version of the `ExpiringMultiPartyCreator` was deployed and approved.
+
 ## Security considerations
+These changes *have not* been audited. However, the changes are deemed to be minor and an audit is expected to come soon after its addition to the system. This is deemed to be safe because no *stateful logic* has been changed in the `ExpiringMultiParty` and the `ExpiringMultiPartyCreator` changes only affect the possible parameterizations of the `ExpiringMultiParty` contracts that can be deployed.
+
 As before, anyone deploying a new priceless token contract should take care to parameterize the contract appropriately to avoid the loss of funds for users. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent. Anyone planning to use a synthetic token (as a sponsor or tokenholder) should validate that the token is solvent and well-parameterized before using since there are configurations and states that make the proposed contract unsafe.
 
 These considerations should be taken more seriously now that there are fewer limitations on what parameters a deployer can specify for an EMP contract.
