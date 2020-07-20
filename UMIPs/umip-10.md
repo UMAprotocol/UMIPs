@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add WETH as a collateral currency              |
 | Authors    | Matt Rice (matt@umaproject.org), Clayton Roche (clayton@umaproject.org) |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Final                                                                                                                                    |
 | Created    | July 16, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
