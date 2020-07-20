@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add COMPUSD as a price identifier                                                                                                 |
 | Authors    | Allison Lu, allison@umaproject.org |
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | June 19, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)

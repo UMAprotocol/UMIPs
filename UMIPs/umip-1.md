@@ -1,5 +1,5 @@
 # UMIPs
- 
+  
 UMIPs (“UMA Improvement Proposals”) are the design documents used to propose changes to the UMA ecosystem. 
 They provide information to the UMA community that describes a new feature for the UMA protocol, or its ecosystem. 
 The UMIP should provide a concise technical specification of the feature and a rationale for the feature. 

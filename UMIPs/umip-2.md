@@ -5,7 +5,7 @@ Title: Add ETHBTC as a price identifier
 
 Author: Allison Lu, allison@umaproject.org
 
-Status: Approved on Tuesday 19May 2020
+Status: Approved on Tuesday 19 May 2020
 
 Created: April 12, 2020
 

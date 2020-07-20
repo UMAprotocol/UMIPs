@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Register new financial contract with DVM                                                                                                 |
 | Authors    | Matt Rice (matt@umaproject.org), Prasad Tare (prasad@umaproject.org), Chris Maree (chris@umaproject.org), Nick Pai (nick@umaproject.org) |
-| Status     | Approved 19May 2020                                                                                                                                    |
+| Status     | Approved 19 May 2020                                                                                                                                    |
 | Created    | April 30, 2020                                                                                                                           |
 
 
