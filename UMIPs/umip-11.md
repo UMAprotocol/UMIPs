@@ -9,7 +9,7 @@
 
 ## Summary
 
-This UMIP will add renBTC as an approved collateral currency. This will involve adding it to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 0.02 renBTC per request.
+This UMIP will add renBTC as an approved collateral currency. This will involve adding it to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 0.018 renBTC per request.
 
 ## Motivation
 
@@ -24,7 +24,7 @@ renBTC as collateral is expected to have a variety of deployments. The timing fo
 To accomplish this upgrade, three changes need to be made:
 
 - The renBTC address, 0xeb4c2781e4eba804ce9a9803c67d0893436bb27d, needs to be added to the collateral currency whitelist introduced in UMIP-8.
-- A final fee of 0.02 needs to be added for renBTC in the Store contract.
+- A final fee of 0.018 needs to be added for renBTC in the Store contract.
 - The precision for the USDBTC price identifier needs to be amended to 8 decimals instead of the usual 18 in order to comply with renBTC’s 8 decimals of precision.
 
 ## Rationale
