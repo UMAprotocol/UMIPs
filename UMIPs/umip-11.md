@@ -33,11 +33,9 @@ The rationale behind this change is giving deployers more useful collateral curr
 
 renBTC was chosen in particular due to the fact that renBTC is the most popular (and largest) truly decentralized BTC-representing coin on the Ethereum blockchain. It is not being chosen at the exclusion of other possible BTC-representing coins, but it is a natural first choice for this purpose.
 
-While wBTC currently has larger market dominance than renBTC, it is worth noting that renBTC has already gained significant traction in the DeFi space. There exists a large amount of renBTC liquidity on Curve Finance ($98m), Balancer ($5m), and Uniswap (\$150k).
+While wBTC currently has larger market dominance than renBTC, it is worth noting that renBTC has already gained significant traction in the DeFi space. There exists a large amount of renBTC liquidity on Curve Finance ($98m), Balancer ($5m), and Uniswap ($150k).
 
 Large projects like Compound and Maker already have wBTC as a collateral type, so using renBTC within the UMA ecosystem can serve to differentiate the UMA community in terms of promoting a more decentralized version of BTC on the Ethereum blockchain.
-
-Recently, Yearn Finance governance has also voted overwhelmingly in favor of renBTC against its competitors.
 
 ## Implementation
 
