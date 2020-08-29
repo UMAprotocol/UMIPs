@@ -4,7 +4,7 @@
 | ---------- | ----------------------------------- |
 | UMIP Title | Add renBTC as a collateral currency |
 | Authors    | Adrian Li (adrian@umaproject.org)   |
-| Status     | Draft                               |
+| Status     | Final                               |
 | Created    | August 26, 2020                     |
 
 ## Summary
