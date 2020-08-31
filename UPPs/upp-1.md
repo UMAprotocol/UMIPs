@@ -1,8 +1,12 @@
 # UPPs
   
-UPPs (“UMA Parameter Proposals”) are a lighter-weight form of an UMIP, specicalized for changing simple parameters in the UMA ecosystem. 
+This proposes a lighter-weight form of an UMIP meant for simple parameter changes, like fees, inflation rewards, voting reward expiries, etc. The difference between this and an UMIP is semantic and process-based. Both still need tokenholder approval to be implemented and both can still pose a risk to the DVM.
+
+UPPs (“UMA Parameter Proposals”) are a lighter-weight form of an UMIP, specicalized for changing simple parameters in the UMA ecosystem, like fees, inflation percentages, voting reward expiries, etc. 
 They give information about what parameters will be changed and why, but aren't as detailed as their UMIP counterparts due since their changes are simpler.
 The UPP should explain what parameter will be changed, why, and if there are any potential hazards to making this change.
+Note: despite the shorter process and simpler changes, these proposals are still quite powerful and should be considered just as carefully.
+This is why they still must go through the same tokenholder vote that regular UMIPs do.
 
 # What is the lifecycle of a UPP? 
 
