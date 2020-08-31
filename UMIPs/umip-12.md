@@ -30,6 +30,11 @@ This change has no implementation other than adding the PERL address to the coll
 
 ## Security considerations
 Adding this new collateral by itself may introduce minimal security risk to the DVM or priceless financial contract users. The token contract is based on a battle-tested OpenZeppelin template, and all changes had been audited by a third party audit firm.
+
+Audit Certificate: 
+https://certificate.quantstamp.com/full/perlin-xerc-20-emission
+https://certificate.quantstamp.com/full/perlin-x-rewards-sol
+
 Anyone deploying a new priceless token contract using this collateral should take note to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 $UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
  
