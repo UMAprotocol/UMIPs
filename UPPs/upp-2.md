@@ -4,7 +4,7 @@ Draft
 
 ## Summary
 
-This UPP will increase the final fees for DAI and WETH to be around $200. This will increase the cost of initiating disputes for the DVM. The renBTC fee is already 0.018, which is close to the target of $200, so it should not need to be changed.
+This UPP will increase the final fees for DAI, WETH, and renBTC to be around $400. This will increase the cost of initiating disputes for the DVM.
 
 ## Rationale
 
@@ -15,6 +15,6 @@ While this does make the capital requirements for liquidators and disputers high
 
 ## Specifics
 
-The WETH final fee will be increased to 0.5 WETH.
-The DAI final fee will be increased to 200 DAI.
-The renBTC final fee will remain 0.018 renBTC.
+The WETH final fee will be increased to 1 WETH.
+The DAI final fee will be increased to 400 DAI.
+The renBTC final fee will remain 0.035 renBTC.
