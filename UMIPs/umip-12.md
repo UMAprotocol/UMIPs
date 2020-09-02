@@ -42,7 +42,7 @@ With ETH/WETH as a benchmark, we will be looking at longevity, token supply & de
 With sufficient runway raised for 10 years, there is low risk of PERL token becoming valueless in the short term.
 Token Supply & Demand: Ethereum currently has extra ~13-14k ETH minted on a daily basis. At a current supply of 112 million ETH, that is about issuance of 2.08% every 180 days.
 
-PERL has a token unlock every 6 months which will occur 6 more times, which represents an increase of circulating supply by 38.62%, 47.48%,18.48%, 14.48% 5.05%, and 1.74% respectively. This is a circulating supply shock that needs to be considered while using PERL as collateral. 
+PERL has a token unlock every 6 months which will occur 6 more times, representing an increase of circulating supply by 38.62%, 47.48%,18.48%, 14.48% 5.05%, and 1.74% respectively. This is a circulating supply shock that needs to be considered while using PERL as collateral. 
 
 Volatility & Liquidity:
 PERL currently has a market cap of ~21mm USD, and daily volume of ~4mm USD, which represents a volume to market cap ratio of 18.33%. 
