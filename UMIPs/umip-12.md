@@ -10,7 +10,7 @@
 This UMIP will add PERL to the supported collateral currencies into the global whitelist contract, allowing the usage of PERL as collateral currency.
 
 ## Motivation
-PERL is the utility token of Perlin Network. PERL as collateral is expected to have a variety of uses, including the creation of synthetic commodity tokens on UMA. 
+PERL is the utility token of Perlin Network. PERL is expected to have a variety of uses, including as collateral for the creation of synthetic commodity tokens on UMA. 
 
 Perlin intends to use the PERL token collateral to launch a variety of synthetic assets collateralized by its token.  These assets will be provided to customers of financial products across markets including commodities.  More information on the Perlin products can be found on the website: https://perlinx.finance/
 
@@ -81,4 +81,3 @@ This is a non-negligible price impact that may trigger cascade liquidation. And 
 Hence it is essential for contract owners to exercise extreme caution during events of supply shock. However, in reality not all extra PERL will be sold. It might be added to the liquidity pools with more stablecoins, which actually improves liquidity and reduces the volatility.
 
 There will be an extra 37% PERL on 26th August. The team will closely monitor the price impact in relation to the size of the liquidity pools, and ultimately determine what’s the minimum liquidity in the pools, and the safe ratio of % of PERL used as collateral vs % of PERL in the liquidity pool before we start creating synthetic assets with PERL. We will consistently use a conservative approach as we collect more data for modelling the risk.
-
