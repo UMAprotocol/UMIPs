@@ -78,6 +78,6 @@ SLi=(1-0.003)(0.5+0.5)(2*83,333,335)*0.5*1,666,667 = 0.1992
 Representing an effective price impact of 20%. 
 This is a non-negligible price impact that may trigger cascading liquidations. If all of the liquidators seek to sell the collateral (PERL), that may continue the downward spiral.
 
-Hence it is essential for contract owners to exercise extreme caution during events of supply shock. However, in reality not all extra PERL will be sold. It might be added to the liquidity pools with more stablecoins, which actually improves liquidity and reduces the volatility.
+Hence it is essential for contract participants to exercise extreme caution during supply shocks. It's unlikely that all of the newly unlocked PERL will be sold. Some may be added to the liquidity pools with more stablecoins, which actually improves liquidity and reduces the volatility.
 
 There will be an extra 37% PERL on 26th August. The team will closely monitor the price impact in relation to the size of the liquidity pools, and ultimately determine what’s the minimum liquidity in the pools, and the safe ratio of % of PERL used as collateral vs % of PERL in the liquidity pool before we start creating synthetic assets with PERL. We will consistently use a conservative approach as we collect more data for modelling the risk.
