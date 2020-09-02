@@ -61,7 +61,7 @@ COV of PERLUSDT
 COV of ETHUSDT
 
 **Estimation of value locked up in the pool**
-To maximise the liquidity of PERL which reduces the volatility, Perlin will be incentivising users to stake their PERL in liquidity pools as well. With the current incentive mechanism, we are estimating about 20-40% of circulating PERLs to be locked up in liquidity pools.
+To maximise the liquidity of PERL and reduce its volatility, Perlin will be incentivising users to stake their PERL in liquidity pools as well. With the current incentive mechanism, we are estimating about 20-40% of circulating PERLs to be locked up in liquidity pools.
 
 **Balancer slippage calculation**
 With that in mind, we can calculate the slippage and price impacts of any large sale of PERLs.
