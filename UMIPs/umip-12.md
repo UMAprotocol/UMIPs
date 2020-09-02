@@ -76,7 +76,7 @@ Bi is the Balance of the token being sold to the pool (16,666,667 PERL), wi is t
 SLi=(1-0.003)(0.5+0.5)(2*83,333,335)*0.5*1,666,667 = 0.1992
 
 Representing an effective price impact of 20%. 
-This is a non-negligible price impact that may trigger cascade liquidation. And if all of the liquidators seek to sell the collaterals (PERL), that may continue the downward spiral.
+This is a non-negligible price impact that may trigger cascading liquidations. If all of the liquidators seek to sell the collateral (PERL), that may continue the downward spiral.
 
 Hence it is essential for contract owners to exercise extreme caution during events of supply shock. However, in reality not all extra PERL will be sold. It might be added to the liquidity pools with more stablecoins, which actually improves liquidity and reduces the volatility.
 
