@@ -17,12 +17,12 @@ Perlin intends to use the PERL token collateral to launch a variety of synthetic
 ## Technical Specification
 To accomplish this upgrade, two changes need to be made:
 - The PERL address, 0xeca82185adCE47f39c684352B0439f030f860318, needs to be added to the collateral currency whitelist introduced in UMIP-8. 
-- A final fee of 4000 PERL needs to be added for the PERL in the Store contract.
+- A final fee of 8600 PERL needs to be added for the PERL in the Store contract.
 
 
 ## Rationale
 
-The rationale behind this change is that it fits into a larger goal of getting adoption of UMA protocol by allowing Perlin’s token (PERL) to be used as collateral, where Perlin’s projects with partners (including ICC Carbon Council) can leverage on UMA protocol.
+The rationale behind this change is that it fits into a larger goal of getting adoption of UMA protocol by allowing Perlin’s token (PERL) to be used as collateral, where Perlin’s projects with partners (including ICC Carbon Council) can leverage UMA protocol.
 
 ## Implementation
 
