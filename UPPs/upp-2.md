@@ -17,4 +17,4 @@ While this does make the capital requirements for liquidators and disputers high
 
 The WETH final fee will be increased to 1 WETH.
 The DAI final fee will be increased to 400 DAI.
-The renBTC final fee will remain 0.035 renBTC.
+The renBTC final fee will be changed to 0.035 renBTC.
