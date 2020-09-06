@@ -47,6 +47,7 @@ The pseudo-algorithm to calculate the exact data point to report by a DVM report
 
 ```python
 def return_median(B, R, i)
+    assert R<= 7000
     Median = None
     Percentiles = []
     for b in range(B, B+R, 1):      
