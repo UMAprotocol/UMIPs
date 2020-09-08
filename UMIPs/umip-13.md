@@ -1,16 +1,16 @@
 ## Headers
 | UMIP-13    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add PERLUSD as price identifiers              |
+| UMIP Title | Add PERLUSD, USDPERL as price identifiers              |
 | Authors    | TJ (tj@perlin.net) |
 | Status     | Draft                                                                                                                                    |
 | Created    | August 31, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
-The DVM should support price requests for the PERL/USD price index.
+The DVM should support price requests for the PERL/USD and USD/PERL price index.
 
 ## Motivation
-The DVM currently does not support the PERLUSD price index.
+The DVM currently does not support the PERLUSD or USDPERL price index.
 Cost: 
 Pricing of PERLUSD is easily accessible through open centralized exchange APIs. PERL is currently only trading on Binance.
 Opportunity: A synthetic token that tracks the underlying assets would enable better price discovery by making it possible to have cash/PERL settled position on the underlying assets. It could be used as a hedging tool.
@@ -21,8 +21,20 @@ The definition of this identifier should be:
 - Identifier name: PERLUSD
 - Base Currency: PERL
 - Quote Currency: USD(T)
-- Exchanges: Binance, PerlinX
+- Exchanges: Binance
 - Result Processing: No processing.
+- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+- Price Steps: 0.00001 (5 decimals in more general trading format)
+- Rounding: Closest, 0.5 up
+- Pricing Interval: 60 seconds
+- Dispute timestamp rounding: down
+
+The definition of this identifier should be:
+- Identifier name: USDPERL
+- Base Currency: PERL
+- Quote Currency: USD(T)
+- Exchanges: Binance
+- Result Processing: 1/PERLUSD.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 0.00001 (5 decimals in more general trading format)
 - Rounding: Closest, 0.5 up
@@ -39,7 +51,7 @@ Currently the only exchanges with USD or stablecoin markets for $PERL is Binance
 
 In the current setting, there will need to be a significant event that erodes confidence in Perlin Network and the token, at the same time where Binance is not operational for value on PerlinX to be used as reference. However this may pose a security issue depending on the depth of PERLUSD liquidity on PerlinX. This may be improved by listing on additional exchanges with genuine volume.
 
-Over time, as liquidity in the $PERL token migrates across platforms, this identifier can be re-defined to add exchanges, remove exchanges, or change the way that the price is calculated. Any re-definition would be done via off-chain social consensus by $UMA-holders, and ultimately reflected in the way that $UMA-holders vote upon the price of $PERLUSD when called to do so by disputers, or at settlement.
+Over time, as liquidity in the $PERL token migrates across platforms, this identifier can be re-defined to add exchanges, remove exchanges, or change the way that the price is calculated. Any re-definition would be done via off-chain social consensus by $UMA-holders, and ultimately reflected in the way that $UMA-holders vote upon the price of $PERLUSD and $USDPERL when called to do so by disputers, or at settlement.
 
 
 ## Implementation
