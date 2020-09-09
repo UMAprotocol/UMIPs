@@ -31,8 +31,8 @@ The definition of this identifier should be:
 
 The definition of this identifier should be:
 - Identifier name: USDPERL
-- Base Currency: PERL
-- Quote Currency: USD(T)
+- Base Currency: USD(T)
+- Quote Currency: PERL
 - Exchanges: Binance
 - Result Processing: 1/PERLUSD.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
