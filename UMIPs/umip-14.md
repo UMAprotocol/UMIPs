@@ -58,6 +58,6 @@ The following PR's implemented the changes described and numbered in the Summary
 5. [Original PR](https://github.com/UMAprotocol/protocol/pull/1968).
 
 ## Security considerations
-These changes *have* been audited by OpenZeppelin and the full audit report can be read [here](). **TODO: FILL IN THIS LINK**
+These changes *have* been audited by OpenZeppelin and the full audit report can be read [here](https://blog.openzeppelin.com/uma-audit-phase-3/).
 
 As before, anyone deploying a new priceless token contract should take care to parameterize the contract appropriately to avoid the loss of funds for users. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent. Anyone planning to use a synthetic token (as a sponsor or tokenholder) should validate that the token is solvent and well-parameterized before using since there are configurations and states that make the proposed contract unsafe.
