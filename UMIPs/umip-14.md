@@ -6,7 +6,7 @@
 | Status     | Draft                                                                                                                                    |
 | Created    | September 16, 2020                                                                                                                           |
 
-## Summary (2-5 sentences)
+## Summary
 This UMIP will have the effect of introducing an upgraded expiring financial contract template that:
 1. Updates the `ExpiringMultiPartyCreator` factory contract's restrictions on liveness periods and the expiration timestamp.
 2. Relaxes `ExpiringMultiParty`'s token creation collateralization requirements.
