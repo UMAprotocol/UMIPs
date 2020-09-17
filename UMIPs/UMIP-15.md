@@ -19,7 +19,7 @@ However, it is possible for users to take out a flash loan of UMA tokens from a 
 
 This UMIP proposes a solution that makes it imposable to utilize flash loans during voting, thereby enforcing that users hold UMA tokens beyond a single block if they wish to participate in governance.
 
-This UMIP was originally motivated by an analysis conducted by the UMA engineering team that identified the issue in July 2020. The analysis can be found [here](https://docs.google.com/document/d/11ap5q2ga2OaVIV6MLxpRjzbLZTr0xraUIt2DdfcyzWI/edit?usp=sharing). There was also a detailed discussion in the OpenZepplin Community forum on the implementation details of this solution which can be found [here](https://forum.openzeppelin.com/t/erc20snapshot-and-flash-loans-swaps-mints/3094?u=chrismaree).
+This UMIP was originally motivated by an analysis conducted by the UMA engineering team that identified the issue in July 2020. The analysis can be found [here](https://docs.google.com/document/d/11ap5q2ga2OaVIV6MLxpRjzbLZTr0xraUIt2DdfcyzWI/edit?usp=sharing). There was also a detailed discussion in the OpenZepplin Community forum on the implementation details of this solution which can be found [here](https://forum.openzeppelin.com/t/erc20snapshot-and-flash-loans-swaps-mints/3094).
 
 ## Technical Specification
 
