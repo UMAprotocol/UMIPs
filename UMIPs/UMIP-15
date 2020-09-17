@@ -17,7 +17,7 @@ The UMA voting mechanism uses a commit-reveal scheme, where votes are weighted i
 
 However, it is possible for users to take out a flash loan of UMA tokens from a decentralized exchange, trigger the snapshot and then repay the loan in a single transaction. This would arguably give them undue influence over the result of the vote. Given the current state of the DeFi ecosystem, the flash-loan scenario is significantly simpler, more plausible, and arguably more concerning, so it warrants a dedicated mitigation.
 
-This UMIP proposes a solution that makes it imposable to utilize flash loans during voting, thereby enforcing that users hold UMA tokens if they wish to participate in governance.
+This UMIP proposes a solution that makes it imposable to utilize flash loans during voting, thereby enforcing that users hold UMA tokens beyond a single block if they wish to participate in governance.
 
 This UMIP was originally motivated by an analysis conducted by the UMA engineering team that identified the issue in July 2020. The analysis can be found [here](https://docs.google.com/document/d/11ap5q2ga2OaVIV6MLxpRjzbLZTr0xraUIt2DdfcyzWI/edit?usp=sharing). The conclusion was that voting rounds with more than 2 votes are suspectable to a profitable flash loan. Subsequently, the flash loan issue was used during a DVM vote wherein uniswap LP tokens were used to to profitably vote without the flash borrower needing to hold any UMA tokens.
 
