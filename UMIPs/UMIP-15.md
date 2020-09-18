@@ -4,7 +4,7 @@
 | ---------- | ------------------------------------------------------------------------------------------ |
 | UMIP Title | Approve Updated DVM Voting Contract to Mitigate Flash-loans During Token Balance Snapshots |
 | Authors    | Chris Maree (chris@umaproject.org)                                                         |
-| Status     | Draft                                                                                      |
+| Status     | Last Call                                                                                      |
 | Created    | September 17, 2020                                                                         |
 
 ## Summary
