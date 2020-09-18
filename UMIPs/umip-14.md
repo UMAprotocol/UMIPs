@@ -6,7 +6,7 @@
 | Status     | Draft                                                                                                                                    |
 | Created    | September 16, 2020                                                                                                                           |
 
-## Summary (2-5 sentences)
+## Summary
 This UMIP will have the effect of introducing an upgraded expiring financial contract template that:
 1. Updates the `ExpiringMultiPartyCreator` factory contract's restrictions on liveness periods and the expiration timestamp.
 2. Relaxes `ExpiringMultiParty`'s token creation collateralization requirements.
@@ -25,7 +25,7 @@ After deployment, this new `ExpiringMutltiPartyCreator` contract should be appro
 
 Note: the voters only vote for the approval -- the deployment has no effect on the protocol until added as a ContractCreator.
 
-The specific changes in detail comprise:
+**The specific changes in detail comprise:**
 
 1. Updating EMPCreator restructions:
     - The EMPCreator should explicitly enforce that expiration times are in the future. The EMP itself already enforces this, but the creator's `deploy` function should revert earlier if the deployer attempts to pass an expiration time in the past.
