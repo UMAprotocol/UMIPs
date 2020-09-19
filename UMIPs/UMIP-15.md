@@ -9,7 +9,7 @@
 
 ## Summary
 
-This UMIP proposes an upgrade to the Voting module within the DVM to mitigate the use of flash loan during voting rounds. This upgrade will enforce that DVM balance snapshots are captured from EOA wallets to prevent the use of flash-loans in this context.
+This UMIP proposes an upgrade to the Voting module within the DVM to mitigate the use of flash loan during voting rounds. This upgrade will enforce that DVM balance snapshots are captured from EOA wallets to prevent the use of flash-loans in this context. This upgrade will also change the rewards expiry timeout from 2 weeks to 1000 years, which effectively amounts to no expiration.
 
 ## Motivation & Rationale
 
@@ -20,6 +20,8 @@ However, it is possible for users to take out a flash loan of UMA tokens from a 
 This UMIP proposes a solution that makes it imposable to utilize flash loans during voting, thereby enforcing that users hold UMA tokens beyond a single block if they wish to participate in governance.
 
 This UMIP was originally motivated by an analysis conducted by the UMA engineering team that identified the issue in July 2020. The analysis can be found [here](https://docs.google.com/document/d/11ap5q2ga2OaVIV6MLxpRjzbLZTr0xraUIt2DdfcyzWI/edit?usp=sharing). There was also a detailed discussion in the OpenZepplin Community forum on the implementation details of this solution which can be found [here](https://forum.openzeppelin.com/t/erc20snapshot-and-flash-loans-swaps-mints/3094).
+
+While redeploying the new version of the contract, the parameters can be reconsidered. The community has expressed dissatisfaction with the 2-week reward expiration. While the voting contract is being modified, it seems prudent to effectively remove this expiration.
 
 ## Technical Specification
 
@@ -32,11 +34,15 @@ The implications of this are that the first revealer is required to submit two t
 
 All subsequent voters can call `revealVote` as they would previously have done.
 
+As for the rewards expiration, voters will be able to wait as long as they like before retrieving their rewards.
+
 ## Implementation
 
 Please see this [directory](https://github.com/UMAprotocol/protocol/tree/master/packages/core/contracts/oracle). The directory contains the [implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/implementation/Voting.sol) of the `Voting` contract which preforms the key voting logic within the DVM and has the updated logic to include the ECDSA signature verification.
 
 The specific changes made in this UMIP can be seen in [this](https://github.com/UMAprotocol/protocol/pull/1767) pull request.
+
+The new Voting contract should have identical parameters to the pre-existing Voting contract, except that rewardsExpirationTimeout will be equal to `31536000000` (1000 years in seconds). 
 
 ## Security considerations
 
