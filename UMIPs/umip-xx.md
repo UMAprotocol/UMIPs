@@ -2,7 +2,7 @@
 | UMIP-13     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH as a price identifier                                                                                                 |
-| Authors    | Ali Atiia, @aliatiia |
+| Authors    | Ali Atiia, @aliatiia | Matt Rice, @mrice32
 | Status     | Draft                                                                                                                                    |
 | Created    | September 4, 2020                                                                                                                           |
 
@@ -12,9 +12,9 @@ The DVM should support requests for aggregatory gas prices on the Ethereum block
 ## Motivation
 The DVM currently does not support reporting aggregatory gas prices of finalized blocks on the Ethereum blockchain. 
 
-Cost: Calculating an aggregatory statistic of gas prices on a confirmed block or range of blocks on the Ethereum blockchain is easy by virtue of the fact that all needed data is readily available on any Ethereum full node, whether run locally or accessed remotely through well-known providers such as Infura.
+Cost: Calculating an aggregatory statistic of gas prices on a confirmed block or range of blocks on the Ethereum blockchain is easy by virtue of the fact that all needed data is readily available on any Ethereum full node, whether run locally or accessed remotely through well-known providers such as Infura or Alchemy.
 
-Opportunity: gas options/futures can help users and developers hedge against gas volatility allowing them to budget their gas consumption efficiently.
+Opportunity: Gas options/futures can help users and developers hedge against gas volatility allowing them to budget their gas consumption efficiently. Providing a price feed for settlement is a prerequisite.
 
 ## Technical Specification
 
@@ -26,43 +26,52 @@ The definition of this identifier should be:
 - Result Processing: Exact
 - Input Processing: see Implementation section
 - Price Steps: 1 Wei
-- Rounding: Closest, 0.5 up
-- Pricing Interval: 1 block seconds
+- Rounding: Closest: N/A becauses Wei's are integers
+- Pricing Interval: 300 blocks
 - Dispute timestamp rounding: down
-- Output processing: multiply the output by `ETHUSD(timestamp)` feed to effectively denominate the result in USD
+- Output processing: None
 
 ## Rationale
 
-the volatility of gas prices on Ethereum is a well-recognized problem that is only made worse by the ever increasing network congestion in recent months. This creates an opportunity for options/futures underwriters to create financial products that help decentralized applications (dApps) and their users hedge against gas price variability and have a consistent risk-minimized experience. The UMA protocol is well-positioned to provide the necessary plumbing for such products to be built. Such products will need to rely on the DVM as a settlement layer in case of disputes. By supporting gas prices aggregatory statistics, the DVM opens the door for these products to offer their services and create a win-win situation with their customers in the Ethereum ecosystem.
+The volatility of gas prices on Ethereum is a well-recognized problem that is only made worse by the ever increasing network congestion in recent months. This creates an opportunity for options/futures underwriters to create financial products that help decentralized applications (dApps) and their users hedge against gas price variability and have a consistent risk-minimized experience. The UMA protocol is well-positioned to provide the necessary plumbing for such products to flourish. Such products will need to rely on the DVM as a settlement layer in case of disputes. By supporting gas prices, the DVM opens the door for these products to offer their services and create a win-win situation with their customers in the Ethereum ecosystem.
 
-Each transaction included in an Ethereum block pays an amount of Ether per 1 unit of gas consumed. That amount is (a) specified by a `gasPrice` parameter attached to a transaction, (b) is expressed in the smallest unit of the Ether currency which is `Wei`, and is set by the transaction submitter as a bid that she offers to the miners to have her transaction included. We therefore have a set of `gasPrice`s per block.
+Each transaction included in an Ethereum block pays an amount of Ether per 1 unit of gas consumed. That amount is (a) specified by a `gasPrice` parameter attached to a transaction, (b) is expressed in the smallest unit of the Ether currency which is `Wei`, and is set by the transaction submitter as a bid offered to the miners to have the transaction included. We therefore have a set of `gasPrice`s per block.
 
-A straight-forward yet sufficiently flexible aggregatory statistics that can serve as a proxy for the gas price in a given block is the `i`th percentile. But there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed. Hence, a second-order statistic is also needed to smooth-out outliers. This also makes the feed manipulation-resistant (a risk which should be significantly minimized once EIP1559 is implemented). We The median of the `i`th percentiles over a range of blocks is 
-
+The reported price has to take two considerations in mind: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to eliminate these two vectors. We propose the median gas price over 300 blocks (~1h worth of blocks) _weighted by_ the gas used in a transaction.
 
 ## Implementation
 
-Data point requestors specify three positive integers: `B`, `R`, `i` where `B` is an Ethereum block number, `7000>=R>=B` is the maximum block implying the desired range is [`B`,`B+1`, ..,  `B`+`R`], and `i` is the desired percentile and must be in the set `{0, 1, 2, .., 100}`. Restricting `R` to <=7000 implies a maximum acceptable range of ~1 day worth of Ethereum blocks which imposes a cap on how much data processing the DVM reporters must do. For `i=0` or `i=100`, the requester is effectively asking for the median of all the `min`'s or `max`'s of gas prices, respectively. For all other values, the requester is asking for `i`th percentile.
+The total gas used over the last 300 blocks that were mined at or before the `timestamp` provided to DVM is computed. Transactions in this range are also sorted by `total_gas_consumed`. 
 
 The pseudo-algorithm to calculate the exact data point to report by a DVM reporter is as follows:
 
 ```python
-def return_median(B, R, i)
-    assert R<= 7000
-    Median = None
-    Percentiles = []
-    for b in range(B, B+R, 1):      
-        transactions = provider.getTransactions(B)
-        gas_prices = []
-        for tx in transactions:
-            gas_prices.append(tx.gasPrice)
-        Percentiles.append(math.percentile(gas_prices, i)) # ensure determinism here
-    return math.median(Percentiles) # ensure determinism here
+def return_median(t)
+    B0 = block.at(timestamp=t) # rounded down
+    total_gas, rolling_sum = 0, 0
+    TXes = []
+    
+    # loop over the most recent 300 blocks starting from the most recent block mined at <=timestamp t
+    for b in range(B0, B0-300, -1):
+        # gasUsed is in the header of each block
+        total_gas += b.gasUsed
+        for tx in b.transactions():
+            gas_price = tx.gasPrice
+            gas_used = tx.totalGasUsed
+            TXes.append((gas_price, gas_used))
+    
+    # sort transactions by gas_price ascendingly
+    sorted_TXes = sorted(TXes, key=lambda tup: tup[0])
+
+    for gas_price, gas_used in sorted_TXes:
+        rolling_sum += gas_used
+        if rolling_sum > total_gas/2:
+            return gas_price
 ```
 
 
 ## Security considerations
 
-Anyone relying on this data point should take note of the fact that manipulating the gas prices in a **specific** block or a short range of blocks is achievable by miners whether to inflate or deflate them for their own self-interest or on behalf of an attacker that bribed them to do so. The longer the range the requested statistic covers, the less the risk of manipulation is. This risk will also be signifcantly inhibited once [fee burn]() is introduced in the Ethereum blockchain, because stuffing/padding blocks has a non-zero cost even to the miner (PoW) or block-producer (PoS).
+Anyone relying on this data point should take note of the fact that manipulating the gas prices in a **specific** block or a short range of blocks is achievable by miners whether to inflate or deflate them for their own self-interest or on behalf of an attacker that bribed them to do so. The longer the range the requested statistic covers, the less the risk of manipulation is. This risk will also be significantly inhibited once [fee burn](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md) is introduced in the Ethereum blockchain, because stuffing/padding blocks will have a non-zero cost even to miners (PoW) or block-producers (PoS).
 
 A large enough number of UMA governers should be running their full node to ensure data integrity. Relying on third-party full nodes presents a risk of manipulation of data, however if at least **one** governer is relying on their own full node, such manipulation is easily detectable. Hence, the security model here is 1-of-N which is low-risk.
