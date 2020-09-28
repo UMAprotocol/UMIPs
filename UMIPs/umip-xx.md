@@ -1,7 +1,7 @@
 # Headers
 | UMIP-13     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add GASETH-1HR GASETH-3HR GASETH-24HR as a price identifierd                                                                                                 |
+| UMIP Title | Add GASETH-1HR GASETH-3HR GASETH-24HR as a price identifiers                                                                                                 |
 | Authors    | Ali Atiia, @aliatiia | Matt Rice, @mrice32
 | Status     | Draft                                                                                                                                    |
 | Created    | September 4, 2020                                                                                                                           |
