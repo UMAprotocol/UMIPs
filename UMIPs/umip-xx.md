@@ -1,7 +1,7 @@
 # Headers
 | UMIP-13     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add GASETH as a price identifier                                                                                                 |
+| UMIP Title | Add GASETH-1HR GASETH-3HR GASETH-1D as a price identifierd                                                                                                 |
 | Authors    | Ali Atiia, @aliatiia | Matt Rice, @mrice32
 | Status     | Draft                                                                                                                                    |
 | Created    | September 4, 2020                                                                                                                           |
@@ -19,7 +19,7 @@ Opportunity: Gas options/futures can help users and developers hedge against gas
 ## Technical Specification
 
 The definition of this identifier should be:
-- Identifier name: GASETH
+- Identifier name: GASETH-1HR GASETH-3HR GASETH-24HR
 - Base Currency: ETH
 - Quote Currency: GAS
 - Sources: any Ethereum full node
@@ -27,7 +27,7 @@ The definition of this identifier should be:
 - Input Processing: see Implementation section
 - Price Steps: 1 Wei
 - Rounding: Closest: N/A becauses Wei's are integers
-- Pricing Interval: 300 blocks
+- Pricing Interval: 300 (GASETH-1HR), 900 (GASETH-3HR), or 7200 (GASETH-24HR) blocks
 - Dispute timestamp rounding: down
 - Output processing: None
 
@@ -37,22 +37,23 @@ The volatility of gas prices on Ethereum is a well-recognized problem that is on
 
 Each transaction included in an Ethereum block pays an amount of Ether per 1 unit of gas consumed. That amount is (a) specified by a `gasPrice` parameter attached to a transaction, (b) is expressed in the smallest unit of the Ether currency which is `Wei`, and is set by the transaction submitter as a bid offered to the miners to have the transaction included. We therefore have a set of `gasPrice`s per block.
 
-The reported price has to take two considerations in mind: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to eliminate these two vectors. We propose the median gas price over 300 blocks (~1h worth of blocks) _weighted by_ the gas used in a transaction.
+The reported price has to take two considerations in mind: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to eliminate these two vectors. We propose the median gas price over 300, 900, or 7200 blocks _weighted by_ the gas used in a transaction. These ranges corresponding to 1HR, 3HR, or 24H (1D) worth of blocks. 
 
 ## Implementation
 
-The total gas used over the last 300 blocks that were mined at or before the `timestamp` provided to DVM is computed. Transactions in this range are also sorted by `total_gas_consumed`. 
+The total gas used over the last 300 (GASETH-1HR), 900 (GASETH-3HR) or 7200 (GASETH-24HR) blocks that were mined at or before the `timestamp` provided to DVM is computed. Transactions in this range are also sorted by `total_gas_consumed`. 
 
 The pseudo-algorithm to calculate the exact data point to report by a DVM reporter is as follows:
 
 ```python
-def return_median(t)
+def return_median(t, N)
+    assert N==300 or N==900 or N==7200
     B0 = block.at(timestamp=t) # rounded down
     total_gas, rolling_sum = 0, 0
     TXes = []
     
-    # loop over the most recent 300 blocks starting from the most recent block mined at <=timestamp t
-    for b in range(B0, B0-300, -1):
+    # loop over the most recent N blocks starting from the most recent block mined at <=timestamp t
+    for b in range(B0, B0-N, -1):
         # gasUsed is in the header of each block
         total_gas += b.gasUsed
         for tx in b.transactions():
