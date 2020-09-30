@@ -27,7 +27,7 @@ The definition of this identifier should be:
 - Input Processing: see Implementation section
 - Price Steps: 1 Wei (1e-18)
 - Rounding: Closest: N/A because the median algorithm as described below cannot produce numbers with higher precision than 1 Wei (1e-18).
-- Pricing Interval: 300 (GASETH-1HR), 900 (GASETH-3HR), or 7200 (GASETH-24HR) blocks
+- Pricing Interval: 1 second
 - Dispute timestamp rounding: down
 - Output processing: None
 
