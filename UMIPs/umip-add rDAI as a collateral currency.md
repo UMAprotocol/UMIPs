@@ -33,7 +33,7 @@ This change encourages wider adoption of the UMA protocol through strengthening 
 It also provide general utility by enabling the use of "compounding collateral," which serves to lower risk, offset losses, and monetize "HODLing" of inactive synthetic positions (as the first such tokens are likely to be), or those with far future expiration dates.
 
 ## Implementation
-This change has no implementation other than adding the rDAI address to the collateral currency AddressWhitelist.
+This change has no implementation other than adding the rDAI address to the collateral currency AddressWhitelist and adding the rDAI final fee to the Store contract.
 
 ## Security considerations
 rDAI itself should present very little risk. It is an ERC-20 token based on DAI, and the project was audited by Quantstamp: 
