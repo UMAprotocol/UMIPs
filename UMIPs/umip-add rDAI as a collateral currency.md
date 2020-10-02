@@ -23,7 +23,7 @@ A local charitable organization could create a monthly "rolling" synthetic that 
 Alternatively, the protocol also allows rDAI to be used without specifying charitable beneficiaries at all. Undesignated ("self-hat") rDAI could be used simply to offset potential losses and de-risk positions, as the collateral would naturally increase over time. Hybrid positions are also possible; e.g., 50% going to charity, and 50% compounding within the synthetic.
 
 ## Technical Specification
-To accomplish this upgrade, only one change needs to be made:
+To accomplish this upgrade, two changes need to be made:
 - The rDAI address, 0x261b45d85ccfeabb11f022eba346ee8d1cd488c0 on Mainnet, needs to be added to the collateral currency AddressWhitelist introduced in UMIP-8.
    (This is the address of the proxy contract, which is the token that gets transferred.)
 - A final fee of 400 rDAI needs to be added for rDAI in the Store contract.
