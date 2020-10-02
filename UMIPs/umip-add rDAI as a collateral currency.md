@@ -26,7 +26,7 @@ Alternatively, the protocol also allows rDAI to be used without specifying chari
 To accomplish this upgrade, only one change needs to be made:
 - The rDAI address, 0x261b45d85ccfeabb11f022eba346ee8d1cd488c0 on Mainnet, needs to be added to the collateral currency AddressWhitelist introduced in UMIP-8.
    (This is the address of the proxy contract, which is the token that gets transferred.)
-
+- A final fee of 400 rDAI needs to be added for rDAI in the Store contract.
 ## Rationale
 This change encourages wider adoption of the UMA protocol through strengthening ties with traditional financial markets, and promoting a new use case: securing synthetic positions with interest-bearing collateral that benefits charities related to the underlying assets.
 
