@@ -31,7 +31,7 @@ To accomplish this upgrade, two changes need to be made:
 This change encourages wider adoption of the UMA protocol through strengthening ties with traditional financial markets, and promoting a new use case: securing synthetic positions with interest-bearing collateral that benefits charities related to the underlying assets.
 
 It also provide general utility by enabling the use of "compounding collateral," which serves to lower risk, offset losses, and monetize "HODLing" of inactive synthetic positions (as the first such tokens are likely to be), or those with far future expiration dates.
-
+400 rDai was chosen because the current final fee for DAI is 400 DAI and the value of rDAI is directly equal to the value of DAI.
 ## Implementation
 This change has no implementation other than adding the rDAI address to the collateral currency AddressWhitelist and adding the rDAI final fee to the Store contract.
 
