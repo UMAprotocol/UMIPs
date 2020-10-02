@@ -7,7 +7,7 @@
 | Created    | September 25, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
-This UMIP will add rDAI (redeemable Dai) to the supported collateral currencies to the AddressWhitelist contract, allowing UMA users to mint synthetics using rDAI as the collateral currency.
+This UMIP will add rDAI (redeemable Dai) to the supported collateral currencies to the AddressWhitelist contract, allowing UMA users to mint synthetics using rDAI as the collateral currency. This UMIP will also add a flat final fee to charge per-request. The proposed final fee is 400 rDAI per request.
 
 ## Motivation
 One of the most basic use cases for synthetic tokens is derivitives tied to underlying real-world assets, including equities - and a popular way to gain exposure to equities is through ETFs or index funds: baskets of securities chosen according to a published set of criteria.
