@@ -2,7 +2,7 @@
 | UMIP-16     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH-300B GASETH-1200B GASETH-7200B GASETH-50400B GASETH-201600B as a price identifiers                                                                                                 |
-| Authors    | Ali Atiia, @aliatiia | Matt Rice, @mrice32
+| Authors    | Ali Atiia (@aliatiia), Matt Rice (@mrice32), Sean Brown (@smb2796)
 | Status     | Draft                                                                                                                                    |
 | Created    | September 4, 2020                                                                                                                           |
 
