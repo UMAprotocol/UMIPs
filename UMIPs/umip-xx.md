@@ -37,7 +37,7 @@ The volatility of gas prices on Ethereum is a well-recognized problem that is on
 
 Each transaction included in an Ethereum block pays an amount of Ether per 1 unit of gas consumed. That amount is (a) specified by a `gasPrice` parameter attached to a transaction, (b) is expressed in the smallest unit of the Ether currency which is `Wei`, and is set by the transaction submitter as a bid offered to the miners to have the transaction included. We therefore have a set of `gasPrice`s per block.
 
-The reported price has to take two considerations in mind: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to eliminate these two vectors. We propose the median gas price over 300, 1200, or 7200 blocks _weighted by_ the gas used in a transaction. These ranges corresponding to 1HR, 4HR, 24HR (1D), 168HR (1W) or 672HR (1M) worth of blocks. 
+The reported price has to take two considerations in mind: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to eliminate these two vectors. We propose the median gas price over 300, 1200, 7200, 50400, or 201600 blocks _weighted by_ the gas used in a transaction. These ranges corresponding to 1HR, 4HR, 24HR (1D), 168HR (1W) or 672HR (4W) worth of blocks. 
 
 ## Implementation
 
