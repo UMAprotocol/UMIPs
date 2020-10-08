@@ -36,6 +36,8 @@ It also provide general utility by enabling the use of "compounding collateral,"
 This change has no implementation other than adding the rDAI address to the collateral currency AddressWhitelist and adding the rDAI final fee to the Store contract.
 
 ## Security considerations
+
+rDAI collateral providers should do their own due diligence on the beneficiaries of any given synthetic before opening a position. This is easy to do on a technical level, since all the "hat"-related information, including the literal Ethereum addresses of recipients, is available on-chain through the token contract interface and corresponding subgraph. (Not to mention the graphical rDAI explorer.) rDAI held in positions would be tamper-proof, as it is owned by the synthetic contract. These addresses (ideally linked to ENS domains) could then be verified through the official web sites of the charitable organizations.
 rDAI itself should present very little risk. It is an ERC-20 token based on DAI, and the project was audited by Quantstamp: 
 https://certificate.quantstamp.com/full/r-token-ethereum-contracts
 
