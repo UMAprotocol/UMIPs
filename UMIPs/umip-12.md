@@ -5,7 +5,7 @@
 | Authors    | TJ (tj@perlin.net) |
 | Status     | Approved                                                                                                                                    |
 | Created    | August 31, 2020                                                                                                                           |
-
+ 
 ## Summary (2-5 sentences)
 This UMIP will add PERL to the supported collateral currencies into the global whitelist contract, allowing the usage of PERL as collateral currency.
 
