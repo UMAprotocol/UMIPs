@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Approve Updated EMP Financial Contract Template              |
 | Authors    | Nick Pai (nick@umaproject.org) |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Approved                                                                                                                             |
 | Created    | September 16, 2020                                                                                                                           |
 
 ## Summary
