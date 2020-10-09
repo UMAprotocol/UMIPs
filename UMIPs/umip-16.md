@@ -1,9 +1,9 @@
 # Headers
-| UMIP-13     |                                                                                                                                          |
+| UMIP-16     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH-1HR GASETH-4HR GASETH-1D GASETH-1W GASETH-1M as a price identifiers                                                                                                 |
-| Authors    | Ali Atiia, @aliatiia | Matt Rice, @mrice32
-| Status     | Draft                                                                                                                                    |
+| Authors    | Ali Atiia (@aliatiia), Matt Rice (@mrice32)
+| Status     | Last Call                                                                                                                                    |
 | Created    | September 4, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
