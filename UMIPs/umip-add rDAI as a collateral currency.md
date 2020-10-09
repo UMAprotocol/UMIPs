@@ -22,6 +22,8 @@ A local charitable organization could create a monthly "rolling" synthetic that 
 
 Alternatively, the protocol also allows rDAI to be used without specifying charitable beneficiaries at all. Undesignated ("self-hat") rDAI could be used simply to offset potential losses and de-risk positions, as the collateral would naturally increase over time. Hybrid positions are also possible; e.g., 50% going to charity, and 50% compounding within the synthetic.
 
+When using undesignated ("self-hat") rDAI as collateral for the EMP contract template, a contract sponsor would need to set `excessTokenBeneficiary` to an address they wish to receive the accrued rDAI interest. The EMP function trimExcess would then need to be called to drain the excess collateral to the `excessTokenBeneficiary`.
+
 ## Technical Specification
 To accomplish this upgrade, two changes need to be made:
 - The rDAI address, [0x261b45d85ccfeabb11f022eba346ee8d1cd488c0](https://etherscan.io/token/0x261b45d85ccfeabb11f022eba346ee8d1cd488c0) on Mainnet, needs to be added to the collateral currency AddressWhitelist introduced in UMIP-8.
