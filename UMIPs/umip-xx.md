@@ -33,11 +33,11 @@ The definition of this identifier should be:
 
 ## Rationale
 
-The volatility of gas prices on Ethereum is a well-recognized problem that is only made worse by the ever increasing network congestion in recent months. This creates an opportunity for options/futures underwriters to create financial products that help decentralized applications (dApps) and their users hedge against gas price variability and have a consistent risk-minimized experience. The UMA protocol is well-positioned to provide the necessary plumbing for such products to flourish. Such products will need to rely on the DVM as a settlement layer in case of disputes. By supporting gas prices, the DVM opens the door for these products to offer their services and create a win-win situation with their customers in the Ethereum ecosystem.
+The volatility of gas prices on Ethereum is a well-recognized problem that is only made worse by the ever increasing network congestion in recent months. This creates an opportunity for options/futures underwriters to create financial products that help decentralized applications (dApps) and their users hedge against gas price variability and have a consistent risk-minimized experience. The UMA protocol is well-positioned to provide the necessary plumbing for such products to flourish. Such products will need to rely on the DVM as a settlement layer in case of disputes. Therefore, by supporting data feeds for gas prices, the DVM opens the door for a win-win-win situation between financial products, users/dAaps, and the Ethereum network at large.
 
 Each transaction included in an Ethereum block pays an amount of Ether per 1 unit of gas consumed. That amount is (a) specified by a `gasPrice` parameter attached to a transaction, (b) is expressed in the smallest unit of the Ether currency which is `Wei`, and is set by the transaction submitter as a bid offered to the miners to have the transaction included. We therefore have a set of `gasPrice`s per block.
 
-The reported price has to take two considerations in mind: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to eliminate these two vectors. We propose the median gas price over 1 hour (1HR), 4 hours (4HR), 1 day (1D), one week (1W), and 1 month (1M) periods _weighted by_ the gas used in a transaction. For safety and to proof against price manipulation, the DVM requires that a minimum number of blocks must have been mined within a given period. Otherwise, the DVM medianizes over a preset number of blocks defined in the following table:
+There are two important factors to consider: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to proof against abnormalities whether due to extreme volatility or miner manipulation. We propose the median gas price over 1 hour (1HR), 4 hours (4HR), 1 day (1D), one week (1W), and 1 month (1M) periods _weighted by_ the gas used in a transaction. For safety and to proof against price manipulation and/or possible abnormal delays in block production, the DVM requires that a minimum number of blocks must have been mined within a given period. Otherwise, the DVM medianizes over a preset number of blocks defined in the following table:
 
 | Identifier | Minimum number of mined blocks |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -48,7 +48,7 @@ The reported price has to take two considerations in mind: (1) there is a block 
 | GASETH-1M | 134400 |
 
 
-For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined btween `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1`.
+For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined btween `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1` regardless of how long (in wall clock time) it took for these blocks to be mined.
 
 ## Implementation
 
@@ -68,7 +68,7 @@ def return_median(t, N)
     
     # the DVM imposes a minimum number of blocks within a given time period to ensure safety against price manipulation
     if end_block-start_block < minimum_ranges[N]:
-        start_block = end_block-minimum_ranges[N]
+        start_block = end_block - minimum_ranges[N]
     
     total_gas, rolling_sum = 0, 0
     TXes = []
