@@ -94,7 +94,30 @@ def return_median(t, N)
 declare halfway int64;
 declare block_range int64;
 
-create temp table cum_gas as (SELECT gas_price, block_number, SUM(gas_used) OVER (ORDER BY gas_price) AS cum_sum FROM (SELECT gas_price, block_number, SUM(receipt_gas_used) AS gas_used FROM `bigquery-public-data.crypto_ethereum.transactions` WHERE block_timestamp BETWEEN TIMESTAMP('2020-10-13 22:00:00', 'UTC') AND TIMESTAMP('2020-10-14 22:00:00', 'UTC') GROUP BY gas_price, block_number));
+create temp table cum_gas as (
+    SELECT
+        gas_price,
+        block_number,
+        SUM(gas_used) OVER (
+            ORDER BY
+                gas_price
+        ) AS cum_sum
+    FROM
+        (
+            SELECT
+                gas_price,
+                block_number,
+                SUM(receipt_gas_used) AS gas_used
+            FROM
+                `bigquery-public-data.crypto_ethereum.transactions`
+            WHERE
+                block_timestamp BETWEEN TIMESTAMP('2020-10-13 22:00:00', 'UTC')
+                AND TIMESTAMP('2020-10-14 22:00:00', 'UTC')
+            GROUP BY
+                gas_price,
+                block_number
+        )
+);
   
 set halfway = (SELECT DIV(MAX(cum_sum),2) from cum_gas);
 
