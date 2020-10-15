@@ -12,7 +12,7 @@ The DVM should support requests for aggregatory gas prices on the Ethereum block
 ## Motivation
 The DVM currently does not support reporting aggregatory gas prices of finalized blocks on the Ethereum blockchain. 
 
-Cost: Calculating an aggregatory statistic of gas prices on a confirmed block or range of blocks on the Ethereum blockchain is easy by virtue of the fact that all needed data is readily available on any Ethereum full node, whether run locally or accessed remotely through well-known providers such as Infura or Alchemy.
+Cost: Calculating an aggregatory statistic of gas prices on a confirmed block or range of blocks on the Ethereum blockchain is easy by virtue of the fact that all needed data is readily available on any Ethereum full node, whether run locally or accessed remotely through well-known providers such as Infura or Alchemy. Additionally, this data can be accessed through querying publicly accessible Ethereum blockchain data sets. 
 
 Opportunity: Gas options/futures can help users and developers hedge against gas volatility allowing them to budget their gas consumption efficiently. Providing a price feed for settlement is a prerequisite.
 
@@ -22,7 +22,7 @@ The definition of this identifier should be:
 - Identifier name: GASETH-1HR GASETH-4HR GASETH-1D GASETH-1W GASETH-1M 
 - Base Currency: ETH
 - Quote Currency: GAS
-- Sources: any Ethereum full node
+- Sources: any Ethereum full node or data set of Ethereum node data
 - Result Processing: Exact
 - Input Processing: see Implementation section
 - Price Steps: 1 Wei (1e-18)
@@ -52,7 +52,7 @@ For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:0
 
 ## Implementation
 
-The total gas used over the last 300 (GASETH-1HR), 1200 (GASETH-4HR) or 7200 (GASETH-24HR) blocks that were mined at or before the `timestamp` provided to DVM is computed. Transactions in this range are also sorted by `total_gas_consumed`. 
+The total gas used by the blocks that were mined over the identifier specific time interval is computed. The identifier specific time interval is defined with bounds of the `timestamp` provided to DVM and the `timestamp` less 1HR (GASETH-1HR), 4HR (GASETH-4HR), 24HR (GASETH-1D), 168HR (GASETH-1W) or 720HR (GASETH-1M). Transactions in this range are also sorted by `total_gas_consumed`. 
 
 The pseudo-algorithm to calculate the exact data point to report by a DVM reporter is as follows:
 
