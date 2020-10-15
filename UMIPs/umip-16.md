@@ -132,7 +132,7 @@ select cum_sum, gas_price from cum_gas where cum_sum > halfway order by gas_pric
 ```
 If `block_amount` falls below the minimum number of mined blocks, a reporter should medianize over a range defined by the minimum number of blocks, rather than the current time range. This is explained further in the *Rationale* section.
 
-These implementations are provided for explanation purposes and as convenient ways for DVM reporters to calculate the GASETH price identifiers. DVM reporters are free to develop additional implementations, as long as they agree with the computation methodology defined in the *Rationale* section and specifications of the *Technical Specifications* section.
+These implementations are provided for explanation purposes and as convenient ways for DVM reporters to calculate the GASETH price identifiers. DVM reporters are free to develop additional implementations, as long as the implementations agree with the computation methodology defined in the *Rationale* section and specifications of the *Technical Specifications* section.
 
 ## Security considerations
 
