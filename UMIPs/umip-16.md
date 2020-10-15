@@ -128,7 +128,7 @@ set halfway = (SELECT DIV(MAX(cum_sum),2) from cum_gas);
 
 set block_amount = (SELECT (MAX(block_number) - MIN(block_number)) FROM cum_gas);
 
-select cum_sum, gas_price from cum_gas where cum_sum > halfway order by gas_price limit 1;
+SELECT cum_sum, gas_price FROM cum_gas WHERE cum_sum > halfway ORDER BY gas_price LIMIT 1;
 ```
 If `block_amount` falls below the minimum number of mined blocks, a reporter should medianize over a range defined by the minimum number of blocks, rather than the current time range. This is explained further in the *Rationale* section.
 
