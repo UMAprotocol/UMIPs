@@ -26,7 +26,7 @@ The definition of this identifier should be:
 - Result Processing: Exact
 - Input Processing: see Implementation section
 - Price Steps: 1 Wei (1e-18)
-- Rounding: Closest: N/A because the median algorithm as described below cannot produce numbers with higher precision than 1 Wei (1e-18).
+- Rounding: Closest: N/A because the median algorithm and query as described below cannot produce numbers with higher precision than 1 Wei (1e-18).
 - Pricing Interval: 1 second
 - Dispute timestamp rounding: down
 - Output processing: None
@@ -48,7 +48,7 @@ There are two important factors to consider: (1) there is a block each 12-15 sec
 | GASETH-1M | 134400 |
 
 
-For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined btween `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1` regardless of how long (in wall clock time) it took for these blocks to be mined.
+For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined between `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1` regardless of how long (in wall clock time) it took for these blocks to be mined.
 
 ## Implementation
 
@@ -90,6 +90,11 @@ def return_median(t, N)
         if rolling_sum > total_gas/2:
             return gas_price
 ```
+
+An alternative method, for a DVM reporter to calculate this exact data point, would be to run the below SQL query against a public dataset of Ethereum node data such as Google BigQuery's `bigquery-public-data.crypto_ethereum.transactions` dataset. 
+
+This query is parameterized with a UTC timestamp `t1`, a time range defined by the price identifier being used (i.e. 24HR) `N`, and a lower bound of time `t2` defined by `t1 - N * 3600`.
+
 ```sql
 declare halfway int64;
 declare block_range int64;
@@ -111,8 +116,8 @@ create temp table cum_gas as (
             FROM
                 `bigquery-public-data.crypto_ethereum.transactions`
             WHERE
-                block_timestamp BETWEEN TIMESTAMP('2020-10-13 22:00:00', 'UTC')
-                AND TIMESTAMP('2020-10-14 22:00:00', 'UTC')
+                block_timestamp BETWEEN TIMESTAMP(t2)
+                AND TIMESTAMP(t1)
             GROUP BY
                 gas_price,
                 block_number
@@ -121,10 +126,14 @@ create temp table cum_gas as (
   
 set halfway = (SELECT DIV(MAX(cum_sum),2) from cum_gas);
 
-set block_range = (SELECT (MAX(block_number) - MIN(block_number)) FROM cum_gas);
+set block_amount = (SELECT (MAX(block_number) - MIN(block_number)) FROM cum_gas);
 
 select cum_sum, gas_price from cum_gas where cum_sum > halfway order by gas_price limit 1;
 ```
+If `block_amount` falls below the minimum number of mined blocks, a reporter should medianize over a range defined by the minimum number of blocks, rather than the current time range. This is explained further in the *Rationale* section.
+
+These implementations are provided for explanation purposes and as convenient ways for DVM reporters to calculate the GASETH price identifiers. DVM reporters are free to develop additional implementations, as long as they agree with the computation methodology defined in the *Rationale* section and specifications of the *Technical Specifications* section.
+
 ## Security considerations
 
 Anyone relying on this data point should take note of the fact that manipulating the gas prices in a **specific** block or a short range of blocks is achievable by miners whether to inflate or deflate them for their own self-interest or on behalf of an attacker that bribed them to do so. The longer the range the requested statistic covers, the less the risk of manipulation is. This risk will also be significantly inhibited once [fee burn](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md) is introduced in the Ethereum blockchain, because stuffing/padding blocks will have a non-zero cost even to miners (PoW) or block-producers (PoS).
