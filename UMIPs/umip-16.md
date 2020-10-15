@@ -90,8 +90,18 @@ def return_median(t, N)
         if rolling_sum > total_gas/2:
             return gas_price
 ```
+```sql
+declare halfway int64;
+declare block_range int64;
 
+create temp table cum_gas as (SELECT gas_price, block_number, SUM(gas_used) OVER (ORDER BY gas_price) AS cum_sum FROM (SELECT gas_price, block_number, SUM(receipt_gas_used) AS gas_used FROM `bigquery-public-data.crypto_ethereum.transactions` WHERE block_timestamp BETWEEN TIMESTAMP('2020-10-13 22:00:00', 'UTC') AND TIMESTAMP('2020-10-14 22:00:00', 'UTC') GROUP BY gas_price, block_number));
+  
+set halfway = (SELECT DIV(MAX(cum_sum),2) from cum_gas);
 
+set block_range = (SELECT (MAX(block_number) - MIN(block_number)) FROM cum_gas);
+
+select cum_sum, gas_price from cum_gas where cum_sum > halfway order by gas_price limit 1;
+```
 ## Security considerations
 
 Anyone relying on this data point should take note of the fact that manipulating the gas prices in a **specific** block or a short range of blocks is achievable by miners whether to inflate or deflate them for their own self-interest or on behalf of an attacker that bribed them to do so. The longer the range the requested statistic covers, the less the risk of manipulation is. This risk will also be significantly inhibited once [fee burn](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md) is introduced in the Ethereum blockchain, because stuffing/padding blocks will have a non-zero cost even to miners (PoW) or block-producers (PoS).
