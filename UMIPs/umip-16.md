@@ -93,44 +93,61 @@ def return_median(t, N)
 
 An alternative method, for a DVM reporter to calculate this exact data point, would be to run the below SQL query against a public dataset of Ethereum node data such as Google BigQuery's `bigquery-public-data.crypto_ethereum.transactions` dataset. 
 
-This query is parameterized with a UTC timestamp `t1`, a time range defined by the price identifier being used (i.e. 24HR) `N`, and a lower bound of time `t2` defined by `t1 - N * 3600`.
+This query is parameterized with a UTC timestamp `t1`, a time range defined by the price identifier being used (i.e. 24HR) `N`, a lower bound of time `t2` defined by `t1 - N * 3600` and a minimum block amount `B` (explained in the *Rationale* section).
 
 ```sql
-declare halfway int64;
-declare block_range int64;
+DECLARE halfway int64;
+DECLARE block_count int64;
+DECLARE max_block int64;
 
-create temp table cum_gas as (
-    SELECT
-        gas_price,
-        block_number,
-        SUM(gas_used) OVER (
-            ORDER BY
-                gas_price
-        ) AS cum_sum
-    FROM
-        (
-            SELECT
-                gas_price,
-                block_number,
-                SUM(receipt_gas_used) AS gas_used
-            FROM
-                `bigquery-public-data.crypto_ethereum.transactions`
-            WHERE
-                block_timestamp BETWEEN TIMESTAMP(t2)
-                AND TIMESTAMP(t1)
-            GROUP BY
-                gas_price,
-                block_number
-        )
+-- Querying for the amount of blocks in the preset time range. This will allow block_count to be compared against a given minimum block amount.
+SET (block_count, max_block) = (SELECT AS STRUCT (MAX(number) - MIN(number)), MAX(number) FROM `bigquery-public-data.crypto_ethereum.blocks` WHERE timestamp BETWEEN TIMESTAMP(t2) AND TIMESTAMP(t1));
+
+CREATE TEMP TABLE cum_gas (
+  gas_price int64,
+  cum_sum int64
 );
-  
-set halfway = (SELECT DIV(MAX(cum_sum),2) from cum_gas);
 
-set block_amount = (SELECT (MAX(block_number) - MIN(block_number)) FROM cum_gas);
+-- If the minimum threshold of blocks is met, query on a time range
+IF block_count >= B THEN
+INSERT INTO cum_gas (
+  SELECT
+    gas_price,
+    SUM(gas_used) OVER (ORDER BY gas_price) AS cum_sum
+  FROM (
+    SELECT
+      gas_price,
+      SUM(receipt_gas_used) AS gas_used
+    FROM
+      `bigquery-public-data.crypto_ethereum.transactions`
+    WHERE block_timestamp 
+    BETWEEN TIMESTAMP(t2)
+    AND TIMESTAMP(t1)  
+    GROUP BY
+      gas_price));
+ELSE -- If a minimum threshold of blocks is not met, query for the minimum amount of blocks
+INSERT INTO cum_gas (
+  SELECT
+    gas_price,
+    SUM(gas_used) OVER (ORDER BY gas_price) AS cum_sum
+  FROM (
+    SELECT
+      gas_price,
+      SUM(receipt_gas_used) AS gas_used
+    FROM
+      `bigquery-public-data.crypto_ethereum.transactions`
+    WHERE block_number 
+    BETWEEN (max_block - B)
+    AND max_block
+    GROUP BY
+      gas_price));
+END IF;
 
-select cum_sum, gas_price from cum_gas where cum_sum > halfway order by gas_price limit 1;
+SET halfway = (SELECT DIV(MAX(cum_sum),2) FROM cum_gas);
+
+SELECT cum_sum, gas_price FROM cum_gas WHERE cum_sum > halfway ORDER BY gas_price LIMIT 1;
 ```
-If `block_amount` falls below the minimum number of mined blocks, a reporter should medianize over a range defined by the minimum number of blocks, rather than the current time range. This is explained further in the *Rationale* section.
+If `block_count` falls below the minimum number of mined blocks, the query medianize over a range defined by the minimum number of blocks, rather than the given time range. This is explained further in the *Rationale* section.
 
 These implementations are provided for explanation purposes and as convenient ways for DVM reporters to calculate the GASETH price identifiers. DVM reporters are free to develop additional implementations, as long as the implementations agree with the computation methodology defined in the *Rationale* section and specifications of the *Technical Specifications* section.
 
