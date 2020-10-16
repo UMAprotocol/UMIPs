@@ -101,7 +101,7 @@ DECLARE block_count int64;
 DECLARE max_block int64;
 
 -- Querying for the amount of blocks in the preset time range. This will allow block_count to be compared against a given minimum block amount.
-SET (block_count, max_block) = (SELECT AS STRUCT (MAX(number) - MIN(number)), MAX(number) FROM `bigquery-public-data.crypto_ethereum.blocks` WHERE timestamp BETWEEN TIMESTAMP(t2) AND TIMESTAMP(t1));
+SET (block_count, max_block) = (SELECT AS STRUCT (MAX(number) - MIN(number)), MAX(number) FROM `bigquery-public-data.crypto_ethereum.blocks` WHERE timestamp BETWEEN TIMESTAMP(@t2) AND TIMESTAMP(@t1));
 
 CREATE TEMP TABLE cum_gas (
   gas_price int64,
@@ -121,8 +121,8 @@ INSERT INTO cum_gas (
     FROM
       `bigquery-public-data.crypto_ethereum.transactions`
     WHERE block_timestamp 
-    BETWEEN TIMESTAMP(t2)
-    AND TIMESTAMP(t1)  
+    BETWEEN TIMESTAMP(@t2)
+    AND TIMESTAMP(@t1)  
     GROUP BY
       gas_price));
 ELSE -- If a minimum threshold of blocks is not met, query for the minimum amount of blocks
@@ -137,7 +137,7 @@ INSERT INTO cum_gas (
     FROM
       `bigquery-public-data.crypto_ethereum.transactions`
     WHERE block_number 
-    BETWEEN (max_block - B)
+    BETWEEN (max_block - @B)
     AND max_block
     GROUP BY
       gas_price));
