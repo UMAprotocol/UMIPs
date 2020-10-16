@@ -147,7 +147,7 @@ SET halfway = (SELECT DIV(MAX(cum_sum),2) FROM cum_gas);
 
 SELECT cum_sum, gas_price FROM cum_gas WHERE cum_sum > halfway ORDER BY gas_price LIMIT 1;
 ```
-If `block_count` falls below the minimum number of mined blocks, the query medianize over a range defined by the minimum number of blocks, rather than the given time range. This is explained further in the *Rationale* section.
+If `block_count` falls below the minimum number of mined blocks, the query will medianize over a range defined by the minimum number of blocks, rather than the given time range. This is explained further in the *Rationale* section.
 
 These implementations are provided for explanation purposes and as convenient ways for DVM reporters to calculate the GASETH price identifiers. DVM reporters are free to develop additional implementations, as long as the implementations agree with the computation methodology defined in the *Rationale* section and specifications of the *Technical Specifications* section.
 
