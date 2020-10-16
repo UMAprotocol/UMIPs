@@ -109,7 +109,7 @@ CREATE TEMP TABLE cum_gas (
 );
 
 -- If the minimum threshold of blocks is met, query on a time range
-IF block_count >= B THEN
+IF block_count >= @B THEN
 INSERT INTO cum_gas (
   SELECT
     gas_price,
