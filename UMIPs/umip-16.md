@@ -12,7 +12,7 @@ The DVM should support requests for aggregatory gas prices on the Ethereum block
 ## Motivation
 The DVM currently does not support reporting aggregatory gas prices of finalized blocks on the Ethereum blockchain. 
 
-Cost: Calculating an aggregatory statistic of gas prices on a confirmed block or range of blocks on the Ethereum blockchain is easy by virtue of the fact that all needed data is readily available on any Ethereum full node, whether run locally or accessed remotely through well-known providers such as Infura or Alchemy.
+Cost: Calculating an aggregatory statistic of gas prices on a confirmed block or range of blocks on the Ethereum blockchain is easy by virtue of the fact that all needed data is readily available on any Ethereum full node, whether run locally or accessed remotely through well-known providers such as Infura or Alchemy. Additionally, this data can be accessed through querying publicly accessible Ethereum blockchain data sets. 
 
 Opportunity: Gas options/futures can help users and developers hedge against gas volatility allowing them to budget their gas consumption efficiently. Providing a price feed for settlement is a prerequisite.
 
@@ -22,11 +22,11 @@ The definition of this identifier should be:
 - Identifier name: GASETH-1HR GASETH-4HR GASETH-1D GASETH-1W GASETH-1M 
 - Base Currency: ETH
 - Quote Currency: GAS
-- Sources: any Ethereum full node
+- Sources: any Ethereum full node or data set of Ethereum node data
 - Result Processing: Exact
 - Input Processing: see Implementation section
 - Price Steps: 1 Wei (1e-18)
-- Rounding: Closest: N/A because the median algorithm as described below cannot produce numbers with higher precision than 1 Wei (1e-18).
+- Rounding: Closest: N/A because the median algorithm and query as described below cannot produce numbers with higher precision than 1 Wei (1e-18).
 - Pricing Interval: 1 second
 - Dispute timestamp rounding: down
 - Output processing: None
@@ -48,11 +48,11 @@ There are two important factors to consider: (1) there is a block each 12-15 sec
 | GASETH-1M | 134400 |
 
 
-For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined btween `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1` regardless of how long (in wall clock time) it took for these blocks to be mined.
+For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined between `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1` regardless of how long (in wall clock time) it took for these blocks to be mined.
 
 ## Implementation
 
-The total gas used over the last 300 (GASETH-1HR), 1200 (GASETH-4HR) or 7200 (GASETH-24HR) blocks that were mined at or before the `timestamp` provided to DVM is computed. Transactions in this range are also sorted by `total_gas_consumed`. 
+The total gas used by the blocks that were mined over the identifier specific time interval is computed. The identifier specific time interval is defined with bounds of the `timestamp` provided to DVM and the `timestamp` less 1HR (GASETH-1HR), 4HR (GASETH-4HR), 24HR (GASETH-1D), 168HR (GASETH-1W) or 720HR (GASETH-1M). Transactions in this range are also sorted by `total_gas_consumed`. 
 
 The pseudo-algorithm to calculate the exact data point to report by a DVM reporter is as follows:
 
@@ -91,6 +91,65 @@ def return_median(t, N)
             return gas_price
 ```
 
+An alternative method, for a DVM reporter to calculate this exact data point, would be to run the below SQL query against a public dataset of Ethereum node data such as Google BigQuery's `bigquery-public-data.crypto_ethereum.transactions` dataset. 
+
+This query is parameterized with a UTC timestamp `t1`, a time range defined by the price identifier being used (i.e. 24HR) `N`, a lower bound of time `t2` defined by `t1 - N * 3600` and a minimum block amount `B` (explained in the *Rationale* section).
+
+```sql
+DECLARE halfway int64;
+DECLARE block_count int64;
+DECLARE max_block int64;
+
+-- Querying for the amount of blocks in the preset time range. This will allow block_count to be compared against a given minimum block amount.
+SET (block_count, max_block) = (SELECT AS STRUCT (MAX(number) - MIN(number)), MAX(number) FROM `bigquery-public-data.crypto_ethereum.blocks` WHERE timestamp BETWEEN TIMESTAMP(@t2) AND TIMESTAMP(@t1));
+
+CREATE TEMP TABLE cum_gas (
+  gas_price int64,
+  cum_sum int64
+);
+
+-- If the minimum threshold of blocks is met, query on a time range
+IF block_count >= @B THEN
+INSERT INTO cum_gas (
+  SELECT
+    gas_price,
+    SUM(gas_used) OVER (ORDER BY gas_price) AS cum_sum
+  FROM (
+    SELECT
+      gas_price,
+      SUM(receipt_gas_used) AS gas_used
+    FROM
+      `bigquery-public-data.crypto_ethereum.transactions`
+    WHERE block_timestamp 
+    BETWEEN TIMESTAMP(@t2)
+    AND TIMESTAMP(@t1)  
+    GROUP BY
+      gas_price));
+ELSE -- If a minimum threshold of blocks is not met, query for the minimum amount of blocks
+INSERT INTO cum_gas (
+  SELECT
+    gas_price,
+    SUM(gas_used) OVER (ORDER BY gas_price) AS cum_sum
+  FROM (
+    SELECT
+      gas_price,
+      SUM(receipt_gas_used) AS gas_used
+    FROM
+      `bigquery-public-data.crypto_ethereum.transactions`
+    WHERE block_number 
+    BETWEEN (max_block - @B)
+    AND max_block
+    GROUP BY
+      gas_price));
+END IF;
+
+SET halfway = (SELECT DIV(MAX(cum_sum),2) FROM cum_gas);
+
+SELECT cum_sum, gas_price FROM cum_gas WHERE cum_sum > halfway ORDER BY gas_price LIMIT 1;
+```
+If `block_count` falls below the minimum number of mined blocks, the query will medianize over a range defined by the minimum number of blocks, rather than the given time range. This is explained further in the *Rationale* section.
+
+These implementations are provided for explanation purposes and as convenient ways for DVM reporters to calculate the GASETH price identifiers. DVM reporters are free to develop additional implementations, as long as the implementations agree with the computation methodology defined in the *Rationale* section and specifications of the *Technical Specifications* section.
 
 ## Security considerations
 
