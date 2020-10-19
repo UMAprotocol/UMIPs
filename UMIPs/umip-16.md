@@ -99,7 +99,14 @@ This query is parameterized with a UTC timestamp `t1`, a time range defined by t
 DECLARE halfway int64;
 DECLARE block_count int64;
 DECLARE max_block int64;
+DECLARE latest_timestamp TIMESTAMP;
 
+-- the latest block in BigQuery may have a timestamp older than @t2, in which case @t2 is set to that latest timestamp instead
+SET latest_timestamp = (SELECT MAX(timestamp) from `bigquery-public-data.crypto_ethereum.blocks`);
+IF t2 > latest_timestamp THEN
+   t2 = latest_timestamp;
+END IF;
+  
 -- Querying for the amount of blocks in the preset time range. This will allow block_count to be compared against a given minimum block amount.
 SET (block_count, max_block) = (SELECT AS STRUCT (MAX(number) - MIN(number)), MAX(number) FROM `bigquery-public-data.crypto_ethereum.blocks` WHERE timestamp BETWEEN TIMESTAMP(@t2) AND TIMESTAMP(@t1));
 
