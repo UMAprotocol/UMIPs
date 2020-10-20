@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add rDAI as a collateral currency              |
 | Authors    | Jeff Bennett (endymionjkb@gmail.com), Sean Brown (@smb2796) |
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | September 25, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
