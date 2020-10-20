@@ -104,7 +104,7 @@ DECLARE latest_timestamp TIMESTAMP;
 -- the latest block in BigQuery may have a timestamp older than @t2, in which case @t2 is set to that latest timestamp instead
 SET latest_timestamp = (SELECT MAX(timestamp) from `bigquery-public-data.crypto_ethereum.blocks`);
 IF t2 > latest_timestamp THEN
-   t2 = latest_timestamp;
+   SET t2 = latest_timestamp;
 END IF;
   
 -- Querying for the amount of blocks in the preset time range. This will allow block_count to be compared against a given minimum block amount.
