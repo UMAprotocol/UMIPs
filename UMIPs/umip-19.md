@@ -26,7 +26,7 @@ The definition of this identifier should be:
 - Base Currency: ARS
 - Quote Currency: USD
 - Data Sources: Ripio, SatoshiTango, CoinMonitor
-- Result Processing: Mean. BTC/ARS to ARS/USD conversion defined in the implementation section.
+- Result Processing: Median. BTC/ARS to ARS/USD conversion defined in the implementation section.
 - Input Processing: Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 0.000001 (6 decimals in more general trading format)
 - Rounding: Closest, 0.5 up
