@@ -36,8 +36,8 @@ This change has no implementation other than proposing the four aforementioned g
 ## Security considerations
 Since USDC and USDT are persistently valuable ERC20 tokens, including both as supported collateral currencies should impose no additional risk to the protocol.
 
-The only security implication is for contract deployers and users who are considering using contracts with USDC or USDT as the collateral currency. They should recognize and accept the centralization risk of using USDC or USDT, as both are fiat-backed or cash-equivalent backed stablecoins run by centralized organizations. USDC is issued and backed by Coinbase and Circle Invest, while USDT is issued and backed by Tether Limited. 
+The main implication is for contract deployers and users who are considering using contracts with USDC or USDT as the collateral currency. They should recognize and accept the centralization risk of using USDC or USDT, as both are fiat-backed or cash-equivalent backed stablecoins run by centralized organizations. USDC is issued and backed by Coinbase and Circle Invest, while USDT is issued and backed by Tether Limited.
+
+USDT is a non-standard ERC20 as the USDT approve function does not comply with the ERC20 standard. This should not have any immediate security implications, as UMA Protocol contracts use OpenZeppelin's [SafeERC20 wrapper](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/SafeERC20.sol), but should be noted as it *could* have implementation consequences for some financial contracts.
 
 New price identifiers, that are intended to be used with these collateral currencies, will need to be specified to 6 decimals of precision in order to comply with USDC and USDT.
-
-For added assurance, USDC and USDT are not listed on the buggy ERC20 contracts list.
