@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add USDC and USDT as whitelisted collateral currencies              |
 | Authors    | Sean Brown (sean@umaproject.org) |
-| Status     | Draft                                                                                                                        |
+| Status     | Last Call                                                                                                                        |
 | Created    | October 26, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)
