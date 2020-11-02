@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ARSUSD as a price identifier              |
 | Authors    | Sean Brown (sean@umaproject.org) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | October 28, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
@@ -13,7 +13,7 @@ The DVM should support price requests for the ARS/USD price index.
 ## Motivation
 The DVM currently does not support the ARS/USD price index.
 
-Supporting the ARSUSD price identifier would enable the creation of an Argentinian Peso stablecoin, backed by USD. Token minters could go short on the ARS/USD index, while token holders could go long or use synthetic ARS for functional purposes.
+Supporting the ARSUSD price identifier would enable the creation of an Argentine Peso stablecoin, backed by USD. Token minters could go short on the ARS/USD index, while token holders could go long or use synthetic ARS for functional purposes.
 
 One practical use for synthetic ARS is in trading pairs on Argentinian cryptocurrency exchanges.
 
