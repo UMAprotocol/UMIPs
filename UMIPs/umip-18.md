@@ -12,7 +12,7 @@ This UMIP will add USDC and USDT as approved collateral currencies. This will in
 ## Motivation
 USDT and USDC are the world’s two largest stablecoins by market capitalization as well as traded volume. Both are widely used across the cryptocurrency space, especially on exchanges, where USDC and USDT based crypto-pairs account for a large share of trading volume.
 
-In comparison to DAI, which is already approved favored by many in the DeFi community because of its high level of decentralization, USDC and USDT are both fiat-backed stablecoins run by centralized organizations. With centralization comes risk, but the proven success of USDT and USDC, in terms of longevity and size, provide assurance about their ability to maintain value.
+In comparison to DAI, which is already favored by many in the DeFi community because of its high level of decentralization, USDC and USDT are both fiat-backed stablecoins run by centralized organizations. With centralization comes risk, but the proven success of USDT and USDC, in terms of longevity and size, provide assurance about their ability to maintain value.
  
 USDC and USDT as collateral types are expected to have a variety of deployments. They will allow for the creation of USD based synthetic assets and will increase the general accessibilty of these assets, as the cryptocurrency market is accustomed to transacting in these currencies.
 
