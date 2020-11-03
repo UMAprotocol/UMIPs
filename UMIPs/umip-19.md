@@ -2,7 +2,7 @@
 | UMIP-19     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ARSUSD as a price identifier              |
-| Authors    | Sean Brown (sean@umaproject.org) |
+| Authors    | Sean Brown (sean@umaproject.org), Manuel Gvirtz (@manuelgvirtz) |
 | Status     | Last Call                                                                                                                                    |
 | Created    | October 28, 2020                                                                                                                           |
 
@@ -39,6 +39,8 @@ Prices are primarily used by Priceless contracts to calculate a synthetic tokenâ
 ARSUSD uses Ripio, SatoshiTango and CoinMonitor for BTCARS price information. Ripio and SatoshiTango are Argentinian cryptocurrency exchanges and were chosen because they have some of the highest genuine volumes of ARS/BTC trading. CoinMonitor is a price aggregator that determines its ARS/BTC price as a result of taking the median of a group of buy and a group of sell prices from various cryptocurrency exchanges and then averaging the two. CoinMonitor was chosen as a data source because its price calculation methodology creates a good representation of what the true market rate for BTC/ARS is. All three sources offer free and publicly accessible historical BTC/ARS endpoints.
 
 The decision, to query for BTC/ARS and ARS/USD instead of directly querying for ARS/USD, was made because the ARS/USD pair has a large variance in price reporting, caused by artificial factors. Products built with the ARSUSD price identifier are most likely to be used in Argentinian cryptocurrency exchanges, so the price identifier should use the price reflected by the highest volume crypto-native ARS trading pair.
+
+More explicitly, the choice to use BTC/ARS over ARS/USD choice has to do with the fact that Argentina is currently under a capital restrictions scheme, where retail users and companies cannot access the official exchange rate to buy goods or services. Because of this situation, there are several USD/ARS rates currently within a ~100% spread between the official and unofficial rate. Since this rate will be used to create crypto assets, we consider the fair USD/ARS exchange rate to be the one which you can access to purchase cryptocurrencies. BTC/ARS is the pair with the majority of the trading in the country, with an estimate of 80% of the total volume, with more than 10 different brokers operating daily in the country. Correctly assessing the USD/ARS exchange rate is a complex task and probably will be even more complex in the near future. However, over the years and different capital restrictions models, BTC has shown to be a robust indicator of fair exchange rate for USD.
 
 ## Implementation
 
