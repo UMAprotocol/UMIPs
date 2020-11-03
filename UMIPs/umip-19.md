@@ -2,7 +2,7 @@
 | UMIP-19     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ARSUSD as a price identifier              |
-| Authors    | Sean Brown (sean@umaproject.org) |
+| Authors    | Sean Brown (sean@umaproject.org), Manuel Gvirtz (@manuelgvirtz) |
 | Status     | Last Call                                                                                                                                    |
 | Created    | October 28, 2020                                                                                                                           |
 
