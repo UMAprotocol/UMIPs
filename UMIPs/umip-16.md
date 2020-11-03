@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH-1HR GASETH-4HR GASETH-1D GASETH-1W GASETH-1M as a price identifiers                                                                                                 |
 | Authors    | Ali Atiia (@aliatiia), Matt Rice (@mrice32), Sean Brown (@smb2796)
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                   |
 | Created    | September 4, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
