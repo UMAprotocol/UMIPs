@@ -1,9 +1,10 @@
 ## Headers
  - UMIP <#>
  - Title: Add BTCDOM and ALTDOM as price identifiers
- - Author: Domination Finance
+ - Author: Domination Finance Team
  - Status: Pending approval
  - Created: November 14, 2020
+
 
 ## Summary (2-5 sentences)
 The DVM should support price requests for a Bitcoin and altcoin dominance index. Upon redemption, BTCDOM + ALTDOM = 100.00.
