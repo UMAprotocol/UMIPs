@@ -1,5 +1,5 @@
 # Headers
-| UMIP-x     |                                                                                                                                          |
+| UMIP-22     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH-TWAP-1Mx1M as a supported DVM price identifier                                                                                                 |
 | Authors    | Sean Brown (@sean@umaproject.org), Kevin Chan (kevin@umaproject.org)
