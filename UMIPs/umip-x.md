@@ -7,18 +7,18 @@
 | Created    | November 12th, 2020                                                                                                                              |
 
 ## Summary (2-5 sentences)
-The DVM should support requests for a price that reflects either the aggregatory gas prices on the Ethereum blockchain or a self-referential token 2-hour Time-Weighted Average Price (TWAP) depending on the expiry state of the contract.
+The DVM should support requests for a price that resolves to either the median monthly Ethereum gas price or a self-referential token 2-hour Time-Weighted Average Price (TWAP). The price resolution method to use will depend on the the timestamp the price request was made at.
 
-At expiry, a price request will be resolved with the median monthly gas price calculation defined for GASETH-TWAP-1Mx1M in UMIP-20.
+For a price request made at or after the Unix timestamp `1612051200` (Jan 31, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20.
 
-Before contract expiry, a price request will be resolved with a 2-hour TWAP calculation on the Uniswap price of the synthetic token issued by the contract using the GASETH-TWAP-1Mx1M price identifier.
+For a price request made before `1612051200`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the synthetic token issued by the requesting contract using the GASETH-TWAP-1Mx1M price identifier.
 
 ## Motivation
 The motivation for calculating aggregatory Ethereum gas prices in a set amount of units of gas is explained in UMIP-16 and UMIP-20.
 
-For the creation of a tokenized gas price futures contract, it is desired that the DVM return either the monthly median gas price for 1 million units of gas, or a self-referential 2-hour TWAP on the market price of the contract’s token. The type of price that the DVM will return is dependent on if the contract has expired or not. 
+For the creation of a tokenized gas price futures contract, it is desired that the DVM return either the monthly median gas price for 1 million units of gas, or a self-referential 2-hour TWAP on the market price of the contract’s token. The type of price that the DVM will return is dependent on the timestamp the price request is made at. This timestamp is the expiry timestamp of the contract that is intended to use this price identifier, so the TWAP calculation is used pre-expiry and the median monthly gas price calculation is used at expiry.
 
-This pricing structure will allow for the creation of a tokenized futures contract that is collateralized by token minters at the expected price for the 30-day gas price settlement, rather than the current 30-day gas price. This is important because the market price of a futures contract is based upon the expectation of the underlying price movement, rather than the current underlying price. Token minters should not be able to collateralize positions at a different price compared to the market price that they could sell the tokens for. This could lead to intentional and frequent under-collateralization, but is remedied by using the token’s market price as the collateralization indicator.
+This pricing structure will allow for the creation of a tokenized futures contract that is collateralized at the **expected** price for the median monthly gas price settlement, rather than the actual median monthly gas price. This is important because the market price of a futures contract is based upon the expectation of the underlying price movement, rather than the current underlying price. Token minters should not be able to collateralize positions at a different price compared to the market price that they could sell the tokens for. This could lead to intentional and frequent under-collateralization, but is remedied by using the token’s market TWAP as the collateralization reference.
 
 ## Technical Specification
 
@@ -26,7 +26,7 @@ The definition of this identifier should be:
 - Identifier name: GASETH-TWAP-1Mx1M
 - Base Currency: ETH
 - Quote Currency: GAS
-- Sources: any Ethereum full node or data set of Ethereum node data. Uniswap. 
+- Sources: any Ethereum full node or data set of Ethereum node data. On-chain Uniswap data. 
 - Result Processing: multiply by a million when calculating aggregatory gas prices.
 - Input Processing: See the UMIP-16 Implementation Section. Additionally, if the contract using this price identifier is an expiring contract, inputs will change depending on the price request timestamp in comparison to the expiry timestamp.
 - Price Steps: 1 Wei (1e-18)
@@ -37,21 +37,19 @@ The definition of this identifier should be:
 
 ## Rationale
 
-Please reference the Rationale section in UMIP-16 and UMIP-20 for a full walkthrough of the Rationale behind calculating aggregatory gas prices.
+Please reference the Rationale section in UMIP-16 and UMIP-20 for a full walkthrough of the rationale behind calculating aggregatory gas prices.
 
-This price identifier will conditionally use a different price calculation methodology depending on the expiry state of the contract making the price request. This choice was made because a synthetic token, that is trading based on the future price of an underlying index, will have its price affected by expectations of the future movement of the underlying. If there is a large discrepancy in the synthetic’s price and the underlying index, arbitrageurs could take advantage of the difference in price by minting tokens at a rate determined by the underlying, abandoning their collateral to be liquidated and selling the tokens at the higher trading rate. Additionally, if a token is trading at a price that is higher than the notional value of the backing collateral, there would be no incentive for a liquidator to perform a liquidation.
+This price identifier will conditionally use a different price calculation methodology depending on the implied expiry state of the contract making the price request. This choice was made because a synthetic token, that is trading based on the future price of an underlying index, will have its price affected by expectations of the future movement of the underlying. If there is a large discrepancy in the synthetic’s price and the underlying index, arbitrageurs could take advantage of the difference in price by minting tokens at a rate determined by the underlying, abandoning their collateral to be liquidated and selling the tokens at the higher trading rate. Additionally, if a token is trading at a price that is higher than the notional value of the backing collateral, there would be no economic incentive for a liquidator to perform a liquidation.
 
 A 2-hour TWAP was chosen to mitigate any risk of attempted price manipulation attempts on the market price of the synthetic. To meaningfully manipulate the price that token sponsors’ collateralization is calculated with, an attacker would have to manipulate the trading price of a token for an extended amount of time. This is described further in the Security Considerations section. 
 
 ## Implementation
 
-If this price identifier is used by an expiring contract, such as the EMP, the method to return a price will differ depending on if the contract has expired. For non-expiring contracts, it is recommended that the contract creator not use this price identifier. 
+If the price request's UTC timestamp is less than `1612051200`, voters will need to calculate a 2-hour TWAP for the contract’s token. This TWAP will be over a time interval defined by the price request timestamp and two hours before the price request timestamp. The price data used will be any on-chain price event of the associated synthetic token in the token’s highest volume Ether/synthetic gas token Uniswap pool. As the token price will already implicitly be tracking the GASETH-1M-1M price, it should be left “as returned” without any scaling transformation. The final DVM price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.  
 
-If the price request UTC timestamp is earlier than the associated contract’s expiry timestamp, voters will need to follow this process to calculate the TWAP for the contract’s token. This TWAP will be over a time interval defined by the price request timestamp and two hours before the price request timestamp. The price data used will be any price event of the associated synthetic token in the token’s highest volume Ether/synthetic gas token Uniswap pool. As the token price will already implicitly be tracking the GASETH-1M-1M price, it should be left “as returned” without any scaling transformation. The final DVM price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.  
+If the price request's UTC timestamp is at or after `1612051200`, a price request for GASETH-TWAP-1Mx1M will follow the calculation methodology for the GASETH-1M-1M identifier defined in the UMIP-20 Rationale and Implementation sections.
 
-At expiry, a price request for GASETH-TWAP-1Mx1M will follow the calculation methodology for the GASETH-1M-1M identifier defined in the UMIP-20 Rationale and Implementation sections.
-
-Here is a reference implementation for an off-chain price feed that calculates the TWAP of a token based on Uniswap price data. This feed should be used as a convenient way to query a realtime or historical price. Users are also encouraged to build their own off-chain price feeds that depend on other sources.
+[Here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) is a reference implementation for an off-chain price feed that calculates the TWAP of a token based on Uniswap price data. This feed should be used as a convenient way to query a realtime or historical price, but voters are encouraged to build their own off-chain price feeds.
 
 ## Security considerations
 
