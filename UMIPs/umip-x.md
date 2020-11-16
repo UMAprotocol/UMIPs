@@ -14,7 +14,7 @@ For a price request made at or after the Unix timestamp `1612051200` (Jan 31, 20
 For a price request made before `1612051200`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the synthetic token issued by the requesting contract using the GASETH-TWAP-1Mx1M price identifier.
 
 ## Motivation
-The motivation for calculating aggregatory Ethereum gas prices in a set amount of units of gas is explained in UMIP-16 and UMIP-20.
+The motivation for calculating aggregatory Ethereum gas prices in a set amount of units of gas is explained in [UMIP-16](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-16.md) and [UMIP-20](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-20.md).
 
 For the creation of a tokenized gas price futures contract, it is desired that the DVM return either the monthly median gas price for 1 million units of gas, or a self-referential 2-hour TWAP on the market price of the contract’s token. The type of price that the DVM will return is dependent on the timestamp the price request is made at. This timestamp is the expiry timestamp of the contract that is intended to use this price identifier, so the TWAP calculation is used pre-expiry and the median monthly gas price calculation is used at expiry.
 
@@ -26,12 +26,12 @@ The definition of this identifier should be:
 - Identifier name: GASETH-TWAP-1Mx1M
 - Base Currency: ETH
 - Quote Currency: GAS
-- Sources: any Ethereum full node or data set of Ethereum node data. On-chain Uniswap data. 
+- Sources: any Ethereum full node or data set of Ethereum node data. On-chain Ether/uGAS-JAN21 Uniswap pool. 
 - Result Processing: multiply by a million when calculating aggregatory gas prices.
 - Input Processing: See the UMIP-16 Implementation Section. Additionally, if the contract using this price identifier is an expiring contract, inputs will change depending on the price request timestamp in comparison to the expiry timestamp.
 - Price Steps: 1 Wei (1e-18)
 - Pre-Timestamp Price Rounding: N/A because the median algorithm and query as described in the UMIP-16 implementation section cannot produce numbers with higher precision than 1 Wei (1e-18). 
-- Post-Timestamp Price Rounding: None.
+- Post-Timestamp Price Rounding: Closest, 0.5 up
 - Pricing Interval: 1 second
 - Dispute timestamp rounding: down
 
@@ -45,11 +45,11 @@ A 2-hour TWAP was chosen to mitigate any risk of attempted price manipulation at
 
 ## Implementation
 
-If the price request's UTC timestamp is less than `1612051200`, voters will need to calculate a 2-hour TWAP for the contract’s token. This TWAP will be over a time interval defined by the price request timestamp and two hours before the price request timestamp. The price data used will be any on-chain price event of the associated synthetic token in the token’s highest volume Ether/synthetic gas token Uniswap pool. As the token price will already implicitly be tracking the GASETH-1M-1M price, it should be left “as returned” without any scaling transformation. The final DVM price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.  
+If the price request's UTC timestamp is less than `1612051200`, voters will need to calculate a 2-hour TWAP for the contract’s token. This TWAP will be over a time interval defined by the price request timestamp and two hours before the price request timestamp. The price data used will be any on-chain price event of the associated synthetic token in the token’s highest volume Ether/uGAS-JAN21 Uniswap pool. As the token price will already implicitly be tracking the GASETH-1M-1M price, it should be left as returned without any scaling transformation. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.  
 
 If the price request's UTC timestamp is at or after `1612051200`, a price request for GASETH-TWAP-1Mx1M will follow the calculation methodology for the GASETH-1M-1M identifier defined in the UMIP-20 Rationale and Implementation sections.
 
-For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to be vague as voters are responsible for defining broad market consensus.
+For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 [Here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) is a reference implementation for an off-chain price feed that calculates the TWAP of a token based on Uniswap price data. This feed should be used as a convenient way to query a realtime or historical price, but voters are encouraged to build their own off-chain price feeds.
 
