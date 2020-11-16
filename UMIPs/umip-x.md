@@ -30,8 +30,8 @@ The definition of this identifier should be:
 - Result Processing: multiply by a million when calculating aggregatory gas prices.
 - Input Processing: See the UMIP-16 Implementation Section. Additionally, if the contract using this price identifier is an expiring contract, inputs will change depending on the price request timestamp in comparison to the expiry timestamp.
 - Price Steps: 1 Wei (1e-18)
-- Expiry Price Rounding: Closest: N/A because the median algorithm and query as described in the UMIP-16 implementation section cannot produce numbers with higher precision than 1 Wei (1e-18).
-- Pre-Expiry Price Rounding: None.
+- Pre-Timestamp Price Rounding: N/A because the median algorithm and query as described in the UMIP-16 implementation section cannot produce numbers with higher precision than 1 Wei (1e-18). 
+- Post-Timestamp Price Rounding: None.
 - Pricing Interval: 1 second
 - Dispute timestamp rounding: down
 
@@ -49,17 +49,21 @@ If the price request's UTC timestamp is less than `1612051200`, voters will need
 
 If the price request's UTC timestamp is at or after `1612051200`, a price request for GASETH-TWAP-1Mx1M will follow the calculation methodology for the GASETH-1M-1M identifier defined in the UMIP-20 Rationale and Implementation sections.
 
+For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to be vague as voters are responsible for defining broad market consensus.
+
 [Here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) is a reference implementation for an off-chain price feed that calculates the TWAP of a token based on Uniswap price data. This feed should be used as a convenient way to query a realtime or historical price, but voters are encouraged to build their own off-chain price feeds.
 
 ## Security considerations
 
-Security considerations pertaining to calculating an aggregate gas price are covered in the Security Considerations section of UMIP-16.
+Security considerations pertaining to calculating an aggregate gas price are covered in the Security Considerations section of [UMIP-16](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-16.md).
 
 There are two general security considerations for using a self-referential token price for collateralization.
 
 1. **Token price manipulation** - Under illiquid market conditions, an attacker could attempt to drive prices down to withdraw more collateral than normally allowed or drive prices up to trigger liquidations.  However, it is important to note that almost all attacks that have been performed on DeFi projects are executed with flash loans, which allows the attacker to obtain leverage and instantaneously manipulate a price and extract collateral.  Collateralization based off of a TWAP should make these attacks ineffective and would require attackers to use significantly more capital and take more risk to exploit any vulnerabilities.
 2. **Mismatch between TWAP and gap higher in token price** - An aggressive gap higher in the token price accompanied by real buying and then a follow through rally could create a concern.  In this scenario we could see the TWAP of the token significantly lag the actual market price and create an opportunity for sponsors to mint tokens with less collateral than what they can sell them from in the market.  It is important to note that this is an edge case scenario either driven by an irrational change in market expectations - as the 30-day median gas price should be slow moving by design - or it can be driven by a “fat finger” mistake which is a vulnerability to any market.  Even in this edge case we believe the design of the token and the parameters chosen should mitigate risks.  The current Expiring Multi Party (EMP) contract requires sponsors to mint tokens with enough collateral to meet the Global Collateral Ratio (GCR) which has stood well above 200% for other contracts.  Therefore, assuming the GCR is similar for uGAS, the market would need to first rally at least 100% before potentially being exposed.  If the sponsor wishes to withdraw collateral below the GCR  they would request a “slow withdrawal” which would subject him to a 2 hour “liveness period” where anybody can liquidate the position if it fell below the required collateral ratio.  The combination of the GCR and 2 hour “liveness period” allows the 2 hour TWAP to “catch up” to the market price and would protect from this scenario and deter sponsors from attempting to exploit it.
 
-This is the first DVM supported price identifier of its kind, so anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
+This is the first DVM supported price identifier of its kind, so synthetic token holders should proceed with caution when interacting with a contract using this identifier. Security considerations, like the ones above, have been contemplated and addressed, but there is potential for security holes to emerge due to the novelty of this price identifier.
+
+Additionally, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Contract deployers should also ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
