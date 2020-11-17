@@ -103,7 +103,11 @@ Each coin whose market dominance is tracked is reported as an element within a J
  - “timestamp” - the Unix timestamp when this data was generated from CoinGecko
  
 ### Historical Data API
-Dispute bots and voters will need to query the cached historical data, dating back 96 hours. CoinGecko solely provides live data in (1-3) minute intervals, hence a custom solution was needed to ensure accurate historical data for a sufficient enough time frame. The reference implementation of the custom historical data caching solution will be made open-source to allow any stakeholder to host their own copy and provide a base for stakeholder who may choose to implement their own.
+Dispute bots and voters will need to query the cached historical data, dating back 96 hours. CoinGecko solely provides live data in (1-3) minute intervals, hence a custom solution was needed to ensure accurate historical data for a sufficient enough time frame.
+
+A reference implementation for a historical data caching solution is open-source and dual-licensed under MIT and Apache 2.0 to allow any stakeholder to host their own copy as well as provide a reference for any stakeholder who wishes to implement their own.
+
+The repository is able at: https://github.com/ferrosync/coingecko-cache
 
 The historical data custom solution is available at the following URL:
 ```
