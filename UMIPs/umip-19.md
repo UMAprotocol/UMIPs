@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ARSUSD as a price identifier              |
 | Authors    | Sean Brown (sean@umaproject.org) |
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | October 28, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)

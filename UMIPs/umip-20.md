@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH-1HR-1M GASETH-4HR-1M GASETH-1D-1M GASETH-1W-1M GASETH-1M-1M as price identifiers                                                                                                 |
 | Authors    | Sean Brown (@sean@umaproject.org)
-| Status     | Final                                                                                                                                   |
+| Status     | Approved                                                                                                                                   |
 | Created    | October 29th, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
