@@ -26,9 +26,9 @@ This pricing structure will allow for the creation of a tokenized futures contra
 
 The definition of this identifier should be:
 - Identifier name: GASETH-TWAP-1Mx1M
-- Base Currency: ETH
-- Quote Currency: GAS
-- Sources: any Ethereum full node or data set of Ethereum node data. On-chain ETH/uGAS Uniswap pool. 
+- Base Currency: ETH OR ETH
+- Quote Currency: GAS OR uGAS
+- Sources: any Ethereum full node or data set of Ethereum node data. ETH/uGAS Uniswap pool price events. 
 - Result Processing: multiply by a million when calculating aggregatory gas prices.
 - Input Processing: See the UMIP-16 Implementation Section. Additionally, if the contract using this price identifier is an expiring contract, inputs will change depending on the price request timestamp in comparison to the expiry timestamp.
 - Price Steps: 1 Wei (1e-18)
@@ -47,7 +47,14 @@ A 2-hour TWAP was chosen to mitigate any risk of attempted price manipulation at
 
 ## Implementation
 
-If the price request's UTC timestamp is less than `1612137600`, voters will need to calculate a 2-hour TWAP for the contract’s token. This TWAP will be over a time interval defined by the price request timestamp and two hours before the price request timestamp. The price data used will be any on-chain price event of the associated synthetic token in the token’s highest volume ETH/uGAS Uniswap pool. As the token price will already implicitly be tracking the GASETH-1M-1M price, it should be left as returned without any scaling transformation. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.  
+If the price request's UTC timestamp is less than `1612137600`, voters will need to calculate a 2-hour TWAP for the uGAS token's price in ETH. The following process should be used to calculate the TWAP.
+
+1. The end TWAP timestamp equals the price request timestamp.
+2. The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
+3. A single Uniswap price is defined for each timestamp as the price that the ETH/uGAS pool returns at the end of the latest block whose timestamp is <= the timestamp that is queried for.
+4. The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will get an equal weight.
+5. As the token price will already implicitly be tracking the GASETH-1M-1M price, it should be left as returned without any scaling transformation.
+6. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.  
 
 If the price request's UTC timestamp is at or after `1612137600`, a price request for GASETH-TWAP-1Mx1M will follow the calculation methodology for the GASETH-1M-1M identifier defined in the UMIP-20 Rationale and Implementation sections.
 
