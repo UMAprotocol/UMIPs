@@ -2,7 +2,7 @@
  - UMIP 21
  - Title: Add BTCDOM and ALTDOM as price identifiers
  - Author: Domination Finance Team
- - Status: Pending approval
+ - Status: Last Call
  - Created: November 14, 2020
 
 
