@@ -11,9 +11,9 @@ This UMIP will reference a synthetic token to be created with this price identif
 
 The DVM should support requests for a price that resolves to either the median monthly Ethereum gas price or a 2-hour Time-Weighted Average Price (TWAP) on the highest volume Uniswap ETH/uGAS pool. The price resolution method to use will depend on the the timestamp the price request was made at.
 
-For a price request made at or after the Unix timestamp `1612051200` (Jan 31, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20.
+For a price request made at or after the Unix timestamp `1612137600` (Feb 1, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20.
 
-For a price request made before `1612051200`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the listed synthetic token in ETH. The synthetic token address will be listed in the Technical Specification section.
+For a price request made before `1612137600`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the listed synthetic token in ETH. The synthetic token address will be listed in the Technical Specification section.
 
 ## Motivation
 The motivation for calculating aggregatory Ethereum gas prices in a set amount of units of gas is explained in [UMIP-16](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-16.md) and [UMIP-20](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-20.md).
@@ -47,9 +47,9 @@ A 2-hour TWAP was chosen to mitigate any risk of attempted price manipulation at
 
 ## Implementation
 
-If the price request's UTC timestamp is less than `1612051200`, voters will need to calculate a 2-hour TWAP for the contract’s token. This TWAP will be over a time interval defined by the price request timestamp and two hours before the price request timestamp. The price data used will be any on-chain price event of the associated synthetic token in the token’s highest volume ETH/uGAS Uniswap pool. As the token price will already implicitly be tracking the GASETH-1M-1M price, it should be left as returned without any scaling transformation. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.  
+If the price request's UTC timestamp is less than `1612137600`, voters will need to calculate a 2-hour TWAP for the contract’s token. This TWAP will be over a time interval defined by the price request timestamp and two hours before the price request timestamp. The price data used will be any on-chain price event of the associated synthetic token in the token’s highest volume ETH/uGAS Uniswap pool. As the token price will already implicitly be tracking the GASETH-1M-1M price, it should be left as returned without any scaling transformation. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.  
 
-If the price request's UTC timestamp is at or after `1612051200`, a price request for GASETH-TWAP-1Mx1M will follow the calculation methodology for the GASETH-1M-1M identifier defined in the UMIP-20 Rationale and Implementation sections.
+If the price request's UTC timestamp is at or after `1612137600`, a price request for GASETH-TWAP-1Mx1M will follow the calculation methodology for the GASETH-1M-1M identifier defined in the UMIP-20 Rationale and Implementation sections.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
