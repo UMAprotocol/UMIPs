@@ -26,7 +26,7 @@ This pricing structure will allow for the creation of a tokenized futures contra
 
 The definition of this identifier should be:
 - Identifier name: GASETH-TWAP-1Mx1M
-- Base Currency: ETH OR ETH
+- Base Currency: ETH
 - Quote Currency: GAS OR uGAS
 - Sources: any Ethereum full node or data set of Ethereum node data. ETH/uGAS Uniswap pool price events. 
 - Result Processing: multiply by a million when calculating aggregatory gas prices.
