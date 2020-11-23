@@ -70,7 +70,7 @@ The response object is an array of TVL values at hourly increments over the past
 4) The value at the key “tvlUSD” is the TVL in USD that we want
 5) Divide the value found at step 4 by 100,000,000 to get the settlement value of the TVL_AAVE price identifier
 
-##Implementation (TVL_SUSHI_UNI_RATIO)
+## Implementation (TVL_SUSHI_UNI_RATIO)
 Repeat steps 1 through 4 in the TVL_AAVE implementation with “sushiswap” in place of “aave” in the GET request. Again, repeat steps 1 through 4 in the TVL_AAVE implementation with “uniswap” in place of “aave” in the GET request. 
  
 Divide the sushiswap TVL by the uniswapTVL and multiply by 10 USD to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
@@ -86,7 +86,7 @@ The response object is an array of TVL values at hourly increments over the past
 4) The value at the key “tvlUSD” is the TVL in USD that we want
 5) Divide the value found at step 4 by 1,000,000,000 to get the settlement value of the TVL_ALL price identifier
 
-##Manual Calculation of TVL 
+## Manual Calculation of TVL 
 
 In the unfortunate scenario that Defi Pulse data is down UMA holders can perform a manual calculation of TVL via the following
 
