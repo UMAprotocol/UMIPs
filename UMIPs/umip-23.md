@@ -64,15 +64,15 @@ The response object is an array of TVL values at hourly increments over the past
 
 3) Find the object in the response array that corresponds to timestamp equal to time the synthetic token expired
 4) The value at the key “tvlUSD” is the TVL in USD that we want
-5) Repeat steps 1 through 4 in the TVL_AAVE implementation with “uniiswap” in place of “sushiswap” in the GET request
+5) Repeat steps 1 through 4 in the TVL_AAVE implementation with “uniswap” in place of “sushiswap” in the GET request
  6) Divide the sushiswap TVL by the uniswapTVL and multiply by 10 USD to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
  
 
 ## Backup Calculation of TVL_ALL 
 
-In the case that the the value from defipulse for TVL_ALL at expiration is incorrect we should follow the backup procedure below.
+In the case that the the value from DeFi Pulse for TVL_ALL at expiration is incorrect we should follow the backup procedure below.
 
-1) Gather all TVL_ALL values from timestamps coresponding to the day the sythetic token expires
+1) Gather all TVL_ALL values from timestamps corresponding to the day the synthetic token expires
 2) Have a vote to determine which values are contentious 
 3) Remove contentious values 
 4) Average the remaining values to get the settlement value 
@@ -82,7 +82,7 @@ In the case that the the value from defipulse for TVL_ALL at expiration is incor
 Note: The following procedure uses a daily value of TVL as opposed to an hourly value
 
 1) Go to the Uniswap Subgraph, https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-2) Determine Id correspondimg to the day that the synthetic token expires using the following
+2)  Determine Id corresponding to the day that the synthetic token expires using the following
     
     ID = (unix timestamp for start of day) / 86400 
     
@@ -105,12 +105,12 @@ Note: The following procedure uses a daily value of TVL as opposed to an hourly 
         }
     }
 
-6) Divide the value from step 5 by the value at thep 3 and multiply by 10 USD to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
+6) Divide the value from step 5 by the value at step 3 and multiply by 10 USD to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
 
 
 
 ## Security Considerations
 
-There are concerns around using DeFi Pulse data as the primary source for determining price feeds.  If DeFi Pulse suspends their api service a new price feed source will have to be determined.  The Graph and Duna Analytics offer alternatives for independent measurements but the values which are arrived at may be considerably different from Defi Pulse. 
+There are concerns around using DeFi Pulse data as the primary source for determining price feeds.  If DeFi Pulse suspends their api service a new price feed source will have to be determined.  The Graph and Dune Analytics offer alternatives for independent measurements but the values which are arrived at may be considerably different from Defi Pulse. 
 
 
