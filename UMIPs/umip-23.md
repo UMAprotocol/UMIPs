@@ -1,6 +1,6 @@
 ## Headers
  - UMIP 23
- - Title: Add TVL_ALL and TVL_SUSHI_UNI_RATIO as a price a identifiers
+ - Title: Add DeFiPulseTVL_ALL and TVL_SUSHI_UNI_RATIO as a price a identifiers
  - Author:  Bryan Campbell (bryanjcampbell1@gmail.com)
  - Status: Draft
  - Created: November, 15, 2020
@@ -22,7 +22,7 @@ Adding TVL identifiers enables the creation of synthetic assets with a price tha
 
 ## Technical Specification
 
-Identifier name: TVL_ALL
+Identifier name: DeFiPulseTVL_ALL
 Quote Currency: USD
 
 Identifier name: TVL_SUSHI_UNI_RATIO
@@ -44,7 +44,7 @@ Price of DeFi Pulse API is free at Trial level and 95 USD for the Starter level.
 It would require 200 GET requests per month in order to use up the credits offered at the Trial level.
 At the time of writing, DeFi Pulse’s metrics are the most popular for measuring a project’s TVL. 
 
-## Implementation (TVL_ALL)
+## Implementation (DeFiPulseTVL_ALL)
 
 1) Sign up for the free Trial account from https://data.defipulse.com/
 2) Call the API with https://data-api.defipulse.com/api/v1/defipulse/api/GetHistory?period=1w&api-key=********
@@ -68,11 +68,11 @@ The response object is an array of TVL values at hourly increments over the past
  6) Divide the sushiswap TVL by the uniswapTVL and multiply by 10 USD to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
  
 
-## Backup Calculation of TVL_ALL 
+## Backup Calculation of DeFiPulseTVL_ALL 
 
-In the case that the the value from DeFi Pulse for TVL_ALL at expiration is incorrect we should follow the backup procedure below.
+In the case that the the value from DeFi Pulse for DeFiPulseTVL_ALL at expiration is incorrect we should follow the backup procedure below.
 
-1) Gather all TVL_ALL values from timestamps corresponding to the day the synthetic token expires
+1) Gather all DeFiPulseTVL_ALL values from timestamps corresponding to the day the synthetic token expires
 2) Have a vote to determine which values are contentious 
 3) Remove contentious values 
 4) Average the remaining values to get the settlement value 
