@@ -28,8 +28,8 @@ The definition of this identifier should be:
 - Data Sources: Binance, Coinbase Pro, Huobi
 - Result Processing: Median of BCH/BTC
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus. Granted, these are two of the most liquid markets in all of the CeFi crypto-verse.
-- Price Steps: 0.000001 (6 decimals in more general trading format)
-- Rounding: Closest, 0.000001 up
+- Decimals: 6
+- Rounding: Yes
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
  
