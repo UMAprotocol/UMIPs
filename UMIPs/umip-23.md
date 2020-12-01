@@ -27,7 +27,7 @@ The definition of this identifier should be:
 - Quote Currency: BTC
 - Data Sources: Binance, Coinbase Pro, Huobi
 - Result Processing: Median of BCH/BTC
-- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus. Granted, these are two of the most liquid markets in all of the CeFi crypto-verse.
+- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 8
 - Rounding: Yes
 - Pricing Interval: 60 seconds
