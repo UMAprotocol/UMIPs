@@ -28,7 +28,7 @@ The definition of this identifier should be:
 - Data Sources: Binance, Coinbase Pro, Huobi
 - Result Processing: Median of BCH/BTC
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus. Granted, these are two of the most liquid markets in all of the CeFi crypto-verse.
-- Decimals: 6
+- Decimals: 8
 - Rounding: Yes
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
@@ -46,7 +46,7 @@ The value of BCHBTC for a given timestamp can be determined with the following p
  
 1. BCH/BTC should be queried for from Binance, Huobi, and Coinbase Pro for the given timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
 2. The median of the BCH/BTC results should then be taken.
-3. This result should be rounded to six decimal places.
+3. This result should be rounded to eight decimal places.
  
 Additionally, [CryptoWatch API](https://docs.cryptowat.ch/rest-api/) is a useful reference. This feed should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
  
