@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH-TWAP-1Mx1M as a supported DVM price identifier                                                                                                 |
 | Authors    | Sean Brown (sean@umaproject.org), Kevin Chan (kevin@umaproject.org)
-| Status     | Last Call                                                                                                                                   |
+| Status     | Approved                                                                                                                                   |
 | Created    | November 12th, 2020                                                                                                                              |
 
 ## Summary (2-5 sentences)

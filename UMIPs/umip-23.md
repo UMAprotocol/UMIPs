@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add BCHNBTC as a price identifier              |
 | Authors    | Bae (bae@youmychicfila.com), K (k@youmychicfila.com) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | November 26, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)
