@@ -29,7 +29,7 @@ The definition of this identifier should be:
 - Result Processing: Median of BCH/BTC
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 8
-- Rounding: Yes
+- Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
  
@@ -58,4 +58,3 @@ This is only a reference implementation, how one queries the exchanges should be
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users given this is dealing with two of the most liquid cryptocurrencies in the whole cryptoverse. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
  
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
-
