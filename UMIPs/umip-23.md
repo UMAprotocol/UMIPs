@@ -53,7 +53,7 @@ The response object is an array of TVL values at hourly increments over the past
 
 3) Find the object in the response array that corresponds to timestamp equal to time the synthetic token expired
 4) The value at the key “tvlUSD” is the TVL in USD that we want
-5) Divide the value found at step 4 by 1,000,000,000 to get the settlement value of the TVL_ALL price identifier
+5) Divide the value found at step 4 by 1,000,000,000 to get the settlement value of the DeFiPulseTVL_ALL price identifier
 
 
 ## Implementation (TVL_SUSHI_UNI_RATIO)
