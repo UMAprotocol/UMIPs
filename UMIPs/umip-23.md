@@ -29,7 +29,7 @@ Identifier name: TVL_SUSHI_UNI_RATIO
 Quote Currency: USD
 
 Source: https://data.defipulse.com/
-Result Processing: Median
+Result Processing: None
 Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
 Price Steps: 0.0001 
 Rounding: Closest, 0.5 up
