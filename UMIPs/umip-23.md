@@ -32,7 +32,7 @@ Source: https://data.defipulse.com/
 Result Processing: Median
 Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
 Price Steps: 0.0001 
-Rounding: Closest, 0.0001 up
+Rounding: Closest, 0.5 up
 Decimal: 6 (1e6)
 Pricing Interval: 60 seconds
 Dispute timestamp rounding: down 
