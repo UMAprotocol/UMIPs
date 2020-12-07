@@ -64,7 +64,7 @@ The response object is an array of TVL values at hourly increments over the past
 
 3) Find the object in the response array that corresponds to timestamp equal to time the synthetic token expired
 4) The value at the key “tvlUSD” is the TVL in USD that we want
-5) Repeat steps 1 through 4 in the TVL_AAVE implementation with “uniswap” in place of “sushiswap” in the GET request
+5) Repeat steps 1 through 4 in the TVL_SUSHI implementation with “uniswap” in place of “sushiswap” in the GET request
  6) Divide the sushiswap TVL by the uniswapTVL and multiply by 10 USD to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
  
 
