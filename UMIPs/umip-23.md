@@ -1,5 +1,5 @@
 ## Headers
- - UMIP 23
+ - UMIP 24
  - Title: Add DeFiPulseTVL_ALL and TVL_SUSHI_UNI_RATIO as a price a identifiers
  - Author:  Bryan Campbell (bryanjcampbell1@gmail.com)
  - Status: Draft
@@ -112,5 +112,4 @@ Note: The following procedure uses a daily value of TVL as opposed to an hourly 
 ## Security Considerations
 
 There are concerns around using DeFi Pulse data as the primary source for determining price feeds.  If DeFi Pulse suspends their api service a new price feed source will have to be determined.  The Graph and Dune Analytics offer alternatives for independent measurements but the values which are arrived at may be considerably different from Defi Pulse. 
-
 
