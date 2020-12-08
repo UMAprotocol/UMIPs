@@ -7,10 +7,10 @@
 
 
 ## Summary
-The DVM should support price requests for the following Total Value Locked in USD (TVL) derivatives:
+The DVM should support price requests for the following Total Value Locked (TVL) derivatives:
 
 1) Sum of TVL for all projects on DeFi Pulse divided by 1,000,000,000
-2) 10 USD multiplied by the ratio of TVL of Sushi Swap over Uniswap
+2) 10 multiplied by the ratio of TVL of Sushi Swap over Uniswap
 
 
 
@@ -25,16 +25,26 @@ Adding TVL identifiers enables the creation of synthetic assets with a price tha
 Identifier name: DeFiPulseTVL_ALL
 Quote Currency: USD
 
+Source: https://data.defipulse.com/
+Result Processing: None
+Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
+Price Steps: 0.001 
+Rounding: Closest, 0.0005 up
+Decimal: 3 (1e3)
+Pricing Interval: 60 minutes
+Dispute timestamp rounding: down 
+
+
 Identifier name: TVL_SUSHI_UNI_RATIO
-Quote Currency: USD
+Quote Currency: None
 
 Source: https://data.defipulse.com/
 Result Processing: None
 Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
-Price Steps: 0.0001 
-Rounding: Closest, 0.5 up
-Decimal: 6 (1e6)
-Pricing Interval: 60 seconds
+Price Steps: 0.001 
+Rounding: Closest, 0.0005 up
+Decimal: 3 (1e3)
+Pricing Interval: 60 minutes
 Dispute timestamp rounding: down 
 
 
@@ -46,29 +56,34 @@ At the time of writing, DeFi Pulse’s metrics are the most popular for measurin
 
 ## Implementation (DeFiPulseTVL_ALL)
 
+The following procedure uses DeFi Pulse Data API.  The API docs can be found at https://docs.defipulse.com/api-docs-by-provider/defi-pulse-data/total-value-locked/total-value-locked
+
+
 1) Sign up for the free Trial account from https://data.defipulse.com/
 2) Call the API with https://data-api.defipulse.com/api/v1/defipulse/api/GetHistory?period=1w&api-key=********
 
 The response object is an array of TVL values at hourly increments over the past week.
 
-3) Find the object in the response array with a timestamp that is nearest, but not earlier than, the price request timestamp.
+3) Find the object in the response array with a timestamp that is nearest, and earlier than, the price request timestamp.
 
-4) The value at the key “tvlUSD” is the TVL in USD that we want
+4) The value at the key “tvlUSD” is the TVL that we want
 5) Divide the value found at step 4 by 1,000,000,000 to get the settlement value of the DeFiPulseTVL_ALL price identifier
 
 
 ## Implementation (TVL_SUSHI_UNI_RATIO)
+The following procedure uses DeFi Pulse Data API.  The API docs can be found at https://docs.defipulse.com/api-docs-by-provider/defi-pulse-data/total-value-locked/total-value-locked
+
 1) Sign up for the free Trial account from https://data.defipulse.com/
 2) Call the API with https://data-api.defipulse.com/api/v1/defipulse/api/GetHistory?project=sushiswap&period=1w&api-key=********
 
 The response object is an array of TVL values at hourly increments over the past week.
 
 3) Find the object in the response array that corresponds to timestamp equal to time the synthetic token expired
-4) The value at the key “tvlUSD” is the TVL in USD that we want
+4) The value at the key “tvlUSD” is the TVL that we want
 5) Repeat steps 1 through 4 with “uniswap” in place of “sushiswap” in the GET request
-6) Divide the sushiswap TVL by the uniswapTVL and multiply by 10 USD to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
+6) Divide the sushiswap TVL by the uniswapTVL and multiply by 10 to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
 
-At current TVL values, Uniswap has a higher TVL than SushiSwap.  The scale factor of 10 USD is used to keep the value of TVL_SUSHI_UNI_RATIO above 1 USD while  still being directly proportional to the ratio of TVL between the protocols.
+At current TVL values, Uniswap has a higher TVL than SushiSwap.  The scale factor of 10 is used to keep the value of TVL_SUSHI_UNI_RATIO above 1 while  still being directly proportional to the ratio of TVL between the protocols.
  
 
 ## Backup Calculation of DeFiPulseTVL_ALL 
@@ -112,7 +127,7 @@ Note: The following procedure uses a daily value of TVL as opposed to an hourly 
         }
     }
 
-6) Divide the value from step 5 by the value at step 3 and multiply by 10 USD to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
+6) Divide the value from step 5 by the value at step 3 and multiply by 10 to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
 
 
 
