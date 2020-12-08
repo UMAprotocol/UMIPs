@@ -68,13 +68,13 @@ The response object is an array of TVL values at hourly increments over the past
 5) Repeat steps 1 through 4 with “uniswap” in place of “sushiswap” in the GET request
 6) Divide the sushiswap TVL by the uniswapTVL and multiply by 10 USD to get the settlement value of the TVL_SUSHI_UNI_RATIO price identifier
 
-At current TVL values, Uniswap has a higher TVL than SushiSwap.  The scale factor of 10 USD is used to keep the value of TVL_SUSHI_UNI_RATIO above 1 USD while  still being directly proportional to the ratuio of TVL between the protocols.
+At current TVL values, Uniswap has a higher TVL than SushiSwap.  The scale factor of 10 USD is used to keep the value of TVL_SUSHI_UNI_RATIO above 1 USD while  still being directly proportional to the ratio of TVL between the protocols.
  
 
 ## Backup Calculation of DeFiPulseTVL_ALL 
 
 
-In the case that the the value from DeFi Pulse for DeFiPulseTVL_ALL at expiration is determined to differ from broad market consensus, the following is an example of how votors could arrive at a backup measurment of DeFiPulseTVL_ALL.
+In the case that the the value from DeFi Pulse for DeFiPulseTVL_ALL at expiration is determined to differ from broad market consensus, the following is an example of how voters could arrive at a backup measurement of DeFiPulseTVL_ALL.
 
 
 1) Gather all DeFiPulseTVL_ALL values from timestamps corresponding to the day the synthetic token expires
@@ -84,7 +84,7 @@ In the case that the the value from DeFi Pulse for DeFiPulseTVL_ALL at expiratio
 
 ## Backup Calculation of TVL_SUSHI_UNI_RATIO
 
-In the case that the the values from DeFi Pulse for SushiSwap or Uniswap are determined to differ from broad market consensus, the following is an example of how votors could arrive at a backup measurment of TVL_SUSHI_UNI_RATIO.
+In the case that the the values from DeFi Pulse for SushiSwap or Uniswap are determined to differ from broad market consensus, the following is an example of how votors could arrive at a backup measurement of TVL_SUSHI_UNI_RATIO.
 
 Note: The following procedure uses a daily value of TVL as opposed to an hourly value
 
@@ -120,14 +120,14 @@ Note: The following procedure uses a daily value of TVL as opposed to an hourly 
 
 There are concerns around using DeFi Pulse data as the primary source for determining price feeds. 
 
-1) DeFi Pulse alone is not decentrailized enough
+1) DeFi Pulse alone is not decentralized enough
 2) DeFi Pulse is not fully transparent in how they calculate TVL
 3) DeFi Pulse is fairly arbitrarily choosing what platforms to include in their calculation      
 
-In the future it may be benificial for the UMA comminity to develop our own, more transparent and decentralized calculation of TVL.
+In the future it may be beneficial for the UMA community to develop our own, more transparent and decentralized calculation of TVL.
 
-On the other hand, DeFi Pulse's TVL metric is so commonly refrenced in larger crypto community that, for many, their metric definies TVL.  For that reason, even if we do decide to develop our own TVL All metric, the market may still see the need for a DeFiPulseTVL_ALL derivative that tokenizes DeFi Pulse's calculations. 
+On the other hand, DeFi Pulse's TVL metric is so commonly referenced in larger crypto community that, for many, their metric defines TVL.  For that reason, even if we do decide to develop our own TVL All metric, the market may still see the need for a DeFiPulseTVL_ALL derivative that tokenizes DeFi Pulse's calculations. 
 
-If DeFi Pulse suspends their api service a new price feed source will have to be determined.  The Graph and Dune Analytics offer alternatives for independent measurements.  Taking a median value was considered but due to the lack of standardization of the metric, values between DeFi Pulse, Graph, and Dune were often more than an order of magnitude apart. Appropriate scallings could be applied in the future with the development of a UMA comminity TVL metric.
+If DeFi Pulse suspends their api service a new price feed source will have to be determined.  The Graph and Dune Analytics offer alternatives for independent measurements.  Taking a median value was considered but due to the lack of standardization of the metric, values between DeFi Pulse, Graph, and Dune were often more than an order of magnitude apart. Appropriate scaling could be applied in the future with the development of a UMA community TVL metric.
 
 There are likely some security considerations around using a price feed that is available with an hourly granularity. Contract creators should likely specify longer liquidation and withdrawal liveness times to allow for prices to be accurately reported. There could be large jumps in price resulting from the 1 hour lag that could result in unexpected liquidations for token sponsors.
