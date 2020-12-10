@@ -13,7 +13,7 @@ The DVM should support requests for a price that resolves to either the median m
 
 For a price request made at or after the Unix timestamp `1612137600` (Feb 1, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20.
 
-For a price request made before `1612137600`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the listed synthetic token in ETH. The synthetic token address will be listed in the Technical Specification section.
+For a price request made before `1612137600`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the uGAS token quoted in ETH.
 
 ## Motivation
 The motivation for calculating aggregatory Ethereum gas prices in a set amount of units of gas is explained in [UMIP-16](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-16.md) and [UMIP-20](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-20.md).
@@ -32,8 +32,8 @@ The definition of this identifier should be:
 - Result Processing: multiply by a million when calculating aggregatory gas prices.
 - Input Processing: See the UMIP-16 Implementation Section. Additionally, if the contract using this price identifier is an expiring contract, inputs will change depending on the price request timestamp in comparison to the expiry timestamp.
 - Price Steps: 1 Wei (1e-18)
-- Pre-Timestamp Price Rounding: N/A because the median algorithm and query as described in the UMIP-16 implementation section cannot produce numbers with higher precision than 1 Wei (1e-18). 
-- Post-Timestamp Price Rounding: Closest, 0.5 up
+- Post-Timestamp Price Rounding: N/A because the median algorithm and query as described in the UMIP-16 implementation section cannot produce numbers with higher precision than 1 Wei (1e-18). 
+- Pre-Timestamp Price Rounding: Closest, 0.5 up
 - Pricing Interval: 1 second
 - Dispute timestamp rounding: down
 
