@@ -25,7 +25,6 @@ The definition of this identifier should be:
  
 - Identifier name: STABLESPREAD
 - Base Currency: STABLESPREAD
-- Quote Currency: USDC
 - Data Sources: {Bittrex, Uniswap V2} for UST, {Binance, Uniswap V2} for BUSD, {Bittrex, OKCoin} for Celo Dollar, {Balancer, Uniswap V2} for MUSD
 - Result Processing: For each constituent asset of the basket, the average of both exchanges
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
