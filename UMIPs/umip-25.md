@@ -1,7 +1,7 @@
 # Headers
 | UMIP-25     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add GASETH-FEB21 and GASETH-MAR21 as a supported DVM price identifier                                                                                                 |
+| UMIP Title | Add GASETH-FEB21 and GASETH-MAR21 as supported DVM price identifiers                                                                                             |
 | Authors    | Feddas 
 | Status     | Draft                                                                                                                                   |
 | Created    | December 10th, 2020                                                                                                                              |
