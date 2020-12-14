@@ -48,7 +48,8 @@ The value of STABLESPREAD for a given timestamp can be determined with the follo
 2. For each one, the average of the prices should be calculated.
 3. Then, calculate 1/3 * UST + 1/3 * CUSD + 1/3 * BUSD, denote this as `A`
 4. Perform A - MUSD + 1
-5. This result should be rounded to eight decimal places.
+5. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
+6. This result should be rounded to eight decimal places.
  
 Additionally, [CryptoWatch API](https://docs.cryptowat.ch/rest-api/) is a useful reference. This feed should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
  
