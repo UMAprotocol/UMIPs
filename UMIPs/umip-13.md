@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add PERLUSD, USDPERL as price identifiers              |
 | Authors    | TJ (tj@perlin.net) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | August 31, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)

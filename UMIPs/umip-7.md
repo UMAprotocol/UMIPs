@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add BTC/USD and USD/BTC as price identifiers              |
 | Authors    | Clayton Roche, clayton@umaproject.org |
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | July 10, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
@@ -38,7 +38,7 @@ The definition of these identifiers should be:
 
 - Exchanges: Binance, Coinbase, Bitstamp
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Price Steps: 0.00001 (5 decimals in more general trading format)
+- Price Steps: 0.000000001 (8 decimals in more general trading format)
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down

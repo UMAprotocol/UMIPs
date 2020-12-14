@@ -3,9 +3,9 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ETHUSD and USDETH as price identifiers              |
 | Authors    | Clayton Roche, clayton@umaproject.org |
-| Status     | Final                                                                                                                        |
+| Status     | Approved                                                                                                                        |
 | Created    | July 10, 2020                                                                                                                           |
-
+ 
 ## Summary (2-5 sentences)
 The DVM should support price requests for the ETH/USD and USD/ETH price indexes. 
 
