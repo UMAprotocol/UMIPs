@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Approve Patched EMP Financial Contract Template              |
 | Authors    | Matt Rice (matt@umaproject.org) |
-| Status     | Last Call                                                                                                                             |
+| Status     | Final                                                                                                                             |
 | Created    | December 14, 2020                                                                                                                           |
 
 ## Summary

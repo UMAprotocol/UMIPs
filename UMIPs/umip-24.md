@@ -2,7 +2,7 @@
  - UMIP 24
  - Title: Add DEFI_PULSE_TOTAL_TVL and SUSHIUNI_TVL as supported price identifiers
  - Author:  Bryan Campbell (bryanjcampbell1@gmail.com)
- - Status: Last Call
+ - Status: Final
  - Created: November, 15, 2020
 
 
