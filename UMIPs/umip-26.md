@@ -3,7 +3,7 @@
 |------------|----------------------------------------------------------|
 | UMIP Title | Add XAUPERL and XAUUSD as supported price identifiers    |
 | Authors    | CY (cy@perlin.net)                                       |
-| Status     | Last Call                                                    |
+| Status     | Final                                                    |
 | Created    | December 14, 2020                                        |
 
 ## Summary
