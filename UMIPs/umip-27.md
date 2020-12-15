@@ -16,7 +16,7 @@ This UMIP was motivated by a bug report that revealed that the liveness-reset fe
 ## Technical Specification
 To accomplish this upgrade, a new financial contract template must be deployed.
 
-Deployment address: TBD
+Deployment address: https://etherscan.io/address/0xB3De1e212B49e68f4a68b5993f31f63946FCA2a6.
 
 After deployment, this new `ExpiringMutltiPartyCreator` contract should be approved as a ContractCreator in the Registry.
 
