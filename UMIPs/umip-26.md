@@ -1,16 +1,16 @@
 ## Headers
-| UMIP-24    |                                               |
-|------------|-----------------------------------------------|
-| UMIP Title | Add XAUPERL as price identifiers              |
-| Authors    | CY (cy@perlin.net)                            |
-| Status     | Draft                                         |
-| Created    | December 14, 2020                             |
+| UMIP-26    |                                                          |
+|------------|----------------------------------------------------------|
+| UMIP Title | Add XAUPERL and XAUUSD as supported price identifiers    |
+| Authors    | CY (cy@perlin.net)                                       |
+| Status     | Draft                                                    |
+| Created    | December 14, 2020                                        |
 
 ## Summary
-The DVM should support price requests for the XAUPERL price index.
+The DVM should support price requests for the XAUPERL and XAUUSD price indices.
 
 ## Motivation
-The DVM currently does not support the XAUPERL price index.
+The DVM currently does not support the XAUPERL or XAUUSD price indices.
 
 ### Cost: 
 * Pricing of XAUPERL does not exist anywhere yet, but it can be done by dividing XAUUSD price by PERLUSD.
@@ -36,10 +36,25 @@ The definition of this identifier should be:
 * Pricing Interval: 60 seconds
 * Dispute timestamp rounding: down
 
+ And
+
+* Identifier name: XAUUSD
+* Base Currency: XAU (troy ounce)
+* Quote Currency: USD
+* Source: https://marketdata.tradermade.com
+* Result Processing: XAUUSD[Tradermade API].
+* Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+* Price Steps: 0.00001 (5 decimals in more general trading format)
+* Rounding: Closest, 0.5 up
+* Pricing Interval: 60 seconds
+* Dispute timestamp rounding: down
+
 ## Implementation
-The value of this identifier for a given timestamp should be determined by querying for the price of PERLUSDT from Binance and XAUUSD from Tradermade’s API for that timestamp.
+The value of the XAUUSD or XAUPERL identifier for a given timestamp should be determined by querying for the price of XAUUSD from Tradermade’s API for that timestamp. To determine the value of XAUPERL, the price of PERLUSDT will also need to be queried from Binance for that timestamp.
 
 Users can query “https://marketdata.tradermade.com/api/v1/minute_historical?currency=XAUUSD&date_time=2020-11-11-13:01&api_key=apikey” and use the close price as reference.
+
+This close price rounded to 5 decimals is the value of XAUUSD.
 
 After querying the price of XAUUSD and PERLUSD at the timestamp, XAUUSD is divided by PERLUSD to get XAUPERL and leave the result as is. This is the settlement price voters should look for.
 
