@@ -43,7 +43,7 @@ The definition of these identifiers should be:
 ## Rationale
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized. 
 
-Coinbase are a top exchange of the world. It is used by most of the price identifieres of UMA. Luckily, we can get USD(T)/CNY price by its api and it will be easy to add this price identifier.
+Coinbase is a top exchange of the world. It is used by most of the price identifieres of UMA. Luckily, we can get USD(T)/CNY price by its api and it will be easy to add this price identifier.
 
 Coingecko is not an exchange but provides free apis to check crypto prices and widely used. We can get USD(T)/CNY by its api easily.
 
@@ -57,7 +57,7 @@ The value of USDCNY for a given timestamp should be determined by querying for t
 
 The value of this identifier will follow the exact same process but undergo one additional step: it will be the result of dividing 1/CNYUSD.  
 
-The chosen historical BTC/ARS endpoints are:
+The chosen historical USDCNY endpoints are:
 
 | Endpoint | Field name of price |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -67,13 +67,6 @@ The chosen historical BTC/ARS endpoints are:
 Ultimately, how one queries the exchanges should be varied and determined by the voter to ensure that there is no central point of failure.
 
 While it's important for tokenholders to have redundancy in their sources, bots and users that interact with the system in real time need fast sources of price information. In these cases, it can be assumed that the average is accurate enough.
-
-
-[Here](https://github.com/UMAprotocol/protocol/blob/master/financial-templates-lib/price-feed/CryptoWatchPriceFeed.js)
-is a reference implementation for an offchain price feed based on the
-[CryptoWatch API](https://docs.cryptowat.ch/rest-api/). This feed should be used as a convenient
-way to query the price in realtime, but should not be used as a canonical source of truth for
-voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
 
 ## Security considerations
 Adding these new identifiers by themselves pose little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
