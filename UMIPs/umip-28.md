@@ -55,7 +55,7 @@ We also tried CoinMarketCap which standard plan above support historical search.
 
 The value of USDCNY for a given timestamp should be determined by querying for the price from Coinbase and Coingecko for that timestamp, taking the average, and determining whether that average differs from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
 
-The value of this identifier will follow the exact same process but undergo one additional step: it will be the result of dividing 1/CNYUSD.  
+The value of CNYUSD will follow the exact same process but undergo one additional step: it will be the result of dividing 1/USDCNY.  
 
 The chosen historical USDCNY endpoints are:
 
