@@ -1,5 +1,5 @@
 ## Headers
-| UMIP-28     |                                                                                                                                          |
+| UMIP-29     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add CNYUSD, USDCNY as price identifiers              |
 | Authors    | Shankai Ji, jishankai@quarkchain.org |
@@ -72,4 +72,3 @@ While it's important for tokenholders to have redundancy in their sources, bots 
 Adding these new identifiers by themselves pose little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 
  $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
-
