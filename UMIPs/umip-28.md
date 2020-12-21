@@ -7,7 +7,7 @@
 | Created    | December 12, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)
-The DVM should support price requests for the STABLESPREAD price index. STABLESPREAD is defined as: `max(A - B + 1, 0)`, where `A` refers to an equally weighted basket of {UST, CUSD, BUSD}. B is `MUSD`. UST is TerraUSD, the interchain stablecoin connected by the Cosmos IBC. CUSD is Celo Dollar, the stablecoin on the Celo network. BUSD is Binance USD, a stablecoin issued by Paxos in partnership with Binance. `MUSD` is an autonomous and non-custodial stablecoin on mStable, representing a basket of stablecoins on Ethereum, namely USDT, USDC, TUSD, and DAI. 
+The DVM should support price requests for the STABLESPREAD price index. STABLESPREAD is defined as: `min(max(A - B + 1, 0), 2)`, where `A` refers to an equally weighted basket of {UST, CUSD, BUSD}. B is `MUSD`. UST is TerraUSD, the interchain stablecoin connected by the Cosmos IBC. CUSD is Celo Dollar, the stablecoin on the Celo network. BUSD is Binance USD, a stablecoin issued by Paxos in partnership with Binance. `MUSD` is an autonomous and non-custodial stablecoin on mStable, representing a basket of stablecoins on Ethereum, namely USDT, USDC, TUSD, and DAI. 
 
 ## Motivation
 The DVM currently does not support the STABLESPREAD price index. 
@@ -51,13 +51,16 @@ The value of STABLESPREAD for a given timestamp can be determined with the follo
 3. Then, calculate 1/3 * UST + 1/3 * CUSD + 1/3 * BUSD, denote this as `A`
 4. Perform A - MUSD + 1
 5. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
-6. This result should be rounded to eight decimal places.
+6. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
+7. This result should be rounded to eight decimal places.
  
 Additionally, [CryptoWatch API](https://docs.cryptowat.ch/rest-api/) is a useful reference. This feed should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
  
 Voters are responsible for determining if the result of this process differs from broad market consensus. This is meant to be vague as $UMA tokenholders are responsible for defining broad market consensus.
  
 This is only a reference implementation, how one queries the exchanges should be varied and determined by the voter to ensure that there is no central point of failure.
+
+As an example of how one may go about constructing such a feed programmatically, here is one that was put together as a standalone script with minimal dependencies: https://gist.github.com/chicfilabae/3dff8aef233e4b9e5315daa7a835867d. As always, double-check the implementation as well as include additional measures for reliability to ensure reasonable assumptions around when the graph or cryptowatch isn't available. 
  
 ## Security considerations
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users given this is dealing with some of the most liquid stablecoins in the whole cryptoverse, and the relative price volatility of them has been rather low due to their stablecoin properties. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
