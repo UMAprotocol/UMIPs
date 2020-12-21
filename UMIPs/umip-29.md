@@ -23,18 +23,19 @@ The definition of these identifiers should be:
 -----------------------------------------
 - Identifier names: **CNYUSD**
 - Base Currency: CNY
-- Quote Currency: USD(T)
+- Quote Currency: USD(C)
 - Result Processing: 1 / Average USDCNY
+- Price Steps: 0.000001 (6 decimals in more general trading format)
 -----------------------------------------
 - Identifier names: **USDCNY**
-- Base Currency: USD(T)
+- Base Currency: USD(C)
 - Quote Currency: CNY 
 - Result Processing: Average
+- Price Steps: 0.01 (2 decimals in more general trading format)
 -----------------------------------------
 
 - Exchanges: Coinbase, Coingecko.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Price Steps: 0.000001 (6 decimals in more general trading format)
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
@@ -43,9 +44,9 @@ The definition of these identifiers should be:
 ## Rationale
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized. 
 
-Coinbase is a top exchange of the world. It is used by most of the price identifieres of UMA. Luckily, we can get USD(T)/CNY price by its api and it will be easy to add this price identifier.
+Coinbase is a top exchange of the world. It is used by most of the price identifieres of UMA. Luckily, we can get USD(C)/CNY price by its api and it will be easy to add this price identifier.
 
-Coingecko is not an exchange but provides free apis to check crypto prices and widely used. We can get USD(T)/CNY by its api easily.
+Coingecko is not an exchange but provides free apis to check crypto prices and widely used. We can get USD(C)/CNY by its api easily.
 
 We tried exchanges such as Binance, Gate and KuCoin. All of their apis don't support USDCNY.
 
@@ -57,16 +58,115 @@ The value of USDCNY for a given timestamp should be determined by querying for t
 
 The value of CNYUSD will follow the exact same process but undergo one additional step: it will be the result of dividing 1/USDCNY.  
 
-The chosen historical USDCNY endpoints are:
-
-| Endpoint | Field name of price |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| https://api.coinbase.com/v2/prices/USD-CNY/spot | *amount* |
-| https://api.coingecko.com/api/v3/coins/tether/history | *current_price* |
-
 Ultimately, how one queries the exchanges should be varied and determined by the voter to ensure that there is no central point of failure.
 
 While it's important for tokenholders to have redundancy in their sources, bots and users that interact with the system in real time need fast sources of price information. In these cases, it can be assumed that the average is accurate enough.
+
+### Coinbase Live API
+
+The Coinbase live USDC price API is available at the following URL:
+
+```
+https://api.coinbase.com/v2/exchange-rates?currency=USDC
+```
+
+The response data uses the following JSON format:
+```
+{
+  "data": {
+    "currency": "USDC",
+    "rates": {
+      ...
+      "CNH": "6.537747",
+      "CNY": "6.5507",
+      "COMP": "0.006490977541217707",
+      "COP": "3433.494963",
+      ...
+    }
+  }
+}
+
+```
+You can get CNY price in rates.
+
+### Coinbase Historical Data API
+
+The Coinbase historical USDC price API is available at the following URL:
+
+```
+https://api.coinbase.com/v2/prices/USD-CNY/spot?date=YYYY-MM-DD(UTC)
+```
+
+The response data uses the following JSON format:
+```
+{
+    "data":{
+        "base":"USDC",
+        "currency":"CNY",
+        "amount":"6.5487"
+    }
+}
+
+```
+You can get CNY price in amount.
+
+### Coingecko Live API
+
+The Coingecko live USDC price API is available at the following URL:
+
+```
+https://api.coingecko.com/api/v3/simple/price?ids=usd-coin&vs_currencies=cny
+```
+
+The response data uses the following JSON format:
+```
+{
+    "usd-coin":{
+        "cny": 6.56 
+    }
+}
+
+```
+
+### Coingecko Historical Data API
+
+The Coingecko historical USDC price API is available at the following URL:
+
+```
+https://api.coingecko.com/api/v3/coins/usd-coin/history?date=DD-MM-YYYY&localization=false
+```
+
+The response data uses the following JSON format:
+```
+{
+    "id": "usd-coin",
+    "symbol": "usdc",
+    "name": "USD Coin",
+    "image":{
+        "thumb": "https://assets.coingecko.com/coins/images/6319/thumb/USD_Coin_icon.png?1547042389",
+        "small": "https://assets.coingecko.com/coins/images/6319/small/USD_Coin_icon.png?1547042389"
+    },
+    "market_data":{
+    "current_price":{
+        ...
+        "btc": 5.5020031343227464e-05,
+        "cad": 1.2978351390869964,
+        "chf": 0.9040784209465407,
+        "clp": 768.4682223345884,
+        "cny": 6.575024906911519,
+        "czk": 21.88940756975985,
+        "dkk": 6.2159327757631555,
+        ...
+    },
+    "market_cap":{"aed": 10907588972.299986, "ars": 240387519879.3717, "aud": 4010628455.7113576, "bch": 10439842.92641315, "bdt": 251805598421.96375,…},
+    "total_volume":{"aed": 1856397013.5757165, "ars": 40915220830.352394, "aud": 682956540.3765129, "bch": 1773303.8281109377, "bdt": 42855590002.45406,…}
+},
+    ...
+}
+
+```
+You can get CNY price in `current_price.cny`.
+
 
 ## Security considerations
 Adding these new identifiers by themselves pose little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
