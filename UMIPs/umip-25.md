@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH-FEB21 and GASETH-MAR21 as supported DVM price identifiers                                                                                             |
 | Authors    | Feddas 
-| Status     | Final                                                                                                                                   |
+| Status     | Approved                                                                                                                                   |
 | Created    | December 10th, 2020                                                                                                                              |
 
 ## Summary (2-5 sentences)
