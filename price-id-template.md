@@ -4,7 +4,7 @@ When opening a pull request to submit your UMIP, please use an abbreviated title
 
 The title should be 44 characters or less. 
 
-All italicized text is provided for intructional purposes and should be removed before draft submission if unused in your UMIP.
+All italicized text is provided for instructional purposes and should be removed before draft submission if unused in your UMIP.
 
 ## Headers
 - UMIP <#> 
@@ -35,9 +35,9 @@ All timestamps should be rounded back to the nearest available data point.
 |------------|-----------|-----------|
 | Coinbase | https://api.cryptowat.ch/markets/coinbase-pro/ethusd/ohlc?after=1598918400&before=1598918400&periods=60&apikey=XXXX | close_price |
 
-*These endpoints should provide more than 72 hours worth of historical data availablity. They should also provide prices at a rate more often than once per hour.*
+*These endpoints should provide more than 72 hours worth of historical data availability. They should also provide prices at a rate more often than once per hour.*
 
-*What additional steps need to happen to the data after being queried?*
+*Please list any additional transformation steps that need to be performed on the returned prices.*
 
 ## Rationale for Data Sources
 *(Bitstamp, Binance, and Kraken were chosen because they have the highest volume for these assets.  We choose USDT instead of USD because the USDT/BTC pair is what is more commonly traded and the exchange rate between USD/USDT is not meaningfully variable.)*
