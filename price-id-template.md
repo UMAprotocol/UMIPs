@@ -33,7 +33,7 @@ All timestamps should be rounded back to the nearest available data point.
 
 | Data Source | Endpoint | Response field to use |
 |------------|-----------|-----------|
-| Coinbase | https://api.cryptowat.ch/markets/coinbase-pro/ethusd/ohlc?after=1598918400&before=1598918400&periods=60&apikey=XXXX | price |
+| Coinbase | https://api.cryptowat.ch/markets/coinbase-pro/ethusd/ohlc?after=1598918400&before=1598918400&periods=60&apikey=XXXX | close_price |
 
 *These endpoints should provide more than 72 hours worth of historical data availablity. They should also provide prices at a rate more often than once per hour.*
 
