@@ -1,10 +1,10 @@
 # Headers
-| UMIP-XX     |                                                                                                                                          |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add ETHV Index v1 as price identifiers                                                                                                    |
-| Authors    | Cole Kennelly (crypto.kennelly@gmail.com)
-| Status     | Draft                                                                                                                                   |
-| Created    | December 23, 2020                                                                                                                              |
+| UMIP-32     |                                                                                                                                              |
+|------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| UMIP Title | Add ETHV Index v1 as price identifier                                                                                                        |     
+| Authors    | Cole Kennelly (crypto.kennelly@gmail.com)                                                                                                     | 
+| Status     | Draft                                                                                                                                         |
+| Created    | December 22, 2020                                                                                                                              
 
 ## Summary 
 This UMIP will reference a synthetic token to be created with this price identifier. This token will be referred to as 'ETHV' and will represent the token that tracks this identifier.
@@ -12,9 +12,7 @@ This UMIP will reference a synthetic token to be created with this price identif
 The DVM should support requests for a price that resolves to the ETHV Index v1 value. 
 
 ## Motivation
-The DVM currently does not support ETHV Index v1 or any other volatility indices.
-
-Volatility indices / products are a staple of the traiditional financial system, allowing market participants to speculate / hedge volatility. No on-chain volatility products exist today. Adding ETHV Index v1 would enable the first on-chain volatility products.  
+The DVM currently does not support ETHV Index v1 or any other volatility indices. Volatility indices / products are a staple of the traiditional financial system, allowing market participants to speculate / hedge volatility. No on-chain volatility products exist today. Adding ETHV Index v1 would enable the first on-chain volatility products.  
 
 ## Technical Specification
 
