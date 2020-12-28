@@ -7,11 +7,11 @@
 | Created    | December 16, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
-The DVM should support price requests for the USDC/CNY price indexes. 
+The DVM should support price requests for the USDC/CNY price index. 
 
 
 ## Motivation
-The DVM currently does not support the USDC/CNY indexes.
+The DVM currently does not support the USDC/CNY index.
 
 Supporting the USDCCNY price identifier would enable the creation of a Chinese Yuan FX derivative, backed by USDC. Token minters could go short on the USDC/CNY index, while token holders could go long or use synthetic fxCNY for functional purposes.
 
@@ -103,7 +103,7 @@ The response data uses the following JSON format:
 ```
 
 ### Historical Data API
-Dispute bots and voters will need to query the cached historical data, dating back 30 days. Coinbase and CoinGecko provide live data in 1 minute intervals, hence a custom solution was needed to ensure accurate historical data for a sufficient enough time frame.
+Dispute bots and voters will need to query the cached historical data, dating back 30 days. Coinbase and CoinGecko provide live data in 1-3 minutes intervals, hence a custom solution was needed to ensure accurate historical data for a sufficient enough time frame.
 
 A reference implementation for a historical data caching solution is open-source and any stakeholder to host their own copy as well as provide a reference for any stakeholder who wishes to implement their own.
 
