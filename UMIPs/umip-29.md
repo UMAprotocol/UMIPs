@@ -19,25 +19,30 @@ While Forex data are free through open centralized exchange, brokers, and other 
 Synthetic tokens that track Forex pairs suche as EURUSD GBPUSD and CHFUSD could be used both for speculationt and hedging, but we see a bigger opportunity for using them as building blocks for helping other DeFi protocols and dApp addressing the european market.
 
 ## Technical Specification
+
 The definition of this identifier should be:
-Identifier name: EURUSD
-Base Currency: EUR
-Quote Currency: USD
 
-AND
+-----------------------------------------
+- Identifier name: **EURUSD**
+- Base Currency: EUR
+- Quote Currency: USD
 
-Identifier name: GBPUSD
-Base Currency: GBP
-Quote Currency: USD
+-----------------------------------------
 
-AND
+- Identifier name: **GBPUSD**
+- Base Currency: GBP
+- Quote Currency: USD
 
-Identifier name: CHFUSD
-Base Currency: CHF
-Quote Currency: USD
+-----------------------------------------
+
+- Identifier name: **CHFUSD**
+- Base Currency: CHF
+- Quote Currency: USD
+
+-----------------------------------------
 
 Source: https://marketdata.tradermade.com
-Result Processing: Mediam (if more than 1 source is utillized), otherwise Exact Price
+Result Processing: Median (if more than 1 source is utilized), otherwise Exact Price
 Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 Price Steps: 0.0001 (4 decimals in more general trading format)
 Rounding: Closest, 0.0001 up
@@ -53,19 +58,61 @@ The value of this identifier for a given timestamp should be determined by query
 
 Tradermade’s price feed is an aggregated feed from multiple Tier One and Two Banks, Market-Makers and Data Providers. They are popular with Quantitative Traders, Fintech companies and Institutional customers who require a high quality and trusted feed.
 
+### Weekend timestamp
+
 Over the weekend the REST API does not return any price, but we can request the price of a certain moment before the market close (as ex: the closing price of Friday).
 
 Due to unavailability of price feed for any financial asset over the weekend, tokenholders and users will be using the latest known price, before the market close on Friday, which esentially is the closing price of the asset from Friday. Same goes in a case of a liquidation process - the liquidator should use the last price from Friday in order to match with the price on which a synthetic asset was created, if it was created over the weekend. If not the closing price on Friday for a certain asset should be a navigating point in calculating the collateralization ratio of a position and in the liquidation process.
 
-Forex markets are usually open throughout bussiness days from 10:00 PM UTC time on Sunday, until 9:00 PM UTC time on Friday. However it is good to note that some brokers might close their price feeds 5-10 minutes prior to the official market closing time, thus the latest price given from the broker will be used as a official price for the asset. We should also note here that during those minutes the price remains flat without any changes, however theoretically it is possible to have a stronger price movement.
+If a request timestamp takes place on a weekend or any other day the Forex market is closed, voters should use the latest tick as the price. For the weekend that would be the closing price of the asset on Friday.
+
+### Forex markets working hours
+
+Forex markets are usually open throughout business days from 10:00 PM UTC time on Sunday, until 9:00 PM UTC time on Friday. However it is good to note that some brokers might close their price feeds 5-10 minutes prior to the official market closing time, thus the latest price given from the broker will be used as a official price for the asset. We should also note here that during those minutes the price remains flat without any changes, however theoretically it is possible to have a stronger price movement.
+
+### USDCHF value
 
 As most of the price feed does not provide a price for CHFUSD but USDCHF, the value of this identifier will undergo one additional step: CHFUSD = 1/USDCDF.  Token holders should take care to confirm that the order of the quote and base currency they refer to matches the one being requested by the DVM in the event of a price request.
 TraderMade is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.
 While it's important for tokenholders to have redundancy in their sources, bots and users that interact with the system in realtime need fast sources of price information. In these cases, it can be assumed that the exchange median is accurate enough
 
+### Price feed - liquidations and disputes
+
 Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found [here](https://marketdata.tradermade.com/documentation).
 
 In the case of a TraderMade outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. In that case we'll use a median price from the different price feeds provided by the voters.
+
+## Additional price feed providers
+
+### FXMarketAPI
+
+Documentation for the API can be found [here](https://fxmarketapi.com/documentation#live_rates).
+
+- Live price feed data
+- Historical prices based on date and time
+- Registration is free and provides 500 free requests
+- Paid plans available
+- OHLC request can be used to grab the last closing price before a weekend or a non-working day
+
+Example requests:
+
+- Live Rate for EURUSD: `https://fxmarketapi.com/apiliveapi_key=api_key&currency=EURUSD`
+- OHLC for a certain date on a currency pair: `https://fxmarketapi.com/apihistorical?api_key=api_key&currency=EURUSD&date=2020-12-23&format=ohlc`
+- Request for EURUSD price at a certain date and time: `https://fxmarketapi.com/apihistorical?api_key=api_key&currency=EURUSD&date=2020-12-23-15:50` 
+
+### FCS API
+
+Documentation for the API can be found [here](https://fcsapi.com/document/forex-api).
+
+- 500 API Calls with Free Plan
+- Live price data accessible with Free Plan - Updated every 60 seconds or less
+- Historical data accessible with the Basic Paid Plan - 10$ per month
+
+Example requests:
+
+- Live Rate for EURUSD: `https://fcsapi.com/api-v3/forex/latest?symbol=EUR/USD&access_key=api_key`
+- Historical price for a certain date for EUR/USD - gives back the OHLC: `https://fcsapi.com/api-v3/forex/history?symbol=EUR/USD&period=1D&from=2020-12-23&to=2020-12-24&access_key=api_key`
+- Price of EUR/USD between certain dates and times - gives a breakdown on the price each 1 minute between 12:00 and 12:30: `https://fcsapi.com/api-v3/forex/history?symbol=EUR/USD&period=1M&from=2020-12-23T12:00&to=2020-12-23T12:30&access_key=api_key`  
 
 ## Security considerations
 Adding this new identifier by itself poses a little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
