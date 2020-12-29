@@ -11,7 +11,7 @@
 
 Due to necessity and after discussing with the UMA team their protocol was forked. This fork allowed for addition of a few functionalities which were important building blocks of the project. Some of the unnecessary functionalities were removed and parts of the codebase were split in a helper library which allows gas optimization when deployment of the contracts without surpassing the gas limit. The newly updated DerivativeFactory contract inherits most of the original functionalities, but also adds specific ones for the needs of the project.
 
-Once registered with the DVM, our `DerivativeFactory` contract will use the liquidation/dispute system set up by UMA, while maintaining the flexibility of deploying new derivative contracts (creating new synthetic assets) or deploying an updated version of already existing derivative contracts and linking them to the same synthetic asset.
+Once registered with the DVM, our `DerivativeFactory` contract will use the liquidation/dispute system set up by UMA, while maintaining the flexibility of deploying new derivative contracts (creating new synthetic assets) or deploying a derivative and linking it an already existing synthetic asset.
 
 # Motivation
 
@@ -44,4 +44,4 @@ The `PerpetualPoolParty` contracts can be found and are available for a review b
 
 One of the most important consideration is that the forked code is still not audited. Although our trusted partners are working on that and the UMA team has reviewed the codebase, you should consider that there might be some unexpected issues. However for this reason the `emergencyShutdown` functionality is set and also we'll be launching the project with a set limit for users on how much funds they can pass through the protocol.
 
-Currently there is still the risk of lacking incentive for liquidating undercapitalized positions (positions where the GCR has dropped below 100%). At the beginning our team as sole liquidity provider will mitigate this issue by depositing additional funds when necessary and increasing the collateralization ratio. In the future a reserve fund will be added which will automatically deposit additional collateral on a position in case it drops below the 100% collateralization ratio thus keeping the incentive for a liquidation process.
+Currently there is still the risk of lacking incentive for liquidating undercapitalized positions (positions where the GCR has dropped below 100%). At the beginning our team as sole liquidity provider will mitigate this issue by liquidating immediatelly positions that are undercollateralized and we will also use a high initial collateralization ratio. In the future a reserve fund will be added which will automatically deposit additional collateral on a position in case it drops below the 100% collateralization ratio thus keeping the incentive for a liquidation process.
