@@ -70,11 +70,11 @@ Tradermade’s price feed is an aggregated feed from multiple Tier One and Two B
 
 ### Weekend timestamp
 
-Over the weekend the REST API does not return any price, but we can request the price of a certain moment before the market close (as ex: the closing price of Friday).
+Over the weekend or some official holidays the REST API does not return any price, but we can request the price of a certain moment before the market close (as ex: the closing price of Friday).
 
-Due to unavailability of price feed for foreign exchange rates over the weekend, tokenholders and users will be using the latest known price, before the market close on Friday, which essentially is the closing price of the asset from Friday. Same goes in a case of a liquidation process - the liquidator should use the last price from Friday in order to match with the price on which a synthetic asset was created, if it was created over the weekend. If not the closing price on Friday for a certain asset should be a navigating point in calculating the collateralization ratio of a position and in the liquidation process.
+Due to unavailability of price feed for foreign exchange rates and commodities over the weekend or during some official holidays, tokenholders and users will be using the latest known price, which for the weekend is esentially the closing price of Friday. Same goes in a case of a liquidation process - the liquidator should use the last known price (during the weekend this is the closing price of Friday) in order to match with the price on which a synthetic asset was created, if it was created over the weekend. If not the closing price on Friday for a certain asset should be a navigating point in calculating the collateralization ratio of a position and in the liquidation process.
 
-If a request timestamp takes place on a weekend or any other day the Forex market is closed, voters should use the latest tick as the price. For the weekend that would be the closing price of the asset on Friday.
+If a request timestamp takes place on a weekend or any other day the Forex market is closed, voters should use the latest tick as the price. For the weekend that would be the closing price of the asset on Friday and for official holidays this would be the last know price provided by the price feed.
 
 ### Forex markets working hours
 
