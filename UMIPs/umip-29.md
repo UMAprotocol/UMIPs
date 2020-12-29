@@ -1,26 +1,26 @@
 ## Headers
 | UMIP-29    |                                                          |
 |------------|----------------------------------------------------------|
-| UMIP Title | Add EURUSD, CHFUSD and GBPUSD as price identifiers       |
+| UMIP Title | Add EUR/USD, CHF/USD, GBP/USD and XAU/USD as price identifiers       |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
 | Status     | Draft                                                    |
 | Created    | December 22, 2020                                        |
 
 ## Summary
-The DVM should support price requests for the EUR/USD, GBP/USD and CHF/USD price index.
+The DVM should support price requests for the EUR/USD, GBP/USD, CHF/USD and XAU/USD price index.
 
 ## Motivation
-The DVM currently does not support the EURUSD, GBPUSD and CHFUSD index.
+The DVM currently does not support the EUR/USD, GBP/USD,CHF/USD and XAU/USD index.
 
 ### Cost: 
 While Forex data are free through open centralized exchange, brokers, and other sources APIs, the most reliable are paid. We propose to use TraderMade's APIs whose pricing is accessible on their website. TraderMade has also a Free Tier which can be used by the voters and would be sufficient to provide the price of a certain asset.
 
 ### Opportunity: 
-Synthetic tokens that track Forex pairs suche as EURUSD GBPUSD and CHFUSD could be used both for speculationt and hedging, but we see a bigger opportunity for using them as building blocks for helping other DeFi protocols and dApp addressing the european market.
+Synthetic tokens that track Forex pairs such as EUR/USD, GBP/USD, CHF/USD or commodities such as XAU/USD could be used both for speculations and hedging, but we see a bigger opportunity for using them as building blocks for helping other DeFi protocols and dApp addressing the european market.
 
 ## Technical Specification
 
-The definition of this identifier should be:
+The definition of this identifiers should be:
 
 -----------------------------------------
 - Identifier name: **EUR/USD**
@@ -61,10 +61,10 @@ Pricing Interval: 60 seconds
 Dispute timestamp rounding: down
 
 ## Rationale
-Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like EURUSD, so any price feed could be used; however, for convenience, we recommend using the one of TraderMade.
+Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like EUR/USD, so any price feed could be used; however, for convenience, we recommend using the one of TraderMade.
 
 ## Implementation
-The value of this identifier for a given timestamp should be determined by querying for the price of EURUSD, GBPUSD and CHFUSD from TraderMade.com for that timestamp. More specifically, users can query “https://marketdata.tradermade.com/api/v1/minute_historical?currency=EURUSD&date_time=2020-11-11-13:01&api_key=apikey” and use the close price as reference. 
+The value of this identifier for a given timestamp should be determined by querying for the price of EUR/USD, GBP/USD, CHF/USD and XAU/USD from TraderMade.com for that timestamp. More specifically, users can query “https://marketdata.tradermade.com/api/v1/minute_historical?currency=EURUSD&date_time=2020-11-11-13:01&api_key=apikey” and use the close price as reference. 
 
 Tradermade’s price feed is an aggregated feed from multiple Tier One and Two Banks, Market-Makers and Data Providers. They are popular with Quantitative Traders, Fintech companies and Institutional customers who require a high quality and trusted feed.
 
@@ -120,7 +120,7 @@ Documentation for the API can be found [here](https://fcsapi.com/document/forex-
 
 Example requests:
 
-- Live Rate for EURUSD: `https://fcsapi.com/api-v3/forex/latest?symbol=EUR/USD&access_key=api_key`
+- Live Rate for EUR/USD: `https://fcsapi.com/api-v3/forex/latest?symbol=EUR/USD&access_key=api_key`
 - Historical price for a certain date for EUR/USD - gives back the OHLC: `https://fcsapi.com/api-v3/forex/history?symbol=EUR/USD&period=1D&from=2020-12-23&to=2020-12-24&access_key=api_key`
 - Price of EUR/USD between certain dates and times - gives a breakdown on the price each 1 minute between 12:00 and 12:30: `https://fcsapi.com/api-v3/forex/history?symbol=EUR/USD&period=1M&from=2020-12-23T12:00&to=2020-12-23T12:30&access_key=api_key`  
 
@@ -129,6 +129,6 @@ Adding this new identifier by itself poses a little security risk to the DVM or 
 
 While the price of EURUSD does not vary much across various price feed during the weekday, it may be more challenging to get a unified price feed on the weekend: first, while the underlying market is not closed, most of the broker and banks feeding the APIs price feed are; then, for the one providing a price feed, they often add a very big spread, which makes the price of forex pairs vary significantly by source; a way to mitigate it is to use the last price known. 
 
-A consequence to this is the existence of gaps between the last quote on Friday to the first one on Sunday; while such gaps rarely exceed +/-2%, which should not put in danger the collateralization ratio, an exceptional event happening the weekend may create a bigger gap and could, in theory, endanger the collateral ratio; yet, it is very unlikely to see +/-20% gap on EURUSD, but it is in theory possible. Nevertheless, due to gaps, a larger number of liquidation and disputes may arise on Sunday 9 pm UTC if the collateral ratio was already getting weaker before the week’s end. In order to mitigate this theoretical risk a high collateralization requirement (120%+) should be set or a reserve fund mechanism should be implemented in order to automatically rebalance the collateralization ratio above 100% (in case it falls below 100%), thus making the liquidation process profitable again.
+A consequence to this is the existence of gaps between the last quote on Friday to the first one on Sunday; while such gaps rarely exceed +/-2%, which should not put in danger the collateralization ratio, an exceptional event happening the weekend may create a bigger gap and could, in theory, endanger the collateral ratio; yet, it is very unlikely to see +/-20% gap on EUR/USD, but it is in theory possible. Nevertheless, due to gaps, a larger number of liquidation and disputes may arise on Sunday 9 pm UTC if the collateral ratio was already getting weaker before the week’s end. In order to mitigate this theoretical risk a high collateralization requirement (120%+) should be set or a reserve fund mechanism should be implemented in order to automatically rebalance the collateralization ratio above 100% (in case it falls below 100%), thus making the liquidation process profitable again.
 
 In the past the CHF was pegged to the EUR, but in 2015 this pegged was removed by the Swiss Central Bank in a surprise move, which caused a huge volatile movement on the CHF price. Such movement could put the CHF below the 100% collateralization ratio, although it is highly unlikely to happen. This risk could appear again one day if the peg is reinstated. In the forementioned situation the CHF lost 20% within one day. However with a higher required collateralization ratio such events can be mitigated.
