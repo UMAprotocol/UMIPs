@@ -27,7 +27,7 @@ The definition of this identifier should be:
  
 - Identifier name: STABLESPREAD
 - Base Currency: STABLESPREAD
-- Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT, OKCoin: CUSD/USD} for Celo Dollar, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD
+- Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT, OKCoin: CUSD/USD} for CUSD, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD, {Coinbase: ETH/USD, Bitfinex: ETH/USD} for ETH
 - Result Processing: For each constituent asset of the basket, the average of both exchanges
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 8
@@ -52,7 +52,7 @@ The value of STABLESPREAD for a given timestamp can be determined with the follo
 4. Perform A - MUSD + 1
 5. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
 6. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
-7. Take the result of step 6 and divide by the value of ETHUSD 
+7. Take the result of step 6 and divide by the value of ETH/USD 
 8. This result should be rounded to eight decimal places.
  
 Additionally, [CryptoWatch API](https://docs.cryptowat.ch/rest-api/) is a useful reference. This feed should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
