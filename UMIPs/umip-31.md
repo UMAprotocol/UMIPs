@@ -27,7 +27,7 @@ The definition of this identifier should be:
  
 - Identifier name: STABLESPREAD-USDC
 - Base Currency: STABLESPREAD-USDC
-- Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT, OKCoin: CUSD/USD} for CUSD, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC
+- Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT} for CUSD, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC
 - Result Processing: For each constituent asset of the basket, the average of both exchanges
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 8
