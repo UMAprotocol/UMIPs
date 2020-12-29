@@ -26,18 +26,28 @@ The definition of this identifier should be:
 - Identifier name: **EURUSD**
 - Base Currency: EUR
 - Quote Currency: USD
+- Decimals: 18
 
 -----------------------------------------
 
 - Identifier name: **GBPUSD**
 - Base Currency: GBP
 - Quote Currency: USD
+- Decimals: 18
 
 -----------------------------------------
 
 - Identifier name: **CHFUSD**
 - Base Currency: CHF
 - Quote Currency: USD
+- Decimals: 18
+
+-----------------------------------------
+
+- Identifier name: **XAUUSD**
+- Base Currency: XAU
+- Quote Currency: USD
+- Decimals: 18
 
 -----------------------------------------
 
