@@ -26,13 +26,14 @@ There is little cost associated with adding this price identifier, as there are 
 The definition of this identifier should be:
  
 - Identifier name: STABLESPREAD-BTC
-- Base Currency: STABLESPREAD-BTC
+- Base Currency: STABLESPREAD
+- Quote Currency: BTC
 - Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT} for CUSD, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD, {Coinbase: BTC/USD, Bitfinex: BTC/USD} for BTC
 - Result Processing: For each constituent asset of the basket, the average of both exchanges
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 8
 - Rounding: Closest, 0.5 up
-- Pricing Interval: 60 seconds
+- Pricing Interval: 1 second
 - Dispute timestamp rounding: down
  
 ## Rationale
