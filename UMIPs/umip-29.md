@@ -23,28 +23,28 @@ Synthetic tokens that track Forex pairs suche as EURUSD GBPUSD and CHFUSD could 
 The definition of this identifier should be:
 
 -----------------------------------------
-- Identifier name: **EURUSD**
+- Identifier name: **EUR/USD**
 - Base Currency: EUR
 - Quote Currency: USD
 - Decimals: 18
 
 -----------------------------------------
 
-- Identifier name: **GBPUSD**
+- Identifier name: **GBP/USD**
 - Base Currency: GBP
 - Quote Currency: USD
 - Decimals: 18
 
 -----------------------------------------
 
-- Identifier name: **CHFUSD**
+- Identifier name: **CHF/USD**
 - Base Currency: CHF
 - Quote Currency: USD
 - Decimals: 18
 
 -----------------------------------------
 
-- Identifier name: **XAUUSD**
+- Identifier name: **XAU/USD**
 - Base Currency: XAU
 - Quote Currency: USD
 - Decimals: 18
