@@ -30,7 +30,7 @@ The definition of this identifier should be:
 - Data Sources: {Uniswap V2: FRAX/ETH} for FRAX, {Uniswap V2: ESD/ETH} for ESD, {Uniswap v2: BAC/ETH} for BAC, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD, {Uniswap v2: USDC/ETH} for ETH
 - Result Processing: For each constituent asset of the basket, the average of exchanges. Normalizing the ETH result to USDC for FRAX, ESD, and BAC.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Decimals: 8
+- Decimals: 6
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
@@ -49,7 +49,7 @@ The value of ELASTIC_STABLESPREAD-USDC for a given timestamp can be determined w
 1. ESD, FRAX, BAC, MUSD should be queried for from the exchanges listed in the "Technical Specification" section for the given timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
 2. For each one, the average of the prices should be calculated.
 3. Then, calculate 1/3 * ESD + 1/3 * FRAX + 1/3 * BAC, denote this as `A`, which is in ETH terms
-4. Perform A * ETH/USDC - MUSD + 1
+4. Perform A * USDC/ETH - MUSD + 1
 5. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
 6. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
 7. This result should be rounded to eight decimal places.
