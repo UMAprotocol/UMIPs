@@ -65,6 +65,8 @@ The response is:
 
 From briefly playing around with this, it should be noted that requests that do not fall on the 10 minute interval do not return data. Voters should round time down or up to the closest 10 minute interval if they request the price which doesn't fall on the 10 minute interval.
 
+| range         | methods         |
+|---------------|-----------------|
 | 0 ~ 5 minute  | round down to 0 |
 | 5 ~ 10 minute | round up to 10  |
 
@@ -102,7 +104,7 @@ If a request timestamp takes place on a weekend or any other day the Forex marke
 
 TraderMade is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.
 
-### Price Feed
+### Price Feeds
 Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found [here](https://marketdata.tradermade.com/documentation).
 
 In the case of a TraderMade outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. 
