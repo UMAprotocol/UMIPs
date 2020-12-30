@@ -27,7 +27,7 @@ The definition of these identifiers should be:
 - Date Source: TraderMade
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Rounding: Closest, 0.5 up
-- Pricing Interval: 60 seconds
+- Pricing Interval: 10 minutes
 - Dispute timestamp rounding: down
 
 
@@ -63,7 +63,7 @@ The response is:
 }
 ```
 
-From briefly playing around with this, it should be noted that requests that do not fall on the 10 minute interval do not return data. Voters should round time down or up to the closest 10 minute interval if they request the price which doesn't fall on the 10 minute interval.
+It should be noted that requests that do not fall on the 10 minute interval do not return data. Voters should round time down or up to the closest 10 minute interval if they request the price which doesn't fall on the 10 minute interval.
 
 | range         | methods         |
 |---------------|-----------------|
