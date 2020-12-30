@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ELASTIC_STABLESPREAD/USDC as a price identifier              |
 | Authors    | Bae (bae@youmychicfila.com), K (k@youmychicfila.com) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | December 23, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)

@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add STABLESPREAD/USDC and STABLESPREAD/BTC as a price identifier              |
 | Authors    | Bae (bae@youmychicfila.com), K (k@youmychicfila.com) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | December 28, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)

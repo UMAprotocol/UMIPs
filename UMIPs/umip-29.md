@@ -3,7 +3,7 @@
 |------------|----------------------------------------------------------|
 | UMIP Title | Add EURUSD, CHFUSD and GBPUSD                            |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
-| Status     | Draft                                                    |
+| Status     | Last Call                                                    |
 | Created    | December 22, 2020                                        |
 
 ## Summary
