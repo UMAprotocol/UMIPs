@@ -54,7 +54,7 @@ Dispute timestamp rounding: down <br>
 Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like EURUSD, so any price feed could be used; however, for convenience, we recommend using the one of TraderMade.
 
 ## Implementation
-The value of this identifier for a given timestamp should be determined by querying for the price of EURUSD, GBPUSD and CHFUSD from TraderMade.com for that timestamp. More specifically, users can query “https://marketdata.tradermade.com/api/v1/minute_historical?currency=EURUSD&date_time=2020-11-11-13:01&api_key=apikey” and use the close price as reference. 
+The value of this identifier for a given timestamp should be determined by querying for the price of EURUSD, GBPUSD and CHFUSD from TraderMade.com for that timestamp. More specifically, users can query “https://marketdata.tradermade.com/api/v1/minute_historical?currency=EURUSD&date_time=2020-11-11-13:01&api_key=apikey” and use the close price as reference. To clarify if the price request timestamp is as ex 13:01:59, voters should query 13:01 as a timestamp. Voters should always query down due to possible unavailability of a new price until a minute has passed, thus voters are taking the closing price at a certain timestamp that has passed.
 
 Tradermade’s price feed is an aggregated feed from multiple Tier One and Two Banks, Market-Makers and Data Providers. They are popular with Quantitative Traders, Fintech companies and Institutional customers who require a high quality and trusted feed.
 
