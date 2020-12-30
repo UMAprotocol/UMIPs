@@ -42,7 +42,7 @@ The definition of this identifiers should be:
 -----------------------------------------
 
 Source: https://marketdata.tradermade.com <br>
-Result Processing: Median (if more than 1 source is utilized), otherwise Exact Price <br>
+Result Processing: None <br>
 Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus. <br>
 Price Steps: 0.00001 (5 decimals in more general trading format) <br>
 Rounding: Closest, 0.5 up (> .000005 rounds up, < .000005 rounds down) <br>
@@ -73,14 +73,14 @@ Forex markets are usually open throughout business days from 10:00 PM UTC time o
 ### USDCHF value
 
 As most of the price feed does not provide a price for CHFUSD but USDCHF, the value of this identifier will undergo one additional step: CHFUSD = 1/USDCDF.  Token holders should take care to confirm that the order of the quote and base currency they refer to matches the one being requested by the DVM in the event of a price request.
-TraderMade is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.
-While it's important for tokenholders to have redundancy in their sources, bots and users that interact with the system in realtime need fast sources of price information. In these cases, it can be assumed that the exchange median is accurate enough
 
 ### Price feed - liquidations and disputes
 
 Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found [here](https://marketdata.tradermade.com/documentation).
 
-In the case of a TraderMade outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. In that case we'll use a median price from the different price feeds provided by the voters.
+TraderMade is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.
+
+In the case of a TraderMade outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 
 ## Additional price feed providers
 
