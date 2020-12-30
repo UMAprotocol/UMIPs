@@ -4,7 +4,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Register new financial contract with DVM                                                                                                |
 | Authors    | Iliyan Iliev (iliyan.iliev@jarvis.exchange) |
-| Status     |                                                                                                                                     |
+| Status     | Draft                                                                                                                                    |
 | Created    | December 29, 2020      
 
 # Summary
