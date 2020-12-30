@@ -1,9 +1,9 @@
 ## Headers
 | UMIP-29    |                                                          |
 |------------|----------------------------------------------------------|
-| UMIP Title | Add EURUSD, CHFUSD and GBPUSD                            |
+| UMIP Title | Add EURUSD, CHFUSD and GBPUSD as price identifiers                           |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
-| Status     | Draft                                                    |
+| Status     | Last Call                                                    |
 | Created    | December 22, 2020                                        |
 
 ## Summary
