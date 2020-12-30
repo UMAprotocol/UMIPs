@@ -1,5 +1,5 @@
 ## Headers
-| UMIP-28     |                                                                                                                                          |
+| UMIP-30     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ELASTIC_STABLESPREAD/USDC as a price identifier              |
 | Authors    | Bae (bae@youmychicfila.com), K (k@youmychicfila.com) |
@@ -32,7 +32,7 @@ The definition of this identifier should be:
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 6
 - Rounding: Closest, 0.5 up
-- Pricing Interval: 60 seconds
+- Pricing Interval: 1 second
 - Dispute timestamp rounding: down
  
 ## Rationale
