@@ -1,48 +1,42 @@
 ## Headers
 | UMIP-29    |                                                          |
 |------------|----------------------------------------------------------|
-| UMIP Title | Add EUR/USD, CHF/USD, GBP/USD and XAU/USD as price identifiers       |
+| UMIP Title | Add EURUSD, CHFUSD and GBPUSD                            |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
 | Status     | Draft                                                    |
 | Created    | December 22, 2020                                        |
 
 ## Summary
-The DVM should support price requests for the EUR/USD, GBP/USD, CHF/USD and XAU/USD price index.
+The DVM should support price requests for the EURUSD, GBPUSD and CHFUSD price index.
 
 ## Motivation
-The DVM currently does not support the EUR/USD, GBP/USD,CHF/USD and XAU/USD index.
+The DVM currently does not support the EURUSD, GBPUSD and CHFUSD index.
 
 ### Cost: 
 While Forex data are free through open centralized exchange, brokers, and other sources APIs, the most reliable are paid. We propose to use TraderMade's APIs whose pricing is accessible on their website. TraderMade has also a Free Tier which can be used by the voters and would be sufficient to provide the price of a certain asset.
 
 ### Opportunity: 
-Synthetic tokens that track Forex pairs such as EUR/USD, GBP/USD, CHF/USD or commodities such as XAU/USD could be used both for speculations and hedging, but we see a bigger opportunity for using them as building blocks for helping other DeFi protocols and dApp addressing the european market.
+Synthetic tokens that track Forex pairs such as EURUSD, GBPUSD and CHFUSD could be used both for speculations and hedging, but we see a bigger opportunity for using them as building blocks for helping other DeFi protocols and dApp addressing the european market.
 
 ## Technical Specification
 
 The definition of this identifiers should be:
 
 -----------------------------------------
-- Identifier name: **EUR/USD**
+- Identifier name: **EURUSD**
 - Base Currency: EUR
 - Quote Currency: USD
 
 -----------------------------------------
 
-- Identifier name: **GBP/USD**
+- Identifier name: **GBPUSD**
 - Base Currency: GBP
 - Quote Currency: USD
 
 -----------------------------------------
 
-- Identifier name: **CHF/USD**
+- Identifier name: **CHFUSD**
 - Base Currency: CHF
-- Quote Currency: USD
-
------------------------------------------
-
-- Identifier name: **XAU/USD**
-- Base Currency: XAU
 - Quote Currency: USD
 
 -----------------------------------------
@@ -50,17 +44,17 @@ The definition of this identifiers should be:
 Source: https://marketdata.tradermade.com <br>
 Result Processing: Median (if more than 1 source is utilized), otherwise Exact Price <br>
 Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus. <br>
-Price Steps: 0.0001 (4 decimals in more general trading format) <br>
-Rounding: Closest, 0.5 up (> .00005 rounds up, < .00005 rounds down) <br>
+Price Steps: 0.00001 (5 decimals in more general trading format) <br>
+Rounding: Closest, 0.5 up (> .000005 rounds up, < .000005 rounds down) <br>
 Decimal: 18 (1e18) <br>
 Pricing Interval: 60 seconds <br>
 Dispute timestamp rounding: down <br>
 
 ## Rationale
-Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like EUR/USD, so any price feed could be used; however, for convenience, we recommend using the one of TraderMade.
+Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like EURUSD, so any price feed could be used; however, for convenience, we recommend using the one of TraderMade.
 
 ## Implementation
-The value of this identifier for a given timestamp should be determined by querying for the price of EUR/USD, GBP/USD, CHF/USD and XAU/USD from TraderMade.com for that timestamp. More specifically, users can query “https://marketdata.tradermade.com/api/v1/minute_historical?currency=EURUSD&date_time=2020-11-11-13:01&api_key=apikey” and use the close price as reference. 
+The value of this identifier for a given timestamp should be determined by querying for the price of EURUSD, GBPUSD and CHFUSD from TraderMade.com for that timestamp. More specifically, users can query “https://marketdata.tradermade.com/api/v1/minute_historical?currency=EURUSD&date_time=2020-11-11-13:01&api_key=apikey” and use the close price as reference. 
 
 Tradermade’s price feed is an aggregated feed from multiple Tier One and Two Banks, Market-Makers and Data Providers. They are popular with Quantitative Traders, Fintech companies and Institutional customers who require a high quality and trusted feed.
 
