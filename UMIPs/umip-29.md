@@ -23,7 +23,7 @@ The definition of these identifiers should be:
 - Base Currency: CNY
 - Quote Currency: USD
 - Result Processing: None
-- Price Steps: 0.0001 (4 decimals in more general trading format)
+- Price Steps: 0.000001 (6 decimals in more general trading format)
 - Date Source: TraderMade
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Rounding: Closest, 0.5 up
@@ -63,26 +63,10 @@ The response is:
 }
 ```
 
-From briefly playing around with this, it should be noted that requests that do not fall on the 10 minute interval do not return data. 
+From briefly playing around with this, it should be noted that requests that do not fall on the 10 minute interval do not return data. Voters should round time down or up to the closest 10 minute interval if they request the price which doesn't fall on the 10 minute interval.
 
-There is also an hourly granularity endpoint here: 
-```
-https://marketdata.tradermade.com/api/v1/hour_historical?currency=CNYUSD&date_time=2020-10-10-13:00&api_key={apikey}
-```
-
-The response is:
-```
-{
-  "close": 0.1493, 
-  "currency": "CNYUSD", 
-  "date_time": "2020-10-09-13:00", 
-  "endpoint": "hour_historical", 
-  "high": 0.1493, 
-  "low": 0.1493, 
-  "open": 0.1493, 
-  "request_time": "Tue, 29 Dec 2020 11:59:02 GMT"
-}
-```
+| 0 ~ 5 minute  | round down to 0 |
+| 5 ~ 10 minute | round up to 10  |
 
 ### TraderMade Live API
 
@@ -117,7 +101,18 @@ Due to unavailability of price feed for foreign exchange rates over the weekend,
 If a request timestamp takes place on a weekend or any other day the Forex market is closed, voters should use the latest tick as the price. For the weekend that would be the closing price of the asset on Friday.
 
 TraderMade is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.
+
+### Price Feed
+Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found [here](https://marketdata.tradermade.com/documentation).
+
+In the case of a TraderMade outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. 
+
+
 ## Security Considerations
 Adding these new identifiers by themselves pose little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 
  $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
+ 
+ While the price of CNYUSD or any other forex pair does not vary much across various price feed during the weekday, it may be more challenging to get a unified price feed on the weekend: first, while the underlying market is not closed, most of the broker and banks feeding the APIs price feed are; then, for the one providing a price feed, they often add a very big spread, which makes the price of forex pairs vary significantly by source; a way to mitigate it is to use the last price known.
+
+A consequence to this is the existence of gaps between the last quote on Friday to the first one on Sunday; while such gaps rarely exceed +/-2%, which should not put in danger the collateralization ratio, an exceptional event happening the weekend may create a bigger gap and could, in theory, endanger the collateral ratio; yet, it is very unlikely to see +/-20% gap on CNY/USD, but it is in theory possible. Nevertheless, due to gaps, a larger number of liquidation and disputes may arise on Sunday 9 pm UTC if the collateral ratio was already getting weaker before the week’s end. In order to mitigate this theoretical risk a high collateralization requirement (120%+) should be set or a reserve fund mechanism should be implemented in order to automatically rebalance the collateralization ratio above 100% (in case it falls below 100%), thus making the liquidation process profitable again.
