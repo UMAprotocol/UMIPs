@@ -26,39 +26,35 @@ The definition of this identifiers should be:
 - Identifier name: **EUR/USD**
 - Base Currency: EUR
 - Quote Currency: USD
-- Decimals: 18
 
 -----------------------------------------
 
 - Identifier name: **GBP/USD**
 - Base Currency: GBP
 - Quote Currency: USD
-- Decimals: 18
 
 -----------------------------------------
 
 - Identifier name: **CHF/USD**
 - Base Currency: CHF
 - Quote Currency: USD
-- Decimals: 18
 
 -----------------------------------------
 
 - Identifier name: **XAU/USD**
 - Base Currency: XAU
 - Quote Currency: USD
-- Decimals: 18
 
 -----------------------------------------
 
-Source: https://marketdata.tradermade.com
-Result Processing: Median (if more than 1 source is utilized), otherwise Exact Price
-Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-Price Steps: 0.0001 (4 decimals in more general trading format)
-Rounding: Closest, 0.5 up (> .00005 rounds up, < .00005 rounds down)
-Decimal: 18 (1e18)
-Pricing Interval: 60 seconds
-Dispute timestamp rounding: down
+Source: https://marketdata.tradermade.com <br>
+Result Processing: Median (if more than 1 source is utilized), otherwise Exact Price <br>
+Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus. <br>
+Price Steps: 0.0001 (4 decimals in more general trading format) <br>
+Rounding: Closest, 0.5 up (> .00005 rounds up, < .00005 rounds down) <br>
+Decimal: 18 (1e18) <br>
+Pricing Interval: 60 seconds <br>
+Dispute timestamp rounding: down <br>
 
 ## Rationale
 Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like EUR/USD, so any price feed could be used; however, for convenience, we recommend using the one of TraderMade.
