@@ -53,7 +53,7 @@ The value of STABLESPREAD for a given timestamp can be determined with the follo
 4. Perform A - MUSD + 1
 5. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
 6. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
-7. Take the result of step 6 and divide by the value of ETH/USD 
+7. Take the result of step 6 and divide by the value of ETH/USD.
 8. This result should be rounded to eight decimal places.
  
 Additionally, [CryptoWatch API](https://docs.cryptowat.ch/rest-api/) is a useful reference. This feed should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
@@ -68,4 +68,3 @@ As an example of how one may go about constructing such a feed programmatically,
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users given this is dealing with some of the most liquid stablecoins in the whole cryptoverse, and the relative price volatility of them has been rather low due to their stablecoin properties. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
  
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
-
