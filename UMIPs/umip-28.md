@@ -7,7 +7,7 @@
 | Created    | December 12, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)
-The DVM should support price requests for the STABLESPREAD price index. STABLESPREAD is defined as: `min(max(A - B + 1, 0), 2)`, where `A` refers to an equally weighted basket of {UST, CUSD, BUSD}. B is `MUSD`. UST is TerraUSD, the interchain stablecoin connected by the Cosmos IBC. CUSD is Celo Dollar, the stablecoin on the Celo network. BUSD is Binance USD, a stablecoin issued by Paxos in partnership with Binance. `MUSD` is an autonomous and non-custodial stablecoin on mStable, representing a basket of stablecoins on Ethereum, namely USDT, USDC, TUSD, and DAI. 
+The DVM should support price requests for the STABLESPREAD price index, denonominated in ETH. STABLESPREAD is defined as: `min(max(A - B + 1, 0), 2)`, where `A` refers to an equally weighted basket of {UST, CUSD, BUSD}. B is `MUSD`. UST is TerraUSD, the interchain stablecoin connected by the Cosmos IBC. CUSD is Celo Dollar, the stablecoin on the Celo network. BUSD is Binance USD, a stablecoin issued by Paxos in partnership with Binance. `MUSD` is an autonomous and non-custodial stablecoin on mStable, representing a basket of stablecoins on Ethereum, namely USDT, USDC, TUSD, and DAI. 
 
 ## Motivation
 The DVM currently does not support the STABLESPREAD price index. 
@@ -27,12 +27,13 @@ The definition of this identifier should be:
  
 - Identifier name: STABLESPREAD
 - Base Currency: STABLESPREAD
-- Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT, OKCoin: CUSD/USD} for Celo Dollar, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD
+- Quote Currency: ETH
+- Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT} for CUSD, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD, {Coinbase: ETH/USD, Bitfinex: ETH/USD} for ETH
 - Result Processing: For each constituent asset of the basket, the average of both exchanges
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 8
 - Rounding: Closest, 0.5 up
-- Pricing Interval: 60 seconds
+- Pricing Interval: 1 second
 - Dispute timestamp rounding: down
  
 ## Rationale
@@ -52,7 +53,8 @@ The value of STABLESPREAD for a given timestamp can be determined with the follo
 4. Perform A - MUSD + 1
 5. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
 6. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
-7. This result should be rounded to eight decimal places.
+7. Take the result of step 6 and divide by the value of ETH/USD.
+8. This result should be rounded to eight decimal places.
  
 Additionally, [CryptoWatch API](https://docs.cryptowat.ch/rest-api/) is a useful reference. This feed should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
  
@@ -66,4 +68,3 @@ As an example of how one may go about constructing such a feed programmatically,
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users given this is dealing with some of the most liquid stablecoins in the whole cryptoverse, and the relative price volatility of them has been rather low due to their stablecoin properties. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
  
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
-
