@@ -41,14 +41,14 @@ The definition of this identifiers should be:
 
 -----------------------------------------
 
-Source: https://marketdata.tradermade.com <br>
-Result Processing: None <br>
-Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus. <br>
-Price Steps: 0.00001 (5 decimals in more general trading format) <br>
-Rounding: Closest, 0.5 up (> .000005 rounds up, < .000005 rounds down) <br>
-Scaling Decimals: 18 (1e18) <br>
-Pricing Interval: 60 seconds <br>
-Dispute timestamp rounding: down <br>
+- Source: https://marketdata.tradermade.com
+- Result Processing: None
+- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+- Price Steps: 0.00001 (5 decimals in more general trading format)
+- Rounding: Closest, 0.5 up (> .000005 rounds up, < .000005 rounds down)
+- Scaling Decimals: 18 (1e18)
+- Pricing Interval: 60 seconds
+- Dispute timestamp rounding: down
 
 ## Rationale
 Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like EURUSD, so any price feed could be used; however, for convenience, we recommend using the one of TraderMade.
