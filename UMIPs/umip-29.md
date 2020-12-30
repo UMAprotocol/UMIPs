@@ -46,7 +46,7 @@ Result Processing: Median (if more than 1 source is utilized), otherwise Exact P
 Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus. <br>
 Price Steps: 0.00001 (5 decimals in more general trading format) <br>
 Rounding: Closest, 0.5 up (> .000005 rounds up, < .000005 rounds down) <br>
-Decimal: 18 (1e18) <br>
+Scaling Decimals: 18 (1e18) <br>
 Pricing Interval: 60 seconds <br>
 Dispute timestamp rounding: down <br>
 
