@@ -26,7 +26,8 @@ There is little cost associated with adding this price identifier, as there are 
 The definition of this identifier should be:
  
 - Identifier name: ELASTIC_STABLESPREAD/USDC
-- Base Currency: ELASTIC_STABLESPREAD/USDC
+- Base Currency: ELASTIC_STABLESPREAD
+- Quote Currency: USDC
 - Data Sources: {Uniswap V2: FRAX/ETH} for FRAX, {Uniswap V2: ESD/ETH} for ESD, {Uniswap v2: BAC/ETH} for BAC, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD, {Uniswap v2: USDC/ETH} for ETH
 - Result Processing: For each constituent asset of the basket, the average of exchanges. Normalizing the ETH result to USDC for FRAX, ESD, and BAC.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
