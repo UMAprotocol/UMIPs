@@ -7,7 +7,7 @@
 | Created    | December 28, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)
-The DVM should support price requests for the STABLESPREAD/USDC and STABLESPREAD/BTC price indices, denonominated in USDC. STABLESPREAD/USDC and STABLESPREAD/BTC is defined as: `min(max(A - B + 1, 0), 2)`, where `A` refers to an equally weighted basket of {UST, CUSD, BUSD}. B is `MUSD`. UST is TerraUSD, the interchain stablecoin connected by the Cosmos IBC. CUSD is Celo Dollar, the stablecoin on the Celo network. BUSD is Binance USD, a stablecoin issued by Paxos in partnership with Binance. `MUSD` is an autonomous and non-custodial stablecoin on mStable, representing a basket of stablecoins on Ethereum, namely USDT, USDC, TUSD, and DAI. 
+The DVM should support price requests for the STABLESPREAD/USDC and STABLESPREAD/BTC price indices, denominated in USDC for STABLESPREAD/USDC and in BTC for STABLESPREAD/BTC is defined as: `min(max(A - B + 1, 0), 2)`, where `A` refers to an equally weighted basket of {UST, CUSD, BUSD}. B is `MUSD`. UST is TerraUSD, the interchain stablecoin connected by the Cosmos IBC. CUSD is Celo Dollar, the stablecoin on the Celo network. BUSD is Binance USD, a stablecoin issued by Paxos in partnership with Binance. `MUSD` is an autonomous and non-custodial stablecoin on mStable, representing a basket of stablecoins on Ethereum, namely USDT, USDC, TUSD, and DAI. 
 
 ## Motivation
 The DVM currently does not support the STABLESPREAD/USDC and STABLESPREAD/BTC price indices. 
