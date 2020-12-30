@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-31     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add STABLESPREAD/USDC and STABLESPREAD/BTC as a price identifier              |
+| UMIP Title | Add STABLESPREAD/USDC and STABLESPREAD/BTC as price identifiers             |
 | Authors    | Bae (bae@youmychicfila.com), K (k@youmychicfila.com) |
 | Status     | Last Call                                                                                                                                    |
 | Created    | December 28, 2020                                                                                                                           |
