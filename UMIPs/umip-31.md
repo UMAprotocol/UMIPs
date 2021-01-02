@@ -54,7 +54,7 @@ The objective for STABLESPREAD/USDC and STABLESPREAD/BTC was to construct a port
  
 The value of STABLESPREAD/USDC and STABLESPREAD/BTC for a given timestamp can be determined with the following process.
  
-1. UST, CUSD, BUSD, MUSD should be queried for from the exchanges listed in the "Technical Specification" section for the given timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
+1. UST, CUSD, BUSD, USDC, USDT should be queried for from the exchanges listed in the "Technical Specification" section for the given timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
 2. For each one, the average of the prices should be calculated.
 3. Then, calculate 1/3 * UST + 1/3 * CUSD + 1/3 * BUSD, denote this as `A`
 4. Next, calculate 1/2 * USDC + 1/2 * USDT, denote this as `B`
