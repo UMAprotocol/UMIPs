@@ -42,6 +42,9 @@ The `PerpetualPoolParty` contracts can be found and are available for a review b
 
 # Security considerations
 
-One of the most important considerations is that the forked code is still not audited. The UMA's team has reviewed it, we have done an internal audit and our trusted security partners are auditing it. To mitigate risks, we have opted for a very soft and capped launch (only 20k usd worth of asset will be able to be minted as well as having the `emergencyShutdown` functionality enabled.
+The forked code has been officially audited by a third party company (Halborn), whit whom we are working on security across our whole project. The security audit can be seen [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/blob/dev/docs/security-audits/jarvis-perpetualpoolparty-halborn-audit.pdf)
+Two low impact issues were found by the auditors and will be addressed as soon as possible. 
+
+However the protocol itself (Synthereum) hasn't been audited yet, so there is still the chance of issues arrising.To mitigate all risks, we have opted for a very soft and capped launch (only 20k usd worth of asset will be able to be minted as well as having the `emergencyShutdown` functionality enabled.
 
 Currently there is no economical incentive for liquidating undercapitalized positions (positions where the CR drops below 100%). Although, Forex pairs are not very volatile and rarely move by more than 10% a year, and we have set liquidation at 120% so it is quite unlikely to experience this situation.
