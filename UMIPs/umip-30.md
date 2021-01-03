@@ -7,7 +7,7 @@
 | Created    | December 23, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)
-The DVM should support price requests for the ELASTIC_STABLESPREAD/USDC price index, denominated in USDC. ELASTIC_STABLESPREAD/USDC is defined as: `min(max(A - B + 1, 0), 2)`, where `A` refers to an equally weighted basket of {ESD, FRAX, BAC}. B is `MUSD`. ESD is Empty Set Dollar, an algorithmic stablecoin on Ethereum with a dynamic supply model. FRAX is a fractional-algorithmic stablecoin on Ethereum that operates on a creative approach to maintaining a peg via a partially collateralized approach. BAC is Basis Cash, a dynamic supply stablecoin on Ethereum, essentially a version of what the original Basis project meant to be a few years ago. `MUSD` is an autonomous and non-custodial stablecoin on mStable, representing a basket of stablecoins on Ethereum, namely USDT, USDC, TUSD, and DAI. 
+The DVM should support price requests for the ELASTIC_STABLESPREAD/USDC price index, denominated in USDC. ELASTIC_STABLESPREAD/USDC is defined as: `min(max(A - B + 1, 0), 2)`, where `A` refers to an equally weighted basket of {ESD, FRAX, BAC}. B is an equally weighted basket of {USDC, USDT}. ESD is Empty Set Dollar, an algorithmic stablecoin on Ethereum with a dynamic supply model. FRAX is a fractional-algorithmic stablecoin on Ethereum that operates on a creative approach to maintaining a peg via a partially collateralized approach. BAC is Basis Cash, a dynamic supply stablecoin on Ethereum, essentially a version of what the original Basis project meant to be a few years ago. `USDC` is a centralized stablecoin issued by Circle and Coinbase. `USDT` is a non-transparent centralized stablecoin issued by Tether, currently the most used stablecoin on Ethereum.
 
 ## Motivation
 The DVM currently does not support the ELASTIC_STABLESPREAD/USDC price index. 
@@ -28,7 +28,7 @@ The definition of this identifier should be:
 - Identifier name: ELASTIC_STABLESPREAD/USDC
 - Base Currency: ELASTIC_STABLESPREAD
 - Quote Currency: USDC
-- Data Sources: {Uniswap V2: FRAX/ETH} for FRAX, {Uniswap V2: ESD/ETH} for ESD, {Uniswap v2: BAC/ETH} for BAC, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD, {Uniswap v2: USDC/ETH} for ETH
+- Data Sources: {Uniswap V2: FRAX/ETH} for FRAX, {Uniswap V2: ESD/ETH} for ESD, {Uniswap v2: BAC/ETH} for BAC, {Bitfinex: UST/USD, Kraken: USDT/USD} for USDT, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC, {Uniswap v2: USDC/ETH} for ETH
 - Result Processing: For each constituent asset of the basket, the average of exchanges. Normalizing the ETH result to USDC for FRAX, ESD, and BAC.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 6
@@ -39,21 +39,22 @@ The definition of this identifier should be:
 ## Rationale
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized.
 
-For each of the constituents of ELASTIC_STABLESPREAD/USDC- FRAX, ESD, BAC, MUSD, we picked the most liquid exchange, including both CeFi and DeFi sources for diversity. On the DeFi side, Uniswap V2 and Balancer are widely regarded as high quality AMMs and due to their on-chain existence, are highly-available by default. 
+For each of the constituents of ELASTIC_STABLESPREAD/USDC- FRAX, ESD, BAC, USDC, USDT we picked the most liquid exchange, including both CeFi and DeFi sources for diversity. On the DeFi side, Uniswap V2 and Balancer are widely regarded as high quality AMMs and due to their on-chain existence, are highly-available by default. 
 
-The objective for ELASTIC_STABLESPREAD/USDC was to construct a portfolio of the most liquid and active Ethereum based stablecoins, both traditional and the newer elastic supply ones, and rather than using some complicated weighting scheme, we are initially imposing uniform weighting. If it turns out there is some user feedback around doing a market-cap weighting, ADV-weighting, etc. that can be future work for us. On the MUSD side, we were deciding between that and DUSD as both are convex combinations of liquid stablecoins but the latter is not liquid or active compared to the former. We also experimented with a variety of functional forms of computing a divergence of these two baskets to represent a credit spread. Computing the ratio of them had some promising properties, namely non-negativity constraints, but the nonlinearity of it had some subpar properties that might cause unfriendly UX as liquidations might cascade if the denominator went down X% as opposed to the numerator. So, we settled on an affine transformation, where if both baskets are indeed the same then the result will be 1.
+The objective for ELASTIC_STABLESPREAD/USDC was to construct a portfolio of the most liquid and active Ethereum based stablecoins, both traditional and the newer elastic supply ones, and rather than using some complicated weighting scheme, we are initially imposing uniform weighting. If it turns out there is some user feedback around doing a market-cap weighting, ADV-weighting, etc. that can be future work for us. We also experimented with a variety of functional forms of computing a divergence of these two baskets to represent a credit spread. Computing the ratio of them had some promising properties, namely non-negativity constraints, but the nonlinearity of it had some subpar properties that might cause unfriendly UX as liquidations might cascade if the denominator went down X% as opposed to the numerator. So, we settled on an affine transformation, where if both baskets are indeed the same then the result will be 1.
 
 ## Implementation
  
 The value of ELASTIC_STABLESPREAD/USDC for a given timestamp can be determined with the following process.
  
-1. ESD, FRAX, BAC, MUSD should be queried for from the exchanges listed in the "Technical Specification" section for the given timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
+1. ESD, FRAX, BAC, USDC, USDT should be queried for from the exchanges listed in the "Technical Specification" section for the given timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
 2. For each one, the average of the prices should be calculated.
 3. Then, calculate 1/3 * ESD + 1/3 * FRAX + 1/3 * BAC, denote this as `A`, which is in ETH terms
-4. Perform A * USDC/ETH - MUSD + 1
-5. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
-6. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
-7. This result should be rounded to six decimal places.
+4. Next, calculate 1/2 * USDC + 1/2 * USDT, denote this as `B`
+5. Perform A * USDC/ETH - B + 1
+6. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
+7. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
+8. This result should be rounded to six decimal places.
  
 Additionally, [CryptoWatch API](https://docs.cryptowat.ch/rest-api/) is a useful reference. This feed should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
  

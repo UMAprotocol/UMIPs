@@ -7,7 +7,7 @@
 | Created    | December 28, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)
-The DVM should support price requests for the STABLESPREAD/USDC and STABLESPREAD/BTC price indices, denominated in USDC for STABLESPREAD/USDC and in BTC for STABLESPREAD/BTC. These indices are defined as: `min(max(A - B + 1, 0), 2)`, where `A` refers to an equally weighted basket of {UST, CUSD, BUSD}. B is `MUSD`. UST is TerraUSD, the interchain stablecoin connected by the Cosmos IBC. CUSD is Celo Dollar, the stablecoin on the Celo network. BUSD is Binance USD, a stablecoin issued by Paxos in partnership with Binance. `MUSD` is an autonomous and non-custodial stablecoin on mStable, representing a basket of stablecoins on Ethereum, namely USDT, USDC, TUSD, and DAI. 
+The DVM should support price requests for the STABLESPREAD/USDC and STABLESPREAD/BTC price indices, denominated in USDC for STABLESPREAD/USDC and in BTC for STABLESPREAD/BTC. These indices are defined as: `min(max(A - B + 1, 0), 2)`, where `A` refers to an equally weighted basket of {UST, CUSD, BUSD}. B is an equally weighted basket of {USDC, USDT}. UST is TerraUSD, the interchain stablecoin connected by the Cosmos IBC. CUSD is Celo Dollar, the stablecoin on the Celo network. BUSD is Binance USD, a stablecoin issued by Paxos in partnership with Binance. USDC is a centralized stablecoin issued by Circle and Coinbase. USDT is a non-transparent centralized stablecoin issued by Tether, currently the most used stablecoin on Ethereum.
 
 ## Motivation
 The DVM currently does not support the STABLESPREAD/USDC and STABLESPREAD/BTC price indices. 
@@ -35,7 +35,7 @@ The definition of this identifier should be:
 - Quote Currency: BTC
 - Decimals: 8
 
-- Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT} for CUSD, {Balancer: MUSD/USDC, Uniswap V2: MUSD/USDC} for MUSD, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC,  {Kraken: BTC/USD, Bitstamp: BTC/USD} for BTC
+- Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT} for CUSD, {Bitfinex: UST/USD, Kraken: USDT/USD} for USDT, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC, {Kraken: BTC/USD, Bitstamp: BTC/USD} for BTC
 - Result Processing: For each constituent asset of the basket, the average of both exchanges
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Rounding: Closest, 0.5 up
@@ -46,22 +46,23 @@ The definition of this identifier should be:
 ## Rationale
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price indices to ensure that sponsors are adequately collateralized.
 
-For each of the constituents of STABLESPREAD/USDC and STABLESPREAD/BTC- UST, CUSD, BUSD, MUSD, we picked the two most liquid exchanges, including both CeFi and DeFi sources for diversity. Further, each of the CeFi exchanges has "crypto SOTA" APIs with free REST + WSS functionality with generous rate limits and robust endpoints for prices that any user may hit, both real time and historically speaking. Most of these CeFi exchanges have 24/7 customer support + devops team ensuring highly available programmatic access and have strong redundancy across a variety of geographies. On the DeFi side, Uniswap V2 and Balancer are widely regarded as high quality AMMs. 
+For each of the constituents of STABLESPREAD/USDC and STABLESPREAD/BTC- UST, CUSD, BUSD, USDC, USDT, we picked the two most liquid exchanges, including both CeFi and DeFi sources for diversity. Further, each of the CeFi exchanges has "crypto SOTA" APIs with free REST + WSS functionality with generous rate limits and robust endpoints for prices that any user may hit, both real time and historically speaking. Most of these CeFi exchanges have 24/7 customer support + devops team ensuring highly available programmatic access and have strong redundancy across a variety of geographies. On the DeFi side, Uniswap V2 and Balancer are widely regarded as high quality AMMs. 
 
-The objective for STABLESPREAD/USDC and STABLESPREAD/BTC was to construct a portfolio of the most liquid and active non-Ethereum based stablecoins, and rather than using some complicated weighting scheme, we are initially imposing uniform weighting. If it turns out there is some user feedback around doing a market-cap weighting, ADV-weighting, etc. that can be future work for us. On the MUSD side, we were deciding between that and DUSD as both are convex combinations of liquid stablecoins but the latter is not liquid or active compared to the former. We also experimented with a variety of functional forms of computing a divergence of these two baskets to represent a credit spread. Computing the ratio of them had some promising properties, namely non-negativity constraints, but the nonlinearity of it had some subpar properties that might cause unfriendly UX as liquidations might cascade if the denominator went down X% as opposed to the numerator. So, we settled on an affine transformation, where if both baskets are indeed the same then the result will be 1.
+The objective for STABLESPREAD/USDC and STABLESPREAD/BTC was to construct a portfolio of the most liquid and active non-Ethereum based stablecoins, and rather than using some complicated weighting scheme, we are initially imposing uniform weighting. If it turns out there is some user feedback around doing a market-cap weighting, ADV-weighting, etc. that can be future work for us. We also experimented with a variety of functional forms of computing a divergence of these two baskets to represent a credit spread. Computing the ratio of them had some promising properties, namely non-negativity constraints, but the nonlinearity of it had some subpar properties that might cause unfriendly UX as liquidations might cascade if the denominator went down X% as opposed to the numerator. So, we settled on an affine transformation, where if both baskets are indeed the same then the result will be 1.
 
 ## Implementation
  
 The value of STABLESPREAD/USDC and STABLESPREAD/BTC for a given timestamp can be determined with the following process.
  
-1. UST, CUSD, BUSD, MUSD should be queried for from the exchanges listed in the "Technical Specification" section for the given timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
+1. UST, CUSD, BUSD, USDC, USDT should be queried for from the exchanges listed in the "Technical Specification" section for the given timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
 2. For each one, the average of the prices should be calculated.
 3. Then, calculate 1/3 * UST + 1/3 * CUSD + 1/3 * BUSD, denote this as `A`
-4. Perform A - MUSD + 1
-5. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
-6. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
-7. Take the result of step 6 and divide by the value of USDC/USD for STABLESPREAD/USDC and BTC/USD for STABLESPREAD/BTC
-8. This result should be rounded to the decimal places specified in the `Technical Specification` section for each: 8 for STABLESPREAD/BTC and 6 for STABLESPREAD/USDC.
+4. Next, calculate 1/2 * USDC + 1/2 * USDT, denote this as `B`
+5. Perform A - B + 1
+6. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
+7. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
+8. Take the result of step 6 and divide by the value of USDC/USD for STABLESPREAD/USDC and BTC/USD for STABLESPREAD/BTC
+9. This result should be rounded to the decimal places specified in the `Technical Specification` section for each: 8 for STABLESPREAD/BTC and 6 for STABLESPREAD/USDC.
  
 Additionally, [CryptoWatch API](https://docs.cryptowat.ch/rest-api/) is a useful reference. This feed should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
  
