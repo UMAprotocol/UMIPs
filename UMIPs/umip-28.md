@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add STABLESPREAD as a price identifier              |
 | Authors    | Bae (bae@youmychicfila.com), K (k@youmychicfila.com) |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | December 12, 2020                                                                                                                           |
  
 ## Summary (2-5 sentences)
