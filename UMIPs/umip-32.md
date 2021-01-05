@@ -1,9 +1,9 @@
 ## Headers
 | UMIP-32     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add CNYUSD as price identifiers              |
+| UMIP Title | Add CNYUSD as a price identifier              |
 | Authors    | Shankai Ji, jishankai@gmail.com |
-| Status     | Draft                                                                                                                                  |
+| Status     | Last Call                                                                                                                                  |
 | Created    | December 16, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
