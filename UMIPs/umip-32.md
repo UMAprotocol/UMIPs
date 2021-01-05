@@ -44,7 +44,7 @@ The value of this identifier for a given timestamp should be determined by query
 ```
 https://marketdata.tradermade.com/api/v1/minute_historical?currency=CNYUSD&date_time=2020-11-11-13:50&api_key={apikey}
 ```
-and use the close price as reference. Because we use the endpoint with a 10 minute granularity, to clarify if the price request timestamp is as ex 13:01:59, voters should query 13:00 as a timestamp. If the price request timestamp is as ex 13:06:59, votes should query 13:10 as a timestamp. 
+and use the close price as reference. Because we use the endpoint with a 10 minute granularity, Voters should rounding all timestamps down and make them fall on the 10 minute interval, to clarify if the price request timestamp is as ex 13:01:59, voters should query 13:00 as a timestamp.
 
 ### TraderMade Historical API
 TraderMade has CNYUSD historical data available with a 10 minute granularity. 
@@ -67,13 +67,9 @@ The response is:
   "request_time": "Tue, 29 Dec 2020 09:02:04 GMT"
 }
 ```
+Voters should use the `close` price and round to 6 decimals to get the CNYUSD result.
 
-It should be noted that requests that do not fall on the 10 minute interval do not return data. Voters should round time down or up to the closest 10 minute interval if they request the price which doesn't fall on the 10 minute interval.
-
-| range         | methods         |
-|---------------|-----------------|
-| 0 ~ 5 minute  | round down to 0 |
-| 5 ~ 10 minute | round up to 10  |
+It should be noted that requests that do not fall on the 10 minute interval do not return data. Voters should round time down to the closest 10 minute interval if they request the price which doesn't fall on the 10 minute interval.
 
 ### TraderMade Live API
 
