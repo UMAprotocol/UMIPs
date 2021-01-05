@@ -23,6 +23,7 @@ The definition of these identifiers should be:
 - Base Currency: CNY
 - Quote Currency: USD
 - Result Processing: None
+- Collateral Decimals: 18
 - Price Steps: 0.000001 (6 decimals in more general trading format)
 - Date Source: TraderMade
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
