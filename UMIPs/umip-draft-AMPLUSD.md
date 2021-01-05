@@ -1,6 +1,6 @@
 ## Headers
 
-- UMIP <#>
+- UMIP-33
 - UMIP title: Add AMPLUSD, USDAMPL as price identifiers
 - Author (alex, abgtrading30@gmail.com)
 - Status: Draft
@@ -30,6 +30,7 @@ The definition of this identifier should be:
 - Data Sources: FTX, Uniswap, Gate.io
 - Result Processing: Median
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+- Collateral Decimals: 6
 - Price Steps: 0.000001 (6 decimals in more general trading format)
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 1 seconds
@@ -44,6 +45,7 @@ The definition of this identifier should be:
 - Result Processing: Median
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 0.000001 (6 decimals in more general trading format)
+- Collateral Decimals: 9
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 1 seconds
 - Dispute timestamp rounding: down
