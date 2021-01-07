@@ -28,7 +28,7 @@ The definition of this identifier should be:
 - Identifier name: ELASTIC_STABLESPREAD/USDC
 - Base Currency: ELASTIC_STABLESPREAD
 - Quote Currency: USDC
-- Data Sources: {Uniswap V2: FRAX/ETH} for FRAX, {Uniswap V2: ESD/ETH} for ESD, {Uniswap v2: BAC/ETH} for BAC, {Bitfinex: UST/USD, Kraken: USDT/USD} for USDT, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC, {Uniswap v2: USDC/ETH} for ETH
+- Data Sources: {Uniswap V2: FRAX/USDC} for FRAX, {Uniswap V2: ESD/USDC} for ESD, {Uniswap v2: BAC/DAI} for BAC, {Bitfinex: UST/USD, Kraken: USDT/USD} for USDT, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC
 - Result Processing: For each constituent asset of the basket, the average of exchanges. Normalizing the ETH result to USDC for FRAX, ESD, and BAC.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 6
@@ -49,9 +49,9 @@ The value of ELASTIC_STABLESPREAD/USDC for a given timestamp can be determined w
  
 1. ESD, FRAX, BAC, USDC, USDT should be queried for from the exchanges listed in the "Technical Specification" section for the given timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
 2. For each one, the average of the prices should be calculated.
-3. Then, calculate 1/3 * ESD + 1/3 * FRAX + 1/3 * BAC, denote this as `A`, which is in ETH terms
+3. Then, calculate 1/3 * ESD + 1/3 * FRAX + 1/3 * BAC, denote this as `A`
 4. Next, calculate 1/2 * USDC + 1/2 * USDT, denote this as `B`
-5. Perform A * USDC/ETH - B + 1
+5. Perform A - B + 1
 6. Perform the maximum of the result of step 4 and 0. This is to ensure non-negativity. 
 7. Perform the minimum of the result of step 5 and 2. This is to ensure symmetry.
 8. This result should be rounded to six decimal places.
