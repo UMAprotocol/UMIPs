@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add CNYUSD as a price identifier              |
 | Authors    | Shankai Ji, jishankai@gmail.com |
-| Status     | Last Call                                                                                                                                  |
+| Status     | Final                                                                                                                                  |
 | Created    | December 16, 2020                                                                                                                           |
 
 ## Summary (2-5 sentences)
