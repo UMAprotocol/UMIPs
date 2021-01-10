@@ -10,7 +10,7 @@
 ## Summary
 
 
-This UMIP will add the following BadgerDAO Setts Vauls as approved collateral currencies.
+This UMIP will add the following [BadgerDAO Setts Vauls](https://badger.finance/) as approved collateral currencies.
 - bwBTC/ETH SLP
 - brenBTCcrv LP
 - bsBTCcrv LP
@@ -18,6 +18,8 @@ This UMIP will add the following BadgerDAO Setts Vauls as approved collateral cu
 - bhrenBTCcrv LP 
 
  This will involve adding it to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 0.000000026 wBTC/ETH SLP, 0.02 brenBTCcrv LP,  0.02 bsBTCcrv LP, 0.02 btBTCcrv LP, 0.02 bhrenBTCcrv LP per request.
+
+View [here](https://badgerdao.medium.com/sett-vault-user-guide-9040b2f4b7a4) for an overview of Setts Vaults
 
 ## Motivation
 
