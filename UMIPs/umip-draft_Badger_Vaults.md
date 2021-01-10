@@ -1,13 +1,14 @@
 # Headers
 
-| UMIP-   |                                     |
+| UMIP - X |                                     |
 | ---------- | ----------------------------------- |
-| UMIP Title | Add BADGERDAO Setts Vaults as collateral currencies |
+| UMIP Title | Add BadgerDAO Setts Vaults as collateral currencies |
 | Authors    | BitcoinPalmer  |
 | Status     | Draft                               |
 | Created    | January 7, 2021                    |
 
 ## Summary
+
 
 This UMIP will add the following BadgerDAO Setts Vauls as approved collateral currencies.
 - bwBTC/ETH SLP
@@ -20,29 +21,30 @@ This UMIP will add the following BadgerDAO Setts Vauls as approved collateral cu
 
 ## Motivation
 
-BTC is the world’s largest and most popular cryptocurrency by market capitalization as well as traded volume. Many holders of BTC like to borrow against their BTC to get leverage on their BTC. At the time of writing, over 7,000 WBTC are locked in MakerDAO in this fashion.
+BadgerDAO’s first product is Sett vault, an automated DeFi aggregator focused on tokenized BTC assets. Users that tokenized Bitcoin in our vaults receive a corresponding “b” denominated token in return that represents their vault position. Unfortunately these vault positions then become illiquid. 
 
-To allow synthetic tokens created with the EMP to take advantage of this liquidity and desire for leverage, an ERC20-compliant representation of BTC is required. renBTC is an ERC20 token backed 1:1 with BTC using the decentralized Ren Protocol.
+Many of BadgerDAO's users would like to borrow against their BTC vault positions as collateral to mint Badger Dollars. At the time of writing, Badger’s Sett Vaults have brought in over 600m in TVL. To allow synthetic tokens created with the EMP to take advantage of this liquidity,  bwBTC/ETH SLP, brenBTCcrv LP, bsBTCcrv LP, btBTCcrv LP, bhrenBTCcrv LP would be great additions as collateral currencies and showcase DeFi’s ability of “money legos”.
 
-renBTC as collateral is expected to have a variety of deployments. The timing for adding it now, and the immediate application, is for use with USDBTC, which will enable the creation of yUSD, a yielding dollar token. This price identifier is described in [UMIP-7](./umip-7.md).
+bwBTC/ETH SLP, brenBTCcrv LP, bsBTCcrv LP, btBTCcrv LP, bhrenBTCcrv LP as collateral is expected to have a variety of deployments. The timing for adding it now, and the immediate application, is for use with USDbwBTC/ETH SLP, USDbrenBTCcrv LP, USDbsBTCcrv LP, USDbtBTCcrv LP, USDbhrenBTCcrv LP  which will enable the creation of Badger Dollars, a yield dollar token. This price identifier is described in UMIP X.
 
 ## Technical Specification
 
-To accomplish this upgrade, three changes need to be made:
+To accomplish this upgrade, six changes need to be made:
 
-- The renBTC address, 0xeb4c2781e4eba804ce9a9803c67d0893436bb27d, needs to be added to the collateral currency whitelist introduced in UMIP-8.
-- A final fee of 0.018 needs to be added for renBTC in the Store contract.
-- The precision for the USDBTC price identifier needs to be amended to 8 decimals instead of the usual 18 in order to comply with renBTC’s 8 decimals of precision.
+- The wBTC/ETH SLP address, 0x758a43ee2bff8230eeb784879cdcff4828f2544d, needs to be added to the collateral currency whitelist introduced in UMIP-34
+- The brenBTCcrv LP address, 0x6def55d2e18486b9ddfaa075bc4e4ee0b28c1545, needs to be added to the collateral currency whitelist introduced in UMIP-34
+- The bsBTCcrv LP address, 0xd04c48A53c111300aD41190D63681ed3dAd998eC, needs to be added to the collateral currency whitelist introduced in UMIP-34
+- The btBTCcrv LP address, 0xb9D076fDe463dbc9f915E5392F807315Bf940334, needs to be added to the collateral currency whitelist introduced in UMIP-35
+- The bhrenBTCcrv LP address, 0xAf5A1DECfa95BAF63E0084a35c62592B774A2A87, needs to be added to the collateral currency whitelist introduced in UMIP-35
+- A final fee of 0.000000026 for the wBTC/ETH SLP and 0.02 for the bwBTC/ETH SLP, brenBTCcrv LP, bsBTCcrv LP, btBTCcrv LP, bhrenBTCcrv LP assets needs to be added in the Store contract.
+
 
 ## Rationale
 
-The rationale behind this change is giving deployers more useful collateral currency options. renBTC needs to be used instead of BTC due to it being an ERC20 representing BTC on the Ethereum blockchain, whereas native BTC does not exist on the Ethereum blockchain.
+With $600M in bitcoin assets illiquid, the ability to use it as collateral to borrow Badger Dollars, reopens the possibilities of participating in open finance. This is a big step forward for DeFi as an industry. 
 
-renBTC was chosen in particular due to the fact that renBTC is the most popular (and largest) truly decentralized BTC-representing coin on the Ethereum blockchain. It is not being chosen at the exclusion of other possible BTC-representing coins, but it is a natural first choice for this purpose.
+UMA will be the first to use BTC Sett vault LP tokens as collateral and may see an significant increase in TVL due to the strong desire for the Badger Sett stakers to get leverage while building trust with the underlying UMA protocol. 
 
-While wBTC currently has larger market dominance than renBTC, it is worth noting that renBTC has already gained significant traction in the DeFi space. There exists a large amount of renBTC liquidity on Curve Finance ($98m), Balancer ($5m), and Uniswap ($150k).
-
-Large projects like Compound and Maker already have wBTC as a collateral type, so using renBTC within the UMA ecosystem can serve to differentiate the UMA community in terms of promoting a more decentralized version of BTC on the Ethereum blockchain.
 
 ## Implementation
 
@@ -50,8 +52,6 @@ This change has no implementation other than adding the collateral type to the w
 
 ## Security considerations
 
-renBTC is minted with real BTC via RenVM, a trustless and decentralized virtual machine run by a network of nodes known as Darknodes. A user first sends BTC to a dedicated Bitcoin address generated by a dapp and verified by RenVM. The BTC is held in custody by RenVM's decentralized network of Darknodes. renBTC is backed 1:1 with BTC.
+Badger’s Sett Vault LP tokens are backed by real $BTC represented in the curve.fi pool or Sushiswap decentralized exchange, the LP tokens are a persistently valuable ERC20 token, including it as a collateral currency should impose no additional risk to the protocol.
 
-Since renBTC is minted trustlessly as a token backed via the Ren Protocol, including it as a collateral currency should impose minimal risk to the protocol.
-
-The only security implication is for contract deployers and users who are considering using EMP contracts with renBTCC as the collateral currency. They should recognize that, relative to most fiat currencies, renBTC is much more volatile than Dai. This volatility should be taken into account when parameterizing or using these EMP contracts.
+The only security implication is for contract deployers and users who are considering using EMP contracts with bwBTC/ETH SLP, brenBTCcrv LP, bsBTCcrv LP, btBTCcrv LP, bhrenBTCcrv LP as the collateral currency. They should recognize that, relative to most fiat currencies, bwBTC/ETH SLP, brenBTCcrv LP, bsBTCcrv LP, btBTCcrv LP, bhrenBTCcrv LP are much more volatile than Dai. This volatility should be taken into account when parameterizing or using these EMP contracts.
