@@ -16,6 +16,7 @@ This UMIP will add the following [BadgerDAO Setts Vauls](https://badger.finance/
 - bsBTCcrv LP
 - btBTCcrv LP
 - bhrenBTCcrv LP 
+- bBadger
 
  This will involve adding it to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 0.000000026 wBTC/ETH SLP, 0.02 brenBTCcrv LP,  0.02 bsBTCcrv LP, 0.02 btBTCcrv LP, 0.02 bhrenBTCcrv LP per request.
 
@@ -33,12 +34,15 @@ bwBTC/ETH SLP, brenBTCcrv LP, bsBTCcrv LP, btBTCcrv LP, bhrenBTCcrv LP as collat
 
 To accomplish this upgrade, six changes need to be made:
 
-- The wBTC/ETH SLP address, 0x758a43ee2bff8230eeb784879cdcff4828f2544d, needs to be added to the collateral currency whitelist introduced in UMIP-34
-- The brenBTCcrv LP address, 0x6def55d2e18486b9ddfaa075bc4e4ee0b28c1545, needs to be added to the collateral currency whitelist introduced in UMIP-34
-- The bsBTCcrv LP address, 0xd04c48A53c111300aD41190D63681ed3dAd998eC, needs to be added to the collateral currency whitelist introduced in UMIP-34
-- The btBTCcrv LP address, 0xb9D076fDe463dbc9f915E5392F807315Bf940334, needs to be added to the collateral currency whitelist introduced in UMIP-35
-- The bhrenBTCcrv LP address, 0xAf5A1DECfa95BAF63E0084a35c62592B774A2A87, needs to be added to the collateral currency whitelist introduced in UMIP-35
+- The wBTC/ETH SLP address, 0x758a43ee2bff8230eeb784879cdcff4828f2544d, needs to be added to the collateral currency whitelist 
+- The brenBTCcrv LP address, 0x6def55d2e18486b9ddfaa075bc4e4ee0b28c1545, needs to be added to the collateral currency whitelist 
+- The bsBTCcrv LP address, 0xd04c48A53c111300aD41190D63681ed3dAd998eC, needs to be added to the collateral currency whitelist 
+- The btBTCcrv LP address, 0xb9D076fDe463dbc9f915E5392F807315Bf940334, needs to be added to the collateral currency whitelist 
+- The bhrenBTCcrv LP address, 0xAf5A1DECfa95BAF63E0084a35c62592B774A2A87, needs to be added to the collateral currency whitelist 
+- The bBadger address, 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28, needs to be added to the collateral currency whitelist 
 - A final fee of 0.000000026 for the wBTC/ETH SLP and 0.02 for the bwBTC/ETH SLP, brenBTCcrv LP, bsBTCcrv LP, btBTCcrv LP, bhrenBTCcrv LP assets needs to be added in the Store contract.
+- A final fee of XXX for bBadger asset needs to be added in the Store contract.
+
 
 
 ## Rationale
