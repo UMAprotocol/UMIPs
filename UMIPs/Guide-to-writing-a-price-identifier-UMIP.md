@@ -66,13 +66,13 @@ This section should clearly explain the types of financial products that will be
 
 <br>
 
-### Example 
+> ### **Example** 
 
-The DVM currently does not support the USD/ETH price index. Supporting the USD/ETH price identifier would enable the creation of zero-coupon fixed-rate dollar loans, if collateralized by WETH. This creates positions similar to using ETH in the MakerDAO system to mint Dai.
+> The DVM currently does not support the USD/ETH price index. Supporting the USD/ETH price identifier would enable the creation of zero-coupon fixed-rate dollar loans, if collateralized by WETH. This creates positions similar to using ETH in the MakerDAO system to mint Dai.
 
-Given a current USD/ETH price of .001 (ETH/USD is $1,000), Alice (a minter) would interact with an expiring contract collateralized in WETH by using 0.2 WETH (worth $200) as collateral to mint synthetic tokens at a 200% collateralization ratio. 
+> Given a current USD/ETH price of .001 (ETH/USD is $1,000), Alice (a minter) would interact with an expiring contract collateralized in WETH by using 0.2 WETH (worth $200) as collateral to mint synthetic tokens at a 200% collateralization ratio. 
 
-When the contract expires at the end of the month, the USDETH price has moved down to .0005 (ETH/USD is $2,000). Alice’s position now has a collateralization ratio of 400% and each synthetic can be redeemed for .0005 WETH. 
+> When the contract expires at the end of the month, the USDETH price has moved down to .0005 (ETH/USD is $2,000). Alice’s position now has a collateralization ratio of 400% and each synthetic can be redeemed for .0005 WETH. 
 
 <br> 
 
@@ -159,7 +159,9 @@ Please provide a link to your price feed pull request.
 ### **Base Currency** - [BASE CURRENCY]
 <br>
 
-> Define what price will be reported. If your identifier is a currency pair, this is the numerator of your pair.
+1. What price will be reported?
+
+>>If your identifier is a currency pair, this is the numerator of your pair.
 
 > **Example**
 
@@ -170,19 +172,20 @@ Please provide a link to your price feed pull request.
 ### **Quote currency** - [QUOTE CURRENCY]
 <br>
 
-Define what the price will be denominated in. If your price identifier is a currency pair, your quote currency will be the
+1. What will the price be denominated in? 
+
+>> If your price identifier is a currency pair, your quote currency will be the
 denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
-
-<be>
-
-
-**Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.**
 
 <br>
 
-**Example** 
+> **Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.**
 
-If the price identifier is USD/BTC, this is BTC. If the price identifier is the Bitcoin Dominance Percentage, this is none.
+<br>
+
+>**Example** 
+
+>If the price identifier is USD/BTC, this is BTC. If the price identifier is the Bitcoin Dominance Percentage, this is none.
 
 <br>
 
@@ -205,9 +208,9 @@ If the price identifier is USD/BTC, this is BTC. If the price identifier is the 
 
 >>> a. Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency. 
 
-**Example**
+> **Example**
 
-USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+> USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
 
 <br>
 
@@ -216,20 +219,23 @@ USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218
 
 1. What decimal place should the price identifier be rounded to by UMA tokenholders when submitting price data to the DVM?
 
->>>**Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+>>**Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
 
-**Example** 
+<br>
 
-Round to 3 decimal places. 
+>>**Example** 
 
-If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
+>>Round to 3 decimal places. 
+
+>>If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
+
 <br>
 
 # RATIONALE
 
 The rationale should flesh out the specification by describing what motivated the design and why particular design decisions were made, as well as any alternative designs that were considered.
 
-### Example questions
+### **Example questions**
 <br>
 
 - Why this implementation of the identifier as opposed to other implementation designs?
@@ -266,7 +272,7 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 >>>c. The input processing can typically be denoted as "Human intervention in extreme circumstances where the result differs from broad market consensus".
 <br>
 
-3. **Result processing**
+4. **Result processing**
 >>> a. What type of processing should voters perform to determine the final price of an asset (e.g., take the median or mode of all votes submitted)?
 
 <br>
@@ -285,7 +291,7 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 
 <br>
 
-**Example security section**
+**Example Security Section**
 
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. 
 
