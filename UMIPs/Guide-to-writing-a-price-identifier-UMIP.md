@@ -50,7 +50,7 @@ If UMA tokenholders do not approve a proposal, or the UMIP is fundamentally brok
 
 ### Example 
 
-- The DVM should support price requests for the [Base currency / Quote currency] price index.
+The DVM should support price requests for the [Base currency / Quote currency] price index.
 
 <br>
 
@@ -257,27 +257,27 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 <br>
 
 1. **What prices should be queried for and from which markets?**
- - This should match the markets and pairs listed in the `Markets and Data Sources` section. It is recommended to have prices from 3 or more markets. 
+    - This should match the markets and pairs listed in the `Markets and Data Sources` section. It is recommended to have prices from 3 or more markets. 
 
 2. **Pricing interval**
--  Should timestamps for pricing queries be rounded?
+    -  Should timestamps for pricing queries be rounded?
 <br>
 
     - Price feeds do not always have granularity in seconds, so this specifies how to round the timestamp. For example, if you had a pricing interval of 1 minute (which is common), it means it would round 10:50:45 to 10:50:00.
 <br>
 
 3. **Input processing**
-- Denote if and why UMA tokenholders should change the calculation method for the price identifier. 
+    - Denote if and why UMA tokenholders should change the calculation method for the price identifier. 
 <br>
 
     - For example, for ETH/USD price requests, inputs are results received from exchanges and if an exchange is no longer valid, then human intervention is required. 
 
 
-- The input processing can typically be denoted as "Human intervention in extreme circumstances where the result differs from broad market consensus".
+    - The input processing can typically be denoted as "Human intervention in extreme circumstances where the result differs from broad market consensus".
 <br>
 
 4. **Result processing**
-- What type of processing should voters perform to determine the final price of an asset (e.g., take the median or mode of all votes submitted)? 
+    - What type of processing should voters perform to determine the final price of an asset (e.g., take the median or mode of all votes submitted)? 
     - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average". 
 
 <br>
