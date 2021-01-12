@@ -61,7 +61,7 @@ This section should clearly explain the types of financial products that will be
 1. What are the financial positions enabled by creating this synthetic that do not already exist?
 2. Please provide an example of a person interacting with a contract that uses this price identifier. 
     - Remember, price identifiers **return the units of the collateral currency**. 
-    >> - For example, if at expiry the price id returns 1 and the contract is collateralized in renBTC, each synth would be worth 1 renBTC.
+     - For example, if at expiry the price id returns 1 and the contract is collateralized in renBTC, each synth would be worth 1 renBTC.
 3. Consider adding market data  (e.g., if we add a “Dai alternative,” the author could show the market size of Dai)
 
 <br>
@@ -82,23 +82,27 @@ This section should clearly explain the types of financial products that will be
 <br>
 
 1. What markets should the price be queried from? It is recommended to have at least 3 markets. <br> 
-   >  a. Which specific pairs should be queried from each market?
+
+    - Which specific pairs should be queried from each market?
 2. Provide recommended endpoints to query for real-time prices from each market listed. 
-    > a. These should match the data sources used in your `Price Feed Implementation`. 
+    - These should match the data sources used in your `Price Feed Implementation`. 
     <br>
-     > b. How often is the provided price updated?
-3. Provide recommended endpoints to query for historical prices from each market listed. 
+3. How often is the provided price updated?
+4. Provide recommended endpoints to query for historical prices from each market listed. 
 
-    > a. Do these sources allow for querying up to 74 hours of historical data? 
+    - Do these sources allow for querying up to 74 hours of historical data? 
     <br>
-     > b. How often is the provided price updated?
-4. Is an API key required to query these sources?  
 
-    > a. Is there a cost associated with usage? 
+    - How often is the provided price updated?
+5. Is an API key required to query these sources?  
+
+    - Is there a cost associated with usage? 
     <br>
-     > b. If there is a free tier available, how many queries does it allow for?
+
+    -  If there is a free tier available, how many queries does it allow for?
      <br>
-    > c. What would be the cost of sending 15,000 queries?
+     
+    - What would be the cost of sending 15,000 queries?
 
 <br>
 
@@ -148,44 +152,44 @@ Please provide a link to your price feed pull request.
 ### **Price Identifier Name** - [NAME]
 <br>
 
-> If your identifier name is less than 8 characters, the price ID should be written as [BASEQUOTE] (e.g., ETHUSD). 
+- If your identifier name is less than 8 characters, the price ID should be written as [BASEQUOTE] (e.g., ETHUSD). 
 
-> If your identifier name is greater than 8 characters, the price ID should be written as [BASE/QUOTE] (e.g., STABLESPREAD/USDC)
+- If your identifier name is greater than 8 characters, the price ID should be written as [BASE/QUOTE] (e.g., STABLESPREAD/USDC)
 
-> If your identifier does not have a quote currency, the Price ID should be written as [NAME] 
+- If your identifier does not have a quote currency, the Price ID should be written as [NAME] 
 
 <br>
 
 ### **Base Currency** - [BASE CURRENCY]
 <br>
-
 1. What price will be reported?
 
->>If your identifier is a currency pair, this is the numerator of your pair.
+- If your identifier is a currency pair, this is the numerator of your pair.
 
-> **Example**
+ **Example**
 
-> If your price identifier is ETH/BTC, this is ETH. 
+- If your price identifier is ETH/BTC, this is ETH. 
 
 <br>
 
 ### **Quote currency** - [QUOTE CURRENCY]
 <br>
-
 1. What will the price be denominated in? 
 
->> If your price identifier is a currency pair, your quote currency will be the
-denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. 
+
+- If your price identifier does not have a quote currency, please explain the reasoning behind this.
 
 <br>
 
-> **Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.**
+ **Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.**
 
 <br>
 
->**Example** 
+**Example** 
 
->If the price identifier is USD/BTC, this is BTC. If the price identifier is the Bitcoin Dominance Percentage, this is none.
+If the price identifier is USD/BTC, this is BTC. If the price identifier is the Bitcoin Dominance Percentage, this is none.
 
 <br>
 
@@ -197,37 +201,36 @@ denominator of your currency pair. If your price identifier does not have a quot
 
 2. Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
-3. Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies. 
+3. Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies. 
 
 <br>
 
 ### **Collateral Decimals** - [DECIMALS]
 <br>
-
 1. How many decimal places does your desired collateral currency have?
 
->>> a. Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency. 
+-  Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency. 
 
-> **Example**
+**Example**
 
-> USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
 
 <br>
 
 ### **Rounding** - [DECIMALS ROUNDED]
 <br>
-
 1. What decimal place should the price identifier be rounded to by UMA tokenholders when submitting price data to the DVM?
 
->>**Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
 
 <br>
 
->>**Example** 
+**Example** 
 
->>Round to 3 decimal places. 
+Round to 3 decimal places. 
 
->>If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
+If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
 
 <br>
 
@@ -242,7 +245,7 @@ The rationale should flesh out the specification by describing what motivated th
 - What analysis can you provide on where to get the most robust prices? (Robust as in legitimate liquidity, legitimate volume, price discrepancies between exchanges, and trading volume between exchanges)
 - What is the potential for the price to be manipulated on the chosen exchanges?
 - Should the prices have any processing (e.g., TWAP)? 
->> - If so, why was this processing method chosen?
+     - If so, why was this processing method chosen?
 
 <br>
 
@@ -253,27 +256,28 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 <br>
 
 1. **What prices should be queried for and from which markets?**
->>> a. This should match the markets and pairs listed in the `Markets and Data Sources` section. It is recommended to have prices from 3 or more markets. 
+ - This should match the markets and pairs listed in the `Markets and Data Sources` section. It is recommended to have prices from 3 or more markets. 
 
 2. **Pricing interval**
->>> a. Should timestamps for pricing queries be rounded?
+-  Should timestamps for pricing queries be rounded?
 <br>
 
->>>b. Price feeds do not always have granularity in seconds, so this specifies how to round the timestamp. For example, if you had a pricing interval of 1 minute (which is common), it means it would round 10:50:45 to 10:50:00.
+    - Price feeds do not always have granularity in seconds, so this specifies how to round the timestamp. For example, if you had a pricing interval of 1 minute (which is common), it means it would round 10:50:45 to 10:50:00.
 <br>
 
 3. **Input processing**
->>> a. Denote if and why UMA tokenholders should change the calculation method for the price identifier. 
+- Denote if and why UMA tokenholders should change the calculation method for the price identifier. 
 <br>
 
->>>b. For example, for ETH/USD price requests, inputs are results received from exchanges and if an exchange is no longer valid, then human intervention is required. 
+    - For example, for ETH/USD price requests, inputs are results received from exchanges and if an exchange is no longer valid, then human intervention is required. 
 
 
->>>c. The input processing can typically be denoted as "Human intervention in extreme circumstances where the result differs from broad market consensus".
+- The input processing can typically be denoted as "Human intervention in extreme circumstances where the result differs from broad market consensus".
 <br>
 
 4. **Result processing**
->>> a. What type of processing should voters perform to determine the final price of an asset (e.g., take the median or mode of all votes submitted)? **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average". 
+- What type of processing should voters perform to determine the final price of an asset (e.g., take the median or mode of all votes submitted)? 
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average". 
 
 <br>
 
