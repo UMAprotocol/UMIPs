@@ -53,7 +53,7 @@ This section should clearly explain the types of financial products that will be
 ### **Required questions**
 <br>
 
-1. What markets should the price be queried from?
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
 <br> 
 
 >>>[ANSWER]
@@ -239,7 +239,9 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 
 >>> [ANSWER]
 
-4. **Result processing**
+4. **Result processing** 
+
+- **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average". 
 
 >>> [ANSWER]
 

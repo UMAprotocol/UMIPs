@@ -81,7 +81,7 @@ This section should clearly explain the types of financial products that will be
 ### **Required questions**
 <br>
 
-1. What markets should the price be queried from?<br> 
+1. What markets should the price be queried from? It is recommended to have at least 3 markets. <br> 
    >  a. Which specific pairs should be queried from each market?
 2. Provide recommended endpoints to query for real-time prices from each market listed. 
     > a. These should match the data sources used in your `Price Feed Implementation`. 
@@ -253,7 +253,7 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 <br>
 
 1. **What prices should be queried for and from which markets?**
->>> a. This should match the markets and pairs listed in the `Markets and Data Sources` section.
+>>> a. This should match the markets and pairs listed in the `Markets and Data Sources` section. It is recommended to have prices from 3 or more markets. 
 
 2. **Pricing interval**
 >>> a. Should timestamps for pricing queries be rounded?
@@ -273,7 +273,7 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 <br>
 
 4. **Result processing**
->>> a. What type of processing should voters perform to determine the final price of an asset (e.g., take the median or mode of all votes submitted)?
+>>> a. What type of processing should voters perform to determine the final price of an asset (e.g., take the median or mode of all votes submitted)? **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average". 
 
 <br>
 
