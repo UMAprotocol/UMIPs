@@ -9,19 +9,25 @@
 
 # Summary
 
-Due to necessity and after discussing with the UMA team their protocol was forked and some contracts were modified to fit the needs of our protocol. The contracts modified were `PerpetualCreator.sol`, which is now called `PerpetualPoolPartyCreator.sol` and `Perpetual.sol` contract, which is now called `PerpetualPoolParty.sol`. The `DerivativeFactory.sol` is a derived contract of `PerpetualPoolPartyCreator.sol` that restrict the access for deployment to only our deployer contract. An overview of the modifications done can be seen below:
+Due to necessity and after discussing with the UMA team, their perpetual contract system was modified to fit the needs of our protocol. The contracts that were modified: 
 
-Restricted access for deposit/withdraw and create/redeem was added in `Perpetual.sol` (`PerpetualPoolParty.sol`) in order to allow access to those operations only to our Synthereum protocol.
+- `PerpetualCreator.sol` was modified to create`PerpetualPoolPartyCreator.sol`
+- `Perpetual.sol` was modified to create `PerpetualPoolParty.sol`
+- `DerivativeFactory.sol` is a new contract that is derived from `PerpetualPoolPartyCreator.sol` to restrict deployment access. 
 
-Due to the design of our protocol we don't need `fundingRate` from `Perpetual.sol` for our perpetual assets to incentivize market actors to help us maintaining a peg, so this functionality was removed in order to optimize the gas consumption. In Synthereum the token sponsor is a contract and any synthetic asset bought on the open market can be burned in exchange of its exact value in collateral against a price feed, which guarantee constant arbitrage between Synthereum and DEXes, thus maintaining the peg.
+Below is an overview of the modifications:
 
-Since our assets are perpetual if we wanted to upgrade or change something in the derivative contract (as example change of collateral) it will require to deploy a new token with the newly deployed derivative, which will create frictions for users, liquidity providers and protocols where our synthetic tokens are integrated, thus we wanted to make derivatives contracts upgradable (by deploying a new one), but still keeping it linked to the already existing perpetual synthetic asset. Those functionalities were changed in the `PerpetualCreator.sol` (`PerpetualPoolPartyCreator.sol`).
+The deposit/withdraw and create/redeem functions in `PerpetualPoolParty.sol` can only be called by the Synthereum protocol.
 
-Another modification that was done was splitting some of the functionalities of `Perpetual.sol` (`PerpetualPoolParty.sol`) into separate libraries mentioned below in the technical specifications in order to optimize the gas consumption.
+All funding rate logic was removed from `PerpetualPoolParty.sol`. In Synthereum, the token sponsor is a contract and any synthetic asset bought/sold on the open market can be created/burned in exchange for its exact value in collateral based on a price feed, which guarantees a perfect arbitrage between Synthereum and DEXs, thus maintaining the peg.
 
-The `emergencyShutdown` functionality in `Perpetual.sol` (`PerpetualPoolParty.sol`) has been modified to be called not only by UMA DAO, but also by the Jarvis DAO.
+Since our assets are perpetual, if we wanted to upgrade or change something in the derivative contract (change of collateral, for instance) it would require a new perpetual token to be deployed, which will create friction for end-users, liquidity providers, and protocols where our synthetic tokens are integrated. Thus, we wanted to be able to deploy a new derivative contract, but link it to the preexisting perpetual token. This upgradability was added in `PerpetualPoolPartyCreator.sol`.
 
-Once `DerivativeFactory.sol` receives the `Creator` role it will allow every new `PerpetualPoolParty.sol` that is deployed to be automatically registered within `Registry.sol` and use the liquidation/dispute system set up by UMA.
+`PerpetualPoolParty.sol` was split into separate libraries in order to optimize the gas consumption. Note: this is detailed below in the Technical Specification section.
+
+The `emergencyShutdown` functionality in `PerpetualPoolParty.sol` has been modified to not only be callable by the UMA DVM, but also by the Jarvis DAO.
+
+Once `DerivativeFactory.sol` receives the `Creator` role it will register every `PerpetualPoolParty.sol` that is deployed through it with `Registry.sol` so they can request prices from the DVM.
 
 # Motivation
 
@@ -42,7 +48,7 @@ Giving `Creator` role to `DerivativeFactory.sol` would allow our synthetic asset
 
 -  The derivative contract (`PerpetualPoolParty.sol`) has a restricted access for deposit/withdraw and create/redeem, which prevents anyone but Synthereums pool (`Pool.sol`) to mint or redeem synthetic assets; this prevent an attacker to "spam" our protocol by increasing the Global Collateralization Ratio (GCR).
 - `DerivativeFactory.sol` contract allow to deploy derivatives (create new synthetic tokens) or deploy a derivative and link it to an already existing synthetic token.
-- `DerivivativeFactory.sol` is the derived contract of `PerpetualPoolPartyCreator.sol`(that uses `PerpetualPoolPartyLib.sol` for gas optimization).  Adding this contract as Creator role in UMA registry, allow the derivatives deployed to integrate the DVM
+- `DerivativeFactory.sol` is the derived contract of `PerpetualPoolPartyCreator.sol`(that uses `PerpetualPoolPartyLib.sol` for gas optimization).  Adding this contract as Creator role in UMA registry, allow the derivatives deployed to integrate the DVM
 - When deploying a new derivative contract (`PerpetualPoolParty.sol`) the `DerivativeFactory.sol` can set any ERC-20 token as collateral, meaning that it allows the support of multiple collateral tokens including those that accrue interest (inflationary). This adds additional flexibility to the contract in maintaining a collateral currency which is preferred by the community and also most stable in terms of technical risks. 
 - The forked and updated version of `Perpetual.sol`, now called `PerpetualPoolParty.sol`, deployed by `DerivativeFactory.sol` is set with gas optimization in mind. Due to adding more functionalities to it the gas limit for deployment was overpassed, so the overall architecture was changed by using library contracts which hold some of the functionalities, thus significantly lowering the gas costs of deployment.
 - Removing of `fundingRate` as a functionality from the `Perpetual.sol`(`PerpetualPoolParty.sol`), since we do not need such feature in order to maintain the peg; Synthereum's synthetic assets are always redeemable for their exact value in collateral tokens against a price feed, insuring constant arbitrage, and therefore a strong peg.
