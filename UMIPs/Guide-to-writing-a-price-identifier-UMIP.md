@@ -66,13 +66,14 @@ This section should clearly explain the types of financial products that will be
 
 <br>
 
-> ### **Example** 
+ ### **Example** 
+<br>
 
-> The DVM currently does not support the USD/ETH price index. Supporting the USD/ETH price identifier would enable the creation of zero-coupon fixed-rate dollar loans, if collateralized by WETH. This creates positions similar to using ETH in the MakerDAO system to mint Dai.
+The DVM currently does not support the USD/ETH price index. Supporting the USD/ETH price identifier would enable the creation of zero-coupon fixed-rate dollar loans, if collateralized by WETH. This creates positions similar to using ETH in the MakerDAO system to mint Dai.
 
-> Given a current USD/ETH price of .001 (ETH/USD is $1,000), Alice (a minter) would interact with an expiring contract collateralized in WETH by using 0.2 WETH (worth $200) as collateral to mint synthetic tokens at a 200% collateralization ratio. 
+Given a current USD/ETH price of .001 (ETH/USD is $1,000), Alice (a minter) would interact with an expiring contract collateralized in WETH by using 0.2 WETH (worth $200) as collateral to mint synthetic tokens at a 200% collateralization ratio. 
 
-> When the contract expires at the end of the month, the USDETH price has moved down to .0005 (ETH/USD is $2,000). Alice’s position now has a collateralization ratio of 400% and each synthetic can be redeemed for .0005 WETH. 
+When the contract expires at the end of the month, the USDETH price has moved down to .0005 (ETH/USD is $2,000). Alice’s position now has a collateralization ratio of 400% and each synthetic can be redeemed for .0005 WETH. 
 
 <br> 
 
@@ -101,7 +102,7 @@ This section should clearly explain the types of financial products that will be
 
     -  If there is a free tier available, how many queries does it allow for?
      <br>
-     
+
     - What would be the cost of sending 15,000 queries?
 
 <br>
@@ -168,7 +169,7 @@ Please provide a link to your price feed pull request.
 
  **Example**
 
-- If your price identifier is ETH/BTC, this is ETH. 
+If your price identifier is ETH/BTC, this is ETH. 
 
 <br>
 
@@ -220,7 +221,7 @@ USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218
 
 ### **Rounding** - [DECIMALS ROUNDED]
 <br>
-1. What decimal place should the price identifier be rounded to by UMA tokenholders when submitting price data to the DVM?
+1. What decimal place should the price identifier be rounded to by UMA tokenholders when submitting price data to the DVM? 
 
 - **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
 

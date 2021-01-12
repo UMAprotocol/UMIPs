@@ -36,13 +36,14 @@ This section should clearly explain the types of financial products that will be
 1. What are the financial positions enabled by creating this synthetic that do not already exist?
 <br> 
 
->>>[ANSWER]
+    - [ANSWER]
+
 2. Please provide an example of a person interacting with a contract that uses this price identifier. 
     - Remember, price identifiers **return the units of the collateral currency**. 
-    >> - For example, if at expiry the price id returns 1 and the contract is collateralized in renBTC, each synth would be worth 1 renBTC.
+         - For example, if at expiry the price id returns 1 and the contract is collateralized in renBTC, each synth would be worth 1 renBTC.
     <br> 
 
->>>[ANSWER]
+    - [ANSWER]
 3. Consider adding market data  (e.g., if we add a “Dai alternative,” the author could show the market size of Dai)
 
 
@@ -56,61 +57,60 @@ This section should clearly explain the types of financial products that will be
 1. What markets should the price be queried from? It is recommended to have at least 3 markets.
 <br> 
 
->>>[ANSWER]
+    - [ANSWER]
 
-   >> a. Which specific pairs should be queried from each market?
+2.  Which specific pairs should be queried from each market?
    <br>
-   
-   >>> [ANSWER]
+
+    - [ANSWER]
 
 2. Provide recommended endpoints to query for real-time prices from each market listed. 
 <br>
 
->>> a. These should match the data sources used in your `Price Feed Implementation`. 
+    - These should match the data sources used in your `Price Feed Implementation`. 
 
->>> [ADD-ENDPOINTS]
+    - [ADD-ENDPOINTS]
     
->>> b. How often is the provided price updated?
+4. How often is the provided price updated?
 <br> 
 
->>>>[ANSWER]
+    - [ANSWER]
 
-3. Provide recommended endpoints to query for historical prices from each market listed. 
+5. Provide recommended endpoints to query for historical prices from each market listed. 
 <br> 
 
->>> [ADD-ENDPOINTS]
+    - [ADD-ENDPOINTS]
 
->> a. Do these sources allow for querying up to 74 hours of historical data? 
+6.  Do these sources allow for querying up to 74 hours of historical data? 
     <br>
     
->>>[ANSWER]
+    - [ANSWER]
 <br> 
 
->> b. How often is the provided price updated?
+7.  How often is the provided price updated?
 <br> 
 
->>> [ANSWER]
+    - [ANSWER]
 
-4. Is an API key required to query these sources? 
+8. Is an API key required to query these sources? 
 
->>>[ANSWER]
+    - [ANSWER]
 
->>>a. Is there a cost associated with usage? 
+9. Is there a cost associated with usage? 
    <br>
-   
-   >>>>[ANSWER]
+    - [ANSWER]
 
->>> b. If there is a free tier available, how many queries does it allow for?
+10. If there is a free tier available, how many queries does it allow for?
 <br>
 
->>>>[ANSWER]
+    - [ANSWER]
 
->>>  c. What would be the cost of sending 15,000 queries?
+11.  What would be the cost of sending 15,000 queries?
+<br>
+       - [ANSWER]
+
 <br>
 
->>>>[ANSWER]
-
-<br>
 
 
 
@@ -128,7 +128,7 @@ Classes of price identifiers that are supported by default and require no additi
 
 Please provide a link to your price feed pull request.
 
->>>[ADD-LINK-TO-PULL-REQUEST]
+- [ADD-LINK-TO-PULL-REQUEST]
 
 
 <br>
@@ -145,16 +145,16 @@ Please provide a link to your price feed pull request.
 ### **Quote currency** - [ADD QUOTE CURRENCY]
 <br>
 
->> If your price identifier is a currency pair, your quote currency will be the
+If your price identifier is a currency pair, your quote currency will be the
 denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
 
 <br> 
 
->>> [Response - if applicable]
+- [Response - if applicable]
 
 <br>
 
->> **Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.**
+ **Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.**
 
 <br>
 
@@ -164,39 +164,39 @@ denominator of your currency pair. If your price identifier does not have a quot
 1. Does the value of this collateral currency match the standalone value of the listed quote currency? 
 <br> 
 
->>> [ANSWER]
+    - [ANSWER]
 
 2. Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies. 
 <br> 
 
->>> [ANSWER]
+    - [ANSWER]
 
 <br>
 
 ### **Collateral Decimals** - [ADD DECIMALS]
 <br>
 
->>> Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency. 
+Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency. 
 <br> 
 
-> **Example**
+ **Example**
 
-> USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
 
 <br>
 
 ### **Rounding** - [ADD ROUNDING]
 <br>
 
->>**Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+**Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
 
 <br>
 
->>**Example** 
+**Example** 
 
->>Round to 3 decimal places. 
+Round to 3 decimal places. 
 
->>If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
+If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
 
 <br>
 
@@ -204,7 +204,7 @@ denominator of your currency pair. If your price identifier does not have a quot
 
 The rationale should flesh out the specification by describing what motivated the design and why particular design decisions were made, as well as any alternative designs that were considered.
 
->>> [RESPONSE]
+- [RESPONSE]
 
 ### **Example questions**
 <br>
@@ -213,7 +213,7 @@ The rationale should flesh out the specification by describing what motivated th
 - What analysis can you provide on where to get the most robust prices? (Robust as in legitimate liquidity, legitimate volume, price discrepancies between exchanges, and trading volume between exchanges)
 - What is the potential for the price to be manipulated on the chosen exchanges?
 - Should the prices have any processing (e.g., TWAP)? 
->> - If so, why was this processing method chosen?
+    - If so, why was this processing method chosen?
 
 <br>
 
@@ -226,24 +226,24 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 1. **What prices should be queried for and from which markets?**
 <br>
 
->>**Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.  
 
->>> [ANSWER]
+    - [ANSWER]
 
 2. **Pricing interval**
 <br> 
 
->>> [ANSWER]
+    - [ANSWER]
 
 3. **Input processing**
 
->>> [ANSWER]
+    - [ANSWER]
 
 4. **Result processing** 
 
-- **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average". 
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average". 
 
->>> [ANSWER]
+     - [ANSWER]
 
 <br>
 
