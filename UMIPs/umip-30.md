@@ -28,7 +28,7 @@ The definition of this identifier should be:
 - Identifier name: ELASTIC_STABLESPREAD/USDC
 - Base Currency: ELASTIC_STABLESPREAD
 - Quote Currency: USDC
-- Data Sources: {Uniswap V2: FRAX/USDC} for FRAX, {Uniswap V2: ESD/USDC} for ESD, {Uniswap v2: BAC/DAI} for BAC, {Bitfinex: UST/USD, Kraken: USDT/USD} for USDT, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC
+- Data Sources: {Uniswap V2: FRAX/USDC} for FRAX, {Uniswap V2: ESD/USDC} for ESD, {Uniswap v2: BAC/DAI} for BAC, {Bitfinex: UST/USD, Kraken: USDT/USD} for USDT, {Coinbase-Pro: DAI/USD, Kraken: DAI/USD} for (Multi Collateral) DAI, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC
 - Result Processing: For each constituent asset of the basket, the average of exchanges. Normalizing the ETH result to USDC for FRAX, ESD, and BAC.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Decimals: 6
