@@ -4,9 +4,7 @@ Below is a template for creating a UMIP to register a new price identifier with 
 
 
 ## HEADERS
-
-
-| UMIP [#]     |                                                                                                                                          |
+| UMIP [#]     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | [TITLE]                                                                                                  |
 | Authors    | [Name or username and email]
@@ -23,26 +21,20 @@ The title should be 44 characters or less.
 
 "If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the issue.
 
-### Example 
+- **Example** 
 
-- The DVM should support price requests for the [Base currency / Quote currency] price index.
+    - The DVM should support price requests for the [Base currency / Quote currency] price index.
 
-<br>
 
 # MOTIVATION
 
 This section should clearly explain the types of financial products that will be created and the mechanics of an example financial product using this price identifier. Please answer the following questions:
 
 1. What are the financial positions enabled by creating this synthetic that do not already exist?
-<br> 
-
     - [ANSWER]
-
 2. Please provide an example of a person interacting with a contract that uses this price identifier. 
     - Remember, price identifiers **return the units of the collateral currency**. 
          - For example, if at expiry the price id returns 1 and the contract is collateralized in renBTC, each synth would be worth 1 renBTC.
-    <br> 
-
     - [ANSWER]
 3. Consider adding market data  (e.g., if we add a “Dai alternative,” the author could show the market size of Dai)
 
@@ -52,67 +44,43 @@ This section should clearly explain the types of financial products that will be
 # MARKETS & DATA SOURCES
 
 ### **Required questions**
-<br>
 
 1. What markets should the price be queried from? It is recommended to have at least 3 markets.
-<br> 
-
     - [ANSWER]
 
 2.  Which specific pairs should be queried from each market?
-   <br>
-
     - [ANSWER]
 
 2. Provide recommended endpoints to query for real-time prices from each market listed. 
-<br>
-
-    - These should match the data sources used in your `Price Feed Implementation`. 
+    - These should match the data sources used in  "Price Feed Implementation". 
 
     - [ADD-ENDPOINTS]
     
 4. How often is the provided price updated?
-<br> 
-
     - [ANSWER]
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
-<br> 
-
     - [ADD-ENDPOINTS]
 
 6.  Do these sources allow for querying up to 74 hours of historical data? 
-    <br>
-    
     - [ANSWER]
-<br> 
 
 7.  How often is the provided price updated?
-<br> 
-
     - [ANSWER]
 
 8. Is an API key required to query these sources? 
-
     - [ANSWER]
 
 9. Is there a cost associated with usage? 
-   <br>
     - [ANSWER]
 
 10. If there is a free tier available, how many queries does it allow for?
-<br>
-
     - [ANSWER]
 
 11.  What would be the cost of sending 15,000 queries?
-<br>
-       - [ANSWER]
+     - [ANSWER]
 
 <br>
-
-
-
 
 # PRICE FEED IMPLEMENTATION
 
@@ -135,68 +103,47 @@ Please provide a link to your price feed pull request.
 
 # TECHNICAL SPECIFICATIONS
 
-### **Price Identifier Name** - [ADD NAME]
+**1. Price Identifier Name** - [ADD NAME]
 
-<br>
+**2. Base Currency** - [ADD BASE CURRENCY]
 
-### **Base Currency** - [ADD BASE CURRENCY]
-<br>
+**3. Quote currency** - [ADD QUOTE CURRENCY]
 
-### **Quote currency** - [ADD QUOTE CURRENCY]
-<br>
-
-If your price identifier is a currency pair, your quote currency will be the
+- If your price identifier is a currency pair, your quote currency will be the
 denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
 
-<br> 
+- **Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.**
 
 - [Response - if applicable]
 
-<br>
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
 
- **Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.**
-
-<br>
-
-### **Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
-
-
-1. Does the value of this collateral currency match the standalone value of the listed quote currency? 
-<br> 
+- Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
     - [ANSWER]
 
-2. Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies. 
-<br> 
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies. 
 
     - [ANSWER]
 
-<br>
+**5. Collateral Decimals** - [ADD DECIMALS]
 
-### **Collateral Decimals** - [ADD DECIMALS]
-<br>
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency. 
 
-Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency. 
-<br> 
+- **Example**
 
- **Example**
+    - USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)). 
 
-USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+### **6. Rounding** - [ADD ROUNDING]
 
-<br>
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
 
-### **Rounding** - [ADD ROUNDING]
-<br>
+- **Example** 
 
-**Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+    - Round to 3 decimal places. 
 
-<br>
-
-**Example** 
-
-Round to 3 decimal places. 
-
-If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
 
 <br>
 
@@ -206,8 +153,7 @@ The rationale should flesh out the specification by describing what motivated th
 
 - [RESPONSE]
 
-### **Example questions**
-<br>
+**Example questions**
 
 - Why this implementation of the identifier as opposed to other implementation designs?
 - What analysis can you provide on where to get the most robust prices? (Robust as in legitimate liquidity, legitimate volume, price discrepancies between exchanges, and trading volume between exchanges)
@@ -221,17 +167,14 @@ The rationale should flesh out the specification by describing what motivated th
 
 Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
 
-<br>
 
 1. **What prices should be queried for and from which markets?**
-<br>
 
     - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.  
 
     - [ANSWER]
 
 2. **Pricing interval**
-<br> 
 
     - [ANSWER]
 
@@ -250,7 +193,6 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 # Security considerations
 
 ### **Example questions**
-<br>
 
 1. Where could manipulation occur?
 
@@ -258,6 +200,3 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 3. Do the instructions for determining the price provide people with enough certainty?
 4. What are current or future concern possibilities with the way the price identifier is defined?
 5. Are there any concerns around if the price identifier implementation is deterministic?
-
-<br>
-

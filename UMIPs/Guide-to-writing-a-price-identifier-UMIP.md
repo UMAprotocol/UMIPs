@@ -121,6 +121,8 @@ Specify the availability of this price data. Price data should, at a minimum, me
 - The historical endpoint needs to be able to provide data at least 74 hours in the past
 - A liquidation or dispute bot will make approximately 15,000 calls per data source per month. If your recommended data sources are not free, please specify the cost of 15,000 calls.
 
+<br>
+
 **Note**: An API for accessing data is not the same thing as the markets you choose to determine the price.  You would not say that cryptowatch is a market for data, as it is just an aggregator of market data.  Examples of markets are “Coinbase Pro, Binance, Bitstamp.”  Data sources are still necessary to demonstrate the accessibility of the data and are often just the specific market’s API.
 
 <br>
@@ -150,7 +152,7 @@ Please provide a link to your price feed pull request.
 
 # TECHNICAL SPECIFICATIONS
 
-### **Price Identifier Name** - [NAME]
+### **1. Price Identifier Name** - [NAME]
 <br>
 
 - If your identifier name is less than 8 characters, the price ID should be written as [BASEQUOTE] (e.g., ETHUSD). 
