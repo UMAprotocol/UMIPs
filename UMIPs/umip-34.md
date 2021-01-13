@@ -4,7 +4,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add `DerivativeFactory` as `Creator` in DVM registry                                                                                                |
 | Authors    | Iliyan Iliev (iliyan.iliev@jarvis.exchange) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | December 29, 2020
 
 # Summary
