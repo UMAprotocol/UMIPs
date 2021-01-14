@@ -39,56 +39,54 @@ Giving `Creator` role to `DerivativeFactory.sol` would allow our synthetic asset
 
 ### Here is a breakdown on the whole deployment process of a new derivative:
 
-1. Our DAO address (which is currently a team address until the DAO is set up) calls `deployPoolAndDerivative` of `Deployer.sol`.
-2. `Deployer.sol` calls `createPerpetual` function of `DerivativeFactory.sol` and this function will call `createPerpetual` function of the base contract `PerpetualPoolPartyCreator.sol` that will deploy the new `PerpetualPoolParty.sol`.
-3. `Deployer.sol` calls `createPool` function of `PoolFactory.sol` and this function will call `createPool` function of the base contract `PoolCreator.sol` that will deploy the new `Pool.sol`.
-4. `Deployer.sol` links the newly deployed `Pool.sol` to the newly deployed `PerpetualPoolParty.sol` and assignes the roles in `PerpetualPoolParty.sol` to `Pool.sol`, which are `Admin` and `Pool`.
+1. Our DAO address (which is currently a team address until the DAO is set up) calls `deployPoolAndDerivative` of `SynthereumDeployer.sol`.
+2. `SynthereumDeployer.sol` calls `createPerpetual` function of `SynthereumDerivativeFactory.sol` and this function will call `createPerpetual` function of the base contract `SynthereumPerpetualPoolPartyCreator.sol` that will deploy the new `SynthereumPerpetualPoolParty.sol`.
+3. `SynthereumDeployer.sol` calls `createPool` function of `SynthereumPoolFactory.sol` and this function will call `createPool` function of the base contract `SynthereumPoolCreator.sol` that will deploy the new `SynthereumPool.sol`.
+4. `SynthereumDeployer.sol` links the newly deployed `SynthereumPool.sol` to the newly deployed `SynthereumPerpetualPoolParty.sol` and assignes the roles in `SynthereumPerpetualPoolParty.sol` to `SynthereumPool.sol`, which are `Admin` and `Pool`.
 
 ### Modifications done: 
 
--  The derivative contract (`PerpetualPoolParty.sol`) has a restricted access for deposit/withdraw and create/redeem, which prevents anyone but Synthereums pool (`Pool.sol`) to mint or redeem synthetic assets; this prevent an attacker to "spam" our protocol by increasing the Global Collateralization Ratio (GCR).
-- `DerivativeFactory.sol` contract allow to deploy derivatives (create new synthetic tokens) or deploy a derivative and link it to an already existing synthetic token.
-- `DerivativeFactory.sol` is the derived contract of `PerpetualPoolPartyCreator.sol`(that uses `PerpetualPoolPartyLib.sol` for gas optimization).  Adding this contract as Creator role in UMA registry, allow the derivatives deployed to integrate the DVM
-- When deploying a new derivative contract (`PerpetualPoolParty.sol`) the `DerivativeFactory.sol` can set any ERC-20 token as collateral, meaning that it allows the support of multiple collateral tokens including those that accrue interest (inflationary). This adds additional flexibility to the contract in maintaining a collateral currency which is preferred by the community and also most stable in terms of technical risks. 
-- The forked and updated version of `Perpetual.sol`, now called `PerpetualPoolParty.sol`, deployed by `DerivativeFactory.sol` is set with gas optimization in mind. Due to adding more functionalities to it the gas limit for deployment was overpassed, so the overall architecture was changed by using library contracts which hold some of the functionalities, thus significantly lowering the gas costs of deployment.
-- Removing of `fundingRate` as a functionality from the `Perpetual.sol`(`PerpetualPoolParty.sol`), since we do not need such feature in order to maintain the peg; Synthereum's synthetic assets are always redeemable for their exact value in collateral tokens against a price feed, insuring constant arbitrage, and therefore a strong peg.
-- Two types of roles were set-up in the `PerpetualPoolParty.sol` which is deployed by the `DerivativeFactory.sol` - Admin and Pool. The pools act as a token sponsors and they are attached to the corresponding derivative, thus allowing the calling of Mint,Exchange and Redeem functions. Admin role has the ability to add new pools to a derivative or remove it.
+-  The derivative contract (`SynthereumPerpetualPoolParty.sol`) has a restricted access for deposit/withdraw and create/redeem, which prevents anyone but Synthereums pool (`SynthereumPool.sol`) to mint or redeem synthetic assets; this prevent an attacker to "spam" our protocol by increasing the Global Collateralization Ratio (GCR).
+- `SynthereumDerivativeFactory.sol` contract allow to deploy derivatives (create new synthetic tokens) or deploy a derivative and link it to an already existing synthetic token.
+- `SynthereumDerivativeFactory.sol` is the derived contract of `SynthereumPerpetualPoolPartyCreator.sol`(that uses `SynthereumPerpetualPoolPartyLib.sol` for gas optimization).  Adding this contract as Creator role in UMA registry, allow the derivatives deployed to integrate the DVM
+- When deploying a new derivative contract (`SynthereumPerpetualPoolParty.sol`) the `SynthereumDerivativeFactory.sol` can set any ERC-20 token as collateral, meaning that it allows the support of multiple collateral tokens including those that accrue interest (inflationary). This adds additional flexibility to the contract in maintaining a collateral currency which is preferred by the community and also most stable in terms of technical risks. 
+- The forked and updated version of `SynthereumPerpetual.sol`, now called `SynthereumPerpetualPoolParty.sol`, deployed by `SynthereumDerivativeFactory.sol` is set with gas optimization in mind. Due to adding more functionalities to it the gas limit for deployment was overpassed, so the overall architecture was changed by using library contracts which hold some of the functionalities, thus significantly lowering the gas costs of deployment.
+- Removing of `fundingRate` as a functionality from the `Perpetual.sol`(`SynthereumPerpetualPoolParty.sol`), since we do not need such feature in order to maintain the peg; Synthereum's synthetic assets are always redeemable for their exact value in collateral tokens against a price feed, insuring constant arbitrage, and therefore a strong peg.
+- Two types of roles were set-up in the `SynthereumPerpetualPoolParty.sol` which is deployed by the `SynthereumDerivativeFactory.sol` - Admin and Pool. The pools act as a token sponsors and they are attached to the corresponding derivative, thus allowing the calling of Mint,Exchange and Redeem functions. Admin role has the ability to add new pools to a derivative or remove it.
 - `EmergencyShutdown` functionality was updated in order to allow both UMA DAO and Jarvis DAO to have access to it in the case of an issue that puts in danger the funds of users. 
 
 ### Nesting of the contracts:
 
-1. `Perpetual.sol`, now called `PerpetualPoolParty.sol` is a derived contract that inherit from `PerpetualLiquidatable.sol`, now called `PerpetualLiquidatablePoolParty.sol`.
-2. `PerpetualLiquidatable.sol`, now called `PerpetualLiquidatablePoolParty.sol` is derived contract that inherit from `PerpetualPositionManager.sol`, now called `PerpetualPositionManagerPoolParty.sol`.
-3. `PerpetualPositionManager.sol`, now called `PerpetualPositionManagerPoolParty.sol` is derived contract that inherit from `FeePayer.sol`, now called `FeePayerPoolParty.sol`.
+1. `Perpetual.sol`, now called `SynthereumPerpetualPoolParty.sol` is a derived contract that inherit from `PerpetualLiquidatable.sol`, now called `SynthereumPerpetualLiquidatablePoolParty.sol`.
+2. `PerpetualLiquidatable.sol`, now called `SynthereumPerpetualLiquidatablePoolParty.sol` is derived contract that inherit from `PerpetualPositionManager.sol`, now called `SynthereumPerpetualPositionManagerPoolParty.sol`.
+3. `PerpetualPositionManager.sol`, now called `SynthereumPerpetualPositionManagerPoolParty.sol` is derived contract that inherit from `FeePayer.sol`, now called `SynthereumFeePayerPoolParty.sol`.
 
 Each one of These has its own library for gas optimization:
-1. `PerpetualPoolPartyCreator.sol` uses `PerpetualPoolPartyLib.sol` for gas optimization.
-2. `PerpetualLiquidatablePoolParty.sol` uses `PerpetualLiquidatablePoolPartyLib.sol` for gas optimization.
-3. `PerpetualPositionManagerPoolParty.sol` uses `PerpetualPositionManagerPoolPartyLib.sol` for gas optimization.
-4. `FeePayerPoolParty.sol` uses `FeePayerPoolPartyLib.sol` for gas optimization.
+1. `SynthereumPerpetualPoolPartyCreator.sol` uses `SynthereumPerpetualPoolPartyLib.sol` for gas optimization.
+2. `SynthereumPerpetualLiquidatablePoolParty.sol` uses `SynthereumPerpetualLiquidatablePoolPartyLib.sol` for gas optimization.
+3. `SynthereumPerpetualPositionManagerPoolParty.sol` uses `SynthereumPerpetualPositionManagerPoolPartyLib.sol` for gas optimization.
+4. `SynthereumFeePayerPoolParty.sol` uses `SynthereumFeePayerPoolPartyLib.sol` for gas optimization.
 
 # List of deployed contracts:
 
-- SynthereumFinder:
-- SynthereumDeployer:
-- SynthereumPoolRegistry:
-- SynthereumFactoryVersioning:
-- SynthereumSyntheticTokenFactory:
-- FeePayerPoolPartyLib: 
-- PerpetualPositionManagerPoolPartyLib:
-- PerpetualLiquidatablePoolPartyLib:
-- PerpetualPoolPartyLib:
-- SynthereumDerivativeFactory:
-- SynthereumTICHelper:
-- SynthereumTICFactory:
-- SynthereumPoolLib:
-- SynthereumPoolFactory:
+- [SynthereumFinder](https://etherscan.io/address/0xD451dE78E297b496ee8a4f06dCF991C17580B452) 
+- [SynthereumDeployer](https://etherscan.io/address/0x592108F92F6e570f1A47f32c459a03c90aCe05a7)
+- [SynthereumPoolRegistry](https://etherscan.io/address/0xefb040204CC94e49433FDD472e49D4f3538D5346)
+- [SynthereumFactoryVersioning](https://etherscan.io/address/0x1fBb59a3Fff02989342FD0761AE62f01334b5244)
+- [SynthereumSyntheticTokenFactory](https://etherscan.io/address/0xAb6EEDb096376a493E0e888D2738a6a0A493cC3e)
+- [FeePayerPoolPartyLib](https://etherscan.io/address/0xB0d0A057060c266b76B110C762471C91a80eD292) 
+- [PerpetualPositionManagerPoolPartyLib](https://etherscan.io/address/0xf953f99F6E3907D14658f906988EacDc08387AAd)
+- [PerpetualLiquidatablePoolPartyLib](https://etherscan.io/address/0xA758F41c32dB16BF9354ca230a9eC73edd0AD4c0)
+- [PerpetualPoolPartyLib](https://etherscan.io/address/0xd8C00bD1BD98D0880e0eA70af81a65348aE73Ef2) 
+- [SynthereumDerivativeFactory](https://etherscan.io/address/0x98c1f29A478fb4e5da14c2BcA0380e67ac2A964a#code) 
+- [SynthereumPoolLib](https://etherscan.io/address/0xDB026D6c3450F5F28f3a035E158E1B68AfCE8f9F) 
+- [SynthereumPoolFactory](https://etherscan.io/address/0x2097E7f338eB44C69a48c3f9eBea7dEeeb88f63F)
 
 # Implementation and code base
 
-The `DerivativeFactory` contracts can be found here are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/uma-integration-part-2/libs/contracts/contracts).
+The `SynthereumDerivativeFactory` contracts can be found here are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/uma-integration-part-2/libs/contracts/contracts).
 
-The `PerpetualPoolParty` contracts can be found and are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/UMAprotocol/-/tree/jarvis-dev/for-publish/0.3.x/packages/core/contracts).
+The `SynthereumPerpetualPoolParty` contracts can be found and are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/UMAprotocol/-/tree/jarvis-dev/for-publish/0.3.x/packages/core/contracts).
 
 # Security considerations
 
