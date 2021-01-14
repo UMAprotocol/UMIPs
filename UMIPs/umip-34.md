@@ -2,7 +2,7 @@
 
 | UMIP-34  |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add `DerivativeFactory` as `Creator` in DVM registry                                                                                                |
+| UMIP Title | Add `SynthereumDerivativeFactory` as `Creator` in DVM registry                                                                                                |
 | Authors    | Iliyan Iliev (iliyan.iliev@jarvis.exchange) |
 | Status     | Last Call                                                                                                                                    |
 | Created    | December 29, 2020
@@ -11,23 +11,23 @@
 
 Due to necessity and after discussing with the UMA team, their perpetual contract system was modified to fit the needs of our protocol. The contracts that were modified: 
 
-- `PerpetualCreator.sol` was modified to create`PerpetualPoolPartyCreator.sol`
-- `Perpetual.sol` was modified to create `PerpetualPoolParty.sol`
-- `DerivativeFactory.sol` is a new contract that is derived from `PerpetualPoolPartyCreator.sol` to restrict deployment access. 
+- `PerpetualCreator.sol` was modified to create`SynthereumPerpetualPoolPartyCreator.sol`
+- `Perpetual.sol` was modified to create `SynthereumPerpetualPoolParty.sol`
+- `SynthereumDerivativeFactory.sol` is a new contract that is derived from `SynthereumPerpetualPoolPartyCreator.sol` to restrict deployment access. 
 
 Below is an overview of the modifications:
 
-The deposit/withdraw and create/redeem functions in `PerpetualPoolParty.sol` can only be called by the Synthereum protocol.
+The deposit/withdraw and create/redeem functions in `SynthereumPerpetualPoolParty.sol` can only be called by the Synthereum protocol.
 
-All funding rate logic was removed from `PerpetualPoolParty.sol`. In Synthereum, the token sponsor is a contract and any synthetic asset bought/sold on the open market can be created/burned in exchange for its exact value in collateral based on a price feed, which guarantees a perfect arbitrage between Synthereum and DEXs, thus maintaining the peg.
+All funding rate logic was removed from `SynthereumPerpetualPoolParty.sol`. In Synthereum, the token sponsor is a contract and any synthetic asset bought/sold on the open market can be created/burned in exchange for its exact value in collateral based on a price feed, which guarantees a perfect arbitrage between Synthereum and DEXs, thus maintaining the peg.
 
-Since our assets are perpetual, if we wanted to upgrade or change something in the derivative contract (change of collateral, for instance) it would require a new perpetual token to be deployed, which will create friction for end-users, liquidity providers, and protocols where our synthetic tokens are integrated. Thus, we wanted to be able to deploy a new derivative contract, but link it to the preexisting perpetual token. This upgradability was added in `PerpetualPoolPartyCreator.sol`.
+Since our assets are perpetual, if we wanted to upgrade or change something in the derivative contract (change of collateral, for instance) it would require a new perpetual token to be deployed, which will create friction for end-users, liquidity providers, and protocols where our synthetic tokens are integrated. Thus, we wanted to be able to deploy a new derivative contract, but link it to the preexisting perpetual token. This upgradability was added in `SynthereumPerpetualPoolPartyCreator.sol`.
 
-`PerpetualPoolParty.sol` was split into separate libraries in order to optimize the gas consumption. Note: this is detailed below in the Technical Specification section.
+`SynthereumPerpetualPoolParty.sol` was split into separate libraries in order to optimize the gas consumption. Note: this is detailed below in the Technical Specification section.
 
-The `emergencyShutdown` functionality in `PerpetualPoolParty.sol` has been modified to not only be callable by the UMA DVM, but also by the Jarvis DAO.
+The `emergencyShutdown` functionality in `SynthereumPerpetualPoolParty.sol` has been modified to not only be callable by the UMA DVM, but also by the Jarvis DAO.
 
-Once `DerivativeFactory.sol` receives the `Creator` role it will register every `PerpetualPoolParty.sol` that is deployed through it with `Registry.sol` so they can request prices from the DVM.
+Once `SynthereumDerivativeFactory.sol` receives the `Creator` role it will register every `SynthereumPerpetualPoolParty.sol` that is deployed through it with `Registry.sol` so they can request prices from the DVM.
 
 # Motivation
 
