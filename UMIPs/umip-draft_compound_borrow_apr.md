@@ -13,7 +13,7 @@ The DVM currently does not support reporting aggregated USDC borrow interest rat
 
 Cost: Calculating an aggregated statistic of compound USDC borrow rates on a confirmed range of blocks on the Ethereum blockchain is easy. All of the needed data can be computed from event logs on any Ethereum full node. An archive node allows direct querying of this data via contract methods. Additionally, this data can be accessed through querying the Compound Subgraph on the Graph Protocol or the Compound team's historical API service, then running a simple aggregation function.
 
-Opportunity: Compound USDC Borrow APR futures can help borrowers and traders hedge against interest rate volatility allowing them to "lock-in" future costs from Compound loans. Other users may wish to speculate on the demand for borrowing USDC on Compound or hedge their deposit interest rate volatility. Providing a price feed for settlement of a financial contract is a prerequisite.
+Opportunity: Compound USDC Borrow APR futures can help borrowers and traders hedge against interest rate volatility allowing them to "lock-in" future costs from Compound loans. This will enable taking multi-collateral backed loans out on Compound for new use cases. Other users may wish to speculate on the demand for borrowing USDC on Compound or hedge their deposit interest rate volatility. Providing a price feed for settlement of a financial contract is a prerequisite.
 
 ## Technical Specification
 The definition of this identifier should be:
@@ -30,11 +30,14 @@ The definition of this identifier should be:
 
 
 ## Rationale
+
 The decision to use a rolling 30 day period was done to increase the cost of manipulating the price.
 
 We use geometric mean, as opposed to arithmetic mean, to include the effect of interest compounding.
 
 The choice to use annual percentage rate as opposed to monthly percentage rate is due to usability. 1) Annual rates are large enough numbers that, combined with an easy to understand 1-to-1 APR to USD ratio, result in prices (most of the time) in the range of $1 to $30. 2) Annual rates are more commonly used when discussing loan borrowing rates.
+
+There is a ground truth for this price identifier. The ground truth data is in the Compound smart contract on the Ethereum blockchain. Any differences in UMA governor results for this price identifier should be due to rounding errors that propagate through the calculation (numerical instability) as opposed to multiple data sources being the truth (as is the case with looking at the price of bitcoin on different exchanges).
 
 The decision to round to the nearest 2 decimal places will help with numerical instability. Different algorithms for calculating the geometric mean result in tiny differences in the result. Rounding to 2 decimal places hides small differences in geometric mean calculations. For example, if person A calculates the price request result as $7.53453USD and person B calculates the price request result as $7.53489USD, both will agree on $7.53USD.
 
@@ -51,14 +54,17 @@ def getBorrowRatePerBlock(startBlock, endBlock):
   3. Run a small indexing script every minute which calls the getBorrowRate method and indexes this data for later use indexed by block
   """
 
-
 def geometricMean(collection):
   product = collection.reduce((a, b) => a * b)
   root = product ** (1/len(percentPerBlock))
   return root
 
 # Geometric mean to get total return, then convert to APY
-def getAPRforMonth(startBlock, endBlock):
+def getAPRforMonth(dvmTimestamp):
+  startTimestamp = dvmTimestamp - SECONDS_PER_730_HOURS
+  startBlock = timestampToBlock(startTimestamp)
+  endBlock = timestampToBlock(dvmTimestamp)
+
   borrow_rate_of_block = getBorrowRatePerBlock(startBlock, endBlock)
   avg_borrow_rate_per_block = geometricMean(borrow_rate_of_block.map(v => v + 1))
   apr = avg_borrow_rate_per_block ** EXPECTED_BLOCKS_PER_YEAR
