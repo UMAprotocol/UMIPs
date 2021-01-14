@@ -67,6 +67,22 @@ Each one of These has its own library for gas optimization:
 3. `PerpetualPositionManagerPoolParty.sol` uses `PerpetualPositionManagerPoolPartyLib.sol` for gas optimization.
 4. `FeePayerPoolParty.sol` uses `FeePayerPoolPartyLib.sol` for gas optimization.
 
+# List of deployed contracts:
+
+- SynthereumFinder:
+- SynthereumDeployer:
+- SynthereumPoolRegistry:
+- SynthereumFactoryVersioning:
+- SynthereumSyntheticTokenFactory:
+- FeePayerPoolPartyLib: 
+- PerpetualPositionManagerPoolPartyLib:
+- PerpetualLiquidatablePoolPartyLib:
+- PerpetualPoolPartyLib:
+- SynthereumDerivativeFactory:
+- SynthereumTICHelper:
+- SynthereumTICFactory:
+- SynthereumPoolLib:
+- SynthereumPoolFactory:
 
 # Implementation and code base
 
