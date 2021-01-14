@@ -31,7 +31,7 @@ To accomplish this upgrade, the following changes need to be made:
 - The bwBTC/ETH SLP address, 0x758a43ee2bff8230eeb784879cdcff4828f2544d, needs to be added to the collateral currency whitelist 
 - The bBadger address, 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28, needs to be added to the collateral currency whitelist 
 - A final fee of 0.01 for the wBTC/ETH SLP needs to be added in the Store contract.
-- A final fee of 50 for bBadger asset needs to be added in the Store contract.
+- A final fee of 36 for bBadger asset needs to be added in the Store contract.
 
 
 
