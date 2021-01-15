@@ -2,6 +2,13 @@
 
 Below is a detailed guide for creating a UMIP to register a new price identifier with UMA’s Data Verification Mechanism (DVM). 
 
+<br>
+
+## Contributing Guidelines
+
+A UMIP number will be assigned by an editor. When opening a pull request to submit your UMIP, please use an abbreviated title in the filename, umip-draft_title_abbrev.md. The title should be 44 characters or less.
+
+<br>
 
 ## HEADERS
 | UMIP [#]     |                                                                                                                                          |
@@ -12,32 +19,7 @@ Below is a detailed guide for creating a UMIP to register a new price identifier
 | Created    | [DATE]                                                                             
 <br>
 
-
-Note that an UMIP number will be assigned by an editor. When opening a pull request to submit your UMIP, please use an abbreviated title in the filename, umip-draft_title_abbrev.md.
-The title should be 44 characters or less.
-
-# Status
-A successful UMIP will move along the following stages: Draft ⟶ Last Call ⟶ Final ⟶ Approved. Unsuccessful states are also possible: Abandoned and Rejected.
-
-## Draft
-A UMIP that is open for consideration and is undergoing rapid iteration and changes should be set to “Draft”. In order to proceed to “Last Call", the UMIP template for adding a new price identifier must be completed. Every UMIP author is responsible for facilitating conversations and building community consensus for the proposal in [UMA’s Discord](https://discord.com/invite/jsb9XQJ)  via the “price-id-umips’ channel. 
-
-## Last Call
-A UMIP that is done with its initial iteration and ready for review by a wide audience will be set to “Last Call” status. If upon review, there is a material change or substantial unaddressed complaints, the UMIP will revert to "Draft". If the UMIP requires code changes, the core devs must review the UMIP. A successful UMIP will be in "Last Call" status for a reasonable period of time for the community to provide feedback before moving to a vote by UMA tokenholders.
-
-## Final
-An UMIP that successfully passes "Last Call" will move to "Final" status and be voted on by UMA tokenholders.
-
-## Approved
-
-If UMA tokenholders approve the proposal, UMA protocol will be updated to include the necessary changes. At this time, any code changes (if relevant) should be merged into the core protocol repository so that the core protocol repository always reflects the live code that is running. The UMIP is then considered to be in the "Approved" state.
-
-## Abandoned
-
-If at any point during the UMIP Finalization Process, a UMIP is abandoned, it will be labeled as such. Grounds for abandonment include a lack of interest by the original author(s), or it may not be a preferred option anymore.
-
-## Rejected
-If UMA tokenholders do not approve a proposal, or the UMIP is fundamentally broken or rejected by the community, it will not be implemented.
+For information on the lifecycle of a UMIP and setting the 'Status' field above view [UMIP-1](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-1.md)
 
 <br>
 
@@ -121,6 +103,8 @@ Specify the availability of this price data. Price data should, at a minimum, me
 
 **Note**: An API for accessing data is not the same thing as the markets you choose to determine the price.  You would not say that cryptowatch is a market for data, as it is just an aggregator of market data.  Examples of markets are “Coinbase Pro, Binance, Bitstamp.”  Data sources are still necessary to demonstrate the accessibility of the data and are often just the specific market’s API.
 
+For price identifiers that are not determined by market prices, the markets and data sources format may not apply. In these situations, this section should inform users of how they should gather all necessary information used in the price determination process.
+
 **Recommended Data Sources**
 
 If you would like to obtain prices for Cryptocurrency pairs, [these pairs](https://cryptowat.ch/) are available via Cryptowatch. Forex rates are available on [TraderMade](https://tradermade.com/).
@@ -141,7 +125,7 @@ Classes of price identifiers that are supported by default and require no additi
 
 - [Balancer prices](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/BalancerPriceFeed.js)
 
-Please provide a link to your price feed pull request.
+Please follow the [UMA contribution guidelines](https://github.com/UMAprotocol/protocol/blob/master/CONTRIBUTING.md) when submitting your pull request, and provide a link in your UMIP.
 
 <br>
 
@@ -277,7 +261,7 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 
 5. Are there any concerns around if the price identifier implementation is deterministic?
 
-**Example Security Section**
+**Example**
 
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. 
 
