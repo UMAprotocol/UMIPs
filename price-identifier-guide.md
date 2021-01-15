@@ -246,7 +246,7 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 
 <br>
 
-# Security considerations
+# SECURITY CONSIDERATIONS
 
 **Example questions**
 
