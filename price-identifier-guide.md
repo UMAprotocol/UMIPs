@@ -227,7 +227,6 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 2. **Pricing interval**
 
     -  Should timestamps for pricing queries be rounded?
-<br>
 
     - Price feeds do not always have granularity in seconds, so this specifies how to round the timestamp. For example, if you had a pricing interval of 1 minute (which is common), it means it would round 10:50:45 to 10:50:00.
 
@@ -247,7 +246,7 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 
 <br>
 
-# Security considerations
+# SECURITY CONSIDERATIONS
 
 **Example questions**
 
