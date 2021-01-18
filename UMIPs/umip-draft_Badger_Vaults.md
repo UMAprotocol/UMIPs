@@ -23,7 +23,7 @@ BadgerDAO’s first product is Sett vault, an automated DeFi aggregator focused 
 Many of BadgerDAO's users would like to borrow against their BTC vault positions as collateral to mint Badger Dollars. At the time of writing, Badger’s Sett Vaults have brought in over 600m in TVL. To allow synthetic tokens created with the EMP to take advantage of this liquidity,  bwBTC/ETH SLP and bBadger, would be great additions as collateral currencies and showcase DeFi’s ability of “money legos”. See below for a description of these assets.
 
 - **bwBTC/ETH SLP**
-    - Liquidity provider tokens for the wBTC/ETH pool in Sushiswap that is staked in the Badger Sett Vault wBTC/ETH SLP resulting to mint bwBTC/ETH SLP token(s).
+    - Sushiswap liquidity provider tokens for the wBTC/ETH pool that is staked in the Badger Sett Vault 'wBTC/ETH SLP' to mint bwBTC/ETH SLP token(s).
     - View [here] (https://etherscan.io/token/0x758a43ee2bff8230eeb784879cdcff4828f2544d) for it's associated token address
 
 - **bBadger**
@@ -31,7 +31,7 @@ Many of BadgerDAO's users would like to borrow against their BTC vault positions
     - View [here](https://etherscan.io/token/0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28) for it's associated token address
 
 
-bwBTC/ETH SLP and bBadger as collateral is expected to have a variety of deployments. The timing for adding it now, and the immediate application, is for use with a USDbwBTC/ETH SLP and bBadger price identifiers which will enable the creation of Badger Dollars, a yield dollar token. 
+bwBTC/ETH SLP and bBadger as collateral is expected to have a variety of deployments. The timing for adding it now, and the immediate application, is for use with a USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers which will enable the creation of Badger Dollars, a yield dollar token. 
 
 ## Technical Specification
 
