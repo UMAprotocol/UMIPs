@@ -6,45 +6,40 @@ Below is a template for creating a UMIP to register a new price identifier with 
 ## HEADERS
 | UMIP [#]     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | [TITLE]                                                                                                  |
-| Authors    | [Name or username and email]
-| Status     | [Draft, Last Call, Approved, Final, Abandoned, Rejected]                                                                                                                                   |
-| Created    | [DATE]                                                                             
-<br>
-Note that an UMIP number will be assigned by an editor. When opening a pull request to submit your UMIP, please use an abbreviated title in the filename, umip-draft_title_abbrev.md.
-The title should be 44 characters or less.
+| UMIP Title | Add bBadger/USD, [bwBTC/ETH SLP]-USD as price identifiers                                                                                                 |
+| Authors    | BitcoinPalmer, mitche50, Defi Frog
+| Status     | [Draft                                                                                                                                  |
+| Created    | 1/17/2021                                                                           
 
-<br>
 <br>
 
 # SUMMARY 
 
-"If you can't explain it simply, you don't understand it well enough." Provide a simplified and layman-accessible explanation of the issue.
-
-- **Example** 
-
-    - The DVM should support price requests for the [Base currency / Quote currency] price index.
+The DVM should support price requests for the below price indexes:
+ - USD-[bwBTC/ETH SLP] and [bwBTC/ETH SLP]-USD
+ - USD/bBadger and bBadger/USD
 
 
 # MOTIVATION
 
-This section should clearly explain the types of financial products that will be created and the mechanics of an example financial product using this price identifier. Please answer the following questions:
+The DVM currently does not support USD-[bwBTC/ETH SLP], [bwBTC/ETH SLP]-USD, USD/bBadger or bBadger/USD as price identifiers. 
 
-1. What are the financial positions enabled by creating this synthetic that do not already exist?
+BadgerDAO’s first product is Sett vault, an automated DeFi aggregator focused on tokenized BTC assets. Users that tokenized Bitcoin in Badger vaults receive a corresponding “b” denominated token in return that represents their vault position. Unfortunately these vault positions then become illiquid. Many of our users would like to borrow against their BTC vault positions as collateral to mint Badger Dollars (a yield dollar). At the time of writing, Badger’s Sett Vaults have brought in over 700m in TVL. 
 
-    - [ANSWER]
+The first vaults that could generate Badger Dollars will be bwBTC/ETH SLP and bBadger. Definitions of these vaults are below: 
 
-2. Please provide an example of a person interacting with a contract that uses this price identifier. 
+- **bwBTC/ETH SLP**
+    - Liquidity provider tokens for the wBTC/ETH pool in Sushiswap that is staked in the Badger Sett Vault wBTC/ETH SLP resulting to mint bwBTC/ETH SLP token(s). 
+    - View [here](https://etherscan.io/token/0x758a43ee2bff8230eeb784879cdcff4828f2544d) for it's associated token address
 
-    - Remember, price identifiers **return the units of the collateral currency**. 
+ - **bBadger**
+    - Badger token that is staked in the Badger Sett Vault to mint bBadger token(s)
+    - View [here](https://etherscan.io/address/0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28) for it's associated token address
 
-         - For example, if at expiry the price id returns 1 and the contract is collateralized in renBTC, each synth would be worth 1 renBTC.
+Supporting the USD-[bwBTC/ETH SLP], [bwBTC/ETH]-USD, USD/bBadger and bBadger/USD price identifiers would enable the creation of Badger Dollars synthetic tokens. It enables token minters to leverage their vaulted positions in Badgers Setts.  
 
-    - [ANSWER]
+This would allow Alice to use 100 bBadger (worth $1200) to create 400 USD synth tokens (worth $400).  At expiry, Alice could redeem her 400 USD synthetic tokens for the USD amount of bBadger the USD synthetic tokens are worth.  Once this is complete, she could then withdrawal the rest of her collateral (100 bBadger). 
 
-3. Consider adding market data  (e.g., if we add a “Dai alternative,” the author could show the market size of Dai)
-
-<br> 
 
 # MARKETS & DATA SOURCES
 
