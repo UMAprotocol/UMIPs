@@ -10,7 +10,7 @@
 ## Summary
 
 
-This UMIP will add bwBTC/ETH SLP and bBadger, two BadgerDAO vault LP tokens, as approved collateral currencies. 
+This UMIP will add bwBTC/ETH Sushiswap liquidity provider (SLP) and bBadger, two BadgerDAO vault LP tokens, as approved collateral currencies. 
 
 This will involve adding it to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 0.01 bwBTC/ETH SLP and 36 bBadger per request.
 
