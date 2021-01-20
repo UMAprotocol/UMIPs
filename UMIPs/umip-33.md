@@ -3,7 +3,7 @@
 - UMIP-33
 - UMIP title: Add AMPLUSD, USDAMPL as price identifiers
 - Author (alex, abgtrading30@gmail.com)
-- Status: Draft
+- Status: Final
 - Created: December 20, 2020
 
 ## Summary (2-5 sentences)
