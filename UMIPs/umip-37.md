@@ -26,6 +26,7 @@ The definition of this identifier should be:
 - Intended collateral currency: USDC
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 6 decimals
+
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
@@ -39,6 +40,7 @@ The definition of this identifier should be:
 - Result Processing: 1/DSDUSD.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 18 decimals
+
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
