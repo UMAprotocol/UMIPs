@@ -37,7 +37,7 @@ The definition of this identifier should be:
 - Quote Currency: DSD
 - Intended collateral currency: DSD
 - Exchanges: Uniswap
-- Result Processing: 1/DSDUSD.
+- Result Processing: 1 / Median DSDUSD.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 18 decimals
 
