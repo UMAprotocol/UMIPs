@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-#    |                                                                                                                                          |
+| UMIP-37    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add DSDUSD, USDDSD as price identifiers              |
 | Authors    | John (dsdravage@gmail.com), Sean (sean@opendao.io) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | January 14, 2021                                                                                                                           |
 
 ## Summary (2-5 sentences)
@@ -33,6 +33,7 @@ The definition of this identifier should be:
 - Identifier name: USDDSD
 - Base Currency: USD
 - Quote Currency: DSD
+- Intended collateral currency: DSD
 - Exchanges: Uniswap
 - Result Processing: 1/DSDUSD.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
