@@ -33,6 +33,8 @@ Many of BadgerDAO's users would like to borrow against their BTC vault positions
 
 bwBTC/ETH SLP and bBadger as collateral is expected to have a variety of deployments. The timing for adding it now, and the immediate application, is for use with a USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers which will enable the creation of Badger Dollars, a yield dollar token. 
 
+**Note** - 'b' tokens are implemented as upgradeable proxy contracts.  All governance functions are currently controlled via a multisig by the core Badger Team.  
+
 ## Technical Specification
 
 To accomplish this upgrade, the following changes need to be made:
