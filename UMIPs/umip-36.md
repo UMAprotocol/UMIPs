@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add Dynamic Set Dollar as a collateral currency              |
 | Authors    | John (dsdravage@gmail.com), Sean (sean@opendao.io) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | January 13, 2021                                                                                                                           |
  
 ## Summary (2-5 sentences)
