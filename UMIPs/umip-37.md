@@ -23,8 +23,9 @@ The definition of this identifier should be:
 - Quote Currency: USD
 - Exchanges: Uniswap
 - Result Processing: Median.
+- Intended collateral currency: USDC
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Price Steps: 0.000000000000000001 (18 decimals in more general trading format)
+- Price Steps: 6 decimals
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
@@ -37,7 +38,7 @@ The definition of this identifier should be:
 - Exchanges: Uniswap
 - Result Processing: 1/DSDUSD.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Price Steps: 0.000000000000000001 (18 decimals in more general trading format)
+- Price Steps: 18 decimals
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
