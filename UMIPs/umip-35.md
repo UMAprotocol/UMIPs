@@ -12,7 +12,7 @@
 
 This UMIP will add bwBTC/ETH Sushiswap liquidity provider (SLP) and bBadger, two BadgerDAO vault LP tokens, as approved collateral currencies. 
 
-This will involve adding it to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 0.01 bwBTC/ETH SLP and 36 bBadger per request.
+This will involve adding it to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 0.000000013 bwBTC/ETH SLP and 24 bBadger per request.
 
 View [here](https://badgerdao.medium.com/sett-vault-user-guide-9040b2f4b7a4) for an overview of Badger DAO's Setts Vaults
 
@@ -41,8 +41,8 @@ To accomplish this upgrade, the following changes need to be made:
 
 - The bwBTC/ETH SLP address, 0x758a43ee2bff8230eeb784879cdcff4828f2544d, needs to be added to the collateral currency whitelist 
 - The bBadger address, 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28, needs to be added to the collateral currency whitelist 
-- A final fee of 0.01 for the wBTC/ETH SLP needs to be added in the Store contract (~$400 at time of writing)
-- A final fee of 36 for bBadger asset needs to be added in the Store contract (~$528 at time of writing)
+- A final fee of 0.000000013 for the wBTC/ETH SLP needs to be added in the Store contract (~$400 at time of writing)
+- A final fee of 24 for bBadger asset needs to be added in the Store contract (~$400 at time of writing)
 
 
 
