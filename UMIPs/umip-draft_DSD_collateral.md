@@ -24,6 +24,10 @@ To accomplish this upgrade, two changes need to be made:
 - The DSD address, [0xBD2F0Cd039E0BFcf88901C98c0bFAc5ab27566e3](https://etherscan.io/token/0xBD2F0Cd039E0BFcf88901C98c0bFAc5ab27566e3), needs to be added to the collateral currency whitelist introduced in UMIP-8. 
 - A final fee of 600 DSD needs to be added for the DSD in the Store contract.
 
+_Note:-_ 
+
+Dynamic Set Dollar is not a rebase token. The “expansion” only goes to users who have tokens bonded (staked) in the dao or to liquidity providers who have bonded the lp tokens to the app. The tokens are claimed through the website [dsd.finance](https://dsd.finance). The contractions are voluntary. Users burn their tokens for coupons that promise a premium when the price returns to peg. The coupons expire if not redeemed in 30 days.
+
 ​
 ​
 ## Rationale
