@@ -22,7 +22,7 @@ DSD holders would supply tokens to the OpenDAO Platform as a collateral asset to
 ## Technical Specification
 To accomplish this upgrade, two changes need to be made:
 - The DSD address, [0xBD2F0Cd039E0BFcf88901C98c0bFAc5ab27566e3](https://etherscan.io/token/0xBD2F0Cd039E0BFcf88901C98c0bFAc5ab27566e3), needs to be added to the collateral currency whitelist introduced in UMIP-8. 
-- A final fee of 571 DSD needs to be added for the DSD in the Store contract.
+- A final fee of 600 DSD needs to be added for the DSD in the Store contract.
 
 ​
 ​
