@@ -4,7 +4,7 @@
 | ---------- | ----------------------------------- |
 | UMIP Title | Add bwBTC/ETH SLP and bBadger as collateral currencies |
 | Authors    | BitcoinPalmer, mitche50, J au Defi, Defi Frog  |
-| Status     | Last Call                               |
+| Status     | Final                               |
 | Created    | January 7, 2021                    |
 
 ## Summary

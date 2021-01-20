@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add DSDUSD, USDDSD as price identifiers              |
 | Authors    | John (dsdravage@gmail.com), Sean (sean@opendao.io) |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Final                                                                                                                                    |
 | Created    | January 14, 2021                                                                                                                           |
 
 ## Summary (2-5 sentences)
