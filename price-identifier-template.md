@@ -151,7 +151,7 @@ denominator of your currency pair. If your price identifier does not have a quot
 
 - **Example**
 
-    - USDC has 18 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)). 
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)). 
 
 **6. Rounding** - [ADD ROUNDING]
 
