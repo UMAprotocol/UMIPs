@@ -27,7 +27,7 @@ The definition of this identifier should be:
 - Identifier name: AMPLUSD
 - Base Currency: AMPL
 - Quote Currency: USD
-- Data Sources: FTX, Uniswap, Gate.io
+- Data Sources: FTX, Bitfinex, Gate.io
 - Result Processing: Median
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Collateral Decimals: 6
@@ -41,7 +41,7 @@ The definition of this identifier should be:
 - Identifier name: USDAMPL
 - Base Currency: USD
 - Quote Currency: AMPL
-- Data Sources: FTX, Uniswap, Gate.io
+- Data Sources: FTX, Bitfinex, Gate.io
 - Result Processing: Median
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 0.000001 (6 decimals in more general trading format)
@@ -62,7 +62,7 @@ Other factors that are relevant to the volume and price for AMPL:
 - The project has set up liquidity mining (Geyser programs) to incentivize liquidity on decentralized exchanges (Uniswap, Sushiswap, Balancer).
 - One of its centralized exchanges, Kucoin, suffered a hack in September. Since the hack, there have been moments where the Kucoin pairs have reflected a lower market price compared to other exchanges. This creates hesitation in using it as one of the main data sources even though it has a high percentage of reported centralized exchange volume.
 
-The option being proposed is to use the spot market prices from FTX, Uniswap, and Gate.io. As AMPL is added to more exchanges, the technical specification of this identifier could be modified to reflect more reliable exchanges based on volume.
+The option being proposed is to use the spot market prices from FTX, Bitfinex, and Gate.io. As AMPL is added to more exchanges, the technical specification of this identifier could be modified to reflect more reliable exchanges based on volume.
 
 Users should use these aggregators as a convenient way to query the price in real-time, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
 
@@ -70,7 +70,7 @@ Users should use these aggregators as a convenient way to query the price in rea
 
 The value of AMPLUSD and USDAMPL for a given timestamp can be determined with the following process:
 
-1. AMPL/USD should be queried from Gate.io, Uniswap, and FTX for that timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
+1. AMPL/USD should be queried from Gate.io, Bitfinex, and FTX for that timestamp rounded to the nearest second. The results of these queries should be kept at the level of precision they are returned at.
 2. The median of the AMPL/USD results should then be taken and determined whether that median differs from broad market consensus.
 3. This result should be rounded to six decimal places.
 4. The inverse of the AMPL/USD median from step 2 is then taken (1/AMPLUSD) to determine the USD/AMPL price.
@@ -91,26 +91,26 @@ The chosen AMPL/USD and USD/AMPL endpoints are:
 ```
    https://api.gateio.ws/api/v4/spot/tickers?currency_pair=AMPL_USDT // last
 ```
-3. Uniswap - AMPL/ETH
+3. Bitfinex - AMPL/USD
    
-   The below pulls the AMPL/ETH price from https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2 :
 ```
-      {
-         token(id: "0xd46ba6d942050d489dbd938a2c909a5d5039a161") 
-         {
-            derivedETH,
-         }
-      } 
+      https://api-pub.bitfinex.com/v2/tickers?symbols=tAMPUSD // LAST_PRICE
 ```
-
-   One could then multiply by the ETH price to receive AMPL/USD:
 ```
-      { 
-         bundle(id: "1" ) 
-         { 
-            ethPrice 
-         } 
-      }
+  // from Bitfinex documentation on how trading pairs are returned
+  [
+    SYMBOL,
+    BID, 
+    BID_SIZE, 
+    ASK, 
+    ASK_SIZE, 
+    DAILY_CHANGE, 
+    DAILY_CHANGE_RELATIVE, 
+    LAST_PRICE, 
+    VOLUME, 
+    HIGH, 
+    LOW
+  ]
 ```
 
 Historical Data
@@ -139,26 +139,24 @@ The result is reported as an element within a JSON array. The close price is use
  - Lowest price
  - Open price
 
-3. Uniswap - AMPL/ETH
+3. Bitfinex - AMPL/USD
 
 ```
-   {
-      pairHourDatas(first:1,
-         where: {
-         pair: "0xc5be99a02c6857f9eac67bbce58df5572498f40c"
-         hourStartUnix: 1608811200
-         }
-         ) {
-            pair{
-               token1 {
-                  derivedETH
-            }
-         }
-      }
-   }
-```
-where “`{hourStartUnix}`” is the requested historical hourly snapshot data as a Unix timestamp. The result needs to then be multiplied by the ETH price at the same time to obtain the historic price. See the implementation below as an example of how it can be calculated.
+https://api.cryptowat.ch/markets/{exchange}/{pair}/ohlc?before={before}&after={after} // ClosePrice
 
+// Data is returned as the following
+[
+  CloseTime,
+  OpenPrice,
+  HighPrice,
+  LowPrice,
+  ClosePrice,
+  Volume,
+  QuoteVolume
+]
+
+Example: https://api.cryptowat.ch/markets/bitfinex/amplusd/ohlc?before=1608811200&after=1608811200
+```
 As an example of how one might go about constructing a feed programmatically, here is a standalone script with minimal dependencies that calculate the current price and historical price:
 - AMPLUSD and USDAMPL historical price calculation: https://gist.github.com/abg4/ef494aeace3c779fc49f1f774da349ff
 - AMPLUSD and USDAMPL current price calculation: https://gist.github.com/abg4/ea3fc6a24e0c1c1bce05b49b47110ce4
