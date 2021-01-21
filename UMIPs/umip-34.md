@@ -4,7 +4,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add `SynthereumDerivativeFactory` as `Creator` in DVM registry                                                                                                |
 | Authors    | Iliyan Iliev (iliyan.iliev@jarvis.exchange) |
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | December 29, 2020
 
 # Summary
