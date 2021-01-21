@@ -4,18 +4,18 @@
 | UMIP Title | Add BTC-BASIS-3M, BTC-BASIS-6M, ETH-BASIS-3M, and ETH-BASIS-6M as price identifiers              |
 | Authors    | Bae (bae@youmychicfila.com), K (k@youmychicfila.com) |
 | Status     | Draft                                                                                                                                    |
-| Created    | December 18, 2020                                                                                                                           |
+| Created    | January 18, 2020                                                                                                                           |
                                                                           
 # SUMMARY 
 
-The DVM should support price requests for both BTC-BASIS-3M/USDC, BTC-BASIS-6M/USDC, ETH-BASIS-3M/USDC, ETH-BASIS-6M/USDC price indices. BTC-BASIS-3M/USDC is defined as: 100.0 * (F-S)/S, where `F` references a basket of BTC futures that are set to expire in March and `S` represents a basket of BTC spot prices. ETH-BASIS-3M/USDC is defined in the same way, except the `F` and `S` correspond to `ETH` futures and spot. Similarly, the `6M` `BTC and `ETH` price identifiers would be the same formula except with futures that are set to expire in `June` instead of `March`.  
+The DVM should support price requests for both BTC-BASIS-3M/USDC, BTC-BASIS-6M/USDC, ETH-BASIS-3M/USDC, ETH-BASIS-6M/USDC price indices. BTC-BASIS-3M/USDC is defined as: 100.0 * [1 + (F-S)/S], where `F` references a basket of BTC futures that are set to expire in March and `S` represents a basket of BTC spot prices. ETH-BASIS-3M/USDC is defined in the same way, except the `F` and `S` correspond to `ETH` futures and spot. Similarly, the `6M` `BTC and `ETH` price identifiers would be the same formula except with futures that are set to expire in `June` instead of `March`.  
 
 For closure:
 
-BTC-BASIS-3M/USDC: 100.0 * (F-S)/S, where F is a basket of 3 month BTC futures and S is a basket of BTC spot prices.
-BTC-BASIS-6M/USDC: 100.0 * (F-S)/S, where F is a basket of 6 month BTC futures and S is a basket of BTC spot prices.
-ETH-BASIS-3M/USDC: 100.0 * (F-S)/S, where F is a basket of 3 month ETH futures and S is a basket of ETH spot prices.
-ETH-BASIS-6M/USDC: 100.0 * (F-S)/S, where F is a basket of 6 month ETH futures and S is a basket of ETH spot prices.
+BTC-BASIS-3M/USDC: 100.0 * [1 + (F-S)/S], where F is a basket of 3 month BTC futures and S is a basket of BTC spot prices.
+BTC-BASIS-6M/USDC: 100.0 * [1 + (F-S)/S], where F is a basket of 6 month BTC futures and S is a basket of BTC spot prices.
+ETH-BASIS-3M/USDC: 100.0 * [1 + (F-S)/S], where F is a basket of 3 month ETH futures and S is a basket of ETH spot prices.
+ETH-BASIS-6M/USDC: 100.0 * [1 + (F-S)/S], where F is a basket of 6 month ETH futures and S is a basket of ETH spot prices.
 
 
 # MOTIVATION
@@ -166,7 +166,7 @@ Not required to have a TWAP/VWAP/etc.
 
     For BTC futures prices, the median of the prices from the 3 exchanges should be used. For BTC spot prices, the median of the prices from the 3 spot exchanges should be used. Same for ETH.
 
-    As an example, for BTC-BASIS-3M, the formula is 100.0 * (F-S)/S, where F would be a median of the 3 futures prices as mentioned above and S would be a median as well of the 3 spot prices.
+    As an example, for BTC-BASIS-3M, the formula is 100.0 * [1 + (F-S)/S], where F would be a median of the 3 futures prices as mentioned above and S would be a median as well of the 3 spot prices.
 
 <br>
 
