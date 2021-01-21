@@ -5,11 +5,7 @@
 | Authors    | mitche50, J au Defi, bitcoinpalmer, Defi Frog
 | Status     | Draft                                                                                                                            |
 | Created    | 1/15 /2021                                                                              
-<br>
-Note that an UMIP number will be assigned by an editor. When opening a pull request to submit your UMIP, please use an abbreviated title in the filename, umip-draft_title_abbrev.md.
-The title should be 44 characters or less.
 
-<br>
 <br>
 
 # SUMMARY 
@@ -55,19 +51,15 @@ Supporting the USD-[bwBTC/ETH SLP],  [bwBTC/ETH]-USD, USD/bBadger and bBadger/US
         - Sushiswap
 
 
-2.  Which specific pairs should be queried from each market?
-
-    - [ANSWER]
 
 2. Provide recommended endpoints to query for real-time prices from each market listed. 
 
-    - These should match the data sources used in  "Price Feed Implementation". 
+    - Sushiswap  graph explorer
+        - https://thegraph.com/explorer/subgraph/sushiswap/sushiswap
 
-    - [ADD-ENDPOINTS]
-    
-4. How often is the provided price updated?
+    - Uniswap graph explorers
+        - https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
-    - [ANSWER]
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
@@ -75,27 +67,27 @@ Supporting the USD-[bwBTC/ETH SLP],  [bwBTC/ETH]-USD, USD/bBadger and bBadger/US
 
 6.  Do these sources allow for querying up to 74 hours of historical data? 
 
-    - [ANSWER]
+    - Yes, detailed in implementation section
 
 7.  How often is the provided price updated?
 
-    - [ANSWER]
+    - Every block
 
 8. Is an API key required to query these sources? 
 
-    - [ANSWER]
+    - No
 
 9. Is there a cost associated with usage? 
 
-    - [ANSWER]
+    - No (this could change when The Graph turns into a marketplace)
 
 10. If there is a free tier available, how many queries does it allow for?
 
-    - [ANSWER]
+    - No limit currently
 
 11.  What would be the cost of sending 15,000 queries?
 
-     - [ANSWER]
+     - $0
 
 <br>
 
@@ -105,9 +97,6 @@ We would be using the Sushiswap and Uniswap TWAPs to determine price
 
 https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger/index.js
 
-Please provide a link to your price feed pull request.
-
-- [ADD-LINK-TO-PULL-REQUEST]
 
 <br>
 
@@ -129,7 +118,7 @@ Please provide a link to your price feed pull request.
 
 - Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
 
-    - Not yet but there is a PR to have the collateral currency approved
+    - Yes
 
 **5. Collateral Decimals** - 18
 
@@ -202,7 +191,7 @@ Please provide a link to your price feed pull request.
 
 - Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
 
-    - Not yet but there is a PR to have the collateral currency approved
+    - Yes
 
 
 **5. Collateral Decimals** - 18
@@ -213,9 +202,22 @@ Please provide a link to your price feed pull request.
 
 # RATIONALE
 
-The rationale should flesh out the specification by describing what motivated the design and why particular design decisions were made, as well as any alternative designs that were considered.
+**Why this implementation of the identifier as opposed to other implementation designs?**
 
-- [RESPONSE]
+This implementation is due to Badger’s main sources of liquidity being on Sushiswap and Uniswap.  Currently, only low volume and low depth centralized exchanges have Badger listed, and most liquidity will remain on DEXs as it is incentivized.
+
+**What analysis can you provide on where to get the most robust prices? (Robust as in legitimate liquidity, legitimate volume, price discrepancies between exchanges, and trading volume between exchanges)**
+
+Sushiswap and Uniswap have the vast majority of Badger volume and depth.  These should be used over all other sources.
+
+**What is the potential for the price to be manipulated on the chosen exchanges?**
+
+Badger is not a collateral on any loan services and the majority of the liquidity is locked into farming vaults / geysers.  The potential risk for this is low.
+
+**Should the prices have any processing (e.g., TWAP)?**
+
+Since pricing is coming from uniswap / sushiswap, we should use the TWAP as defined in the price feed that already exists
+
 
 <br>
 
@@ -225,33 +227,66 @@ B wrapped tokens have 2 components to finding the underlying value of the tokens
 
 The price per full share can be found by querying the contract of the token with `getPricePerFullShare` as seen in method 9 on this contract: https://etherscan.io/address/0x19D97D8fA813EE2f51aD4B4e04EA08bAf4DFfC28#reaProxyContract
 
+For bBadger you could use the same getPricePerFullShare method (described above) from the contract to get the underlying amount, and then the price can be queried via the graph for both Sushi and Uniswap using TWAPs.
+
 <br>
 
-## USD-[bwBTC/ETH SLP]
+## USD/bBadger
 
-For the bwBTC/ETH SLP, you would find the value by querying the sushiswap subgraph using the below query:
-https://api.thegraph.com/subgraphs/name/sushiswap/exchange
-    query: `
+**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
+
+To find the price for USD/bBadger perform the following steps:
+
+1. Query contract 0x19D97D8fA813EE2f51aD4B4e04EA08bAf4DFfC28 for method getPricePerFullShare
+2. Multiply this value by 1e-18 to get the ratio of b tokens to underlying tokens
+3. Multiply the amount of bBadger by the result of the above multiplication
+4. HTTP GET request to the sushiswap or uniswap subgraph 
+
     {
-          pair(id:"${address.toLowerCase()}") {
-                reserve0
-                reserve1
-                totalSupply
-          }
-    }`
-For the sushi wBTC/ETH SLP, token0 = wBTC and token1 = ETH.  We can then determine the value of the provided SLP by the below pseudo code:
-wBTC Ratio = Reserve0 / totalSupply
-ETH Ratio = Reserve1 / totalSupply
-wBTCBalance = slpBalance * wBTC Ratio
-ethBalance = slpBalance * wBTC Ratio
-slpValue = (wBTCBalance * wBTCPrice) + (ethBalance * ethPrice)
+        query: {
+            token(id: "0x3472A5A71965499acd81997a54BBA8D852C6E53d") {
+                derivedETH
+            }
+        },
+    }
 
-The prices used can be the normal price oracles for wBTC and ETH.
+5. The graph can accept blockheights to get historical data.  To get this information, include block:{number: 11589591} (as and example to get block height 11589591) in the pair parameters.  Example:
+
+    {
+        query: {
+            token(id: "0x3472A5A71965499acd81997a54BBA8D852C6E53d", block:{number: 11589591}) {
+                derivedETH
+            }
+        },
+    }
+
+    - This gives the current price of Badger in ETH
+
+5. Multiply this return by the amount of underlying tokens you have to get the value of the bBadger in ETH
 
 
 1. **Pricing interval**
 
-    - [ANSWER]
+    - Prices are determined by block not by timestamps. No need to round
+2. **Input processing**
+
+    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+
+3. **Result processing** 
+
+     - 1 / bBadger/USD
+
+     <br>
+
+## bBadger/USD
+
+**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
+
+    - See above relating to USD/bBadger
+
+1. **Pricing interval**
+
+    - Prices are determined by block not by timestamps. No need to round
 
 2. **Input processing**
 
@@ -265,9 +300,62 @@ The prices used can be the normal price oracles for wBTC and ETH.
 
 ## [bwBTC/ETH SLP]-USD
 
+**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
+
+1. Query contract 0x758a43ee2bff8230eeb784879cdcff4828f2544d for method getPricePerFullShare
+
+2. Multiply this value by 1e-18 to get the ratio of b tokens to underlying tokens
+
+3. Multiply the amount of bwBTC/ETH SLP by the result of the above multiplication
+
+4. HTTP GET request to the sushiswap subgraph https://api.thegraph.com/subgraphs/name/jiro-ono/sushiswap-v1-exchange with the below json query:
+    {
+        query: {
+            pair(id: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58") {
+                totalSupply
+                reserve0
+                reserve1
+                token0{
+                    derivedETH
+                }
+                token1{
+                    derivedETH
+                }
+            }
+        },
+    }
+
+    - Note - Token0 is wBTC, token1 is wETH
+
+5. To get the value of the SLP you would take the derivedETH value for each token, multiply it by the respective reserve, add them together and then divide by the total supply
+
+    - The calculation would look something like:
+((data.pair.token0.derivedETH * data.pair.reserve0 * 1e18) + (data.pair.token1.derivedETH * data.pair.reserve1 * 1e18)) / data.pair.totalSupply
+
+6. The graph can accept blockheights to get historical data.  To get this information, include block:{number: 11589591} (as and example to get block height 11589591) in the pair parameters.  Example:
+
+    {
+        query: {
+            pair(id: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58",  block:{number: 11589591}) {
+                totalSupply
+                reserve0
+                reserve1
+                token0{
+                    derivedETH
+                }
+                token1{
+                    derivedETH
+                }
+            }
+        },
+    }
+
+7. Take this result and multiply by the amount of underlying tokens you have to get the value of the bwBTC/ETH in ETH
+
+
 1. **Pricing interval**
 
-    - [ANSWER]
+    - Prices are determined by block not by timestamps. No need to round
 
 2. **Input processing**
 
@@ -279,14 +367,15 @@ The prices used can be the normal price oracles for wBTC and ETH.
 
      <br>
 
-## USD/bBadger
+## USD-[bwBTC/ETH SLP]
 
-For bBadger you could use the same getPricePerFullShare method (described above) from the contract to get the underlying amount, and then the price can be queried via the graph for both Sushi and Uniswap using TWAPs.
+**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
 
+ - See above
 
 1. **Pricing interval**
 
-    - [ANSWER]
+    - Prices are determined by block not by timestamps. No need to round
 
 2. **Input processing**
 
@@ -294,27 +383,7 @@ For bBadger you could use the same getPricePerFullShare method (described above)
 
 3. **Result processing** 
 
-     - Mode
-
-     <br>
-
-## bBadger/USD
-
-For bBadger you could use the same getPricePerFullShare method from the contract to get the underlying amount, and then the price can be queried via the graph for both sushi and uniswap using TWAPs.
-
-
-1. **Pricing interval**
-
-    - [ANSWER]
-
-2. **Input processing**
-
-    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-
-3. **Result processing** 
-
-     - Mode
-
+     - 1 / [bwBTC/ETH SLP]/USD
 
 <br>
 
