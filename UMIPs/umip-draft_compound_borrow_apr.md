@@ -15,7 +15,7 @@ Cost: Calculating an aggregated statistic of compound USDC borrow rates on a con
 
 Opportunity: Compound USDC Borrow APR futures can help borrowers and traders hedge against interest rate volatility allowing them to "lock-in" future costs from Compound loans. This will enable taking multi-collateral backed loans out on Compound for new use cases. Other users may wish to speculate on the demand for borrowing USDC on Compound or hedge their deposit interest rate volatility. Providing a price feed for the settlement of a financial contract is a prerequisite.
 
-Example Synthetic: We'll use a USDC as the collateral currency. In order to allow people to make bets on the APRs for specific months, this UMIP's price index will only be used at the synthetics expiration. This is similar to `GASETH-1M-1M's usage` from umip-25.
+Example Synthetic: We'll use a USDC as the collateral currency. In order to allow people to make bets on the APRs for specific months, this UMIP's price index will only be used at the synthetics expiration. This is similar to how UMIP-25 uses `GASETH-1M-1M`.
 
 Example user: A trader takes out a large loan from Compound and the current APR is 10%. Compound APRs are volatile, however, the trader wishes to lock-in this APR for the next month. The trader can buy synthetic tokens tracking this price index. If APRs increase, the trader owes more interest on their loan, but their synthetic increases in value enough to cover the cost of the increased interest.
 
@@ -61,7 +61,7 @@ We mitigate the effects of numerical instability by rounding to the nearest two 
 
 ## Implementation
 
-This implementation works with the dataset from [Tendies Exchange public endpoint](https://cache.tendies.exchange/borrow_rate_per_block.json). To use it with other datasets, modify the getBorrowRatePerBlock function. This implementation is updated as an [open source price feed script](https://github.com/evanmays/tendies-exchange/tree/master/indexer).
+This implementation works with the dataset from [Tendies Exchange public endpoint](https://cache.tendies.exchange/borrow_rate_per_block.json). To use it with other datasets, modify the `getBorrowRatePerBlock()` function. This implementation is updated as an [open source price feed script](https://github.com/evanmays/tendies-exchange/tree/master/indexer).
 
 The script below expects a `start_block` and `end_block` for the 30 day period. UMA token holders should define these as follows.
 ```
@@ -106,7 +106,7 @@ def getBorrowRatePerBlock(dataset_filename, start_block, end_block):
 def geometricMean(dataset_list):
   return math.prod(dataset_list) ** (1/len(dataset_list))
 
-# Geometric mean to get total return, then convert to APY
+# Geometric mean to get average per block return, then convert to APR
 def getAPRforMonth(dataset_filename, start_block, end_block, expected_blocks_per_year):
   borrow_rate_of_block = getBorrowRatePerBlock(dataset_filename, start_block, end_block)
   avg_borrow_rate_per_block = geometricMean(borrow_rate_of_block)
