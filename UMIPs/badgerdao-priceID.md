@@ -22,7 +22,11 @@ The DVM should support price requests for the below price indexes:
 
 The DVM currently does not support the USD-[bwBTC/ETH SLP],  [bwBTC/ETH SLP]-USD, USD/bBadger or bBadger/USD price identifiers.  
 
-BadgerDAO’s first product is Sett vault, an automated DeFi aggregator focused on tokenized BTC assets. Users that tokenized Bitcoin in our vaults receive a corresponding “b” denominated token in return that represents their vault position. Unfortunately these vault positions then become illiquid. Many of our users would like to borrow against their BTC vault positions as collateral to mint Badger Dollars (a yield dollar). At the time of writing, Badger’s Sett Vaults have brought in over 700m in TVL. 
+BadgerDAO’s first product is Sett vault, an automated DeFi aggregator focused on tokenized BTC assets. Users that tokenized Bitcoin in our vaults receive a corresponding “b” denominated token in return that represents their vault position. Unfortunately these vault positions then become illiquid. Many of our users would like to borrow against their BTC vault positions as collateral to mint Badger Dollars (a yield dollar). At the time of writing, Badger’s Sett Vaults have brought in over 700m in TVL.
+
+
+bwBTC/ETH SLP is BadgerDAO's highest TVL vault and bBadger is our native token vault, only less in value than the curve vault.
+
 
 **bwBTC/ETH SLP**
 - Liquidity provider tokens for the wBTC/ETH pool in Sushiswap that is staked in the Badger Sett Vault wBTC/ETH SLP resulting to mint bwBTC/ETH SLP token(s).
@@ -50,6 +54,10 @@ Supporting the USD-[bwBTC/ETH SLP],  [bwBTC/ETH]-USD, USD/bBadger and bBadger/US
         - Uniswap
         - Sushiswap
 
+        **Note** - The above are approved collateral currencies on UMA. View below. 
+
+        https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-35.md
+
 
 
 2. Provide recommended endpoints to query for real-time prices from each market listed. 
@@ -63,7 +71,33 @@ Supporting the USD-[bwBTC/ETH SLP],  [bwBTC/ETH]-USD, USD/bBadger and bBadger/US
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
-    - [ADD-ENDPOINTS]
+
+**bBadger query** 
+{
+    query: {
+        token(id: "0x3472A5A71965499acd81997a54BBA8D852C6E53d", block:{number: 11589591}) {
+            derivedETH
+        }
+    },
+}
+
+**bwBTC/ETH SLP Query**
+
+{
+    query: {
+        pair(id: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58",  block:{number: 11589591}) {
+            totalSupply
+            reserve0
+            reserve1
+            token0{
+                derivedETH
+            }
+            token1{
+                derivedETH
+            }
+        }
+    },
+}
 
 6.  Do these sources allow for querying up to 74 hours of historical data? 
 
@@ -217,6 +251,9 @@ Badger is not a collateral on any loan services and the majority of the liquidit
 **Should the prices have any processing (e.g., TWAP)?**
 
 Since pricing is coming from uniswap / sushiswap, we should use the TWAP as defined in the price feed that already exists
+
+
+TWAPs increase reliability of pulling data from AMMs. Without this, flash loans can be used to exploit pricing and cause liquidations.
 
 
 <br>
