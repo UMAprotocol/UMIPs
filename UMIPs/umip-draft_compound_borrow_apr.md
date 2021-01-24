@@ -1,6 +1,6 @@
 ## Headers
 - UMIP <#>
-- UMIP title: Add [COMPUSDCAPR-30DAY/USD] as a price identifier
+- UMIP title: Add [COMPUSDC-APR-30DAY/USD] as a price identifier
 - Author Evan Mays <me@evanmays.com>
 - Status: Draft
 - Created: January 13, 2020
@@ -37,7 +37,7 @@ The intention is that this price identifier won't be used as a peg target for a 
 ## Technical Specification
 The definition of this identifier should be:
 
-* Identifier name: [COMPUSDCAPR-30DAY/USD]
+* Identifier name: [COMPUSDC-APR-30DAY/USD]
 * Base Currency: Compound Borrowing USDC Interest Annual Percentage Rate
 * Quote Currency: USD
 * Intended Collateral Currency: USDC.
