@@ -12,13 +12,13 @@
 
 # SUMMARY
 
-The DVM should support price requests for the [COMPUSDCAPR-TWAP-OR-30DAY-FEB28/USD] and [COMPUSDCAPR-TWAP-OR-30DAY-MAR28/USD] price index.
+The DVM should support price requests for the [COMPUSDCAPR-TWAP-OR-30DAY-FEB28/USD] and [COMPUSDCAPR-TWAP-OR-30DAY-MAR28/USD] price indices.
 
 A synthetic token, referred to as 'CAR', will be created with this price identifier.
 
 This price index should resolve in one of two ways, depending on the DVM timestamp.
 
-## [COMPUSDCAPR-TWAP-OR-30DAY-FEB28/USD]
+**[COMPUSDCAPR-TWAP-OR-30DAY-FEB28/USD]**
 ```
 CUTOFF = 1614470400 # Feb 28, 2021 00:00:00 UTC
 if dvm_timestamp >= CUTOFF:
@@ -27,7 +27,7 @@ else:
   Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap or Balancer price of the CAR token quoted in USD. CAR token address in technical specification.
 ```
 
-## [COMPUSDCAPR-TWAP-OR-30DAY-MAR28/USD]
+**[COMPUSDCAPR-TWAP-OR-30DAY-MAR28/USD]**
 ```
 CUTOFF = 1616889600 # Mar 28, 2021 00:00:00 UTC
 if dvm_timestamp >= CUTOFF:
@@ -40,7 +40,7 @@ else:
 
 The motivation for calculating [COMPUSDCAPR-30DAY/USD] is described in UMIP #. Potential use cases are also in UMIP #.
 
-The motivation for using a different price depending on the DVM timestamp is similar to UMIP-22. For the creation of a APR futures contract, we use the TWAP pre-expiry and the true [COMPUSDCAPR-30DAY/USD]. This allows the expiring multiparty to stay collateralized at the price the market expects [COMPUSDCAPR-30DAY/USD] will be at expiration. This allows traders to bet on the expectation of the APR over the period of specific months in the future, rather than betting on aggregated real time interest rates.
+The motivation for using a different price depending on the DVM timestamp is similar to UMIP-22. For the creation of a APR futures contract, we use the TWAP pre-expiry and the true [COMPUSDCAPR-30DAY/USD] at expiry. This allows the expiring multiparty to stay collateralized at the price the market expects [COMPUSDCAPR-30DAY/USD] will be at expiration. This allows traders to bet on the expectation of the APR over the period of specific months in the future, rather than betting on aggregated real time interest rates.
 
 Potential uses for `CAR` are described in UMIP #.
 
@@ -48,9 +48,9 @@ Potential uses for `CAR` are described in UMIP #.
 
 # MARKETS, DATA SOURCES, AND PRICE FEED IMPLEMENTATION
 
-This price should be queried from the highest volume Uniswap or Balancer pool (Whichever one is deemed more legitimate by the UMA token holders) on Ethereum where at least one asset in the pair is CAR.
+This price should be queried from the highest volume Uniswap or Balancer pool (Whichever one is deemed more legitimate by the UMA token holders) on Ethereum where at least one asset in the pair is CAR. It's expected that a single Uniswap/USDC pool will have 99% of the liquidity and volume so confusion will not arise.
 
-This price should be updated second by using the time weighted average price from the past 2 hours. Data can be queried from Uniswap/Balancer event logs on any Ethereum full node.
+This price should be updated every second by using the time weighted average price from the past 2 hours. Data can be queried from Uniswap/Balancer event logs on any Ethereum full node.
 
 Liquidator bots with access to an Ethereum full node can use this [Uniswap implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and this [Balancer implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/BalancerPriceFeed.js) for free to query current and historical data.
 
@@ -59,9 +59,11 @@ Liquidator bots with access to an Ethereum full node can use this [Uniswap imple
 
 # TECHNICAL SPECIFICATIONS
 
-**1. Price Identifier Name** - [COMPUSDCAPR-TWAP-OR-30DAY/USD]
+February Index
 
-**2. Base Currency** - CAR token or [COMPUSDCAPR-30DAY/USD] (Compound Borrowing USDC Interest Annual Percentage Rate over 30 days)
+**1. Price Identifier Name** - [COMPUSDCAPR-TWAP-OR-30DAY-FEB28/USD]
+
+**2. Base Currency** - CAR token with expiration at 1614470400 or [COMPUSDCAPR-30DAY/USD] (Compound Borrowing USDC Interest Annual Percentage Rate over 30 days)
 
 **3. Quote currency** - USD
 
@@ -70,7 +72,25 @@ Liquidator bots with access to an Ethereum full node can use this [Uniswap imple
 **5. Collateral Decimals** - 6
 
 **6a. Rounding Pre Cutoff** - 6 decimal places. (decimal place >= 5 rounds up)
+
 **6b. Rounding Post Cutoff** - As described in UMIP # [COMPUSDCAPR-30DAY/USD]
+
+March Index
+
+**1. Price Identifier Name** - [COMPUSDCAPR-TWAP-OR-30DAY-MAR28/USD]
+
+**2. Base Currency** - CAR token with expiration at 1616889600 or [COMPUSDCAPR-30DAY/USD] (Compound Borrowing USDC Interest Annual Percentage Rate over 30 days)
+
+**3. Quote currency** - USD
+
+**4. Intended Collateral Currency** - USDC
+
+**5. Collateral Decimals** - 6
+
+**6a. Rounding Pre Cutoff** - 6 decimal places. (decimal place >= 5 rounds up)
+
+**6b. Rounding Post Cutoff** - As described in UMIP # [COMPUSDCAPR-30DAY/USD]
+
 <br>
 
 # RATIONALE
