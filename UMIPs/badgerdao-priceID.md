@@ -294,7 +294,7 @@ To find the price for USD/bBadger perform the following steps:
 
 3. **Result processing** 
 
-     - Mode
+     - Median
 
      <br>
 
@@ -363,7 +363,7 @@ To find the price for USD/bBadger perform the following steps:
 
 3. **Result processing** 
 
-     - Mode
+     - Median
 
      <br>
 
