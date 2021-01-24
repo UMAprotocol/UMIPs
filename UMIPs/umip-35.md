@@ -51,7 +51,7 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
 
     FTX: [BTC](https://ftx.com/api/markets/BTC/USDT), [BTC-0326](https://ftx.com/api/markets/BTC-0326), [BTC-0625](https://ftx.com/api/markets/BTC-0625)
 
-    Binance: [BTC](https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT) 
+    Binance: [BTC](https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT), [BTC_210326](https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210326), [BTC_210625](https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210625)
 
     Huobi: [BTC](https://api.huobi.pro/market/trade?symbol=btcusdt), [BTC0326Quarterly](https://api.hbdm.com/market/trade?symbol=BTC_CQ), [BTC0625Bi-Quarterly](https://api.hbdm.com/market/trade?symbol=BTC_NQ)
 
@@ -64,6 +64,7 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
 
    FTX, use this endpoint: https://ftx.com/api/markets/BTC/USDT/candles?resolution=15&limit=1&start_time=1608241140&end_time=1608241150
    Huobi, use this endpoint: https://api.hbdm.com/market/history/trade?symbol=BTC_CQ&size=100
+   Binance, use this endpoint: https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210326&limit=100&startTime=1611437831000&endTime=1611537831000
 
 6.  Do these sources allow for querying up to 74 hours of historical data? 
 
