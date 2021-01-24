@@ -31,7 +31,8 @@ All of these endpoints give the borrow rate per block for historical blocks, how
 
 ## Price Feed Implementation
 
-A price feed isn't required for liquidator bots. This UMIP's price index will only be used at the synthetic's expiration. All liquidations will use a two-hour TWAP price feed described/implemented in a future UMIP. This setup is similar to UMIP-25.
+
+The intention is that this price identifier won't be used as a peg target for a synthetic. This price identifier is only used on the expiration date of a synthetic. By the time this price identifier will be used (at expiration), liquidations won't be possible anymore. Therefore, a price feed isn't required for liquidator bots to track this price identifier. All liquidations will use a two-hour TWAP price feed described/implemented in a [future UMIP](https://github.com/UMAprotocol/UMIPs/pull/150). This setup is similar to UMIP-25/UMIP-22 (uGAS).
 
 ## Technical Specification
 The definition of this identifier should be:
