@@ -29,6 +29,9 @@ Raw data is also available for download at the [Tendies Exchange public endpoint
 
 All of these endpoints give the borrow rate per block for historical blocks, however converting this data to APR (and aggregation) is still required. (Read the implementation section)
 
+## Price Feed Implementation
+
+A price feed isn't required for liquidator bots. This UMIP's price index will only be used at the synthetic's expiration. All liquidations will use a two-hour TWAP price feed described/implemented in a future UMIP. This setup is similar to UMIP-25.
 
 ## Technical Specification
 The definition of this identifier should be:
