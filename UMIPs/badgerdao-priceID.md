@@ -12,15 +12,14 @@
 
 The DVM should support price requests for the below price indexes:
 - USD/bBadger
-- bBadger/USD
 - USD-[bwBTC/ETH SLP]
-- [bwBTC/ETH SLP]-USD
+
 
 
 
 # MOTIVATION
 
-The DVM currently does not support the USD-[bwBTC/ETH SLP],  [bwBTC/ETH SLP]-USD, USD/bBadger or bBadger/USD price identifiers.  
+The DVM currently does not support the USD-[bwBTC/ETH SLP], USD/bBadger price identifiers.  
 
 BadgerDAO’s first product is Sett vault, an automated DeFi aggregator focused on tokenized BTC assets. Users that tokenized Bitcoin in our vaults receive a corresponding “b” denominated token in return that represents their vault position. Unfortunately these vault positions then become illiquid. Many of our users would like to borrow against their BTC vault positions as collateral to mint Badger Dollars (a yield dollar). At the time of writing, Badger’s Sett Vaults have brought in over 700m in TVL.
 
@@ -36,7 +35,7 @@ bwBTC/ETH SLP is BadgerDAO's highest TVL vault and bBadger is our native token v
 - Badger token that is staked in the Badger Sett Vault to mint bBadger token(s)
 - View [here](https://etherscan.io/token/0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28) for it's associated token address
 
-Supporting the USD-[bwBTC/ETH SLP],  [bwBTC/ETH]-USD, USD/bBadger and bBadger/USD price identifiers would enable the creation of Badger Dollars synthetic token. It enables token minters to leverage their vaulted positions in Badgers Setts.  This would allow Alice to use 100 bBadger (worth $1200) to create 400 USD synth tokens (worth $400).  At expiry, Alice could redeem her 400 USD synthetic tokens for the USD amount of bBadger the USD synthetic tokens are worth.  Once this is complete, she could then withdrawal the rest of her collateral (100 bBadger).
+Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enable the creation of Badger Dollars synthetic token. It enables token minters to leverage their vaulted positions in Badgers Setts.  This would allow Alice to use 100 bBadger (worth $1200) to create 400 USD synth tokens (worth $400).  At expiry, Alice could redeem her 400 USD synthetic tokens for the USD amount of bBadger the USD synthetic tokens are worth.  Once this is complete, she could then withdrawal the rest of her collateral (100 bBadger).
 
 <br> 
 
@@ -46,11 +45,11 @@ Supporting the USD-[bwBTC/ETH SLP],  [bwBTC/ETH]-USD, USD/bBadger and bBadger/US
 
 1. What markets should the price be queried from? It is recommended to have at least 3 markets.
 
-    - [bwBTC/ETH SLP]-USD and USD-[bwBTC/ETH SLP]
+    - USD-[bwBTC/ETH SLP]
         - Sushiswap (to get the underlying balances)
         - Binance, Huobi and Coinbase Pro (BTC and ETH prices)
 
-    - bBadger/USD and USD/bBadger
+    - USD/bBadger
         - Uniswap
         - Sushiswap
 
@@ -160,54 +159,6 @@ https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger
 
 <br>
 
-## bBadger/USD
-
-**1. Price Identifier Name** - bBadger/USD
-
-**2. Base Currency** - bBadger
-
-**3. Quote currency** - USD
-
-**4. Intended Collateral Currency** - USDC
-
-- Does the value of this collateral currency match the standalone value of the listed quote currency? 
-
-    - Yes
-
-- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
-
-    - Yes
-
-**5. Collateral Decimals** - 6
-
-**6. Rounding** - Round to 6 decimal places
-
-<br>
-
-## [bwBTC/ETH SLP]-USD]
-
-**1. Price Identifier Name** - [bwBTC/ETH SLP]-USD
-
-**2. Base Currency** - bwBTC/ETH SLP
-
-**3. Quote currency** - USD
-
-**4. Intended Collateral Currency** - USDC
-
-- Does the value of this collateral currency match the standalone value of the listed quote currency? 
-
-    - Yes
-
-- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
-
-    - Yes
-
-
-**5. Collateral Decimals** - 6
-
-**6. Rounding** - Round to 6 decimal places
-
-<br>
 
 ## USD-[bwBTC/ETH SLP]
 
@@ -323,31 +274,13 @@ To find the price for USD/bBadger perform the following steps:
 
 3. **Result processing** 
 
-     - 1 / bBadger/USD
-
-     <br>
-
-## bBadger/USD
-
-**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
-
-    - See above relating to USD/bBadger
-
-1. **Pricing interval**
-
-    - Prices are determined by block not by timestamps. No need to round
-
-2. **Input processing**
-
-    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-
-3. **Result processing** 
-
      - Median
 
      <br>
 
-## [bwBTC/ETH SLP]-USD
+
+
+## USD-[bwBTC/ETH SLP]
 
 **A. How should tokenholders arrive at the price in the case of a DVM price request?** 
 
@@ -401,7 +334,6 @@ To find the price for USD/bBadger perform the following steps:
 
 7. Take this result and multiply by the amount of underlying tokens you have to get the value of the bwBTC/ETH in ETH
 
-
 1. **Pricing interval**
 
     - Prices are determined by block not by timestamps. No need to round
@@ -413,26 +345,6 @@ To find the price for USD/bBadger perform the following steps:
 3. **Result processing** 
 
      - Median
-
-     <br>
-
-## USD-[bwBTC/ETH SLP]
-
-**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
-
- - See above
-
-1. **Pricing interval**
-
-    - Prices are determined by block not by timestamps. No need to round
-
-2. **Input processing**
-
-    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-
-3. **Result processing** 
-
-     - 1 / [bwBTC/ETH SLP]/USD
 
 <br>
 
