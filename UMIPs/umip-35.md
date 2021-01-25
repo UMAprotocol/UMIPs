@@ -8,7 +8,7 @@
                                                                           
 # SUMMARY 
 
-The DVM should support price requests for both [BTC-BASIS-3M]/USDC, [BTC-BASIS-6M]/USDC, [ETH-BASIS-3M]/USDC, [ETH-BASIS-6M]/USDC price indices. [BTC-BASIS-3M]/USDC is defined as: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where `F` references a basket of BTC futures that are set to expire in March and `S` represents a basket of BTC spot prices. [ETH-BASIS-3M]/USDC is defined in the same way, except the `F` and `S` correspond to `ETH` futures and spot. Similarly, the `6M` `BTC and `ETH` price identifiers would be the same formula except with futures that are set to expire in `June` instead of `March`.  
+The DVM should support price requests for both [BTC-BASIS-3M]/USDC, [BTC-BASIS-6M]/USDC, [ETH-BASIS-3M]/USDC, [ETH-BASIS-6M]/USDC price indices. [BTC-BASIS-3M]/USDC is defined as: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where `F` references a basket of BTC futures that are set to expire in March and `S` represents a basket of BTC spot prices. [ETH-BASIS-3M]/USDC is defined in the same way, except the `F` and `S` correspond to `ETH` futures and spot. Similarly, the `6M` `BTC` and `ETH` price identifiers would be the same formula except with futures that are set to expire in `June` instead of `March`.  
 
 For closure:
 
