@@ -45,7 +45,7 @@ The definition of this identifier should be:
 * Sources: Derivable from data on any Ethereum full node or data set of Compound Protocol data
 * Rounding: Round to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
 * Input processing: If the cUSDC smart contract has an unexpected failure or hack, human intervention is required. For UMA tokenholders without access to archive nodes, in the case that [Tendies Exchange public endpoint](https://cache.tendies.exchange/borrow_rate_per_block.json) is down, tokenholders should use [Graph Protocol](https://thegraph.com/explorer/subgraph/graphprotocol/compound-v2).
-* Result Processing: Take the median of all votes submitted.
+* Result Processing: The DVM will take the mode of all votes submitted. No further processing required. See rationale and implementation, all votes should be the same.
 * Pricing Interval: Per block
 * Dispute timestamp rounding: Round down (previous timestamp)
 
