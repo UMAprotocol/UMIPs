@@ -151,8 +151,6 @@ Not required to have a TWAP/VWAP/etc.
 
 1. **What prices should be queried for and from which markets?**
 
-    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.  
-
     FTX: BTC/USDT, BTC-0326, BTC-0625
     Binance: BTC/USDT, BTCUSD Quarterly 0326, BTCUSD Quarterly 0625
     Huobi: BTC/USDT, BTC0326Quarterly, BTC0625Bi-Quarterly
