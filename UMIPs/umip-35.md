@@ -8,14 +8,14 @@
                                                                           
 # SUMMARY 
 
-The DVM should support price requests for both BTC-BASIS-3M/USDC, BTC-BASIS-6M/USDC, ETH-BASIS-3M/USDC, ETH-BASIS-6M/USDC price indices. BTC-BASIS-3M/USDC is defined as: 100.0 * [1 + (F-S)/S], where `F` references a basket of BTC futures that are set to expire in March and `S` represents a basket of BTC spot prices. ETH-BASIS-3M/USDC is defined in the same way, except the `F` and `S` correspond to `ETH` futures and spot. Similarly, the `6M` `BTC and `ETH` price identifiers would be the same formula except with futures that are set to expire in `June` instead of `March`.  
+The DVM should support price requests for both BTC-BASIS-3M/USDC, BTC-BASIS-6M/USDC, ETH-BASIS-3M/USDC, ETH-BASIS-6M/USDC price indices. BTC-BASIS-3M/USDC is defined as: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where `F` references a basket of BTC futures that are set to expire in March and `S` represents a basket of BTC spot prices. ETH-BASIS-3M/USDC is defined in the same way, except the `F` and `S` correspond to `ETH` futures and spot. Similarly, the `6M` `BTC and `ETH` price identifiers would be the same formula except with futures that are set to expire in `June` instead of `March`.  
 
 For closure:
 
-BTC-BASIS-3M/USDC: 100.0 * [1 + (F-S)/S], where F is a basket of 3 month BTC futures and S is a basket of BTC spot prices.
-BTC-BASIS-6M/USDC: 100.0 * [1 + (F-S)/S], where F is a basket of 6 month BTC futures and S is a basket of BTC spot prices.
-ETH-BASIS-3M/USDC: 100.0 * [1 + (F-S)/S], where F is a basket of 3 month ETH futures and S is a basket of ETH spot prices.
-ETH-BASIS-6M/USDC: 100.0 * [1 + (F-S)/S], where F is a basket of 6 month ETH futures and S is a basket of ETH spot prices.
+BTC-BASIS-3M/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 3 month BTC futures and S is a basket of BTC spot prices.
+BTC-BASIS-6M/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 6 month BTC futures and S is a basket of BTC spot prices.
+ETH-BASIS-3M/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 3 month ETH futures and S is a basket of ETH spot prices.
+ETH-BASIS-6M/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 6 month ETH futures and S is a basket of ETH spot prices.
 
 
 # MOTIVATION
@@ -128,6 +128,10 @@ The price feed implementation is heavily-based on @Nick's [PR](https://github.co
 
 This question can be answered three-fold: 1) the choice of BTC and ETH for the basis was chosen as they are currently the two highest market cap coins with the most liquid futures markets. In the future, we plan to add others as well. 2) the maturity of the basis was chosen to be the two closest maturities (3m - March and 6m- June) as they are the most liquid / highest ADV 3) the choice of the 3 exchanges is explained below, but essentially they are 3 out of the 4 top exchanges globally for ADV/liquidity/reputation.
 
+- What is the reasoning for min + max bounds on the px identifier?
+
+Per some of the feedback, CeFi exchanges already have clamps around their swap funding rates to mitigate a persistent dislocation, and based on empirical analysis the +-25% bounds on the basis for both BTC and ETH seemed more than generous, and adds to the economic security around the synthetics to ensure sponsors do not get liquidated in a way that is not consistent with the term structure itself.
+
 - What analysis can you provide on where to get the most robust prices? (Robust as in legitimate liquidity, legitimate volume, price discrepancies between exchanges, and trading volume between exchanges)
 
 As mentioned in the initial section, Binance, Huobi, and FTX are 3 out of the 4 most liquid / highest ADV exchanges in the world for derivatives and spot markets and reputed to be of extremely high quality with low probability of the exchange defaulting. The last few months, Binance regularly has had higher than 20 bil ADV, Huobi >10bil, and FTX > 2bil. The wide consensus is that the BTC futures, ETH futures, BTC spot, and ETH spot are of the highest legitimate liquidity/volume + minimal price discrepancies from other exchanges.
@@ -167,7 +171,7 @@ Not required to have a TWAP/VWAP/etc.
 
     For BTC futures prices, the median of the prices from the 3 exchanges should be used. For BTC spot prices, the median of the prices from the 3 spot exchanges should be used. Same for ETH.
 
-    As an example, for BTC-BASIS-3M, the formula is 100.0 * [1 + (F-S)/S], where F would be a median of the 3 futures prices as mentioned above and S would be a median as well of the 3 spot prices.
+    As an example, for BTC-BASIS-3M, the formula is min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F would be a median of the 3 futures prices as mentioned above and S would be a median as well of the 3 spot prices.
 
 <br>
 
@@ -180,6 +184,8 @@ Not required to have a TWAP/VWAP/etc.
 As discussed in the `What is the potential for the price to be manipulated on the chosen exchanges?`, manipulation could occur at either at the spot layer or the futures layer on each of the each of the aforementioned exchanges. To disrupt BTC or ETH spot of futures on the biggest exchanges globally would require capital at the highest scale, and the dislocation, were it to be caused, would be short-dated due to the efficiency of those markets. 
 
 Further, towards expiration, the front-month futures will become less liquid and easier to manipulate in terms of required capital. As such, we will ensure that the expiration of the synths using these price identifiers will expire a week _before_ any of the constituent futures in the basket expire. This way, we will minimize this attack vector.
+
+Lastly, as a form of manipulation resistance, per some of the feedback, CeFi exchanges already have clamps around their swap funding rates to mitigate a persistent dislocation, and based on empirical analysis the +-25% bounds on the basis for both BTC and ETH seemed more than generous, and adds to the economic security around the synthetics to ensure sponsors do not get liquidated in a way that is not consistent with the term structure itself.
 
 2. How could this price ID be exploited?
 
