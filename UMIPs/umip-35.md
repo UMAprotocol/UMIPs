@@ -94,7 +94,7 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
 
 # PRICE FEED IMPLEMENTATION
 
-The price feed implementation is heavily-based on @Nick's [PR](https://github.com/UMAprotocol/protocol/pull/2354/files) for a BasketSpreadPriceFeed, we currently put it up at [here](https://gist.github.com/chicfilabae/6e30982a13b23ed97e8e2e3bf54ff9f8). Will create a separate PR for it, but don't have an intention of abstracting out such that both stablespread + basis can use the same script. 
+The [price feed implementation](https://github.com/UMAprotocol/protocol/pull/2457) is heavily-based on @Nick's [PR](https://github.com/UMAprotocol/protocol/pull/2354/files) for a BasketSpreadPriceFeed.
 
 # TECHNICAL SPECIFICATIONS
 
