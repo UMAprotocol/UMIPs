@@ -167,8 +167,6 @@ Not required to have a TWAP/VWAP/etc.
 
 4. **Result processing** 
 
-    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
-
     For BTC futures prices, the median of the prices from the 3 exchanges should be used. For BTC spot prices, the median of the prices from the 3 spot exchanges should be used. Same for ETH.
 
     As an example, for [BTC-BASIS-3M], the formula is min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F would be a median of the 3 futures prices as mentioned above and S would be a median as well of the 3 spot prices.
