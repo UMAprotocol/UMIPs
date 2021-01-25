@@ -6,7 +6,7 @@
 - Created: January 13, 2020
 
 ## Summary
-The DVM should support requests for aggregated USDC Borrow APRs on Compound. The aggregation is done over a period of 30 days.
+The DVM should support requests for aggregated USDC Borrow APRs on Compound. The aggregation is done over a period of 30 days. This aggregation will not be used for the liquidation of any synthetics, we are only using the aggregation for the expiration price of synthetics. https://github.com/UMAprotocol/UMIPs/pull/150 is dependent on this UMIP.
 
 ## Motivation
 The DVM currently does not support reporting aggregated USDC borrow interest rate APRs from Compound.
