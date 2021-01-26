@@ -39,13 +39,13 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
 
 1. What markets should the price be queried from? It is recommended to have at least 3 markets.
 
-    Huobi, FTX, and Binance should be used to construct the price. These are 3 of the 4 most liquid (and highest ADV) exchanges in the world for BTC and ETH, and currently have ~40-50bil$ ADV traded. 
+    Okex, FTX, and Binance should be used to construct the price. These are 3 of the 4 most liquid (and highest ADV) exchanges in the world for BTC and ETH, and currently have ~40-50bil$ ADV traded. 
 
 2.  Which specific pairs should be queried from each market?
 
     FTX: BTC/USDT, BTC-0326, BTC-0625
     Binance: BTC/USDT, BTCUSD Quarterly 0326, BTCUSD Quarterly 0625
-    Huobi: BTC/USDT, BTC0326Quarterly, BTC0625Bi-Quarterly
+    Okex: BTC/USDT, BTC-USD-210326, BTC-USD-210625
 
 3. Provide recommended endpoints to query for real-time prices from each market listed. 
 
@@ -53,7 +53,7 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
 
     Binance: [BTC](https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT), [BTC_210326](https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210326), [BTC_210625](https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210625)
 
-    Huobi: [BTC](https://api.huobi.pro/market/trade?symbol=btcusdt), [BTC0326Quarterly](https://api.hbdm.com/market/trade?symbol=BTC_CQ), [BTC0625Bi-Quarterly](https://api.hbdm.com/market/trade?symbol=BTC_NQ)
+    Okex: [BTC](https://www.okex.com/api/spot/v3/instruments/BTC-USDT/ticker/), [BTC-USD-210326](https://www.okex.com/api/futures/v3/instruments/BTC-USD-210326/ticker/), [BTC-USD-210625](https://www.okex.com/api/futures/v3/instruments/BTC-USD-210625/ticker/)
 
     
 4. How often is the provided price updated?
@@ -63,7 +63,7 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
    FTX, use this endpoint: https://ftx.com/api/markets/BTC/USDT/candles?resolution=15&limit=1&start_time=1608241140&end_time=1608241150
-   Huobi, use this endpoint: https://api.hbdm.com/market/history/trade?symbol=BTC_CQ&size=100
+   Okex, use this endpoint: https://www.okex.com/api/futures/v3/instruments/BTC-USD-210625/history/candles?start=2021-01-20T02:31:00.000Z&granularity=60
    Binance, use this endpoint: https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210326&limit=100&startTime=1611437831000&endTime=1611537831000
 
 6.  Do these sources allow for querying up to 74 hours of historical data? 
@@ -134,7 +134,7 @@ Per some of the feedback, CeFi exchanges already have clamps around their swap f
 
 - What analysis can you provide on where to get the most robust prices? (Robust as in legitimate liquidity, legitimate volume, price discrepancies between exchanges, and trading volume between exchanges)
 
-As mentioned in the initial section, Binance, Huobi, and FTX are 3 out of the 4 most liquid / highest ADV exchanges in the world for derivatives and spot markets and reputed to be of extremely high quality with low probability of the exchange defaulting. The last few months, Binance regularly has had higher than 20 bil ADV, Huobi >10bil, and FTX > 2bil. The wide consensus is that the BTC futures, ETH futures, BTC spot, and ETH spot are of the highest legitimate liquidity/volume + minimal price discrepancies from other exchanges.
+As mentioned in the initial section, Binance, Okex, and FTX are 3 out of the 4 most liquid / highest ADV exchanges in the world for derivatives and spot markets and reputed to be of extremely high quality with low probability of the exchange defaulting. The last few months, Binance regularly has had higher than 20 bil ADV, Okex >10bil, and FTX > 2bil. The wide consensus is that the BTC futures, ETH futures, BTC spot, and ETH spot are of the highest legitimate liquidity/volume + minimal price discrepancies from other exchanges.
 
 - What is the potential for the price to be manipulated on the chosen exchanges?
 
@@ -153,7 +153,7 @@ Not required to have a TWAP/VWAP/etc.
 
     FTX: BTC/USDT, BTC-0326, BTC-0625
     Binance: BTC/USDT, BTCUSD Quarterly 0326, BTCUSD Quarterly 0625
-    Huobi: BTC/USDT, BTC0326Quarterly, BTC0625Bi-Quarterly
+    Okex: BTC/USDT, BTC0326Quarterly, BTC0625Bi-Quarterly
 
 2. **Pricing interval**
 
