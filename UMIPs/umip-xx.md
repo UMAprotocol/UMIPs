@@ -2,7 +2,7 @@
 | UMIP-37    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add uVOL-BTC-APR21 as a price identifier              |
-| Authors    | Sean Brown (smb2796), Kevin Chan (kevin-uma), Tom Ibold |
+| Authors    | Sean Brown (smb2796), Kevin Chan (kevin-uma), Tom Ibold (Tommy1231232) |
 | Status     | Draft                                                                                                                                    |
 | Created    | January 25, 2021   
 
@@ -83,11 +83,12 @@ An example of a hypothetical uVOL-BTC-DEC20 settle is illustrated in [this](http
 
 **Before Expiry**
 If the price request's UTC timestamp is less than 1619827200 (May 1, 2021 @ 12:00AM UTC), voters will need to calculate a 2-hour TWAP for the uVOL-BTC-APR21 token's price in USDC. The following process should be used to calculate the TWAP.
-The end TWAP timestamp equals the price request timestamp.
-The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
-A single Uniswap price is defined for each timestamp as the price that the uVOL-BTC-APR21 / USDC pool returns in the latest block where the block timestamp is <= the price request timestamp.
-The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will get an equal weight.
-The final price should be returned with the synthetic token as the denominator of the price pair and should be rounded to 6 decimals.
+1. The end TWAP timestamp equals the price request timestamp.
+2. The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
+3. A single Uniswap price is defined for each timestamp as the price that the uVOL-BTC-APR21 / USDC pool returns in the latest block where the block timestamp is <= the price request timestamp.
+4. The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will get an equal weight.
+5. The final price should be returned with the synthetic token as the denominator of the price pair and should be rounded to 6 decimals.
+
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 ## Security Considerations
