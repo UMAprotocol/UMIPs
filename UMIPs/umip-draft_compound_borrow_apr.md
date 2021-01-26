@@ -72,7 +72,7 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 ## Technical Specification
 
-February Index
+### February Price Identifier
 
 **1. Price Identifier Name** - [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]
 
@@ -94,7 +94,7 @@ February Index
 
 **9. Dispute timestamp rounding** Round down (previous timestamp)
 
-March Index
+### March Price Identifier
 
 **1. Price Identifier Name** - [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]
 
