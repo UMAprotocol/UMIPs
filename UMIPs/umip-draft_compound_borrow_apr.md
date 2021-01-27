@@ -36,11 +36,11 @@ else:
 ## Motivation
 The DVM currently does not support reporting aggregated USDC borrow interest rate APRs from Compound or a two-hour TWAP of the CAR token.
 
-Pre Cutoff Cost: Calculating the two-hour twap is an easy calculation. The reference UMA liquidator bot implementation already has a two-hour TWAP Uniswap/Balancer implementation.
+Pre Cutoff Cost: Calculating the two-hour TWAP is an easy calculation. The reference UMA liquidator bot implementation already has a two-hour TWAP Uniswap/Balancer implementation.
 
 Post Cutoff Cost: Calculating an aggregated statistic of compound USDC borrow rates on a confirmed range of blocks on the Ethereum blockchain is easy. All of the needed data can be computed from event logs on any Ethereum full node. An archive node allows direct querying of this data via contract methods. Additionally, this data can be accessed through querying the Compound Subgraph on the Graph Protocol, then running a simple aggregation function.
 
-Opportunity: The usage of a two-hour twap for liquidations, then a aggregated price at expiration is similar to UMIP-22. This setup allows us to create futurues. Compound USDC Borrow APR futures can help borrowers and traders hedge against interest rate volatility allowing them to "lock-in" future costs from Compound loans. This will enable taking multi-collateral backed loans out on Compound for new use cases. Other users may wish to speculate on the demand for borrowing USDC on Compound for a specific month in the future. Others may simply wish to hedge their deposit interest rate volatility. Providing a price feed for the settlement of a financial contract is a prerequisite.
+Opportunity: The usage of a two-hour TWAP for liquidations, then an aggregated price at expiration is similar to UMIP-22. This setup allows us to create futures. Compound USDC Borrow APR futures can help borrowers and traders hedge against interest rate volatility allowing them to "lock-in" future costs from Compound loans. This will enable taking multi-collateral backed loans out on Compound for new use cases. Other users may wish to speculate on the demand for borrowing USDC on Compound for a specific month in the future. Others may simply wish to hedge their deposit interest rate volatility. Providing a price feed for the settlement of a financial contract is a prerequisite.
 
 Example Synthetic: `CAR-USDC-FEB28` will be a token that settles to the total annualized interest rate of borrowing USDC on Compound for (roughly) the month of February.
 
@@ -52,17 +52,17 @@ Example user: A trader takes out a large loan from Compound and the current APR 
 This price should be queried from the highest volume Uniswap or Balancer pool (Whichever one is deemed more legitimate by the UMA token holders) on Ethereum where at least one asset in the pair is CAR. It's expected that a single Uniswap/USDC pool will have 99% of the liquidity and volume so confusion will not arise.
 
 ### Post Cutoff
-The source of truth for this data is the Compound USDC cToken's (cUSDC) `borrowRatePerBlock()` method. As of the writing of this UMIP, the agreed upon cUSDC smart contract address is `0x39aa39c021dfbae8fac545936693ac917d5e7563`. This price identifier aggregates the value returned by `borrowRatePerBlock()` over every block from the 30 days ending at the cutoff/expiration timestamp (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]`).
+The source of truth for this data is the Compound USDC cToken's (cUSDC) `borrowRatePerBlock()` method. As of the writing of this UMIP, the agreed-upon cUSDC smart contract address is `0x39aa39c021dfbae8fac545936693ac917d5e7563`. This price identifier aggregates the value returned by `borrowRatePerBlock()` over every block from the 30 days ending at the cutoff/expiration timestamp (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]`).
 
 It is recommended to gather the raw data from an Ethereum archive node. Alternatively, this data is indexed in the [Graph Protocol](https://thegraph.com/explorer/subgraph/graphprotocol/compound-v2). As of writing this UMIP, Graph Protocol is free. However, they have plans to start charging for access in the future. In the future, querying 30 days worth of blocks may cost up to $20 USD. This UMIP's price identifier will only be used for the DVM to return the synthetic token's expiration price. Therefore, this high price won't be incurred by liquidator bots.
 
-Raw data is also available for download at the [Tendies Exchange public endpoint](https://cache.tendies.exchange/borrow_rate_per_block.json). This endpoint is updated with every new block, but delayed by 20 block confirmations. This endpoint is free to use. To generate a similar file, governors can use and/or modify this [open source indexer script](https://github.com/evanmays/tendies-exchange/tree/master/indexer).
+Raw data is also available for download at the [Tendies Exchange public endpoint](https://cache.tendies.exchange/borrow_rate_per_block.json). This endpoint is updated with every new block but delayed by 20 block confirmations. This endpoint is free to use. To generate a similar file, governors can use and/or modify this [open source indexer script](https://github.com/evanmays/tendies-exchange/tree/master/indexer).
 
 All of these endpoints give the borrow rate per block for historical blocks, however converting this data to APR (and aggregation) is still required. (Read the implementation section)
 
 ## Price Feed Implementation
 ### Pre Cutoff
-This price should be updated every second by using the time weighted average price from the past 2 hours. Data can be queried from Uniswap/Balancer event logs on any Ethereum full node.
+This price should be updated every second by using the time-weighted average price from the past 2 hours. Data can be queried from Uniswap/Balancer event logs on any Ethereum full node.
 
 Liquidator bots with access to an Ethereum full node can use this [Uniswap implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and this [Balancer implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/BalancerPriceFeed.js) for free to query current and historical data.
 
@@ -122,11 +122,11 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 Due to the lack of ambiguity on calculating the TWAP, UMA token holders should all converge on the same price. Therefore, we don't require rounding pre cutoff.
 
-We use time weighted average price (TWAP) as opposed to the average price at the end of each block. This causes collateralization requirements to be more accurate as block times are highly variable.
+We use the time-weighted average price (TWAP) as opposed to the average price at the end of each block. This causes collateralization requirements to be more accurate as block times are highly variable.
 
 Most volume is expected to be on the Uniswap USDC/CAR pools.
 
-Further rationale for using a 2 hour TWAP is in the UMIP-22 Rationale section.
+Further rationale for using a two-hour TWAP is in the UMIP-22 Rationale section.
 
 ### Post-cutoff
 
@@ -145,7 +145,7 @@ We mitigate the effects of numerical instability by rounding to the nearest two 
 ## Implementation
 
 ### Pre-cutoff
-For price requests made before the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]`), use the same 2 hour TWAP calculation implementation from UMIP-22.
+For price requests made before the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]`), use the same two-hour TWAP calculation implementation from UMIP-22.
 
 1. The end TWAP timestamp equals the price request timestamp.
 2. The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
