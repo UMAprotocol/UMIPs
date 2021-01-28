@@ -46,5 +46,5 @@ Anyone deploying a new priceless token contract using this collateral should tak
 YAM itself should present  little risk. It is a standard ERC-20 token. The rebasing function of the token contract was turned off on December 26, 2020 (https://etherscan.io/tx/0xf7b24fc7b69b6b85f28089691406ba57d878a799f0753d2f6a9f2d5821b77c9a) so there are no longer complications that would arise from a dynamically
 changing supply. The Governable parameters of the Token are controlled by YAM governance, which requires an on-chain vote for any changes and is protected from malicious action by a governor contract with a 3/5 multisig that can veto governance actions if deemed malicious.
 
-
+ 
 The project was audited by PeckShield: https://github.com/yam-finance/yamV3/blob/master/PeckShield-Audit-Report-YAMv3Update-v1.0.pdf
