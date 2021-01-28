@@ -33,7 +33,7 @@ bwBTC/ETH SLP is BadgerDAO's highest TVL vault and bBadger is our native token v
 
 **bBadger**
 - Badger token that is staked in the Badger Sett Vault to mint bBadger token(s)
-- View [here](https://etherscan.io/token/0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28) for it's associated token address
+- View [here](https://etherscan.io/token/0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28) for its associated token address
 
 Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enable the creation of Badger Dollars synthetic token. It enables token minters to leverage their vaulted positions in Badgers Setts.  This would allow Alice to use 100 bBadger (worth $1200) to create 400 USD synth tokens (worth $400).  At expiry, Alice could redeem her 400 USD synthetic tokens for the USD amount of bBadger the USD synthetic tokens are worth.  Once this is complete, she could then withdrawal the rest of her collateral (100 bBadger).
 
