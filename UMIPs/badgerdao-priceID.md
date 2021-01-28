@@ -29,7 +29,7 @@ bwBTC/ETH SLP is BadgerDAO's highest TVL vault and bBadger is our native token v
 
 **bwBTC/ETH SLP**
 - Liquidity provider tokens for the wBTC/ETH pool in Sushiswap that is staked in the Badger Sett Vault wBTC/ETH SLP resulting to mint bwBTC/ETH SLP token(s).
-- View [here] (https://etherscan.io/token/0x758a43ee2bff8230eeb784879cdcff4828f2544d) for it's associated token address
+- View [here] (https://etherscan.io/token/0x758a43ee2bff8230eeb784879cdcff4828f2544d) for its associated token address
 
 **bBadger**
 - Badger token that is staked in the Badger Sett Vault to mint bBadger token(s)
@@ -353,4 +353,3 @@ To find the price for USD/bBadger perform the following steps:
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders.
 
 Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent. $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
-
