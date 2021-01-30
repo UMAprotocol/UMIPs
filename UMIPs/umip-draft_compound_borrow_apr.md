@@ -94,7 +94,7 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 **9. Dispute timestamp rounding** Round down (previous timestamp)
 
-### March Price Identifier
+### COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD
 
 **1. Price Identifier Name** - [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]
 
