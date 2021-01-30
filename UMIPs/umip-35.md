@@ -58,7 +58,7 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
     
 4. How often is the provided price updated?
 
-   The lower bound on the price update frequency is a second.
+   The lower bound on the price update frequency is a minute.
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
@@ -72,7 +72,7 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
 
 7.  How often is the provided price updated?
 
-   The lower bound on the price update frequency is a second.
+   The lower bound on the price update frequency is a minute.
 
 8. Is an API key required to query these sources? 
 
@@ -167,7 +167,7 @@ Not required to have a TWAP/VWAP/etc.
 
     For BTC futures prices, the median of the prices from the 3 exchanges should be used. For BTC spot prices, the median of the prices from the 3 spot exchanges should be used. Same for ETH.
 
-    As an example, for [BTC-BASIS-3M], the formula is min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F would be a median of the 3 futures prices as mentioned above and S would be a median as well of the 3 spot prices.
+    As an example, for [BTC-BASIS-3M], the formula is min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F would be a median of the 3 futures prices as mentioned above and S would be a median as well of the 3 spot prices, and the result would be rounded to 6 decimals.
 
 <br>
 
