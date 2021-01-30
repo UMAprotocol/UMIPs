@@ -149,7 +149,7 @@ For price requests made before the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP
 
 1. The end TWAP timestamp equals the price request timestamp.
 2. The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
-3. A single Uniswap/Balancer price is defined for each timestamp as the price that the ETH/uGAS pool returns at the end of the latest block whose timestamp is <= the timestamp that is queried for.
+3. A single Uniswap/Balancer price is defined for each timestamp as the price that the USDC/CAR pool returns at the end of the latest block whose timestamp is <= the timestamp that is queried for.
 4. The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will get an equal weight.
 5. As the token price will already implicitly be tracking the COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD or COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD price, it should be left as returned without any scaling transformation.
 6. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.
