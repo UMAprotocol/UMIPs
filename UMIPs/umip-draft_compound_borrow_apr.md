@@ -1,6 +1,6 @@
 ## Headers
 - UMIP <#>
-- UMIP title: Price identifiers for CAR: [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD] [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD] 
+- UMIP title: Price identifiers for CAR: [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD] [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]
 - Author Evan Mays <me@evanmays.com>
 - Status: Draft
 - Created: January 13, 2020
@@ -84,7 +84,7 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 **5. Collateral Decimals** - 6
 
-**6a. Rounding Pre Cutoff** - 6 decimal places. (decimal place >= 5 rounds up)
+**6a. Rounding Pre Cutoff** - Round to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
 
 **6b. Rounding Post Cutoff** - Round to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
 
@@ -106,7 +106,7 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 **5. Collateral Decimals** - 6
 
-**6a. Rounding Pre Cutoff** - 6 decimal places. (decimal place >= 5 rounds up)
+**6a. Rounding Pre Cutoff** - Round to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
 
 **6b. Rounding Post Cutoff** - Round to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
 
@@ -120,7 +120,7 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 ### Pre-cutoff
 
-Due to the lack of ambiguity on calculating the TWAP, UMA token holders should all converge on the same price. Therefore, we don't require rounding pre cutoff.
+Due to the lack of ambiguity on calculating the TWAP, UMA token holders should all converge on the same price. However, to be consistent with post-cutoff rounding, we will round pre-cutoff to 2 decimal places.
 
 We use the time-weighted average price (TWAP) as opposed to the average price at the end of each block. This causes collateralization requirements to be more accurate as block times are highly variable.
 
@@ -152,7 +152,7 @@ For price requests made before the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP
 3. A single Uniswap/Balancer price is defined for each timestamp as the price that the USDC/CAR pool returns at the end of the latest block whose timestamp is <= the timestamp that is queried for.
 4. The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will get an equal weight.
 5. As the token price will already implicitly be tracking the COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD or COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD price, it should be left as returned without any scaling transformation.
-6. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 18 decimals.
+6. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 6 decimals. But rounded to 2 decimal places. For example, if the APR is 7.38482747%, then we round to 2 decimal places and convert 1-to-1 to USDC for $7.38USDC. However, USDC on Ethereum uses 6 decimal places so voters must submit $7.380000USDC.
 
 All prices for a 2 hour window should be from the same exchange. If a Uniswap pool has the highest volume for the past 2 hours, voters should use the Uniswap pool. If a Balancer pool has the highest volume for the past 2 hours, voters should use the Balancer pool.
 
