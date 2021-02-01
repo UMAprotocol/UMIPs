@@ -1,6 +1,6 @@
 ## Headers
 - UMIP <#>
-- UMIP title: Price identifiers for CAR: [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD] [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]
+- UMIP title: Add price identifiers [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD] and [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]
 - Author Evan Mays <me@evanmays.com>
 - Status: Draft
 - Created: January 13, 2020
