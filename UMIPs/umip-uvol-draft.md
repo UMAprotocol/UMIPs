@@ -27,9 +27,9 @@ With the uVOL-BTC price identifier we can create a simple volatility index that 
 - Pairs: BTC/USD for Coinbase Pro and Bitstamp, BTC/USDT for Binance
 - Live Price Endpoints
 
-Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/btcusd/price
-Binance: https://api.cryptowat.ch/markets/binance/btcusdt/price
-Bitstamp: https://api.cryptowat.ch/markets/bitstamp/btcusd/price
+Not applicable for the volatility data given that it only needs to be calculated at expiry using the historical endpoints listed below.
+
+Uniswap data is on-chain and can easily be queried in real-time. An example implementation is shown [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js). 
 
 - Update time: Every trade
 - Historical Price Endpoints:
