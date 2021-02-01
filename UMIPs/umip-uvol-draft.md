@@ -41,8 +41,8 @@ Use the Open and Close price for each.
 
 - Do these sources allow for querying up to 74 hours of historical data? Yes
 - How often is the provided price updated? Prices will need to be queried on a daily basis. The examples provided query for daily OHLC candles.
-- Is an API key required to query these sources? Free tier available, but API key likely necessary for bot operators.
-- Is there a cost associated with usage? Yes, but there is a free tier available.
+- Is an API key required to query these sources? Cryptowatch has a free tier available that would cover the amount of queries needed by a DVM voter. Uniswap prices do not need an API key.
+- Is there a cost associated with usage? No.
 - If there is a free tier available, how many queries does it allow for? Range of 20,000-30,000.
 - What would be the cost of sending 15,000 queries? Covered by the initial free tier allowance, but ~$5 after that has been used.
 
