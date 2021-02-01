@@ -1,36 +1,36 @@
 ## Headers
 - UMIP <#>
-- UMIP title: Add price identifiers [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD] and [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]
+- UMIP title: Add price identifiers [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC] and [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC]
 - Author Evan Mays <me@evanmays.com>
 - Status: Draft
 - Created: January 13, 2020
 
 ## Summary
 
-The DVM should support price requests for the [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD] and [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD] price indices.
+The DVM should support price requests for the [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC] and [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC] price indices.
 
 A synthetic token, referred to as 'CAR', will be created with this price identifier.
 
 This price index should resolve in one of two ways, depending on the DVM timestamp.
 
-**[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]**
+**[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC]**
 The CAR token tied to this price identifier will expire on the cutoff timestamp `1614470400`.
 ```
 CUTOFF = 1614470400 # Feb 28, 2021 00:00:00 UTC
 if dvm_timestamp >= CUTOFF:
   Resolve price to the 30 day total annualized interest rate on borrowing USDC from Compound. (See implementation)
 else:
-  Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap price of the CAR token quoted in USD. CAR token address in technical specification.
+  Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap price of the CAR token quoted in USDC. CAR token address in technical specification.
 ```
 
-**[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]**
+**[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC]**
 The CAR token tied to this price identifier will expire on the cutoff timestamp `1616889600`.
 ```
 CUTOFF = 1616889600 # Mar 28, 2021 00:00:00 UTC
 if dvm_timestamp >= CUTOFF:
   Resolve price to the 30 day total annualized interest rate on borrowing USDC from Compound. (See implementation)
 else:
-  Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap price of the CAR token quoted in USD. CAR token address in technical specification.
+  Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap price of the CAR token quoted in USDC. CAR token address in technical specification.
 ```
 
 ## Motivation
@@ -52,7 +52,7 @@ Example user: A trader takes out a large loan from Compound and the current APR 
 This price should be queried from the highest volume Uniswap pool (Whichever one is deemed more legitimate by the UMA token holders) on Ethereum where at least one asset in the pair is CAR. It's expected that a single Uniswap pool will have 99% of the liquidity and volume so confusion will not arise.
 
 ### Post Cutoff
-The source of truth for this data is the Compound USDC cToken's (cUSDC) `borrowRatePerBlock()` method. As of the writing of this UMIP, the agreed-upon cUSDC smart contract address is `0x39aa39c021dfbae8fac545936693ac917d5e7563`. This price identifier aggregates the value returned by `borrowRatePerBlock()` over every block from the 30 days ending at the cutoff/expiration timestamp (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]`).
+The source of truth for this data is the Compound USDC cToken's (cUSDC) `borrowRatePerBlock()` method. As of the writing of this UMIP, the agreed-upon cUSDC smart contract address is `0x39aa39c021dfbae8fac545936693ac917d5e7563`. This price identifier aggregates the value returned by `borrowRatePerBlock()` over every block from the 30 days ending at the cutoff/expiration timestamp (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC]`).
 
 It is recommended to gather the raw data from an Ethereum archive node. Alternatively, this data is indexed in the [Graph Protocol](https://thegraph.com/explorer/subgraph/graphprotocol/compound-v2). As of writing this UMIP, Graph Protocol is free. However, they have plans to start charging for access in the future. In the future, querying 30 days worth of blocks may cost up to $20 USD. This UMIP's price identifier will only be used for the DVM to return the synthetic token's expiration price. Therefore, this high price won't be incurred by liquidator bots.
 
@@ -72,13 +72,13 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 ## Technical Specification
 
-### COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD
+### COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC
 
-**1. Price Identifier Name** - [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]
+**1. Price Identifier Name** - [COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC]
 
 **2. Base Currency** - CAR token with expiration at 1614470400 or Compound Borrowing USDC Interest Annual Percentage Rate
 
-**3. Quote currency** - USD
+**3. Quote currency** - USDC
 
 **4. Intended Collateral Currency** - USDC
 
@@ -94,13 +94,13 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 **9. Dispute timestamp rounding** Round down (previous timestamp)
 
-### COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD
+### COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC
 
-**1. Price Identifier Name** - [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]
+**1. Price Identifier Name** - [COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC]
 
 **2. Base Currency** - CAR token with expiration at 1616889600 or Compound Borrowing USDC Interest Annual Percentage Rate
 
-**3. Quote currency** - USD
+**3. Quote currency** - USDC
 
 **4. Intended Collateral Currency** - USDC
 
@@ -134,28 +134,28 @@ We're using a rolling 30 day period to increase the cost of manipulating the APR
 
 We use geometric mean, as opposed to arithmetic mean, to include the effect of interest compounding.
 
-We use an annual percentage rate, as opposed to a monthly percentage rate, to increase usability. 1) Annual rates are large enough numbers that, combined with an easy to understand 1-to-1 APR to USD ratio, result in prices (most of the time) in the range of $1 to $30. 2) Annual rates are more commonly used when discussing loan borrowing rates.
+We use an annual percentage rate, as opposed to a monthly percentage rate, to increase usability. 1) Annual rates are large enough numbers that, combined with an easy to understand 1-to-1 APR to USDC ratio, result in prices (most of the time) in the range of $1 to $30. 2) Annual rates are more commonly used when discussing loan borrowing rates.
 
-For clarification, here's an example of the 1-to-1 conversion. 7% APR is $7USD and 3% APR is $3USD.
+For clarification, here's an example of the 1-to-1 conversion. 7% APR is $7USDC and 3% APR is $3USDC.
 
 There is a ground-truth for this price identifier. The ground truth data is in the Compound smart contract on the Ethereum blockchain. Any differences in UMA governor results for this price identifier should be due to rounding errors that propagate through the calculation (numerical instability) as opposed to multiple data sources being the truth (as is the case with looking at the price of bitcoin on different exchanges).
 
-We mitigate the effects of numerical instability by rounding to the nearest two decimal places. Different algorithms for calculating the geometric mean result in tiny differences in the result. Rounding to 2 decimal places hides small differences in geometric mean calculations. For example, if person A calculates the price request result as $7.53453USD and person B calculates the price request result as $7.53489USD, both will agree on $7.53USD.
+We mitigate the effects of numerical instability by rounding to the nearest two decimal places. Different algorithms for calculating the geometric mean result in tiny differences in the result. Rounding to 2 decimal places hides small differences in geometric mean calculations. For example, if person A calculates the price request result as $7.53453USDC and person B calculates the price request result as $7.53489USDC, both will agree on $7.53USDC.
 
 ## Implementation
 
 ### Pre-cutoff
-For price requests made before the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]`), use the same two-hour TWAP calculation implementation from UMIP-22.
+For price requests made before the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC]`), use the same two-hour TWAP calculation implementation from UMIP-22.
 
 1. The end TWAP timestamp equals the price request timestamp.
 2. The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
 3. A single Uniswap price is defined for each timestamp as the price that the USDC/CAR pool returns at the end of the latest block whose timestamp is <= the timestamp that is queried for.
 4. The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will get an equal weight.
-5. As the token price will already implicitly be tracking the COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD or COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD price, it should be left as returned without any scaling transformation.
+5. As the token price will already implicitly be tracking the COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC or COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC price, it should be left as returned without any scaling transformation.
 6. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 6 decimals. But rounded to 2 decimal places. For example, if the APR is 7.38482747%, then we round to 2 decimal places and convert 1-to-1 to USDC for $7.38USDC. However, USDC on Ethereum uses 6 decimal places so voters must submit $7.380000USDC.
 
 ### Post-cutoff
-For price requests made after or on the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]`), use the below geometric mean calculation.
+For price requests made after or on the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC]`), use the below geometric mean calculation.
 
 This implementation works with the dataset from [Tendies Exchange public endpoint](https://cache.tendies.exchange/borrow_rate_per_block.json). To use it with other datasets, modify the `getBorrowRatePerBlock()` function. This implementation is updated as an [open source price feed script](https://github.com/evanmays/tendies-exchange/tree/master/indexer).
 
