@@ -55,9 +55,9 @@ This pricing structure will allow for the creation of a tokenized futures contra
 ## TECHNICAL SPECIFICATIONS
 - Price Identifier Name: uVOL-BTC-APR21
 - Base Currency: uVOL-BTC-APR21
-- Quote currency: USDC
+- Quote currency: None. This is an index, but will be used with USDC.
 - Intended Collateral Currency: USDC
-- Collateral Decimals: 0.000001 (6 decimals in more general trading format)
+- Collateral Decimals: 6
 - Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
 ## RATIONALE
@@ -72,11 +72,11 @@ Voters should determine which pricing implementation to use depending on when th
 
 **At Expiry**
 If the price request's UTC timestamp is at or after 1619827200 (May 1, 2021 @ 12:00AM UTC), a price request uVOL-BTC for a given timestamp should be determined by performing the below for each data source (Coinbase Pro, Binance and Bitstamp):
-1. Query the daily price of BTC/USD(T) over the past 31 days of a given timestamp starting with 1619827200.
-2. Calculate the percentage change between each day over the 30-day time period independently for each market.
+1. Query the daily price of BTC/USD(T) over the previous 31 days before the given timestamp (1619827200) from each market. This can be queried for each day using the historical endpoints provided.
+2. Calculate the percentage change between each day over the 30-day time period independently for each market. The daily percentage change is calculated in this way: [Close Price/Open Price - 1].
 3. Take the standard deviation of this 30 observation data set. This can be done using a spreadsheet function such as [STDEV](https://support.google.com/docs/answer/3094054?hl=en) in Google Sheets or one can manually [calculate](https://www.investopedia.com/terms/s/standarddeviation.asp) this. The result is the standard deviation of a daily move and should be done independently for each market.
-4. Multiply by the square root of 365 to annualize the result.  
-5. Finally, multiply by 100 to produce the index value.
+4. Multiply each market's standard deviation by the square root of 365 to annualize the result.  
+5. Finally, multiply the three results by 100 to produce the index value.
 6. Take the median of the Coinbase Pro, Binance and Bitstamp results from step 5.
 7. Round the median to 6 decimal places. 
 
