@@ -20,7 +20,7 @@ CUTOFF = 1614470400 # Feb 28, 2021 00:00:00 UTC
 if dvm_timestamp >= CUTOFF:
   Resolve price to the 30 day total annualized interest rate on borrowing USDC from Compound. (See implementation)
 else:
-  Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap or Balancer price of the CAR token quoted in USD. CAR token address in technical specification.
+  Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap price of the CAR token quoted in USD. CAR token address in technical specification.
 ```
 
 **[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]**
@@ -30,13 +30,13 @@ CUTOFF = 1616889600 # Mar 28, 2021 00:00:00 UTC
 if dvm_timestamp >= CUTOFF:
   Resolve price to the 30 day total annualized interest rate on borrowing USDC from Compound. (See implementation)
 else:
-  Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap or Balancer price of the CAR token quoted in USD. CAR token address in technical specification.
+  Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap price of the CAR token quoted in USD. CAR token address in technical specification.
 ```
 
 ## Motivation
 The DVM currently does not support reporting aggregated USDC borrow interest rate APRs from Compound or a two-hour TWAP of the CAR token.
 
-Pre Cutoff Cost: Calculating the two-hour TWAP is an easy calculation. The reference UMA liquidator bot implementation already has a two-hour TWAP Uniswap/Balancer implementation.
+Pre Cutoff Cost: Calculating the two-hour TWAP is an easy calculation. The reference UMA liquidator bot implementation already has a two-hour TWAP Uniswap implementation.
 
 Post Cutoff Cost: Calculating an aggregated statistic of compound USDC borrow rates on a confirmed range of blocks on the Ethereum blockchain is easy. All of the needed data can be computed from event logs on any Ethereum full node. An archive node allows direct querying of this data via contract methods. Additionally, this data can be accessed through querying the Compound Subgraph on the Graph Protocol, then running a simple aggregation function.
 
@@ -49,7 +49,7 @@ Example user: A trader takes out a large loan from Compound and the current APR 
 ## Markets & Data sources
 
 ### Pre Cutoff
-This price should be queried from the highest volume Uniswap or Balancer pool (Whichever one is deemed more legitimate by the UMA token holders) on Ethereum where at least one asset in the pair is CAR. It's expected that a single Uniswap/USDC pool will have 99% of the liquidity and volume so confusion will not arise.
+This price should be queried from the highest volume Uniswap pool (Whichever one is deemed more legitimate by the UMA token holders) on Ethereum where at least one asset in the pair is CAR. It's expected that a single Uniswap pool will have 99% of the liquidity and volume so confusion will not arise.
 
 ### Post Cutoff
 The source of truth for this data is the Compound USDC cToken's (cUSDC) `borrowRatePerBlock()` method. As of the writing of this UMIP, the agreed-upon cUSDC smart contract address is `0x39aa39c021dfbae8fac545936693ac917d5e7563`. This price identifier aggregates the value returned by `borrowRatePerBlock()` over every block from the 30 days ending at the cutoff/expiration timestamp (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]`).
@@ -62,9 +62,9 @@ All of these endpoints give the borrow rate per block for historical blocks, how
 
 ## Price Feed Implementation
 ### Pre Cutoff
-This price should be updated every second by using the time-weighted average price from the past 2 hours. Data can be queried from Uniswap/Balancer event logs on any Ethereum full node.
+This price should be updated every second by using the time-weighted average price from the past 2 hours. Data can be queried from Uniswap event logs on any Ethereum full node.
 
-Liquidator bots with access to an Ethereum full node can use this [Uniswap implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and this [Balancer implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/BalancerPriceFeed.js) for free to query current and historical data.
+Liquidator bots with access to an Ethereum full node can use this [Uniswap implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) for free to query current and historical data.
 
 ### Post Cutoff
 
@@ -149,12 +149,10 @@ For price requests made before the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP
 
 1. The end TWAP timestamp equals the price request timestamp.
 2. The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
-3. A single Uniswap/Balancer price is defined for each timestamp as the price that the USDC/CAR pool returns at the end of the latest block whose timestamp is <= the timestamp that is queried for.
+3. A single Uniswap price is defined for each timestamp as the price that the USDC/CAR pool returns at the end of the latest block whose timestamp is <= the timestamp that is queried for.
 4. The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will get an equal weight.
 5. As the token price will already implicitly be tracking the COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD or COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD price, it should be left as returned without any scaling transformation.
 6. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 6 decimals. But rounded to 2 decimal places. For example, if the APR is 7.38482747%, then we round to 2 decimal places and convert 1-to-1 to USDC for $7.38USDC. However, USDC on Ethereum uses 6 decimal places so voters must submit $7.380000USDC.
-
-All prices for a 2 hour window should be from the same exchange. If a Uniswap pool has the highest volume for the past 2 hours, voters should use the Uniswap pool. If a Balancer pool has the highest volume for the past 2 hours, voters should use the Balancer pool.
 
 ### Post-cutoff
 For price requests made after or on the cutoff, (`1614470400` for `[COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USD]` and `1616889600` for `[COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USD]`), use the below geometric mean calculation.
