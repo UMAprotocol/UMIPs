@@ -5,6 +5,7 @@
 | Authors    | Sean Brown (smb2796), Kevin Chan (kevin-uma), Tom Ibold (Tommy1231232) |
 | Status     | Draft                                                                                                                                    |
 | Created    | January 25, 2021   
+| [Discourse Link](https://discourse.umaproject.org/t/adding-volbtc-as-a-price-identifier/83 )    |  
 
 ## SUMMARY
 
