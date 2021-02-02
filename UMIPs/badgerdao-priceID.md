@@ -223,7 +223,7 @@ getPricePerFullShare is a pure view logic function in which no one has any autho
             return 1e18;
         }
         return balance().mul(1e18).div(totalSupply());
-    }
+    
 
 This returns the value of the balance of the vault divided by the number of shares to give the user the value of 1 share of the vault token. For example, if a user has 1 bBadger, this could be worth 1.2 Badger (which would be the ratio of balance / totalSupply).
 
