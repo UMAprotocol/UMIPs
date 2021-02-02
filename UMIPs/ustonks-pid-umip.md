@@ -26,7 +26,7 @@ NYSE Arca: SLV
 - Pairs: Each stock listed above should be quoted in USD. As an example, the price of one share of GME should be reported in USD - (GME/USD).
 - Live Price Endpoints
 
-The stock prices do not need to be queried in real-time. Pre-expiry, this price identifier will return the price of the synthetic on Uniswap. An example of how to query for this data in real-time is shown [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js). 
+The stock prices do not need to be queried in real-time. Pre-expiry, this price identifier will return the price of the synthetic on Uniswap. An example of this is given in the `Price Feed Implementation` section.
 
 - Update time: Every block
 - Historical Price Endpoints:
@@ -100,7 +100,7 @@ To calculate the uSTONKS price, an UMA voter should:
 3. Perform this function for each component in the index and sum all of the results together.
 4. Round the result of step three to six decimal places
 
-An example of a hypothetical uSTONKS-MAR21 settle is illustrated in [this](https://docs.google.com/spreadsheets/d/1AtNzHvn_0na1miktsF2vmmB5fRj2_y793r-j7_m7P8M/edit?usp=sharing) Google Sheet.
+An example of this calculation is shown in [this](https://docs.google.com/spreadsheets/d/1AtNzHvn_0na1miktsF2vmmB5fRj2_y793r-j7_m7P8M/edit?usp=sharing) Google Sheet.
 
 **Before Expiry**
 
