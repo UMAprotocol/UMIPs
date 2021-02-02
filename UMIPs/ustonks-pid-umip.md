@@ -71,7 +71,7 @@ Voters should determine which pricing implementation to use depending on when th
 
 If the price request's UTC timestamp is at 1617220800 (March 31, 2021 @ 4:00PM EST), a price request for uSTONKS for a given timestamp should be determined by performing the `At Expiry` process.
 
-As a reference, a base price for each stock was chosen and are shown below. These prices are the closing prices of each on 12/31/2020 and can be used by voters as a reference for their calculations. Voters are highly encouraged to verify these values themselves.
+As a reference, a base price for each stock was chosen and are displayed below. These prices are the closing prices of each on 12/31/2020 and can be used by voters as a reference for their calculations. Voters are highly encouraged to verify these values themselves.
 
 | Ticker | Stock Price 12/31/2020 |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -90,7 +90,7 @@ Each stock also is assigned an index value base. The index is equally weighted, 
  
 To calculate the uSTONKS price, an UMA voter should:
 1. Query for the close price of one component on March 31, 2021. It is recommended that voters use the Google Sheets GOOGLEFINANCE function.
-2. Divide the March 31 price by the base price and multiply by the initial index value base to get today’s index value. 
+2. Divide the March 31 price by the base price and multiply by the index value base (10) to get today’s index value. 
 3. Perform this function for each component in the index and sum all of the results together.
 4. Round the result of step three to six decimal places
 
