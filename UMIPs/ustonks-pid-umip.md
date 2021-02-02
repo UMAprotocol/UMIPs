@@ -13,14 +13,6 @@ The DVM should support price requests for a basket of stocks that represent the 
 
 ## MOTIVATION
 
-The DVM currently does not support the uSTONKS-MAR21 price identifier.
-
-In light of the recent events, decentralized finance has gained even greater importance. All individuals should have the same access and freedom to obtain the risk exposure they desire regardless of their financial means or nationality. This statement expands beyond certain brokers offering access to specific stocks; indeed, it’s a question of worldwide access.
-
-This index would allow for the shorting 
-
-In traditional finance there are several ways to express your view on the volatility of an asset. Most options traders would reflect this opinion on an asset by buying or selling options and delta hedging. This effectively neutralizes the price movement of the asset and isolates the value of the option. However, for an average trader this may be complex, costly and requires a lot of maintenance of the position. An easier way to reflect this view is through a futures contract on a volatility index. The most popular index is the VIX which is a volatility index on the S&P 500 that derives its value from a basket of index options. The centralized exchanges in the crypto world are borrowing this concept to create similar ways for users to trade the volatility of Bitcoin. For example, FTX designed BVOL tokens which use a basket of their MOVE contracts to effectively create a volatility index in a similar way. This requires a consistently deep and liquid options market which proves to be a challenge in crypto especially in the decentralized finance space. 
-
 
 ## MARKETS & DATA SOURCES
 
@@ -76,6 +68,7 @@ The stocks chosen represent the stocks with the highest recent average comment v
 Voters should determine which pricing implementation to use depending on when the price request was submitted.
 
 **At Expiry**
+
 If the price request's UTC timestamp is at 1617220800 (March 31, 2021 @ 4:00PM EST), a price request for uSTONKS for a given timestamp should be determined by performing the `At Expiry` process.
 
 As a reference, a base price for each stock was chosen and are shown below. These prices are the closing prices of each on 12/31/2020 and can be used by voters as a reference for their calculations. Voters are highly encouraged to verify these values themselves.
@@ -104,6 +97,7 @@ To calculate the uSTONKS price, an UMA voter should:
 An example of a hypothetical uSTONKS-MAR21 settle is illustrated in [this](https://docs.google.com/spreadsheets/d/1AtNzHvn_0na1miktsF2vmmB5fRj2_y793r-j7_m7P8M/edit?usp=sharing) Google Sheet.
 
 **Before Expiry**
+
 If the price request's UTC timestamp is less than 1617220800 (March 31, 2021 @ 4:00PM EST), voters will need to calculate a 2-hour TWAP for the uSTONKS-MAR21 token’s price in USDC. The following process should be used to calculate the TWAP.
 1. The end TWAP timestamp equals the price request timestamp.
 2. The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
