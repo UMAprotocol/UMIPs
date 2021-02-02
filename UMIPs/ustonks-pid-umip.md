@@ -31,7 +31,12 @@ The stock prices do not need to be queried in real-time. Pre-expiry, this price 
 - Historical Price Endpoints:
 
 The Google Sheets GOOGLEFINANCE function can be used to query for the close prices of each day for the 30 day period.
+
+```
 GOOGLEFINANCE("NYSE:GME", "price", DATE(2021,1,1), DATE(2021,1,30), "DAILY")
+```
+
+Documentation on its usage is available [here](https://support.google.com/docs/answer/3093281?hl=en).
 
 - Do these sources allow for querying up to 74 hours of historical data? Yes
 - How often is the provided price updated? The provided endpoint queries for prices on a daily basis. This is the level of granularity needed to determine the expiry price.
