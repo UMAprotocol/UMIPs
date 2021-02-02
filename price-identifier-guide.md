@@ -16,7 +16,8 @@ A UMIP number will be assigned by an editor. When opening a pull request to subm
 | UMIP Title | [TITLE]                                                                                                  |
 | Authors    | [Name or username and email]
 | Status     | [Draft, Last Call, Approved, Final, Abandoned, Rejected]                                                                                                                             |
-| Created    | [DATE]                                                                             
+| Created    | [DATE] 
+| Create a thread in [Discourse](https://discourse.umaproject.org/) and link to the associated thread .   | [LINK]                                                                                
 <br>
 
 For information on the lifecycle of a UMIP and setting the 'Status' field above view [UMIP-1](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-1.md)

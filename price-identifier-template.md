@@ -9,7 +9,8 @@ Below is a template for creating a UMIP to register a new price identifier with 
 | UMIP Title | [TITLE]                                                                                                  |
 | Authors    | [Name or username and email]
 | Status     | [Draft, Last Call, Approved, Final, Abandoned, Rejected]                                                                                                                                   |
-| Created    | [DATE]                                                                             
+| Created    | [DATE] 
+| Link to Discourse    | [LINK]                                                                               
 <br>
 Note that an UMIP number will be assigned by an editor. When opening a pull request to submit your UMIP, please use an abbreviated title in the filename, umip-draft_title_abbrev.md.
 The title should be 44 characters or less.
