@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-uVOL-DRAFT    |                                                                                                                                          |
+| UMIP 41    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add uVOL-BTC-APR21 as a price identifier              |
 | Authors    | Sean Brown (smb2796), Kevin Chan (kevin-uma), Tom Ibold (Tommy1231232) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                   |
 | Created    | January 25, 2021   
 | [Discourse Link](https://discourse.umaproject.org/t/adding-volbtc-as-a-price-identifier/83 )    |  
 
