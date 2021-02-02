@@ -71,7 +71,7 @@ Voters should determine which pricing implementation to use depending on when th
 
 If the price request's UTC timestamp is at 1617220800 (March 31, 2021 @ 4:00PM EST), a price request for uSTONKS for a given timestamp should be determined by performing the `At Expiry` process.
 
-As a reference, a base price for each stock was chosen and are displayed below. These prices are the closing prices of each on 12/31/2020 and can be used by voters as a reference for their calculations. Voters are highly encouraged to verify these values themselves.
+To create a baseline for the uSTONKS index, a base price for each stock was chosen. These prices are the closing prices of each on 12/31/2020 and can be used by voters as reference values for their calculations. Voters are highly encouraged to verify these values themselves.
 
 | Ticker | Stock Price 12/31/2020 |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
