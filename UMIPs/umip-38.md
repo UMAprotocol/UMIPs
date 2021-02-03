@@ -49,24 +49,19 @@ Additionally, both CG and CMC sources offer free and publicly accessible histori
 
 ## Implementation
 
-The value of DAIPHP for a given timestamp can be determined with the following process.
+The value of this identifier for a given timestamp should be determined by querying for the price of DAI:PHP from CoinMarketCap and CoinGecko for that timestamp, taking the median, and determining whether that median differs from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
 
-1. BTC/ARS should be queried for from the endpoints below for the given timestamp rounded to the nearest available endpoint time value. The results of these queries should be kept at the level of precision they are returned at.
-2. The median of the BTC/ARS results should then be taken.
-3. The inverse of the BTC/ARS mean is then taken (1/BTCARS) to determine ARS/BTC.
-4. The value of BTC/USD for the same timestamp will then need to be determined by following the implementation guidelines defined in UMIP-7.
-5. The values of ARS/BTC and BTC/USD will then need to be multiplied to arrive at the ARSUSD value. As specified in the ‘Technical Specification’ section, this result should be rounded to six decimal places.
+Ultimately, how one queries the exchanges should be varied and determined by the voter to ensure that there is no central point of failure.
 
-The chosen historical DAI/PHP endpoints are:
+While it's important for tokenholders to have redundancy in their sources, bots and users that interact with the system in realtime need fast sources of price information. In these cases, it can be assumed that the exchange median is accurate enough.
 
-| Endpoint                                                                                                                        | Field name of price |
-| ------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}&convert=${convert}&CMC_PRO_API_KEY=${apiKey} | _price_             |
-| https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${contractAddress}&vs_currencies=${currency}    | _${currency}_       |
+Below are reference implementation for an offchain price feed based on the ConMarketCap and CoinGecko API. These feeds should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
 
-Voters are responsible for determining if the result of this process differs from broad market consensus. This is meant to be vague as $UMA tokenholders are responsible for defining broad market consensus.
 
-This is only a reference implementation, how one queries the exchanges should be varied and determined by the voter to ensure that there is no central point of failure.
+| Price Feed Source    | Implementation      |
+| -------------------- | ------------------- |
+| CoinMarketCap        | https://github.com/UMAprotocol/protocol/blob/f079a8e03fb6acdc6daebfb07e346317ed73ae05/packages/financial-templates-lib/src/price-feed/CoinMarketCapPriceFeed.js |
+| CoinGecko            | https://github.com/UMAprotocol/protocol/blob/f079a8e03fb6acdc6daebfb07e346317ed73ae05/packages/financial-templates-lib/src/price-feed/CoinGeckoPriceFeed.js |
 
 ## Security considerations
 
