@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add USD/bBadger and USD-[bwBTC/ETH SLP] as supported price identifiers                                                                                                   |
 | Authors    | mitche50, J au Defi, bitcoinpalmer, Defi Frog
-| Status     | Draft                                                                                                                            |
+| Status     | Last Call                                                                                                                            |
 | Created    | 1/15 /2021                                                                              
 
 
@@ -297,7 +297,7 @@ For the sushi wBTC/ETH SLP, token0 = wBTC and token1 = ETH.  We can then determi
 - wBTC Ratio = Reserve0 / totalSupply
 - ETH Ratio = Reserve1 / totalSupply
 
-2. Multiply the wBTC ratio by the WBTC/USD price. 
+2. Multiply the WBTC ratio by the WBTC/USD price. 
 3. Obtain the ETH/USD price by following the directions in UMIP-6. Multiply the ETH ratio by the ETH/USD price.
 4. Add the results of steps 2 and 3 to get the [bwBTC/ETH SLP]/USD price.
 5. Take the inverse of step 4 (1/([bwBTC/ETH SLP]/USD)) to get the USD-[bwBTC/ETH SLP] price.
