@@ -55,7 +55,7 @@ Ultimately, how one queries the exchanges should be varied and determined by the
 
 While it's important for tokenholders to have redundancy in their sources, bots and users that interact with the system in realtime need fast sources of price information. In these cases, it can be assumed that the exchange median is accurate enough.
 
-Below are reference implementation for an offchain price feed based on the ConMarketCap and CoinGecko API. These feeds should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
+Below are reference implementation for an offchain price feed based on the CoinMarketCap and CoinGecko API. These feeds should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
 
 
 | Price Feed Source    | Implementation      |
