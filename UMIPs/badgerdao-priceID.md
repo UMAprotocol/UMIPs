@@ -62,7 +62,7 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 2. Provide recommended endpoints to query for real-time prices from each market listed. 
 
     - Sushiswap  graph explorer
-        - https://thegraph.com/explorer/subgraph/sushiswap/sushiswap
+        - https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
     - Uniswap graph explorers
         - https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
@@ -126,7 +126,7 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
 # PRICE FEED IMPLEMENTATION
 
-We would be using the Sushiswap and Uniswap TWAPs to determine price 
+We would be using the Sushiswap and Uniswap 2-hour TWAPs to determine price 
 
 https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger/index.js
 
@@ -223,11 +223,11 @@ getPricePerFullShare is a pure view logic function in which no one has any autho
             return 1e18;
         }
         return balance().mul(1e18).div(totalSupply());
+
     
+This returns the value of the balance of the vault divided by the number of shares to give the user the value of 1 share of the vault token. balance() represents the total balance of the underlying token in the vault. For example, if a user has 1 bBadger, this could be worth 1.2 Badger (which would be the ratio of balance / totalSupply).
 
-This returns the value of the balance of the vault divided by the number of shares to give the user the value of 1 share of the vault token. For example, if a user has 1 bBadger, this could be worth 1.2 Badger (which would be the ratio of balance / totalSupply).
-
-For bBadger you could use the same getPricePerFullShare method (described above) from the contract to get the underlying amount, and then the price can be queried via the graph for both Sushi and Uniswap using TWAPs.
+For bBadger you could use the same getPricePerFullShare method (described above) from the contract to get the underlying amount, and then the price can be queried via the graph for both Sushi and Uniswap using 2-hour TWAPs.
 
 <br>
 
@@ -267,7 +267,8 @@ To find the price for USD/bBadger perform the following steps:
 
 1. **Pricing interval**
 
-    - Prices are determined by block not by timestamps. No need to round
+    - 1 second
+
 2. **Input processing**
 
     - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
@@ -336,7 +337,7 @@ To find the price for USD/bBadger perform the following steps:
 
 1. **Pricing interval**
 
-    - Prices are determined by block not by timestamps. No need to round
+    - 1 second
 
 2. **Input processing**
 
@@ -346,10 +347,28 @@ To find the price for USD/bBadger perform the following steps:
 
      - Median
 
+
+The median is applied to wBTC/ETH pair components (across 3 exchanges) via: 
+
+- Amount of underlying wBTC and ETH tokens you can redeem for a given amount of wrapped pool token
+- Amount of redeemable wBTC x price of wBTC across 3 exchanges
+- Amount of redeemable ETH x price of ETH across 3 exchanges
+- Sum of the two medians -> median price of underlying collateral
+
+
+
 <br>
 
 # Security considerations
 
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders.
+
+Although these are "wrapped" tokens, an objective value of the underlying collateral can be accurately determined to adequately inform both participating liquidators and disputers.
+
+The value of collateral can be objective in terms of price per full share * underlying asset value. 
+
+If the vault was hacked in a way that drained funds, the price per full share would decrease in a way that makes the collateral "proportionally recoverable" for all users. There is also insurance from Nexus mutual to consider in terms of valuing the asset in the event of a covered vulnerability
+
+For context, the wrapping mechanism mints a token that represents a % share of a liquidity pool or vault. This is common practice when providing liquidity to an AMM or depositing into a yield optimizer. Using identifiers like price per full share, an oracle can deterministically calculate the value of what the unwrapped ERC20 tokens would be worth at any given time.
 
 Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent. $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
