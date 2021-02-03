@@ -24,7 +24,7 @@ bwBTC/ETH SLP is BadgerDAO's highest TVL vault and bBadger is our native token v
 
 **bwBTC/ETH SLP**
 - Liquidity provider tokens for the wBTC/ETH pool in Sushiswap that is staked in the Badger Sett Vault wBTC/ETH SLP to mint bwBTC/ETH SLP token(s).
-- View [here] (https://etherscan.io/token/0x758a43ee2bff8230eeb784879cdcff4828f2544d) for its associated token address
+- View [here](https://etherscan.io/token/0x758a43ee2bff8230eeb784879cdcff4828f2544d) for its associated token address
 
 **bBadger**
 - Badger token that is staked in the Badger Sett Vault to mint bBadger token(s)
@@ -50,7 +50,7 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
 2. Provide recommended endpoints to query for real-time prices from each market listed. 
 
-    - Sushiswap  graph explorer
+    - Sushiswap graph explorer
         - https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
     - Uniswap graph explorers
@@ -63,12 +63,10 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 **bBadger query** 
 ``` 
 {
-    query: {
-        token(id: "0x3472a5a71965499acd81997a54bba8d852c6e53d", block:{number: 11589591}) {
-            derivedETH
-        }
-    },
-} 
+    token(id: "0x3472a5a71965499acd81997a54bba8d852c6e53d", block:{number: 11589591}) {
+        derivedETH
+    }
+}
 ```
 
 **bwBTC/ETH SLP Query**
@@ -211,6 +209,7 @@ This returns the value of the balance of the vault divided by the number of shar
 
 For bBadger you could use the same getPricePerFullShare method (described above) from the contract to get the underlying amount, and then the underlying values can be queried to give the price of one bBadger token in USD.
 
+For both implemenations, a block number will need to be used. The block number should be the block that is closest to and before the timestamp that the price request timestamp.
 
 ## Obtaining the WBTC/USD price
 
@@ -218,15 +217,19 @@ For both of these price identifiers, the WBTC/USD price will need to be used in 
 
 To obtain the WBTC/USD price, follow this process. The price request timestamp should be passed as the `timestamp` parameter.
 
-1. Obtain the price of wBTC/USD by querying for wBTC/WETH on Sushiswap and Uniswap
+1. Obtain the price of wBTC/USD by querying for wBTC/ETH on Sushiswap and Uniswap
 - Voters can obtain this information in any way that they wish. A subgraph query is provided for both sources as a reference implementation.
 
-Query for the WBTC/WETH price using the below subgraph query:
-https://api.thegraph.com/subgraphs/name/sushiswap/exchange
+Query for the WBTC/ETH price using the below [subgraph query](https://api.thegraph.com/subgraphs/name/sushiswap/exchange) for Sushiswap:
+    
+    
+    
+    
+Query for the WBTC/ETH price using the below [subgraph query](https://api.thegraph.com/subgraphs/name/sushiswap/exchange) for Uniswap:  
     query: `
     ```
     {
-          pair(id:"${address.toLowerCase()}") {
+          pair(id: "0xbb2b8038a1640196fbe3e38816f3e67cba72d940",  block:{number: 11589591}) {
                 reserve0
                 reserve1
                 totalSupply
@@ -234,9 +237,9 @@ https://api.thegraph.com/subgraphs/name/sushiswap/exchange
     }
     ```
 
-2. Take the average of the results between Sushiswap and Uniswap
-3. Using the specifications in UMIP 6 query for the price of ETHUSD
-4. Multiple the results of steps 2 and 3 together to get the price wBTC/USD
+1. Take the average of the results between Sushiswap and Uniswap
+2. Using the specifications in UMIP 6 query for the price of ETHUSD
+3. Multiple the results of steps 2 and 3 together to get the price wBTC/USD
 
 ## USD/bBadger
 
@@ -274,7 +277,7 @@ https://api.thegraph.com/subgraphs/name/sushiswap/exchange
 
     ```
     {
-          pair(id:"${address.toLowerCase()}") {
+          pair(id: "0xceff51756c56ceffca006cd410b03ffc46dd3a58",  block:{number: 11589591}) {
                 reserve0
                 reserve1
                 totalSupply
