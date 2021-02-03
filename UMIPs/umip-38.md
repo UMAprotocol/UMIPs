@@ -1,11 +1,11 @@
 ## Headers
 
-| UMIP-38    |                                             |
-| ---------- | ------------------------------------------- |
-| UMIP Title | Add DAIPHP as a price identifier            |
-| Authors    | Chris Verceles (chris.verceles@halodao.com) |
-| Status     | Approved                                    |
-| Created    | Feb 3, 2021                                 |
+| UMIP-38    |                                                                                    |
+| ---------- | ---------------------------------------------------------------------------------- |
+| UMIP Title | Add DAIPHP as a price identifier                                                   |
+| Authors    | Chris Verceles (chris.verceles@halodao.com), James Orola (james.orola@halodao.com) |
+| Status     | Approved                                                                           |
+| Created    | Feb 3, 2021                                                                        |
 
 ## Summary (2-5 sentences)
 
@@ -43,9 +43,7 @@ The definition of this identifier should be:
 
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized.
 
-DAIPHP uses CoinGecko and CoinMarketCap for price information. These initial price sources were chosen over an exchange, because most exchanges do not offer readily available DAI:PHP feeds at the moment. Additionally, both sources offer free and publicly accessible historical DAI:PHP endpoints.
-
-The decision, to query for BTC/ARS and BTC/USD instead of directly querying for ARS/USD, was made because the ARS/USD pair has a large variance in price reporting, caused by artificial factors. Products built with the ARSUSD price identifier are most likely to be used in Argentinian cryptocurrency exchanges, so the price identifier should use the price reflected by the highest volume crypto-native ARS trading pair.
+DAIPHP uses CoinGecko (CG) and CoinMarketCap (CMC) for price information. These initial price sources were chosen as CG and CMC provide a readily available methodology for consolidating and validating price data for a particular crypto asset and fiat quote across exchanges worldwide (see https://www.coingecko.com/en/methodology and https://coinmarketcap.com/api/faq/ ). Additionally, both sources offer free and publicly accessible historical DAI:PHP endpoints. In future implementations, the [HaloDAO](https://halodao.com/) team (or any other team making use of this price feed implementation) may add more price feed sources as the DAI - PHP market builds volume, especially in partnership with PH exchanges.
 
 ## Implementation
 
@@ -57,7 +55,7 @@ The value of DAIPHP for a given timestamp can be determined with the following p
 4. The value of BTC/USD for the same timestamp will then need to be determined by following the implementation guidelines defined in UMIP-7.
 5. The values of ARS/BTC and BTC/USD will then need to be multiplied to arrive at the ARSUSD value. As specified in the ‘Technical Specification’ section, this result should be rounded to six decimal places.
 
-The chosen historical BTC/ARS endpoints are:
+The chosen historical DAI/PHP endpoints are:
 
 | Endpoint                                                        | Field name of price |
 | --------------------------------------------------------------- | ------------------- |
