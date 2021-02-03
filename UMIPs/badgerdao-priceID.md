@@ -74,7 +74,7 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 **bBadger query** 
 ``` {
     query: {
-        token(id: "0x3472A5A71965499acd81997a54BBA8D852C6E53d", block:{number: 11589591}) {
+        token(id: "0x3472a5a71965499acd81997a54bba8d852c6e53d", block:{number: 11589591}) {
             derivedETH
         }
     },
@@ -85,7 +85,7 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
 ``` {
     query: {
-        pair(id: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58",  block:{number: 11589591}) {
+        pair(id: "0xceff51756c56ceffca006cd410b03ffc46dd3a58",  block:{number: 11589591}) {
             totalSupply
             reserve0
             reserve1
@@ -156,7 +156,7 @@ https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger
 
 **5. Collateral Decimals** - 18
 
-**6. Rounding** - Round to 18 decimal places
+**6. Rounding** - Round to 7 decimal places
 
 <br>
 
@@ -239,35 +239,19 @@ For bBadger you could use the same getPricePerFullShare method (described above)
 
 To find the price for USD/bBadger perform the following steps:
 
-1. Query contract 0x19D97D8fA813EE2f51aD4B4e04EA08bAf4DFfC28 for method getPricePerFullShare
-2. Multiply this value by 1e-18 to get the ratio of b tokens to underlying tokens
-3. Multiply the amount of bBadger by the result of the above 
-4. HTTP GET request to the uniswap subgraph 
+1. Query contract 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28 for method getPricePerFullShare
+2. Multiply this value by 1e-18 to get the ratio of one bBadger  token to underlying badger tokens (i.e. bBadger/badger).  
 
-    {
-        query: {
-            token(id: "0x3472A5A71965499acd81997a54BBA8D852C6E53d") {
-                derivedETH
-            }
-        },
-    }
+3. Query the spot price of Badger/USD price via:
+    - Sushiswap & Uniswap
+        - First obtain the Badger/ETH price and convert to Badger/USD
+        - Using the implementation defined in [UMIP 6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the price of ETHUSD and multiple the result by the Badger/ETH price
+    - Huobi
+4. Take the median of the price of Badger/USD from Uniswap, Sushiswap and Huobi.
 
-5. The graph can accept blockheights to get historical data.  To get this information, include block:{number: 11589591} (as and example to get block height 11589591) in the pair parameters.  Example:
-
-    {
-        query: {
-            token(id: "0x3472A5A71965499acd81997a54BBA8D852C6E53d", block:{number: 11589591}) {
-                derivedETH
-            }
-        },
-    }
-
-    - This gives the current price of Badger in ETH
-
-5. Multiply the price of Badger (in ETH) by the amount of underlying tokens to get the value of the bBadger in ETH
-6. Take the price of bBadger in ETH and multiple it by the ETH/USD price to obtain the price of bBadger (in USD)
-    - Using the implementation defined in [UMIP 6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the price of ETH USD and multiply the results from steps 5 by ETH/USD price
-8. Take the inverse of the bBadger/USD price by performing 1/the price of bBadger (in USD)
+5. Multiple bBadger/badger (the result from step 2) by Badger/USD (the result from step 4) to obtain bBadger/USD
+     
+5. Take the inverse of the bBadger/USD price by performing 1/[bBadger/USD]
 
 
 1. **Pricing interval**
@@ -292,59 +276,28 @@ To find the price for USD/bBadger perform the following steps:
 
 1. Query contract 0x758a43ee2bff8230eeb784879cdcff4828f2544d for method getPricePerFullShare
 
-2. Multiply this value by 1e-18 to get the ratio of b tokens to underlying tokens
+2. Multiply this value by 1e-18 to get the ratio of b tokens to underlying tokens (i.e. [bwBTC/ETH]/[wBTC/ETH])
 
-3. Multiply the amount of bwBTC/ETH SLP by the result of the above multiplication
+3. Take the amount of WBTC in the pool and multiple it by the price of WBTC/USD. 
 
-4. HTTP GET request to the sushiswap subgraph https://api.thegraph.com/subgraphs/name/jiro-ono/sushiswap-v1-exchange with the below json query:
-  ```  {
-        query: {
-            pair(id: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58") {
-                totalSupply
-                reserve0
-                reserve1
-                token0{
-                    derivedETH
-                }
-                token1{
-                    derivedETH
-                }
-            }
-        },
-    }
-```
--  Note - Token0 is wBTC, token1 is wETH
+    - To obtain the price of WBTC/USD take the median of the below three exchanges:
+        - Sushiswap, Huobi, & Uniswap
+            a. Obtain the price of wBTC/USD
+          
+4. Take the amount of ETH in the pool and multiple it by the price of ETH/USD
 
-5. To get the value of the SLP you would take the derivedETH value for each token, multiply it by the respective reserve, add them together and then divide by the total supply
+    - To obtain the price of ETH/USD take the median of the below three exchanges:
+        - Sushiswap, Huobi, & Uniswap
+            a. Obtain the price of ETH/USD
 
-    - The calculation is:
+5. Add the output of step 3 and 4 together to obtain the total dollar value within the wBTC/ETH pool. 
 
-        ``` ((data.pair.token0.derivedETH * data.pair.reserve0 * 1e18) + (data.pair.token1.derivedETH * data.pair.reserve1 * 1e18)) / data.pair.totalSupply```
+6.  Take the amount of liquidity in the bwBTC/ETH pool (the output of step 5) and divide it by the number of outstanding sushiswap tokens to obtain the amount each wBTC/ETH Sushiswap token has a claim to. 
 
-6. The graph can accept blockheights to get historical data.  To get this information, include block:{number: 11589591} (as and example to get block height 11589591) in the pair parameters.  Example:
+4. Multiple [bwBTC/ETH]/[wBTC/ETH] (the result from step 2) by the result from step 6 to obtain [bwBTC/ETH]/USD
+     
+5. Take the inverse of [bwBTC/ETH]/USD price by performing 1/[bwBTC/ETH]/USD to obtain USD/[bwBTC/ETH]
 
-   ``` {
-        query: {
-            pair(id: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58",  block:{number: 11589591}) {
-                totalSupply
-                reserve0
-                reserve1
-                token0{
-                    derivedETH
-                }
-                token1{
-                    derivedETH
-                }
-            }
-        },
-    }
-    ```
-
-7. Take this result and multiply by the amount of underlying tokens you have to get the value of bwBTC/ETH in ETH
-
-8. Take the price of bwBTC/ETH in ETH and multiple it by the ETH/USD price to obtain the price of bwBTC/ETH (in USD)
-    - Using the implementation defined in [UMIP 6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the price of ETH USD and multiply the results from step 7 by the ETH/USD price
-9. Take the inverse of the bwBTC/ETH price by performing 1 / the price of bwBTC/ETH (in USD)
 
 1. **Pricing interval**
 
