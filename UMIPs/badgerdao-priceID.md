@@ -222,10 +222,18 @@ To obtain the WBTC/USD price, follow this process. The price request timestamp s
 
 Query for the WBTC/ETH price using the below [subgraph query](https://api.thegraph.com/subgraphs/name/sushiswap/exchange) for Sushiswap:
     
+     ```
+    {
+          pair(id: "0xceff51756c56ceffca006cd410b03ffc46dd3a58",  block:{number: 11589591}) {
+                reserve0
+                reserve1
+                totalSupply
+          }
+    }
+    ```
     
     
-    
-Query for the WBTC/ETH price using the below [subgraph query](https://api.thegraph.com/subgraphs/name/sushiswap/exchange) for Uniswap:  
+Query for the WBTC/ETH price using the below [subgraph query](https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2) for Uniswap:  
     query: `
     ```
     {
