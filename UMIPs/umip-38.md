@@ -7,13 +7,16 @@
 
 ## Summary
 
+
 The DVM should support price requests for the COMPUSDC-APR-FEB28/USDC and COMPUSDC-APR-MAR28/USDC price indices.
 
 A synthetic token, referred to as 'CAR', will be created with this price identifier.
 
 This price index should resolve in one of two ways, depending on the DVM timestamp.
 
+
 **COMPUSDC-APR-FEB28/USDC**
+
 The CAR token tied to this price identifier will expire on the cutoff timestamp `1614470400`.
 ```
 CUTOFF = 1614470400 # Feb 28, 2021 00:00:00 UTC
@@ -23,7 +26,9 @@ else:
   Resolve price to the 2-hour Time-Weighted Average Price for the Uniswap price of the CAR token quoted in USDC. CAR token address in technical specification.
 ```
 
+
 **COMPUSDC-APR-MAR28/USDC**
+
 The CAR token tied to this price identifier will expire on the cutoff timestamp `1616889600`.
 ```
 CUTOFF = 1616889600 # Mar 28, 2021 00:00:00 UTC
@@ -52,7 +57,9 @@ Example user: A trader takes out a large loan from Compound and the current APR 
 This price should be queried from the highest volume Uniswap pool (Whichever one is deemed more legitimate by the UMA token holders) on Ethereum where at least one asset in the pair is CAR. It's expected that a single Uniswap pool will have 99% of the liquidity and volume so confusion will not arise.
 
 ### Post Cutoff
+
 The source of truth for this data is the Compound USDC cToken's (cUSDC) `borrowRatePerBlock()` method. As of the writing of this UMIP, the agreed-upon cUSDC smart contract address is `0x39aa39c021dfbae8fac545936693ac917d5e7563`. This price identifier aggregates the value returned by `borrowRatePerBlock()` over every block from the 30 days ending at the cutoff/expiration timestamp (`1614470400` for `COMPUSDC-APR-FEB28/USDC` and `1616889600` for `COMPUSDC-APR-MAR28/USDC`).
+
 
 It is recommended to gather the raw data from an Ethereum archive node. Alternatively, this data is indexed in the [Graph Protocol](https://thegraph.com/explorer/subgraph/graphprotocol/compound-v2). As of writing this UMIP, Graph Protocol is free. However, they have plans to start charging for access in the future. In the future, querying 30 days worth of blocks may cost up to $20 USD. This UMIP's price identifier will only be used for the DVM to return the synthetic token's expiration price. Therefore, this high price won't be incurred by liquidator bots.
 
@@ -74,7 +81,9 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 ### COMPUSDC-APR-TWAP-OR-30DAY-FEB28/USDC
 
+
 **1. Price Identifier Name** - COMPUSDC-APR-FEB28/USDC
+
 
 **2. Base Currency** - CAR token with expiration at 1614470400 or Compound Borrowing USDC Interest Annual Percentage Rate
 
@@ -96,7 +105,9 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 ### COMPUSDC-APR-TWAP-OR-30DAY-MAR28/USDC
 
+
 **1. Price Identifier Name** - COMPUSDC-APR-MAR28/USDC
+
 
 **2. Base Currency** - CAR token with expiration at 1616889600 or Compound Borrowing USDC Interest Annual Percentage Rate
 
@@ -145,6 +156,7 @@ We mitigate the effects of numerical instability by rounding to the nearest two 
 ## Implementation
 
 ### Pre-cutoff
+
 For price requests made before the cutoff, (`1614470400` for `COMPUSDC-APR-FEB28/USDC` and `1616889600` for `COMPUSDC-APR-MAR28/USDC`), use the same two-hour TWAP calculation implementation from UMIP-22.
 
 1. The end TWAP timestamp equals the price request timestamp.
@@ -155,6 +167,7 @@ For price requests made before the cutoff, (`1614470400` for `COMPUSDC-APR-FEB28
 6. The final price should be returned with the synthetic token as the denominator of the price pair and should be submitted with 6 decimals. But rounded to 2 decimal places. For example, if the APR is 7.38482747%, then we round to 2 decimal places and convert 1-to-1 to USDC for $7.38USDC. However, USDC on Ethereum uses 6 decimal places so voters must submit $7.380000USDC.
 
 ### Post-cutoff
+
 For price requests made after or on the cutoff, (`1614470400` for `COMPUSDC-APR-FEB28/USDC` and `1616889600` for `COMPUSDC-APR-MAR28/USDC`), use the below geometric mean calculation.
 
 This implementation works with the dataset from [Tendies Exchange public endpoint](https://cache.tendies.exchange/borrow_rate_per_block.json). To use it with other datasets, modify the `getBorrowRatePerBlock()` function. This implementation is updated as an [open source price feed script](https://github.com/evanmays/tendies-exchange/tree/master/indexer).
