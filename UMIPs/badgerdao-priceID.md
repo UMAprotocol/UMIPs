@@ -1,5 +1,5 @@
 ## HEADERS
-| UMIP [#]     |                                                                                                                                  |
+| UMIP-39     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | BadgerDAO Setts Vault Price Identifiers                                                                                                  |
 | Authors    | mitche50, J au Defi, bitcoinpalmer, Defi Frog
