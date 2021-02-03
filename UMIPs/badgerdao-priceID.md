@@ -28,7 +28,7 @@ bwBTC/ETH SLP is BadgerDAO's highest TVL vault and bBadger is our native token v
 
 
 **bwBTC/ETH SLP**
-- Liquidity provider tokens for the wBTC/ETH pool in Sushiswap that is staked in the Badger Sett Vault wBTC/ETH SLP resulting to mint bwBTC/ETH SLP token(s).
+- Liquidity provider tokens for the wBTC/ETH pool in Sushiswap that is staked in the Badger Sett Vault wBTC/ETH SLP to mint bwBTC/ETH SLP token(s).
 - View [here] (https://etherscan.io/token/0x758a43ee2bff8230eeb784879cdcff4828f2544d) for its associated token address
 
 **bBadger**
@@ -113,7 +113,7 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
 9. Is there a cost associated with usage? 
 
-    - No (this could change when The Graph turns into a marketplace)
+    - No (this could change when The Graph turns into a marketplace). Note, the price feed does not use The Graph. Using the graph is a secondary reference implementation. 
 
 10. If there is a free tier available, how many queries does it allow for?
 
@@ -127,7 +127,7 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
 # PRICE FEED IMPLEMENTATION
 
-We would be using the Sushiswap and Uniswap 2-hour TWAPs to determine price 
+We would be using the Sushiswap and Uniswap 2-hour TWAPs to obtain price information.  
 
 https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger/index.js
 
