@@ -59,11 +59,10 @@ The value of DAIPHP for a given timestamp can be determined with the following p
 
 The chosen historical BTC/ARS endpoints are:
 
-| Endpoint                                                        | Field name of price |
-| --------------------------------------------------------------- | ------------------- |
-| https://app.ripio.com/api/v3/public/currencies/BTC/history/ARS/ | _price_             |
-| https://api.satoshitango.com/v3/ticker/ARS/BTC/history          | _avg_               |
-| https://ar.coinmonitor.info/api/v4/btc_ars/?periodo=96hs        | _p_                 |
+| Endpoint                                                                                                                        | Field name of price |
+| ------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${symbol}&convert=${convert}&CMC_PRO_API_KEY=${apiKey} | _price_             |
+| https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${contractAddress}&vs_currencies=${currency}    | _${currency}_       |
 
 Voters are responsible for determining if the result of this process differs from broad market consensus. This is meant to be vague as $UMA tokenholders are responsible for defining broad market consensus.
 
