@@ -1,21 +1,21 @@
 ## HEADERS
 | UMIP-40     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add [BTC-BASIS-3M]/USDC, [BTC-BASIS-6M]/USDC, [ETH-BASIS-3M]/USDC, [ETH-BASIS-6M]/USDC as price identifiers              |
+| UMIP Title | Add BTC-BASIS-3M/USDC, BTC-BASIS-6M/USDC, ETH-BASIS-3M/USDC, ETH-BASIS-6M/USDC as price identifiers              |
 | Authors    | Bae (bae@youmychicfila.com), K (k@youmychicfila.com) |
 | Status     | Draft                                                                                                                                    |
 | Created    | January 18, 2020                                                                                                                           |
                                                                           
 # SUMMARY 
 
-The DVM should support price requests for both [BTC-BASIS-3M]/USDC, [BTC-BASIS-6M]/USDC, [ETH-BASIS-3M]/USDC, [ETH-BASIS-6M]/USDC price indices. [BTC-BASIS-3M]/USDC is defined as: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where `F` references a basket of BTC futures that are set to expire in March and `S` represents a basket of BTC spot prices. [ETH-BASIS-3M]/USDC is defined in the same way, except the `F` and `S` correspond to `ETH` futures and spot. Similarly, the `6M` `BTC` and `ETH` price identifiers would be the same formula except with futures that are set to expire in `June` instead of `March`.  
+The DVM should support price requests for both BTC-BASIS-3M/USDC, BTC-BASIS-6M/USDC, ETH-BASIS-3M/USDC, ETH-BASIS-6M/USDC price indices. BTC-BASIS-3M/USDC is defined as: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where `F` references a basket of BTC futures that are set to expire in March and `S` represents a basket of BTC spot prices. ETH-BASIS-3M/USDC is defined in the same way, except the `F` and `S` correspond to `ETH` futures and spot. Similarly, the `6M` `BTC` and `ETH` price identifiers would be the same formula except with futures that are set to expire in `June` instead of `March`.  
 
 For closure:
 
-[BTC-BASIS-3M]/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 3 month BTC futures and S is a basket of BTC spot prices.
-[BTC-BASIS-6M]/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 6 month BTC futures and S is a basket of BTC spot prices.
-[ETH-BASIS-3M]/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 3 month ETH futures and S is a basket of ETH spot prices.
-[ETH-BASIS-6M]/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 6 month ETH futures and S is a basket of ETH spot prices.
+BTC-BASIS-3M/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 3 month BTC futures and S is a basket of BTC spot prices.
+BTC-BASIS-6M/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 6 month BTC futures and S is a basket of BTC spot prices.
+ETH-BASIS-3M/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 3 month ETH futures and S is a basket of ETH spot prices.
+ETH-BASIS-6M/USDC: min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F is a basket of 6 month ETH futures and S is a basket of ETH spot prices.
 
 
 # MOTIVATION
@@ -27,7 +27,7 @@ For closure:
 
 2. Please provide an example of a person interacting with a contract that uses this price identifier. 
 
-    If Alice thought that the term structure on BTC or ETH was rich, then she could sell ("flattener") BTC/[ETH-BASIS-3M]/6M on AMM pools that it exists on. If Alice thought that the term structure on BTC or ETH was cheap, then should buy ("steepener") BTC/[ETH-BASIS-3M]/6M on AMM pools that it exists on. If Bob thought that there's a contentious ETH fork that'd split hash appropriately and give value to both forks, then a short-basis positions would create an accretive value position for Bob as the utility of the spot would outpace the futures (depending on how CeFi exchanges resolved indices, but usually they pick a fork), and in this case could sell [ETH-BASIS-3M]/6M. If Bob thought that the 3m-6m basis is rich or cheap, then he could buy or sell a combination of 3m and 6m synths appropriately. Essentially, folks can express a supply/demand crunch for BTC or ETH in terms of the basis. 
+    If Alice thought that the term structure on BTC or ETH was rich, then she could sell ("flattener") BTC/ETH-BASIS-3M/6M on AMM pools that it exists on. If Alice thought that the term structure on BTC or ETH was cheap, then should buy ("steepener") BTC/ETH-BASIS-3M/6M on AMM pools that it exists on. If Bob thought that there's a contentious ETH fork that'd split hash appropriately and give value to both forks, then a short-basis positions would create an accretive value position for Bob as the utility of the spot would outpace the futures (depending on how CeFi exchanges resolved indices, but usually they pick a fork), and in this case could sell ETH-BASIS-3M/6M. If Bob thought that the 3m-6m basis is rich or cheap, then he could buy or sell a combination of 3m and 6m synths appropriately. Essentially, folks can express a supply/demand crunch for BTC or ETH in terms of the basis. 
 
 3. Consider adding market data  
 
@@ -98,9 +98,9 @@ The [price feed implementation](https://github.com/UMAprotocol/protocol/pull/245
 
 # TECHNICAL SPECIFICATIONS
 
-**1. Price Identifier Name** - [BTC-BASIS-3M]/USDC, [BTC-BASIS-6M]/USDC, [ETH-BASIS-3M]/USDC, [ETH-BASIS-6M]/USDC
+**1. Price Identifier Name** - BTC-BASIS-3M/USDC, BTC-BASIS-6M/USDC, ETH-BASIS-3M/USDC, ETH-BASIS-6M/USDC
 
-**2. Base Currency** - [BTC-BASIS-3M], [BTC-BASIS-6M], [ETH-BASIS-3M], [ETH-BASIS-6M]
+**2. Base Currency** - BTC-BASIS-3M, BTC-BASIS-6M, ETH-BASIS-3M, ETH-BASIS-6M
 
 **3. Quote currency** - USDC
 
@@ -167,7 +167,7 @@ Not required to have a TWAP/VWAP/etc.
 
     For BTC futures prices, the median of the prices from the 3 exchanges should be used. For BTC spot prices, the median of the prices from the 3 spot exchanges should be used. Same for ETH.
 
-    As an example, for [BTC-BASIS-3M], the formula is min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F would be a median of the 3 futures prices as mentioned above and S would be a median as well of the 3 spot prices, and the result would be rounded to 6 decimals.
+    As an example, for BTC-BASIS-3M, the formula is min(max(100.0 * [1 + (F-S)/S], 75.0), 125.0), where F would be a median of the 3 futures prices as mentioned above and S would be a median as well of the 3 spot prices, and the result would be rounded to 6 decimals.
 
 <br>
 
