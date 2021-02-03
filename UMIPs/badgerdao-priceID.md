@@ -1,12 +1,11 @@
 ## HEADERS
 | UMIP-39     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | BadgerDAO Setts Vault Price Identifiers                                                                                                  |
+| UMIP Title | Add USD/bBadger and USD-[bwBTC/ETH SLP] as supported price identifiers                                                                                                   |
 | Authors    | mitche50, J au Defi, bitcoinpalmer, Defi Frog
 | Status     | Draft                                                                                                                            |
 | Created    | 1/15 /2021                                                                              
 
-<br>
 
 # SUMMARY 
 
@@ -15,17 +14,13 @@ The DVM should support price requests for the below price indexes:
 - USD-[bwBTC/ETH SLP]
 
 
-
-
 # MOTIVATION
 
 The DVM currently does not support the USD-[bwBTC/ETH SLP], USD/bBadger price identifiers.  
 
-BadgerDAO’s first product is Sett vault, an automated DeFi aggregator focused on tokenized BTC assets. Users that tokenized Bitcoin in our vaults receive a corresponding “b” denominated token in return that represents their vault position. Unfortunately these vault positions then become illiquid. Many of our users would like to borrow against their BTC vault positions as collateral to mint Badger Dollars (a yield dollar). At the time of writing, Badger’s Sett Vaults have brought in over 700m in TVL.
-
+BadgerDAO’s first product is Sett vault, an automated DeFi aggregator focused on tokenized BTC assets. Users that tokenized Bitcoin in our vaults receive a corresponding “b” denominated token in return that represents their vault position. Unfortunately these vault positions then become illiquid. Many of our users would like to borrow against their BTC vault positions as collateral to mint Badger Dollars (a yield dollar). At the time of writing, Badger’s Sett Vaults have brought in over 1 billion in TVL.
 
 bwBTC/ETH SLP is BadgerDAO's highest TVL vault and bBadger is our native token vault, only less in value than the curve vault.
-
 
 **bwBTC/ETH SLP**
 - Liquidity provider tokens for the wBTC/ETH pool in Sushiswap that is staked in the Badger Sett Vault wBTC/ETH SLP to mint bwBTC/ETH SLP token(s).
@@ -37,8 +32,6 @@ bwBTC/ETH SLP is BadgerDAO's highest TVL vault and bBadger is our native token v
 
 Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enable the creation of Badger Dollars synthetic token. It enables token minters to leverage their vaulted positions in Badgers Setts.  This would allow Alice to use 100 bBadger (worth $1200) to create 400 USD synth tokens (worth $400).  At expiry, Alice could redeem her 400 USD synthetic tokens for the USD amount of bBadger the USD synthetic tokens are worth.  Once this is complete, she could then withdrawal the rest of her collateral (100 bBadger).
 
-<br> 
-
 # MARKETS & DATA SOURCES
 
  **Required questions**
@@ -47,17 +40,13 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
     - USD-[bwBTC/ETH SLP]
         - Sushiswap (to get the underlying balances)
-        - Binance, Huobi and Coinbase Pro (BTC and ETH prices)
+        - Uniswap and Sushiswap for WBTC/ETH
+        - Binance, Coinbase, Kraken for ETH/USD (follows the specifications in UMIP-6)
 
     - USD/bBadger
-        - Uniswap
-        - Sushiswap
-
-        **Note** - The above are approved collateral currencies on UMA. View below. 
-
-        https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-35.md
-
-
+        - Uniswap and Sushiswap for WBTC/ETH
+        - Uniswap and Sushiswap for Badger/WBTC
+        - Binance, Coinbase, Kraken for ETH/USD (follows the specifications in UMIP-6)
 
 2. Provide recommended endpoints to query for real-time prices from each market listed. 
 
@@ -68,11 +57,12 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
         - https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
 
-5. Provide recommended endpoints to query for historical prices from each market listed. 
+3. Provide recommended endpoints to query for historical prices from each market listed. 
 
 
 **bBadger query** 
-``` {
+``` 
+{
     query: {
         token(id: "0x3472a5a71965499acd81997a54bba8d852c6e53d", block:{number: 11589591}) {
             derivedETH
@@ -83,21 +73,20 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
 **bwBTC/ETH SLP Query**
 
-``` {
-    query: {
-        pair(id: "0xceff51756c56ceffca006cd410b03ffc46dd3a58",  block:{number: 11589591}) {
-            totalSupply
-            reserve0
-            reserve1
-            token0{
-                derivedETH
-            }
-            token1{
-                derivedETH
-            }
+``` 
+{
+    pair(id: "0xceff51756c56ceffca006cd410b03ffc46dd3a58",  block:{number: 11589591}) {
+        totalSupply
+        reserve0
+        reserve1
+        token0{
+            derivedETH
         }
-    },
-} 
+        token1{
+            derivedETH
+        }
+    }
+}
 ```
 6.  Do these sources allow for querying up to 74 hours of historical data? 
 
@@ -123,7 +112,7 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
      - $0
 
-<br>
+
 
 # PRICE FEED IMPLEMENTATION
 
@@ -131,8 +120,6 @@ We would be using the Sushiswap and Uniswap 2-hour TWAPs to obtain price informa
 
 https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger/index.js
 
-
-<br>
 
 # TECHNICAL SPECIFICATIONS
 
@@ -156,7 +143,7 @@ https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger
 
 **5. Collateral Decimals** - 18
 
-**6. Rounding** - Round to 7 decimal places
+**6. Rounding** - Round to 18 decimal places
 
 <br>
 
@@ -178,7 +165,6 @@ https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger
 - Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
 
     - Yes
-
 
 **5. Collateral Decimals** - 18
 
@@ -202,11 +188,7 @@ Badger is not a collateral on any loan services and the majority of the liquidit
 
 **Should the prices have any processing (e.g., TWAP)?**
 
-Since pricing is coming from uniswap, we should use the TWAP as defined in the price feed that already exists.
-
-
-TWAPs increase reliability of pulling data from AMMs. Without this, flash loans can be used to exploit pricing and cause liquidations.
-
+Processing is defined in the implementation section.
 
 <br>
 
@@ -215,8 +197,6 @@ TWAPs increase reliability of pulling data from AMMs. Without this, flash loans 
 B wrapped tokens have 2 components to finding the underlying value of the tokens associated with them.  Each wrapped token has a pricePerFullShare, which is the amount of underlying tokens that 1 b token could be redeemed for through the withdraw function.  This underlying token can have different ways to determine its value depending on what type of token it is.
 
 The price per full share can be found by querying the contract of the token with `getPricePerFullShare` as seen in method 9 on this contract: https://etherscan.io/address/0x19D97D8fA813EE2f51aD4B4e04EA08bAf4DFfC28#reaProxyContract
-
-
 
 getPricePerFullShare is a pure view logic function in which no one has any authority to manipulate:
 
@@ -254,7 +234,7 @@ https://api.thegraph.com/subgraphs/name/sushiswap/exchange
     }
     ```
 
-2. Take the avarage of the results between Sushiswap and Uniswap
+2. Take the average of the results between Sushiswap and Uniswap
 3. Using the specifications in UMIP 6 query for the price of ETHUSD
 4. Multiple the results of steps 2 and 3 together to get the price wBTC/USD
 
@@ -264,8 +244,8 @@ https://api.thegraph.com/subgraphs/name/sushiswap/exchange
 
 To find the price for USD/bBadger perform the following steps:
 
-1. Query contract 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28 for method getPricePerFullShare
-2. Multiply this value by 1e-18 to get the ratio of one bBadger token to underlying badger tokens (i.e. bBadger/Badger).  (Need a historical query)
+1. Query contract 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28 for method getPricePerFullShare.
+2. Multiply this value by 1e-18 to get the ratio of one bBadger token to underlying badger tokens (i.e. bBadger/Badger).
 3. Query for the price of Badger/WBTC on Sushiswap. Multiply this by the WBTC/USD price obtained earlier to get the Badger/USD price.
 4. Repeat step 3 for Uniswap.
 5. Query for the price of Badger/USD on Huobi.
