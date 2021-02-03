@@ -72,17 +72,18 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
 
 **bBadger query** 
-{
+``` {
     query: {
         token(id: "0x3472A5A71965499acd81997a54BBA8D852C6E53d", block:{number: 11589591}) {
             derivedETH
         }
     },
-}
+} 
+```
 
 **bwBTC/ETH SLP Query**
 
-{
+``` {
     query: {
         pair(id: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58",  block:{number: 11589591}) {
             totalSupply
@@ -96,8 +97,8 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
             }
         }
     },
-}
-
+} 
+```
 6.  Do these sources allow for querying up to 74 hours of historical data? 
 
     - Yes, detailed in implementation section
@@ -201,7 +202,7 @@ Badger is not a collateral on any loan services and the majority of the liquidit
 
 **Should the prices have any processing (e.g., TWAP)?**
 
-Since pricing is coming from uniswap / sushiswap, we should use the TWAP as defined in the price feed that already exists
+Since pricing is coming from uniswap, we should use the TWAP as defined in the price feed that already exists.
 
 
 TWAPs increase reliability of pulling data from AMMs. Without this, flash loans can be used to exploit pricing and cause liquidations.
@@ -219,12 +220,13 @@ The price per full share can be found by querying the contract of the token with
 
 getPricePerFullShare is a pure view logic function in which no one has any authority to manipulate:
 
-        if (totalSupply() == 0) {
-            return 1e18;
-        }
-        return balance().mul(1e18).div(totalSupply());
+``` 
+if (totalSupply() == 0) 
+{ return 1e18;
+}
+return balance().mul(1e18).div(totalSupply());
+```
 
-    
 This returns the value of the balance of the vault divided by the number of shares to give the user the value of 1 share of the vault token. balance() represents the total balance of the underlying token in the vault. For example, if a user has 1 bBadger, this could be worth 1.2 Badger (which would be the ratio of balance / totalSupply).
 
 For bBadger you could use the same getPricePerFullShare method (described above) from the contract to get the underlying amount, and then the price can be queried via the graph for both Sushi and Uniswap using 2-hour TWAPs.
@@ -239,8 +241,8 @@ To find the price for USD/bBadger perform the following steps:
 
 1. Query contract 0x19D97D8fA813EE2f51aD4B4e04EA08bAf4DFfC28 for method getPricePerFullShare
 2. Multiply this value by 1e-18 to get the ratio of b tokens to underlying tokens
-3. Multiply the amount of bBadger by the result of the above multiplication
-4. HTTP GET request to the sushiswap or uniswap subgraph 
+3. Multiply the amount of bBadger by the result of the above 
+4. HTTP GET request to the uniswap subgraph 
 
     {
         query: {
@@ -262,7 +264,10 @@ To find the price for USD/bBadger perform the following steps:
 
     - This gives the current price of Badger in ETH
 
-5. Multiply this return by the amount of underlying tokens you have to get the value of the bBadger in ETH
+5. Multiply the price of Badger (in ETH) by the amount of underlying tokens to get the value of the bBadger in ETH
+6. Take the price of bBadger in ETH and multiple it by the ETH/USD price to obtain the price of bBadger (in USD)
+    - Using the implementation defined in [UMIP 6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the price of ETH USD and multiply the results from steps 5 by ETH/USD price
+8. Take the inverse of the bBadger/USD price by performing 1/the price of bBadger (in USD)
 
 
 1. **Pricing interval**
@@ -292,7 +297,7 @@ To find the price for USD/bBadger perform the following steps:
 3. Multiply the amount of bwBTC/ETH SLP by the result of the above multiplication
 
 4. HTTP GET request to the sushiswap subgraph https://api.thegraph.com/subgraphs/name/jiro-ono/sushiswap-v1-exchange with the below json query:
-    {
+  ```  {
         query: {
             pair(id: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58") {
                 totalSupply
@@ -307,17 +312,18 @@ To find the price for USD/bBadger perform the following steps:
             }
         },
     }
-
-    - Note - Token0 is wBTC, token1 is wETH
+```
+-  Note - Token0 is wBTC, token1 is wETH
 
 5. To get the value of the SLP you would take the derivedETH value for each token, multiply it by the respective reserve, add them together and then divide by the total supply
 
-    - The calculation would look something like:
-((data.pair.token0.derivedETH * data.pair.reserve0 * 1e18) + (data.pair.token1.derivedETH * data.pair.reserve1 * 1e18)) / data.pair.totalSupply
+    - The calculation is:
+
+        ``` ((data.pair.token0.derivedETH * data.pair.reserve0 * 1e18) + (data.pair.token1.derivedETH * data.pair.reserve1 * 1e18)) / data.pair.totalSupply```
 
 6. The graph can accept blockheights to get historical data.  To get this information, include block:{number: 11589591} (as and example to get block height 11589591) in the pair parameters.  Example:
 
-    {
+   ``` {
         query: {
             pair(id: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58",  block:{number: 11589591}) {
                 totalSupply
@@ -332,8 +338,13 @@ To find the price for USD/bBadger perform the following steps:
             }
         },
     }
+    ```
 
-7. Take this result and multiply by the amount of underlying tokens you have to get the value of the bwBTC/ETH in ETH
+7. Take this result and multiply by the amount of underlying tokens you have to get the value of bwBTC/ETH in ETH
+
+8. Take the price of bwBTC/ETH in ETH and multiple it by the ETH/USD price to obtain the price of bwBTC/ETH (in USD)
+    - Using the implementation defined in [UMIP 6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the price of ETH USD and multiply the results from step 7 by the ETH/USD price
+9. Take the inverse of the bwBTC/ETH price by performing 1 / the price of bwBTC/ETH (in USD)
 
 1. **Pricing interval**
 
