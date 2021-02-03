@@ -4,7 +4,7 @@
 | UMIP Title | Add USD/bBadger and USD-[bwBTC/ETH SLP] as supported price identifiers                                                                                                   |
 | Authors    | mitche50, J au Defi, bitcoinpalmer, Defi Frog
 | Status     | Last Call                                                                                                                            |
-| Created    | 1/15 /2021                                                                              
+| Created    | 1/15/2021                                                                              
 
 
 # SUMMARY 
