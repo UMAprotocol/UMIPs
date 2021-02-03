@@ -243,15 +243,20 @@ To find the price for USD/bBadger perform the following steps:
 2. Multiply this value by 1e-18 to get the ratio of one bBadger  token to underlying badger tokens (i.e. bBadger/badger).  
 
 3. Query the spot price of Badger/USD price via:
-    - Sushiswap & Uniswap
-        - First obtain the Badger/ETH price and convert to Badger/USD
-        - Using the implementation defined in [UMIP 6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the price of ETHUSD and multiple the result by the Badger/ETH price
     - Huobi
-4. Take the median of the price of Badger/USD from Uniswap, Sushiswap and Huobi.
+
+4. Query the spot price of Badger/USD via: 
+    - Sushiswap & Uniswap
+       1. Reference "How to get the price of wBTC/USD" section below to obtain the wBTC/USD
+       2. 
+
+        5. Take the wBTC/USD price and multiple it by the Badger/wBTC  price to get Badger/USD
+
+4. Take the median of the output of step 3 and the two prices from step 4 (from Sushiswap and Uniswap)
 
 5. Multiple bBadger/badger (the result from step 2) by Badger/USD (the result from step 4) to obtain bBadger/USD
      
-5. Take the inverse of the bBadger/USD price by performing 1/[bBadger/USD]
+6. Take the inverse of the bBadger/USD price by performing 1/[bBadger/USD]
 
 
 1. **Pricing interval**
@@ -274,11 +279,29 @@ To find the price for USD/bBadger perform the following steps:
 
 **A. How should tokenholders arrive at the price in the case of a DVM price request?** 
 
-1. Query contract 0x758a43ee2bff8230eeb784879cdcff4828f2544d for method getPricePerFullShare
+1. Take the amount of WBTC in the pool and multiple it by the price of WBTC/USD. 
 
-2. Multiply this value by 1e-18 to get the ratio of b tokens to underlying tokens (i.e. [bwBTC/ETH]/[wBTC/ETH])
+Query the sushiswap subgraph using the below query:
+https://api.thegraph.com/subgraphs/name/sushiswap/exchange
+    query: `
+    ```
+    {
+          pair(id:"${address.toLowerCase()}") {
+                reserve0
+                reserve1
+                totalSupply
+          }
+    }
+    ```
+For the sushi wBTC/ETH SLP, token0 = wBTC and token1 = ETH.  We can then determine the value of the provided SLP by the below pseudo code:
 
-3. Take the amount of WBTC in the pool and multiple it by the price of WBTC/USD. 
+-  wBTC Ratio = Reserve0 / totalSupply
+- ETH Ratio = Reserve1 / totalSupply
+- wBTCBalance = slpBalance * wBTC Ratio
+- ethBalance = slpBalance * wBTC Ratio
+- slpValue = (wBTCBalance * wBTCPrice) + (ethBalance * ethPrice)
+
+The prices used can be the normal price oracles for wBTC and ETH.
 
     - To obtain the price of WBTC/USD take the median of the below three exchanges:
         - Sushiswap, Huobi, & Uniswap
@@ -286,17 +309,28 @@ To find the price for USD/bBadger perform the following steps:
           
 4. Take the amount of ETH in the pool and multiple it by the price of ETH/USD
 
-    - To obtain the price of ETH/USD take the median of the below three exchanges:
-        - Sushiswap, Huobi, & Uniswap
-            a. Obtain the price of ETH/USD
+    - Obtain the price of ETH/USD 
+        -  Using the implementation defined in [UMIP 6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the price of ETHUSD and multiple the result by the Badger/ETH price
 
 5. Add the output of step 3 and 4 together to obtain the total dollar value within the wBTC/ETH pool. 
 
-6.  Take the amount of liquidity in the bwBTC/ETH pool (the output of step 5) and divide it by the number of outstanding sushiswap tokens to obtain the amount each wBTC/ETH Sushiswap token has a claim to. 
+6. Take the amount of liquidity in the bwBTC/ETH pool (the output of step 5) and divide it by the number of outstanding bwBTC/ETH sushiswap tokens to obtain the amount each bwBTC/ETH Sushiswap token has a claim to. 
 
-4. Multiple [bwBTC/ETH]/[wBTC/ETH] (the result from step 2) by the result from step 6 to obtain [bwBTC/ETH]/USD
-     
-5. Take the inverse of [bwBTC/ETH]/USD price by performing 1/[bwBTC/ETH]/USD to obtain USD/[bwBTC/ETH]
+7. Take the inverse of [bwBTC/ETH]/USD price by performing 1/[bwBTC/ETH]/USD to obtain USD/[bwBTC/ETH]
+
+
+### How to get the price of wBTC/USD
+
+1. Obtain the price of wBTC/USD by querying for wBTC/WETH on Sushiswap and Uniswap
+2. Take the avarage of the results between Sushiswap and Uniswap
+3. Using the specifications in UMIP 6 query for the price of ETHUSD
+4. Multiple the results of steps 2 and 3 together to get the price wBTC/USD
+
+
+
+
+## USD-[bwBTC/ETH SLP]
+
 
 
 1. **Pricing interval**
@@ -310,14 +344,6 @@ To find the price for USD/bBadger perform the following steps:
 3. **Result processing** 
 
      - Median
-
-
-The median is applied to wBTC/ETH pair components (across 3 exchanges) via: 
-
-- Amount of underlying wBTC and ETH tokens you can redeem for a given amount of wrapped pool token
-- Amount of redeemable wBTC x price of wBTC across 3 exchanges
-- Amount of redeemable ETH x price of ETH across 3 exchanges
-- Sum of the two medians -> median price of underlying collateral
 
 
 
