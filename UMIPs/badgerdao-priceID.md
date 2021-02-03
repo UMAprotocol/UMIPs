@@ -229,59 +229,19 @@ return balance().mul(1e18).div(totalSupply());
 
 This returns the value of the balance of the vault divided by the number of shares to give the user the value of 1 share of the vault token. balance() represents the total balance of the underlying token in the vault. For example, if a user has 1 bBadger, this could be worth 1.2 Badger (which would be the ratio of balance / totalSupply).
 
-For bBadger you could use the same getPricePerFullShare method (described above) from the contract to get the underlying amount, and then the price can be queried via the graph for both Sushi and Uniswap using 2-hour TWAPs.
-
-<br>
-
-## USD/bBadger
-
-**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
-
-To find the price for USD/bBadger perform the following steps:
-
-1. Query contract 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28 for method getPricePerFullShare
-2. Multiply this value by 1e-18 to get the ratio of one bBadger  token to underlying badger tokens (i.e. bBadger/badger).  
-
-3. Query the spot price of Badger/USD price via:
-    - Huobi
-
-4. Query the spot price of Badger/USD via: 
-    - Sushiswap & Uniswap
-       1. Reference "How to get the price of wBTC/USD" section below to obtain the wBTC/USD
-       2. 
-
-        5. Take the wBTC/USD price and multiple it by the Badger/wBTC  price to get Badger/USD
-
-4. Take the median of the output of step 3 and the two prices from step 4 (from Sushiswap and Uniswap)
-
-5. Multiple bBadger/badger (the result from step 2) by Badger/USD (the result from step 4) to obtain bBadger/USD
-     
-6. Take the inverse of the bBadger/USD price by performing 1/[bBadger/USD]
+For bBadger you could use the same getPricePerFullShare method (described above) from the contract to get the underlying amount, and then the underlying values can be queried to give the price of one bBadger token in USD.
 
 
-1. **Pricing interval**
+## Obtaining the WBTC/USD price
 
-    - 1 second
+For both of these price identifiers, the WBTC/USD price will need to be used in the pricing calculation.
 
-2. **Input processing**
+To obtain the WBTC/USD price, follow this process. The price request timestamp should be passed as the `timestamp` parameter.
 
-    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+1. Obtain the price of wBTC/USD by querying for wBTC/WETH on Sushiswap and Uniswap
+- Voters can obtain this information in any way that they wish. A subgraph query is provided for both sources as a reference implementation.
 
-3. **Result processing** 
-
-     - Median
-
-     <br>
-
-
-
-## USD-[bwBTC/ETH SLP]
-
-**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
-
-1. Take the amount of WBTC in the pool and multiple it by the price of WBTC/USD. 
-
-Query the sushiswap subgraph using the below query:
+Query for the WBTC/WETH price using the below subgraph query:
 https://api.thegraph.com/subgraphs/name/sushiswap/exchange
     query: `
     ```
@@ -293,61 +253,78 @@ https://api.thegraph.com/subgraphs/name/sushiswap/exchange
           }
     }
     ```
-For the sushi wBTC/ETH SLP, token0 = wBTC and token1 = ETH.  We can then determine the value of the provided SLP by the below pseudo code:
 
--  wBTC Ratio = Reserve0 / totalSupply
-- ETH Ratio = Reserve1 / totalSupply
-- wBTCBalance = slpBalance * wBTC Ratio
-- ethBalance = slpBalance * wBTC Ratio
-- slpValue = (wBTCBalance * wBTCPrice) + (ethBalance * ethPrice)
-
-The prices used can be the normal price oracles for wBTC and ETH.
-
-    - To obtain the price of WBTC/USD take the median of the below three exchanges:
-        - Sushiswap, Huobi, & Uniswap
-            a. Obtain the price of wBTC/USD
-          
-4. Take the amount of ETH in the pool and multiple it by the price of ETH/USD
-
-    - Obtain the price of ETH/USD 
-        -  Using the implementation defined in [UMIP 6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the price of ETHUSD and multiple the result by the Badger/ETH price
-
-5. Add the output of step 3 and 4 together to obtain the total dollar value within the wBTC/ETH pool. 
-
-6. Take the amount of liquidity in the bwBTC/ETH pool (the output of step 5) and divide it by the number of outstanding bwBTC/ETH sushiswap tokens to obtain the amount each bwBTC/ETH Sushiswap token has a claim to. 
-
-7. Take the inverse of [bwBTC/ETH]/USD price by performing 1/[bwBTC/ETH]/USD to obtain USD/[bwBTC/ETH]
-
-
-### How to get the price of wBTC/USD
-
-1. Obtain the price of wBTC/USD by querying for wBTC/WETH on Sushiswap and Uniswap
 2. Take the avarage of the results between Sushiswap and Uniswap
 3. Using the specifications in UMIP 6 query for the price of ETHUSD
 4. Multiple the results of steps 2 and 3 together to get the price wBTC/USD
 
+## USD/bBadger
 
+**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
 
+To find the price for USD/bBadger perform the following steps:
+
+1. Query contract 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28 for method getPricePerFullShare
+2. Multiply this value by 1e-18 to get the ratio of one bBadger token to underlying badger tokens (i.e. bBadger/Badger).  (Need a historical query)
+3. Query for the price of Badger/WBTC on Sushiswap. Multiply this by the WBTC/USD price obtained earlier to get the Badger/USD price.
+4. Repeat step 3 for Uniswap.
+5. Query for the price of Badger/USD on Huobi.
+6. Take the median of steps 3-5 to get the Badger/USD price that should be used.
+7. Multiply bBadger/Badger by Badger/USD to get the bBadger/USD price.
+8. Take the inverse of this (1/(bBadger/USD)) to get the price of USD/bBadger. This price should then be rounded to 18 decimals.
+
+**Pricing interval**
+    - 60 seconds
+
+**Input processing**
+    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+
+**Result processing** 
+    - This price should be returned as 18 decimals.  
 
 ## USD-[bwBTC/ETH SLP]
 
+**A. How should tokenholders arrive at the price in the case of a DVM price request?** 
 
+1. Obtain the [bwBTC/ETH SLP] to WBTC and [bwBTC/ETH SLP] to ETH ratios in the pool. To do this, use the query below.   
 
-1. **Pricing interval**
+Query the sushiswap subgraph using the below query:
+https://api.thegraph.com/subgraphs/name/sushiswap/exchange
+    query:
 
-    - 1 second
+    ```
+    {
+          pair(id:"${address.toLowerCase()}") {
+                reserve0
+                reserve1
+                totalSupply
+          }
+    }
+    ```
+For the sushi wBTC/ETH SLP, token0 = wBTC and token1 = ETH.  We can then determine the value of the provided SLP by the below pseudo code:
 
-2. **Input processing**
+- wBTC Ratio = Reserve0 / totalSupply
+- ETH Ratio = Reserve1 / totalSupply
 
-    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+2. Multiply the wBTC ratio by the WBTC/USD price. 
+3. Obtain the ETH/USD price by following the directions in UMIP-6. Multiply the ETH ratio by the ETH/USD price.
+4. Add the results of steps 2 and 3 to get the [bwBTC/ETH SLP]/USD price.
+5. Take the inverse of step 4 (1/([bwBTC/ETH SLP]/USD)) to get the USD-[bwBTC/ETH SLP] price.
 
-3. **Result processing** 
+## USD-[bwBTC/ETH SLP]
 
-     - Median
+**Pricing interval**
 
+- Every block
 
+**Input processing**
 
-<br>
+- None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+
+**Result processing** 
+
+- Round to 18 decimal places.
+
 
 # Security considerations
 
