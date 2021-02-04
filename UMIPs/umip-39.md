@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add USD/bBadger and USD-[bwBTC/ETH SLP] as supported price identifiers                                                                                                   |
 | Authors    | mitche50, J au Defi, bitcoinpalmer, Defi Frog
-| Status     | Last Call                                                                                                                            |
+| Status     | Final                                                                                                                           |
 | Created    | 1/15/2021                                                                              
 
 
@@ -12,7 +12,6 @@
 The DVM should support price requests for the below price indexes:
 - USD/bBadger
 - USD-[bwBTC/ETH SLP]
-
 
 # MOTIVATION
 
@@ -110,8 +109,6 @@ Supporting the USD-[bwBTC/ETH SLP] and USD/bBadger price identifiers would enabl
 
      - $0
 
-
-
 # PRICE FEED IMPLEMENTATION
 
 We would be using the Sushiswap and Uniswap 2-hour TWAPs to obtain price information.  
@@ -143,8 +140,6 @@ https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger
 
 **6. Rounding** - Round to 18 decimal places
 
-<br>
-
 
 ## USD-[bwBTC/ETH SLP]
 
@@ -168,7 +163,6 @@ https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger
 
 **6. Rounding** - Round to 18 decimal places
 
-<br>
 
 # RATIONALE
 
@@ -187,8 +181,6 @@ Badger is not a collateral on any loan services and the majority of the liquidit
 **Should the prices have any processing (e.g., TWAP)?**
 
 Processing is defined in the implementation section.
-
-<br>
 
 # IMPLEMENTATION
 
@@ -222,7 +214,7 @@ To obtain the WBTC/USD price, follow this process. The price request timestamp s
 
 Query for the WBTC/ETH price using the below [subgraph query](https://api.thegraph.com/subgraphs/name/sushiswap/exchange) for Sushiswap:
     
-     ```
+```
     {
           pair(id: "0xceff51756c56ceffca006cd410b03ffc46dd3a58",  block:{number: 11589591}) {
                 reserve0
@@ -230,12 +222,12 @@ Query for the WBTC/ETH price using the below [subgraph query](https://api.thegra
                 totalSupply
           }
     }
-    ```
+```
     
     
 Query for the WBTC/ETH price using the below [subgraph query](https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2) for Uniswap:  
-    query: `
-    ```
+
+```
     {
           pair(id: "0xbb2b8038a1640196fbe3e38816f3e67cba72d940",  block:{number: 11589591}) {
                 reserve0
@@ -243,11 +235,11 @@ Query for the WBTC/ETH price using the below [subgraph query](https://thegraph.c
                 totalSupply
           }
     }
-    ```
+```
 
-1. Take the average of the results between Sushiswap and Uniswap
-2. Using the specifications in UMIP 6 query for the price of ETHUSD
-3. Multiple the results of steps 2 and 3 together to get the price wBTC/USD
+2. Take the average of the results between Sushiswap and Uniswap
+3. Using the specifications in UMIP 6 query for the price of ETHUSD
+4. Multiple the results of steps 2 and 3 together to get the price wBTC/USD
 
 ## USD/bBadger
 
@@ -255,10 +247,10 @@ Query for the WBTC/ETH price using the below [subgraph query](https://thegraph.c
 
 To find the price for USD/bBadger perform the following steps:
 
-1. Query contract 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28 for method getPricePerFullShare.
+1. Query contract 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28 for method getPricePerFullShare. This information is on-chain and can be queried in any way that a voter 
 2. Multiply this value by 1e-18 to get the ratio of one bBadger token to underlying badger tokens (i.e. bBadger/Badger).
-3. Query for the price of Badger/WBTC on Sushiswap. Multiply this by the WBTC/USD price obtained earlier to get the Badger/USD price.
-4. Repeat step 3 for Uniswap.
+3. Query for the price of Badger/WBTC on Sushiswap. Pool address: `0x110492b31c59716ac47337e616804e3e3adc0b4a`. Multiply this by the WBTC/USD price obtained earlier to get the Badger/USD price.
+4. Repeat step 3 for Uniswap. Pool address: `0xcd7989894bc033581532d2cd88da5db0a4b12859`
 5. Query for the price of Badger/USD on Huobi.
 6. Take the median of steps 3-5 to get the Badger/USD price that should be used.
 7. Multiply bBadger/Badger by Badger/USD to get the bBadger/USD price.
@@ -277,13 +269,12 @@ To find the price for USD/bBadger perform the following steps:
 
 **A. How should tokenholders arrive at the price in the case of a DVM price request?** 
 
-1. Obtain the [bwBTC/ETH SLP] to WBTC and [bwBTC/ETH SLP] to ETH ratios in the pool. To do this, use the query below.   
+1. Obtain the [bwBTC/ETH SLP] to WBTC and [bwBTC/ETH SLP] to ETH ratios in the pool. 
 
-Query the sushiswap subgraph using the below query:
+Query the sushiswap subgraph using this query:
 https://api.thegraph.com/subgraphs/name/sushiswap/exchange
-    query:
 
-    ```
+```
     {
           pair(id: "0xceff51756c56ceffca006cd410b03ffc46dd3a58",  block:{number: 11589591}) {
                 reserve0
@@ -291,10 +282,11 @@ https://api.thegraph.com/subgraphs/name/sushiswap/exchange
                 totalSupply
           }
     }
-    ```
+```
+
 For the sushi wBTC/ETH SLP, token0 = wBTC and token1 = ETH.  We can then determine the value of the provided SLP by the below pseudo code:
 
-- wBTC Ratio = Reserve0 / totalSupply
+- WBTC Ratio = Reserve0 / totalSupply
 - ETH Ratio = Reserve1 / totalSupply
 
 2. Multiply the WBTC ratio by the WBTC/USD price. 
