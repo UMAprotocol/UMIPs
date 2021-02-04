@@ -247,7 +247,7 @@ Query for the WBTC/ETH price using the below [subgraph query](https://thegraph.c
 
 To find the price for USD/bBadger perform the following steps:
 
-1. Query contract 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28 for method getPricePerFullShare. This information is on-chain and can be queried in any way that a voter 
+1. Query contract 0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28 for method getPricePerFullShare. This information is on-chain and can be queried in any way that a voter wishes at the price request block. 
 2. Multiply this value by 1e-18 to get the ratio of one bBadger token to underlying badger tokens (i.e. bBadger/Badger).
 3. Query for the price of Badger/WBTC on Sushiswap. Pool address: `0x110492b31c59716ac47337e616804e3e3adc0b4a`. Multiply this by the WBTC/USD price obtained earlier to get the Badger/USD price.
 4. Repeat step 3 for Uniswap. Pool address: `0xcd7989894bc033581532d2cd88da5db0a4b12859`
