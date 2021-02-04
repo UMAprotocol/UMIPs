@@ -22,30 +22,28 @@ Adding TVL identifiers enables the creation of synthetic assets with a price tha
 
 ## Technical Specification
 
-Identifier name: DEFI_PULSE_TOTAL_TVL
-Quote Currency: USD
+### DEFI_PULSE_TOTAL_TVL
+- Quote Currency: USD
+- Source: https://data.defipulse.com/
+- Result Processing: None
+- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
+- Rounding: Round to nearest 3 decimal places (fourth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Intended Collateral Type: USDC
+- Collateral Decimals: 6
+- Pricing Interval: 60 minutes
+- Dispute timestamp rounding: down 
 
-Source: https://data.defipulse.com/
-Result Processing: None
-Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
-Price Steps: 0.001 
-Rounding: Closest, 0.5 up
-Decimal: 3 (1e3)
-Pricing Interval: 60 minutes
-Dispute timestamp rounding: down 
 
-
-Identifier name: SUSHIUNI_TVL
-Quote Currency: None
-
-Source: https://data.defipulse.com/
-Result Processing: None
-Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
-Price Steps: 0.001 
-Rounding: Closest, 0.5 up
-Decimal: 3 (1e3)
-Pricing Interval: 60 minutes
-Dispute timestamp rounding: down 
+### SUSHIUNI_TVL
+- Quote Currency: None. This is a ratio.
+- Source: https://data.defipulse.com/
+- Result Processing: None
+- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
+- Rounding: Round to nearest 3 decimal places (fourth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Intended Collateral Type: USDC
+- Collateral Decimals: 6
+- Pricing Interval: 60 minutes
+- Dispute timestamp rounding: down 
 
 
 ## Rationale
