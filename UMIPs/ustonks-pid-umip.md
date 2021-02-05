@@ -5,7 +5,7 @@
 | Authors    | Sean Brown (smb2796), Kevin Chan (kevin-uma)  |
 | Status     | Draft                                                                                                                                    |
 | Created    | Feb 2, 2021   
-| Discourse Link: To Do   |  
+| [Discourse Link](https://discourse.umaproject.org/t/add-ustonks-mar21-price-identifier-umip/125) |  
 
 ## SUMMARY
 
