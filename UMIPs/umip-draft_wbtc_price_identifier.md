@@ -5,6 +5,8 @@
 | Authors    | Logan (Logan@opendao.io)                               |
 | Status     | Draft                                                                                                                                 |
 | Created    | February 2, 2021                                                                                                                           |
+| Discourse Link   | https://discourse.umaproject.org/t/adding-wbtc-usd-price-identifier-umip/124                                              |
+
 
 ## Summary (2-5 sentences)
 The DVM should support price requests for the WBTC/USD and USD/WBTC price index. These price identifiers will serve to support future developments involving WBTC. 
