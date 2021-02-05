@@ -5,6 +5,7 @@
 | Authors    | Logan (logan@opendao.io) |
 | Status     |Draft                                                                                                                                   |
 | Created    | Feb 2, 2021                                                                                                                           |
+| Link to Discourse   | https://discourse.umaproject.org/t/adding-wbtc-as-collateral-umip/123                                                           |
 
 ## Summary (2-5 sentences)
 This UMIP will add Wrapped Bitcoin (WBTC) to the supported collateral currencies on the global whitelist contract, allowing the usage of WBTC as collateral currency. 
