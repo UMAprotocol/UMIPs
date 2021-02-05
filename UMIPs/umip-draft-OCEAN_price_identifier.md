@@ -5,6 +5,7 @@
 | Authors    | Logan (Logan@opendao.io)|
 | Status     | Draft                                                                                                                                 |
 | Created    | January 28, 2021                                                                                                                           |
+| Link to Discourse    | https://discourse.umaproject.org/t/adding-oceanusd-as-a-price-identifier/118                                                     |
 
 ## Summary (2-5 sentences)
 The DVM should support price requests for the OCEAN/USD and USD/OCEAN price index. These price identifiers will serve to support OCEAN token as collateral.
