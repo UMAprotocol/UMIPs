@@ -5,6 +5,8 @@
 | Authors    | Logan (logan@opendao.io) |
 | Status     | Draft                                                                                                                                   |
 | Created    | January 28, 2021                                                                                                                           |
+| Created    | January 28, 2021                                                                                                                           |
+|Link to Discourse|  https://discourse.umaproject.org/t/adding-ocean-as-collateral-umip/117                                                               |
 
 ## Summary (2-5 sentences)
 This UMIP will add Ocean to the supported collateral currencies on the global whitelist contract, allowing the usage of Ocean as collateral currency. 
