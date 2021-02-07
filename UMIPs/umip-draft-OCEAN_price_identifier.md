@@ -12,49 +12,85 @@ The DVM should support price requests for the OCEAN/USD and USD/OCEAN price inde
 
 
 ## Motivation
-The DVM currently does not support the OCEAN/USD or USD/OCEAN price index.
-Supporting the OCEANUSD price identifier would enable the creation of the OceanO stablecoin, backed by OCEAN as collateral. Ocean token holders can utilize this as a hedging tool, and could go long, or use OceanO for other purposes.
+1. What are the financial positions enabled by creating this synthetic that do not already exist?
 
-There is little cost associated with adding this price identifier, as there are multiple free and easily accessible data sources available.
+Supporting the OCEANUSD price identifier would enable the creation of the OceanO stablecoin, backed by OCEAN as collateral. Ocean token holders can utilize this as a hedging tool, and could go long, or use OceanO for other purposes. It also lays the groundwork for other future projects that may need to query the same price identifier. 
+
+2. Please provide an example of a person interacting with a contract that uses this price identifier.
+
+A platform could use this price identifier to properly determine the quantity of OCEAN required to mint a dollar-pegged OCEAN-backed stable coin. 
+
+3. Consider adding market data
 
 The supply of Ocean is capped at 1.41 billion tokens. 51% of this supply is disbursed according to a Bitcoin-like schedule over decades, to fund community projects curated by OceanDAO. At the time of writing, the Ocean token market cap is $243,700,423 in the top 100 projects with a 24-hour trading volume of $137,565,116. 
 
 More information on the Ocean Protocol can be found on the website: https://oceanprotocol.com
 
+## Markets and Data Sources
 
-## Technical Specification
-The definition of this identifier should be:
-- Identifier name: OCEANUSD
-- Base Currency: OCEAN
-- Quote Currency: USD
-- Exchanges: Binance, Digifinex, MXC
-- Result Processing: Median.
-- Intended collateral currency: USDC
-- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Price Steps: 18 decimals
+What markets should the price be queried from? It is recommended to have at least 3 markets.
 
-- Rounding: Closest, 0.5 up
-- Pricing Interval: 60 seconds
-- Dispute timestamp rounding: down
+Binance, Bittrex, and Uniswap should be used to construct the price.These 3 exchanges comprise a significant amount of OCEAN trade volume and have available pricefeeds on Cryptowatch. 
 
-The definition of this identifier should be:
-- Identifier name: USDOCEAN
-- Base Currency: USD
-- Quote Currency: OCEAN
-- Intended collateral currency: OCEAN
-- Exchanges: Binance, Digifinex, MXC
-- Result Processing: 1/OCEANUSD.
-- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Price Steps: 18 decimals
 
-- Rounding: Closest, 0.5 up
-- Pricing Interval: 60 seconds
-- Dispute timestamp rounding: down
+Which specific pairs should be queried from each market?
+Binance: OCEAN/USDT, Bittrex OCEAN/USDT, Uniswap: OCEAN/ETH
+
+
+Provide recommended endpoints to query for real-time prices from each market listed.
+Binance: OCEAN/USDT https://api.binance.com/api/v3/ticker/price?symbol=OCEANUSDT,
+Bittrex: Place Holder REPLACE+DELETE,
+Uniswap: Place Holder REPLACE+DELETE
+
+How often is the provided price updated?
+The lower bound on the price update frequency is a minute.
+
+Provide recommended endpoints to query for historical prices from each market listed.
+Binance: Place Holder REPLACE+DELETE,
+Bittrex: Place Holder REPLACE+DELETE,
+Uniswap: Place Holder REPLACE+DELETE
+
+Do these sources allow for querying up to 74 hours of historical data?
+Yes
+
+How often is the provided price updated?
+The lower bound on the price update frequency is a minute.
+
+Is an API key required to query these sources?
+No
+
+Is there a cost associated with usage?
+No
+
+If there is a free tier available, how many queries does it allow for?
+The lower bound on the number of queries allowed per hour is >> 1000.
+
+What would be the cost of sending 15,000 queries?
+Approximately $0
+
+
+## Price Feed Implementation
+Associated OCEAN price feeds are available via Cryptowatch and Uniswap.  No other further feeds required.
+
+## Technical Specifications
+Price Identifier Name: OCEANUSD
+
+Base Currency: OCEAN
+
+Quote Currency: USD
+
+Intended Collateral Currency: USDC
+
+Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
+
+Is your collateral currency already approved to be used by UMA financial contracts?: YES
+
+Collateral Decimals: 6 decimals
+
+Rounding: Closest, 0.5 up
 
 
 ## Rationale
-
-Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized. More complex computations (like incorporating additional exchanges, calculating a TWAP or VWAP, or imposing price bands, etc.) have the potential to add a greater level of precision and robustness to the definition of this identifier, particularly at settlement of each expiring synthetic token.
 
 The addition of OCEANUSD  and USDOCEAN fits into a larger goal of advancing the adoption of the UMA protocol by allowing OCEAN to be used as collateral for minting a stable coin among a suite of [OpenDAO](https://opendao.io) stable coins. This furthers adoption of the protocol by encouraging a convergence of capital from different projects and increasing TVL.
 
@@ -64,14 +100,57 @@ In the current setting, there will need to be a significant event that erodes co
 
 
 ## Implementation
+What prices should be queried for and from which markets?:
 
-The value of this identifier for a given timestamp should be determined by querying the price from OCEANUSDT pair https://www.binance.com/en/trade/OCEAN_USDT on Binance for that timestamp. Most of the OCEAN trading volume happens on Binance, which forms the broad market consensus. 
-While it's important for tokenholders to have redundancy in their sources, bots and users that interact with the system in real-time need fast sources of price information. In these cases, it can be assumed that the price on Binance is accurate enough.
+Binance OCEAN/USDT, Bittrex OCEAN/USDT, Uniswap OCEAN/ETH
 
-Ocean provides the live price feed on their main website publicly as well.
+
+Pricing Interval:
+
+1 minute
+
+
+Input Processing:
+
+None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+
+
+Result Processing:
+
+median
+
+
 
 
 ## Security considerations
 
+Where could manipulation occur?
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
+
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified. As noted above, $UMA-holders should also consider re-defining this identifier as liquidity in the underlying asset changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
+
+Opportunities for manipulation seem slim, in relation to other projects in the decentralized finance ecosystem. 
+
+
+How could this price ID be exploited?
+
+Opportunities for manipulation seem slim, in relation to other projects in the decentralized finance ecosystem. It would require vast resources and a concerted effort with intention to attack the system. 
+
+
+Do the instructions for determining the price provide people with enough certainty?
+
+Yes.
+
+
+What are current or future concern possibilities with the way the price identifier is defined?
+
+
+In the future, it may be wise to review whether or not USD is the optimal base currency with which OCEAN is paired.
+No further concerns noted.
+
+
+Are there any concerns around if the price identifier implementation is deterministic?
+
+No.
+
+
