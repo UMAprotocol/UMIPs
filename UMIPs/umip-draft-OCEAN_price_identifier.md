@@ -14,7 +14,7 @@ The DVM should support price requests for the OCEAN/USD and USD/OCEAN price inde
 ## Motivation
 1. What are the financial positions enabled by creating this synthetic that do not already exist?
 
-Supporting the OCEANUSD price identifier would enable the creation of the OceanO stablecoin, backed by OCEAN as collateral. Ocean token holders can utilize this as a hedging tool, and could go long, or use OceanO for other purposes. It also lays the groundwork for other future projects that may need to query the same price identifier. 
+Supporting the OCEAN/USD price identifier would enable the creation of the OceanO stablecoin, backed by OCEAN as collateral. Ocean token holders can utilize this as a hedging tool, and could go long, or use OceanO for other purposes. It also lays the groundwork for other future projects that may need to query the same price identifier. 
 
 2. Please provide an example of a person interacting with a contract that uses this price identifier.
 
@@ -39,16 +39,16 @@ Binance: OCEAN/USDT, Bittrex OCEAN/USDT, Uniswap: OCEAN/ETH
 
 Provide recommended endpoints to query for real-time prices from each market listed.
 Binance: OCEAN/USDT https://api.binance.com/api/v3/ticker/price?symbol=OCEANUSDT,
-Bittrex: Place Holder REPLACE+DELETE,
-Uniswap: Place Holder REPLACE+DELETE
+Bittrex: OCEAN/USDT https://api.bittrex.com/v3/markets/OCEAN-USDT/summary
+Uniswap: https://app.uniswap.org/#/swap?inputCurrency=0x967da4048cd07ab37855c090aaf366e4ce1b9f48
 
 How often is the provided price updated?
 The lower bound on the price update frequency is a minute.
 
 Provide recommended endpoints to query for historical prices from each market listed.
-Binance: Place Holder REPLACE+DELETE,
-Bittrex: Place Holder REPLACE+DELETE,
-Uniswap: Place Holder REPLACE+DELETE
+Binance: https://api.binance.com/api/v3/klines?symbol=OCEANUSDT&interval=1d
+Bittrex: https://api.bittrex.com/v3/markets/OCEAN-USDT/candles/DAY_1/historical/2020
+Uniswap: https://info.uniswap.org/token/0x967da4048cd07ab37855c090aaf366e4ce1b9f48
 
 Do these sources allow for querying up to 74 hours of historical data?
 Yes
@@ -73,7 +73,7 @@ Approximately $0
 Associated OCEAN price feeds are available via Cryptowatch and Uniswap.  No other further feeds required.
 
 ## Technical Specifications
-Price Identifier Name: OCEANUSD
+Price Identifier Name: OCEAN/USD
 
 Base Currency: OCEAN
 
@@ -92,7 +92,7 @@ Rounding: Closest, 0.5 up
 
 ## Rationale
 
-The addition of OCEANUSD  and USDOCEAN fits into a larger goal of advancing the adoption of the UMA protocol by allowing OCEAN to be used as collateral for minting a stable coin among a suite of [OpenDAO](https://opendao.io) stable coins. This furthers adoption of the protocol by encouraging a convergence of capital from different projects and increasing TVL.
+The addition of OCEAN/USD  and USD/OCEAN fits into a larger goal of advancing the adoption of the UMA protocol by allowing OCEAN to be used as collateral for minting a stable coin among a suite of [OpenDAO](https://opendao.io) stable coins. This furthers adoption of the protocol by encouraging a convergence of capital from different projects and increasing TVL.
 
 Currently the most liquid exchange with USD or stablecoin markets for OCEAN is [Binance](https://www.binance.com/en/trade/OCEAN_USDT) (~17% volume). It can currently be traded on more than two dozen exchanges, including what are widely considered to be several top tier platforms.
 
@@ -124,7 +124,6 @@ median
 
 ## Security considerations
 
-Where could manipulation occur?
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified. As noted above, $UMA-holders should also consider re-defining this identifier as liquidity in the underlying asset changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
@@ -132,25 +131,5 @@ $UMA-holders should evaluate the ongoing cost and benefit of supporting price re
 Opportunities for manipulation seem slim, in relation to other projects in the decentralized finance ecosystem. 
 
 
-How could this price ID be exploited?
-
-Opportunities for manipulation seem slim, in relation to other projects in the decentralized finance ecosystem. It would require vast resources and a concerted effort with intention to attack the system. 
-
-
-Do the instructions for determining the price provide people with enough certainty?
-
-Yes.
-
-
-What are current or future concern possibilities with the way the price identifier is defined?
-
-
-In the future, it may be wise to review whether or not USD is the optimal base currency with which OCEAN is paired.
-No further concerns noted.
-
-
-Are there any concerns around if the price identifier implementation is deterministic?
-
-No.
 
 
