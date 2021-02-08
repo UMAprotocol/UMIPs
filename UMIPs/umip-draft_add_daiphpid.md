@@ -199,12 +199,6 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 
 **Example questions**
 
-1. Where could manipulation occur?
+Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent. Regarding price certainty, the combination of querying from the only Philippine exchange that offers a DAI:PHP pair, along with consolidated DAI:USD and USD:PHP price feeds from Coingecko and Coinmarketcap should provide reasonable certainty in liue of other exchanges listing DAI in the Philippines (which we are working on). 
 
-2. How could this price ID be exploited?
-
-3. Do the instructions for determining the price provide people with enough certainty?
-
-4. What are current or future concern possibilities with the way the price identifier is defined?
-
-5. Are there any concerns around if the price identifier implementation is deterministic?
+$UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified
