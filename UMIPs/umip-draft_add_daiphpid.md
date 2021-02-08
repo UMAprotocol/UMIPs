@@ -56,7 +56,7 @@ This section should clearly explain the types of financial products that will be
 4. How often is the provided price updated?
 
     - CMC: every 60 seconds
-    - CG: ?
+    - CG: unknown
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
@@ -74,7 +74,7 @@ This section should clearly explain the types of financial products that will be
 7.  How often is the provided price updated?
 
     - CMC: every 5 minutes
-    - CG: ?
+    - CG: unknown
 
 8. Is an API key required to query these sources? 
 
@@ -114,9 +114,9 @@ Link to the price feed pull request.
 
 **1. Price Identifier Name** - DAIPHP
 
-**2. Base Currency** - [ADD BASE CURRENCY]
+**2. Base Currency** - DAI
 
-**3. Quote currency** - [ADD QUOTE CURRENCY]
+**3. Quote currency** - PHP
 
 - If your price identifier is a currency pair, your quote currency will be the
 denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
@@ -139,7 +139,7 @@ denominator of your currency pair. If your price identifier does not have a quot
 
   - DAI has 18 Decimals (obtained [here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f)). 
 
-**6. Rounding** - [ADD ROUNDING]
+**6. Rounding** - Closest, 0.5 up
 
 - **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
 
@@ -153,21 +153,11 @@ denominator of your currency pair. If your price identifier does not have a quot
 
 # RATIONALE
 
-The rationale should flesh out the specification by describing what motivated the design and why particular design decisions were made, as well as any alternative designs that were considered.
+Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized.
 
-- [RESPONSE]
+DAIPHP uses CoinGecko (CG) and CoinMarketCap (CMC) for price information. These initial price sources were chosen as CG and CMC provide a readily available methodology for consolidating and validating price data between a particular crypto asset and fiat quote across exchanges worldwide (see https://www.coingecko.com/en/methodology and https://coinmarketcap.com/api/faq/ ). Our initial approach was to source and consolidate component price feeds of DAI:USD and USD:PHP, but it seems CG already does this with their [OpenExchangeRates](https://openexchangerates.org/) integration. In future implementations, the [HaloDAO](https://halodao.com/) team (or any other team making use of this) will add more price feed sources as the DAI - PHP market builds volume, especially in partnership with PH exchanges that don't yet offer a publicly available DAI:PHP endpoint.
 
-**Example questions**
-
-- Why this implementation of the identifier as opposed to other implementation designs?
-
-- What analysis can you provide on where to get the most robust prices? (Robust as in legitimate liquidity, legitimate volume, price discrepancies between exchanges, and trading volume between exchanges)
-
-- What is the potential for the price to be manipulated on the chosen exchanges?
-
-- Should the prices have any processing (e.g., TWAP)? 
-
-    - If so, why was this processing method chosen?
+Additionally, both CG and CMC sources offer free and publicly accessible historical DAI:PHP endpoints.
 
 <br>
 
@@ -182,15 +172,15 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 
 2. **Pricing interval**
 
-    - 60
+    - 300 seconds
 
 3. **Input processing**
 
-    - Obtain an api key from CoinMarketCap (https://pro.coinmarketcap.com/signup/) then substitute it to `CMC_PRO_API_KEY` url parameter value
+    - Human intervention in extreme circumstances where the result differs from broad market consensus
 
 4. **Result processing**
 
-    - Take the mean from CoinMarketCap + CoinGecko DAI:PHP price
+    - Mean between the DAI:PHP feeds of CG and CMC
 
 <br>
 
