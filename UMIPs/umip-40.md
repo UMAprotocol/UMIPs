@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add BTC-BASIS-3M/USDC, BTC-BASIS-6M/USDC, ETH-BASIS-3M/USDC, ETH-BASIS-6M/USDC as price identifiers              |
 | Authors    | Bae (bae@youmychicfila.com), K (k@youmychicfila.com) |
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | January 18, 2020                                                                                                                           |
                                                                           
 # SUMMARY 

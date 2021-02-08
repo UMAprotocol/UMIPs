@@ -2,7 +2,7 @@
 - UMIP-38
 - UMIP title: Add price identifiers COMPUSDC-APR-FEB28/USDC and COMPUSDC-APR-MAR28/USDC
 - Author Evan Mays <me@evanmays.com>
-- Status: Final
+- Status: Approved
 - Created: January 13, 2020
 
 ## Summary
