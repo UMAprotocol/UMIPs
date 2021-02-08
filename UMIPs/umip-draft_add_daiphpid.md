@@ -1,69 +1,209 @@
-## Headers
+## HEADERS
 
-| UMIP-38    |                                                                                    |
-| ---------- | ---------------------------------------------------------------------------------- |
-| UMIP Title | Add DAIPHP as a price identifier                                                   |
-| Authors    | Chris Verceles (chris.verceles@halodao.com), James Orola (james.orola@halodao.com) |
-| Status     | Draft                                                                              |
-| Created    | Feb 3, 2021                                                                        |
+| UMIP [#]          |                                                                                    |
+|-------------------|------------------------------------------------------------------------------------|
+| UMIP Title        | Add DAIPHP as a price identifier                                                   |
+| Authors           | Chris Verceles (chris.verceles@halodao.com), James Orola (james.orola@halodao.com) |
+| Status            | Draft                                                                              |
+| Created           | Feb 3, 2021                                                                        |
+| Link to Discourse | [LINK]                                                                             |
 
-## Summary (2-5 sentences)
+<br />
+
+# SUMMARY 
 
 The DVM should support price requests for the DAI/PHP price index.
 
-## Motivation
+<br />
 
-The DVM currently does not support the DAI/PHP price index.
+# MOTIVATION
 
-Supporting the DAIPHP price identifier would enable the creation of a Philippine Peso stablecoin, backed by DAI. Token minters could go short on the DAI/PHP index, while token holders could go long or use synthetic PHP for functional purposes.
+This section should clearly explain the types of financial products that will be created and the mechanics of an example financial product using this price identifier. Please answer the following questions:
 
-Some practical uses for synthetic PHP are;
+1. What are the financial positions enabled by creating this synthetic that do not already exist?
 
-- in trading pairs on Philippine cryptocurrency exchanges
-- basis for on chain, on demand liquidity in cross border remittance (our team is starting with the Singapore - Philippine corridor with ZKSync, Argent and various on/off ramps)
+    - Supporting the DAIPHP price identifier would enable the creation of a Philippine Peso stablecoin (UBE), backed by DAI. Token minters could go short on the DAI/PHP index, while token holders could go long or use synthetic PHP for functional purposes.
 
-There is little to no cost associated with adding this price identifier, as CoinGecko and CoinMarketCap provide free (or free tier) API access to existing DAI:PHP quotes.
+2. Please provide an example of a person interacting with a contract that uses this price identifier. 
 
-## Technical Specification
+    - in trading pairs on Philippine cryptocurrency exchanges
 
-The definition of this identifier should be:
+    - basis for on chain, on demand liquidity in cross border remittance (our team is starting with the Singapore Philippine corridor with ZKSync, Argent and various on/off ramps)
 
-- Identifier name: DAIPHP
-- Base Currency: DAI
-- Quote Currency: PHP
-- Data Sources: CoinGecko, CoinMarketCap
-- Result Processing: Mean between the DAI:PHP feeds of CG and CMC defined in the implementation section.
-- Input Processing: Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Price Steps: 0.000001 (6 decimals in more general trading format)
-- Rounding: Closest, 0.5 up
-- Pricing Interval: 300 seconds
-- Dispute timestamp rounding: down
+3. Consider adding market data  (e.g., if we add a “Dai alternative,” the author could show the market size of Dai)
 
-## Rationale
+<br />
 
-Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized.
+# MARKETS & DATA SOURCES
 
-DAIPHP uses CoinGecko (CG) and CoinMarketCap (CMC) for price information. These initial price sources were chosen as CG and CMC provide a readily available methodology for consolidating and validating price data between a particular crypto asset and fiat quote across exchanges worldwide (see https://www.coingecko.com/en/methodology and https://coinmarketcap.com/api/faq/ ). Our initial approach was to source and consolidate component price feeds of DAI:USD and USD:PHP, but it seems CG already does this with their [OpenExchangeRates](https://openexchangerates.org/) integration. In future implementations, the [HaloDAO](https://halodao.com/) team (or any other team making use of this) will add more price feed sources as the DAI - PHP market builds volume, especially in partnership with PH exchanges that don't yet offer a publicly available DAI:PHP endpoint.
+ **Required questions**
 
-Additionally, both CG and CMC sources offer free and publicly accessible historical DAI:PHP endpoints.
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
 
-## Implementation
+    - CoinMarketCap
+    - CoinGecko
 
-The value of this identifier for a given timestamp should be determined by querying for the price of DAI:PHP from CoinMarketCap and CoinGecko for that timestamp, taking the mean, and determining whether that mean differs from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
+2.  Which specific pairs should be queried from each market?
 
-Ultimately, how one queries the price feeds should be varied and determined by the voter to ensure that there is no central point of failure.
+    - DAI:PHP
 
-While it's important for tokenholders to have redundancy in their sources, bots and users that interact with the system in realtime need fast sources of price information. In these cases, it can be assumed that the price feed mean is accurate enough.
+2. Provide recommended endpoints to query for real-time prices from each market listed. 
 
-Below are reference implementation for an offchain price feed based on the CoinMarketCap and CoinGecko API. These feeds should be used as a convenient way to query the price in realtime, but should not be used as a canonical source of truth for voters. Users are encouraged to build their own offchain price feeds that depend on other sources.
+    - CMC: `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=DAI&convert=PHP&CMC_PRO_API_KEY=<free tier api key>`
 
-| Price Feed Source | Implementation                                                                                                                                                  |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CoinMarketCap     | https://github.com/UMAprotocol/protocol/blob/f079a8e03fb6acdc6daebfb07e346317ed73ae05/packages/financial-templates-lib/src/price-feed/CoinMarketCapPriceFeed.js |
-| CoinGecko         | https://github.com/UMAprotocol/protocol/blob/f079a8e03fb6acdc6daebfb07e346317ed73ae05/packages/financial-templates-lib/src/price-feed/CoinGeckoPriceFeed.js     |
+    - CG: `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=0x6b175474e89094c44da98b954eedeac495271d0f&vs_currencies=php`
+    
+4. How often is the provided price updated?
 
-## Security considerations
+    - CMC: every 60 seconds
+    - CG: ?
 
-Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
+5. Provide recommended endpoints to query for historical prices from each market listed. 
 
-$UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
+    - CMC: `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/historical?symbol=DAI&convert=PHP&&time_start=<unix timestamp>&time_end=<unix timestamp>&CMC_PRO_API_KEY=<standard plan api key>`
+    
+      - _Note: Only available for Standard & higher tier plans_
+
+    - CG: `https://api.coingecko.com/api/v3/coins/dai/history?date=<dd-mm-yyyy>`
+
+6.  Do these sources allow for querying up to 74 hours of historical data? 
+
+    - CMC: Yes
+    - CG: Yes
+
+7.  How often is the provided price updated?
+
+    - CMC: every 5 minutes
+    - CG: ?
+
+8. Is an API key required to query these sources? 
+
+    - CMC: Yes
+    - CG: No
+
+9. Is there a cost associated with usage? 
+
+    - CMC: Yes, if historical prices endpoint is used, otherwise no
+    - CG: No
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - CMC: Yes, 10K call credits /mo
+    - CG: Yes, 100 requests/minute
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - CMC: $29/ mo for Hobbyist plan which bumps call credits to 40K /mo
+     - CG: Free!
+
+<br />
+
+# PRICE FEED IMPLEMENTATION
+
+Link to the UMA protocol PR:
+
+- https://github.com/UMAprotocol/protocol/pull/2480
+
+Link to the price feed pull request.
+
+- https://github.com/UMAprotocol/protocol/issues/2474
+
+<br>
+
+# TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - DAIPHP
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - DAI
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency? 
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
+
+    - Yes
+
+**5. Collateral Decimals** - 18
+
+  - DAI has 18 Decimals (obtained [here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f)). 
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example** 
+
+    - Round to 3 decimal places. 
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
+
+<br>
+
+# RATIONALE
+
+The rationale should flesh out the specification by describing what motivated the design and why particular design decisions were made, as well as any alternative designs that were considered.
+
+- [RESPONSE]
+
+**Example questions**
+
+- Why this implementation of the identifier as opposed to other implementation designs?
+
+- What analysis can you provide on where to get the most robust prices? (Robust as in legitimate liquidity, legitimate volume, price discrepancies between exchanges, and trading volume between exchanges)
+
+- What is the potential for the price to be manipulated on the chosen exchanges?
+
+- Should the prices have any processing (e.g., TWAP)? 
+
+    - If so, why was this processing method chosen?
+
+<br>
+
+# IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - DAI:PHP from CoinMarketCap & CoinGecko
+
+2. **Pricing interval**
+
+    - 60
+
+3. **Input processing**
+
+    - Obtain an api key from CoinMarketCap (https://pro.coinmarketcap.com/signup/) then substitute it to `CMC_PRO_API_KEY` url parameter value
+
+4. **Result processing**
+
+    - Take the mean from CoinMarketCap + CoinGecko DAI:PHP price
+
+<br>
+
+# Security considerations
+
+**Example questions**
+
+1. Where could manipulation occur?
+
+2. How could this price ID be exploited?
+
+3. Do the instructions for determining the price provide people with enough certainty?
+
+4. What are current or future concern possibilities with the way the price identifier is defined?
+
+5. Are there any concerns around if the price identifier implementation is deterministic?
