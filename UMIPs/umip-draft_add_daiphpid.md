@@ -124,6 +124,7 @@ Link to the price feed pull request.
 
 - If your price identifier is a currency pair, your quote currency will be the
 denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+- Answer: DAI:PHP is in line with this
 
 - Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
 
@@ -159,7 +160,11 @@ denominator of your currency pair. If your price identifier does not have a quot
 
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized.
 
-DAIPHP uses CoinGecko (CG) and CoinMarketCap (CMC) for price information. These initial price sources were chosen as CG and CMC provide a readily available methodology for consolidating and validating price data between a particular crypto asset and fiat quote across exchanges worldwide (see https://www.coingecko.com/en/methodology and https://coinmarketcap.com/api/faq/ ). Our initial approach was to source and consolidate component price feeds of DAI:USD and USD:PHP, but it seems CG already does this with their [OpenExchangeRates](https://openexchangerates.org/) integration. In the near future, the [HaloDAO](https://halodao.com/) team (or any other team making use of this) will add more price feed sources as the DAI - PHP market builds volume, especially in partnership with PH exchanges that don't yet offer a publicly available DAI:PHP endpoint.
+DAIPHP uses CoinGecko (CG) and CoinMarketCap (CMC) for price information and an additional price feed will be added once [the only PH exchange to list DAI](https://www.bloom.solutions/) opens up their DAI:PHP endpoint very soon. These initial price sources were chosen as 
+- Bloom, the PH exchange offering DAI, is the only one exchange that we are aware of that offers a DAI:PHP trading pair
+- CG and CMC provide a readily available methodology for consolidating and validating price data between a particular crypto asset and fiat quote across exchanges worldwide (see https://www.coingecko.com/en/methodology and https://coinmarketcap.com/api/faq/ ) 
+
+Our initial approach in lieu of no other exchange having a DAI:PHP pair was to source and consolidate component price feeds of DAI:USD and USD:PHP, but it seems CG already does this with their [OpenExchangeRates](https://openexchangerates.org/) integration. In the near future, the [HaloDAO](https://halodao.com/) team (or any other team making use of this) will add more price feed sources as the DAI - PHP market builds volume and listings (which we are pushing them to do). 
 
 Additionally, both CG and CMC sources offer free and publicly accessible DAI:PHP endpoints.
 
