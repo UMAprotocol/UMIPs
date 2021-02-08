@@ -27,17 +27,17 @@ More information on the WBTC network can be found on the website: https://wbtc.n
 
 ## Markets and Data Sources
 
-What markets should the price be queried from? It is recommended to have at least 3 markets.
+1) What markets should the price be queried from? It is recommended to have at least 3 markets.
 
 Binance, Sushiswap, and Uniswap should be used to construct the price.These 3 exchanges comprise a significant amount of WBTC trade volume and have available pricefeeds on Cryptowatch. 
 
 
-Which specific pairs should be queried from each market?
+2) Which specific pairs should be queried from each market?
 
 Binance: WBTC/ETH, Sushiswap WBTC/ETH, Uniswap: WBTC/USDC
 
 
-Provide recommended endpoints to query for real-time prices from each market listed.
+3) Provide recommended endpoints to query for real-time prices from each market listed.
 
 Binance: 
 
@@ -52,12 +52,12 @@ Uniswap:WBTC/USDC
 https://info.uniswap.org/pair/0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc
 
 
-How often is the provided price updated?
+4) How often is the provided price updated?
 
 The lower bound on the price update frequency is a minute.
 
 
-Provide recommended endpoints to query for historical prices from each market listed.
+5) Provide recommended endpoints to query for historical prices from each market listed.
 
 Binance: WBTC/ETH 
 
@@ -72,32 +72,32 @@ Uniswap:WBTC/USDC
 https://info.uniswap.org/pair/0xb4e16d0168e52d35cacd2c6185b44281ec28c9dc
 
 
-Do these sources allow for querying up to 74 hours of historical data?
+6) Do these sources allow for querying up to 74 hours of historical data?
 
 Yes
 
 
-How often is the provided price updated?
+7) How often is the provided price updated?
 
 The lower bound on the price update frequency is a minute.
 
 
-Is an API key required to query these sources?
+8) Is an API key required to query these sources?
 
 No
 
 
-Is there a cost associated with usage?
+9) Is there a cost associated with usage?
 
 No
 
 
-If there is a free tier available, how many queries does it allow for?
+10) If there is a free tier available, how many queries does it allow for?
 
 The lower bound on the number of queries allowed per hour is >> 1000.
 
 
-What would be the cost of sending 15,000 queries?
+11) What would be the cost of sending 15,000 queries?
 
 Approximately $0
 
@@ -106,13 +106,21 @@ Approximately $0
 Associated WBTC price feeds are available via Cryptowat.ch, Sushiswap, and Uniswap. Conversion from WBTC/ETH to WBTC/USD price needed for Binance and Sushiswap data. No other further feeds required.
 
 ## Technical Specifications
+
 Price Identifier Name: WBTC/USD
+
 Base Currency: WBTC
+
 Quote Currency: USD
+
 Intended Collateral Currency: USDC
+
 Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
+
 Is your collateral currency already approved to be used by UMA financial contracts?: YES
+
 Collateral Decimals: 6 decimals
+
 Rounding: Closest, 0.5 up
 
 
