@@ -25,7 +25,7 @@ In process, renDOGE holders would supply tokens to the OpenDAO Platform as a col
 ​
 ## Technical Specification
 To accomplish this upgrade, two changes need to be made:
-- The renDOGE address, [0x3832d2F059E55934220881F831bE501D180671A7](https://etherscan.io/token/0x3832d2F059E55934220881F831bE501D180671A7), needs to be added to the collateral currency whitelist introduced in UMIP-8. 
+- The renDOGE address, [0x3832d2F059E55934220881F831bE501D180671A7](https://etherscan.io/address/0x3832d2F059E55934220881F831bE501D180671A7#readProxyContract), needs to be added to the collateral currency whitelist introduced in UMIP-8. 
 - A final fee of 50,000 renDOGE needs to be added for the renDOGE in the Store contract.
 
 
