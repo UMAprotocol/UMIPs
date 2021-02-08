@@ -59,13 +59,13 @@ This section should clearly explain the types of financial products that will be
 4. How often is the provided price updated?
 
     - CMC: every 60 seconds
-    - CG: unknown
+    - CG: according to CG, price updated every 1 to 10 minutes [FAQ #6](https://www.coingecko.com/id/faq)
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
     - CMC: `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/historical?symbol=DAI&convert=PHP&&time_start=<unix timestamp>&time_end=<unix timestamp>&CMC_PRO_API_KEY=<standard plan api key>`
     
-      - _Note: Only available for Standard & higher tier plans_
+      - _Note: Only available for Standard & higher tier plans_. For the historical price, we found it useful to store the time-price value pair every time update() is called, which is a different approach from CryptoWatchPriceFeed since it uses another API call to fetch the history. This is because of our CoinMarketCap API key plan limitation. initial implementation here https://github.com/UMAprotocol/protocol/pull/2480
 
     - CG: `https://api.coingecko.com/api/v3/coins/dai/history?date=<dd-mm-yyyy>`
 
@@ -77,7 +77,7 @@ This section should clearly explain the types of financial products that will be
 7.  How often is the provided price updated?
 
     - CMC: every 5 minutes
-    - CG: unknown
+    - CG: not directly answered by CG FAQ page, but if price, trading volume, market capitalization updated every 1 to 10 minutes perhaps historical data (not sure if this question is a duplicate) is appended on every price update as well
 
 8. Is an API key required to query these sources? 
 
@@ -122,23 +122,15 @@ Link to the price feed pull request.
 
 **3. Quote currency** - PHP
 
-- If your price identifier is a currency pair, your quote currency will be the
-denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
-- Answer: DAI:PHP is in line with this
-
-- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
-
-- [Response - if applicable]
-
 **4. Intended Collateral Currency** - DAI
 
 - Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
-    - [ANSWER]
+    - Yes
 
 - Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
 
-    - Yes
+    - Yes, we use DAI
 
 **5. Collateral Decimals** - 18
 
