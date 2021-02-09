@@ -13,7 +13,7 @@ The DVM should support price requests for a basket of stocks that represent the 
 
 ## MOTIVATION
 
-The DVM currently does not support price identifiers for the creation of indices like uSTONKS.  Financial markets should be universally accessible — unrestrained by censorship, pre-existing financial and social capital, or nationality.  With the uSTONK price identifier synthetic tokens can be created which will allow anybody to obtain exposure to the basket of stocks in a decentralized way.  This will allow unrestricted trading 24 hours a day, 7 days a week.
+The DVM currently does not support price identifiers for the creation of indices like uSTONKS.  Financial markets should be universally accessible — unrestrained by censorship, pre-existing financial and social capital, or nationality.  With the uSTONKS price identifier synthetic tokens can be created which will allow anybody to obtain exposure to the basket of stocks in a decentralized way.  This will allow unrestricted trading 24 hours a day, 7 days a week.
 
 ## MARKETS & DATA SOURCES
 
@@ -68,7 +68,7 @@ This price identifier will conditionally use a different price calculation metho
 
 A 2-hour TWAP was chosen to mitigate any risk of attempted price manipulation attempts on the market price of the synthetic. To meaningfully manipulate the price that token sponsors’ collateralization is calculated with, an attacker would have to manipulate the trading price of a token for an extended amount of time. This is described further in the Security Considerations section.
 
-The stocks chosen represent the stocks with the highest recent average comment volume on r/wallstreetbets. This data was pulled from swaggystocks.com.
+The stocks chosen represent the stocks with the highest average comment volume on r/WallStreetBets. This index was picked on January 29th, 2021 using r/WallStreetBets comment analysis from swaggystocks.com, and will remain static throughout the life of the price identifier. 
 
 ## IMPLEMENTATION
 Voters should determine which pricing implementation to use depending on when the price request was submitted.
@@ -77,7 +77,7 @@ Voters should determine which pricing implementation to use depending on when th
 
 If the price request's UTC timestamp is at 1617220800 (March 31, 2021 @ 4:00PM EST), a price request for uSTONKS for a given timestamp should be determined by performing the `At Expiry` process.
 
-To create a baseline for the uSTONKS index, a base price for each stock was chosen. These prices are the closing prices of each on 12/31/2020 and can be used by voters as reference values for their calculations. Voters are highly encouraged to verify these values themselves.
+To create a baseline for the uSTONKS index, a base price for each stock was chosen. These prices are the closing prices of each on 12/31/2020 and can be used by voters as reference values for their calculations. Voters are highly encouraged to verify these values themselves. This basket is static - it will not change over the life of the contract.
 
 | Ticker | Stock Price 12/31/2020 |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -101,6 +101,11 @@ To calculate the uSTONKS price, an UMA voter should:
 4. Round the result of step three to six decimal places
 
 An example of this calculation is shown in [this](https://docs.google.com/spreadsheets/d/1AtNzHvn_0na1miktsF2vmmB5fRj2_y793r-j7_m7P8M/edit?usp=sharing) Google Sheet.
+
+It is possible that, over the life of this price identifier, certain situations could arise that would affect the validity of the index calculation. Guidance is provided below for certain situations, but voters are free to come to an alternative consensus if a flaw in the methodology is identified or an unforeseen event occurs. 
+
+1. In the case of a stock split, the base price of the stock should be divided by the number of shares that the stock is being split into. As an example - if AMC issued a 4:1 stock split, the base price of AMC, 2.12, would be divided by 4 and the new base index price would be 0.53.
+2. In the case of a stock consolidation, the process is the same as for a stock split, except the base price should be multiplied by the number of shares being consolidated. 
 
 **Before Expiry**
 
