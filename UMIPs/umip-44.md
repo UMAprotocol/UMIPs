@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-38  |                                                                                                                                         |
+| UMIP-44  |                                                                                                                                         |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|                                                                                                                                    
 | UMIP Title | Add YAM as a collateral currency                  |
 | Authors    | Ross Galloway (ross@yam.finance)  |
-| Status     | Draft                                                                                    |      
+| Status     | Last Call                                                                                    |      
 | Forum Post | https://discourse.umaproject.org/t/adding-yam-as-collateral-umip/115                     |
 | Created    | January 23, 2021                                                                       |
 
@@ -28,7 +28,6 @@ Yam DAO Set: Managed treasury product built on Set Protocol V2
 ## Technical Specification
 To accomplish this upgrade, two changes need to be made:
 - The YAM address, [0x0aacfbec6a24756c20d41914f2caba817c0d8521](https://etherscan.io/token/0x0aacfbec6a24756c20d41914f2caba817c0d8521) on Mainnet, needs to be added to the collateral currency AddressWhitelist introduced in UMIP-8.
-   
 - A final fee of 150 YAM needs to be added for YAM in the Store contract.
 
 ## Rationale
@@ -38,7 +37,6 @@ This change encourages wider adoption of the UMA protocol through strengthening 
 
 ## Implementation
 This change has no implementation other than adding the YAM address to the collateral currency AddressWhitelist and adding the YAM final fee to the Store contract.
-
 
 ## Security considerations
 

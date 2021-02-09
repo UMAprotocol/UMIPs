@@ -1,16 +1,15 @@
 # Headers
-| UMIP-#    |                                                                                                                                          |
+| UMIP-45    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add Wrapped Bitcoin as a collateral currency              |
 | Authors    | Logan (logan@opendao.io) |
-| Status     |Draft                                                                                                                                   |
+| Status     | Last Call                                                                                                                                   |
 | Created    | Feb 2, 2021                                                                                                                           |
 | Link to Discourse   | https://discourse.umaproject.org/t/adding-wbtc-as-collateral-umip/123                                                           |
 
 ## Summary (2-5 sentences)
 This UMIP will add Wrapped Bitcoin (WBTC) to the supported collateral currencies on the global whitelist contract, allowing the usage of WBTC as collateral currency. 
 
-​
 ## Motivation
 The motivation for adding WBTC as a supported collateral in the global whitelist contract is to add utility to the UMA architecture; access to WBTC as a collateral currency creates opportunities for partner projects to better leverage the protocol.
 
@@ -21,22 +20,18 @@ At the time of writing, WBTC is trading at $33,767.47 with a 24-hour trading vol
 ​
 ## Technical Specification
 To accomplish this upgrade, two changes need to be made:
-- The WBTC address, 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599](https://etherscan.io/token/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599), 
+- The WBTC address, [0x2260fac5e5542a773aa44fbcfedf7c193bc2c599](https://etherscan.io/token/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599), 
 needs to be added to the collateral currency whitelist introduced in UMIP-8. 
-
 - A final fee of 0.0147 WBTC (~$500)  needs to be added for the WBTC in the Store contract.
 
-​
 ## Rationale
 ​
 The rationale behind this change is that it fits into a larger goal of furthering adoption of the UMA protocol by allowing WBTC to be used as collateral, where WBTC can be utilized by projects with partners (such as OpenDAO) to leverage the UMA protocol. 
 
-​
 ## Implementation
 ​
-This change has no implementation other than adding the WBTC token address to the collateral currency whitelist.
+This change has no implementation other than the changes listed in the *Technical Specification* section.
 
-​
 ## Security Considerations
 
 Wrapped tokens carry the risk of price decoupling from their collateral currency thereby creating a vector of attack for potential bad actors, particularly when the market supporting said wrapped token has low volume/liquidity. However, WBTC’s history of keeping its peg, along with its deep liquidity and high volumes should be sufficient enough to insulate against any of the aforementioned attempts at manipulation.
