@@ -30,25 +30,25 @@ More information on the Ocean Protocol can be found on the website: https://ocea
 
 What markets should the price be queried from? It is recommended to have at least 3 markets.
 
-Binance, Bittrex, and Uniswap should be used to construct the price.These 3 exchanges comprise a significant amount of OCEAN trade volume and have available pricefeeds on Cryptowatch. 
+Binance, Bittrex, and BitZ should be used to construct the price.These 3 exchanges comprise a significant amount of OCEAN trade volume and have available pricefeeds on Cryptowatch. 
 
 
 Which specific pairs should be queried from each market?
-Binance: OCEAN/USDT, Bittrex OCEAN/USDT, Uniswap: OCEAN/ETH
+Binance: OCEAN/USDT, Bittrex OCEAN/USDT, BitZ OCEAN/USDT
 
 
 Provide recommended endpoints to query for real-time prices from each market listed.
-Binance: OCEAN/USDT https://api.binance.com/api/v3/ticker/price?symbol=OCEANUSDT,
-Bittrex: OCEAN/USDT https://api.bittrex.com/v3/markets/OCEAN-USDT/summary
-Uniswap: https://app.uniswap.org/#/swap?inputCurrency=0x967da4048cd07ab37855c090aaf366e4ce1b9f48
+Binance OCEAN/USDT: https://api.cryptowat.ch/markets/binance/oceanusdt/price
+Bittrex OCEAN/USDT: https://api.cryptowat.ch/markets/bittrex/oceanusdt/price
+BitZ OCEAN/USDT: https://api.cryptowat.ch/markets/bitz/oceanusdt/price
 
 How often is the provided price updated?
 The lower bound on the price update frequency is a minute.
 
 Provide recommended endpoints to query for historical prices from each market listed.
-Binance: https://api.binance.com/api/v3/klines?symbol=OCEANUSDT&interval=1d
-Bittrex: https://api.bittrex.com/v3/markets/OCEAN-USDT/candles/DAY_1/historical/2020
-Uniswap: https://info.uniswap.org/token/0x967da4048cd07ab37855c090aaf366e4ce1b9f48
+Binance: https://api.cryptowat.ch/markets/binance/oceanusdt/ohlc
+Bittrex: https://api.cryptowat.ch/markets/bittrex/oceanusdt/ohlc
+BitZ: https://api.cryptowat.ch/markets/bitz/oceanusdt/ohlc
 
 Do these sources allow for querying up to 74 hours of historical data?
 Yes
@@ -70,7 +70,9 @@ Approximately $0
 
 
 ## Price Feed Implementation
-Associated OCEAN price feeds are available via Cryptowatch and Uniswap.  No other further feeds required.
+Associated OCEAN price feeds are available via Cryptowatch.  No other further feeds required.
+
+
 
 ## Technical Specifications
 Price Identifier Name: OCEAN/USD
@@ -100,25 +102,12 @@ In the current setting, there will need to be a significant event that erodes co
 
 
 ## Implementation
-What prices should be queried for and from which markets?:
 
-Binance OCEAN/USDT, Bittrex OCEAN/USDT, Uniswap OCEAN/ETH
-
-
-Pricing Interval:
-
-1 minute
-
-
-Input Processing:
-
-None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-
-
-Result Processing:
-
-median
-
+- Use Binance OCEAN/USDT, Bittrex OCEAN/USDT, BitZ OCEAN/USDT endpoints at the price request timestamp (detailed in Price Feed Implementation Section)
+- Pricing Interval: 1 minute
+- Result Processing: Median
+- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
+- Round: 5 decimals
 
 
 
