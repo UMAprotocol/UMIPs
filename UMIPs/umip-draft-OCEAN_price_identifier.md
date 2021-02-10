@@ -28,8 +28,8 @@ Binance, Bittrex, and BitZ should be used to construct the price.These 3 exchang
 
 Which specific pairs should be queried from each market?
 - Binance: OCEAN/USDT
-- Bittrex OCEAN/USDT
-- BitZ OCEAN/USDT
+- Bittrex: OCEAN/USDT
+- BitZ: OCEAN/USDT
 
 
 Provide recommended endpoints to query for real-time prices from each market listed.
@@ -102,7 +102,7 @@ In the current setting, there will need to be a significant event that erodes co
 
 ## Implementation
 
-Voters should query for the price of OCEAN/USDT at the price request timestamp on Binance, Bittrex and BitZ. Recommended endpoints are provided in the implementation section.
+Voters should query for the price of OCEAN/USDT at the price request timestamp on Binance, Bittrex and BitZ. Recommended endpoints are provided in the markets and data sources  section.
 
 1) When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
 2) The median of these results should be taken
