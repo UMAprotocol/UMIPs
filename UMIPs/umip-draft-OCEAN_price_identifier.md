@@ -49,8 +49,8 @@ Do these sources allow for querying up to 74 hours of historical data?
 - Yes
 
 How often is the provided price updated?
-- The lower bound on the price update frequency is a minute.
-- Bittrix update frequency is 4 minutes
+- The lower bound on the price update frequency is a minute for Binance and BitZ
+- Bittrex update frequency is 4 minutes
 
 Is an API key required to query these sources?
 - No
