@@ -47,7 +47,7 @@ The lower bound on the price update frequency is a minute.
 
 Provide recommended endpoints to query for historical prices from each market listed.
 Binance: https://api.cryptowat.ch/markets/binance/oceanusdt/ohlc?after=1612880040&before=1612880040&periods=60
-Bittrex: https://api.cryptowat.ch/markets/bittrex/oceanusdt/ohlc
+Bittrex: https://api.cryptowat.ch/markets/bittrex/oceanusdt/ohlc?after=1612880460&before=1612880460&periods=60
 BitZ: https://api.cryptowat.ch/markets/bitz/oceanusdt/ohlc
 
 Do these sources allow for querying up to 74 hours of historical data?
@@ -118,6 +118,5 @@ Adding this new identifier by itself poses little security risk to the DVM or pr
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified. As noted above, $UMA-holders should also consider re-defining this identifier as liquidity in the underlying asset changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
 
 Opportunities for manipulation seem slim, in relation to other projects in the decentralized finance ecosystem. 
-
 
 
