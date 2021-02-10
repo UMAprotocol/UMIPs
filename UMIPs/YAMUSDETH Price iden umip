@@ -299,6 +299,7 @@ See YAM/USD
 
 # Security considerations
 
+//will edit this section once we have confirmed exchanges and pairs. Risk should be limited with more exchanges now available.
 Because there is only 1 liquid exchange and it is an on-chain AMM style, if liquidity is withdrawn too fast, there may be a risk in the price peg, and therefore the integrity of the system. In the current setting, there would need to be a significant event that erodes confidence in YAM and the token, causing Sushiswap liquidity to be withdrawn quickly and en-masse. This threat is mitigated via YAM incentives paid to liquidity providers who stake their tokens.
 
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
