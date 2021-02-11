@@ -28,7 +28,7 @@ This section should clearly explain the types of financial products that will be
 
     - in trading pairs on Philippine cryptocurrency exchanges
 
-    - basis for on chain, on demand liquidity in cross border remittance (our team is starting with the Singapore Philippine corridor with ZKSync, Argent and various on/off ramps)
+    - basis for on chain, on demand liquidity in cross border remittance (our team is starting with the Singapore Philippine corridor with [ZkSync](https://zksync.io/faq/intro.html), [Argent](http://argent.xyz/), [SG stablecoin on ramp](https://www.xfers.com/sg/) and [PH off ramp](https://www.bloom.solutions/) who would use the synthetic Philippine Peso )
 
 3. Consider adding market data  (e.g., if we add a “Dai alternative,” the author could show the market size of Dai)
 
