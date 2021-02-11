@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-47    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add uSTONKS-APR21 as a price identifier              |
+| UMIP Title | Add uSTONKS_APR21 as a price identifier              |
 | Authors    | Sean Brown (smb2796), Kevin Chan (kevin-uma)  |
 | Status     | Last Call                                                                                                                                    |
 | Created    | Feb 2, 2021   
