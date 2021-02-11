@@ -8,7 +8,7 @@
 | Link to Discourse | [Discourse](https://discourse.umaproject.org/t/add-uni-v2-wbtc-eth-as-a-supported-collateral-currency/149)                        |
  
 ## Summary
-This UMIP will add the following UNI-V2 LP tokens as an approved collateral currencies: WBTC-ETH, USDC-ETH, UNI-ETH, and UMA-ETH. 
+This UMIP will add the following UNI-V2 LP tokens as approved collateral currencies: WBTC-ETH, USDC-ETH, UNI-ETH, and UMA-ETH. 
 
 This will involve adding the currencies to the whitelist and adding a flat final fee to charge per-request. The proposed final fees are listed in the table below. 
 
