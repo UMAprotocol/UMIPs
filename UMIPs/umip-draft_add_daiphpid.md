@@ -149,10 +149,10 @@ Link to the price feed pull request.
 
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized.
 
-DAIPHP uses CoinGecko (CG) and CoinMarketCap (CMC) for price information and an additional price feed will be added once [the only PH exchange to list DAI](https://www.bloom.solutions/) opens up their DAI:PHP endpoint very soon. These initial price sources were chosen as 
+DAIPHP uses CoinGecko (CG) and CoinMarketCap (CMC) for price information. These initial price sources were chosen as 
 - CG and CMC provide a readily available methodology for consolidating and validating price data between a particular crypto asset and fiat quote across exchanges worldwide (see https://www.coingecko.com/en/methodology and https://coinmarketcap.com/api/faq/ ) 
 
-Our initial approach in lieu not having access to a "raw" exchange based DAI:PHP pair was to source and consolidate component price feeds of DAI:USD and USD:PHP, but it seems CG already does this with their [OpenExchangeRates](https://openexchangerates.org/) integration. In the future, the [HaloDAO](https://halodao.com/) team (or any other team making use of this) will add more price feed sources as the DAI - PHP market builds volume and listings (which we are pushing them to do). 
+Our initial approach in lieu of not having access to a "raw" exchange based DAI:PHP pair was to source and consolidate component price feeds of DAI:USD and USD:PHP, but it seems CG already does this with their [OpenExchangeRates](https://openexchangerates.org/) integration. In the future, the [HaloDAO](https://halodao.com/) team (or any other team making use of this) will add more price feed sources as the DAI - PHP market builds volume and listings (which we are pushing them to do). 
 
 Additionally, both CG and CMC sources offer free and publicly accessible DAI:PHP endpoints.
 
