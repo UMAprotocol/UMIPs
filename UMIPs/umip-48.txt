@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH-JUN21 as supported DVM price identifiers                                                                                             |
 | Authors    | nonstopTheo 
-| Status     | Pending                                                                                                                                   |
+| Status     | Draft                                                                                                                                   |
 | Created    | February 10th, 2021                                                                                                                              |
 
 ## Summary (2-5 sentences)
