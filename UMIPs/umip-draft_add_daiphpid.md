@@ -42,7 +42,6 @@ This section should clearly explain the types of financial products that will be
 
     - CoinMarketCap
     - CoinGecko
-    - [Bloom Solutions, a licensed cryptocurrency and remittance exchange in the Philippines](https://www.bloom.solutions/)
 
 2.  Which specific pairs should be queried from each market?
 
@@ -54,7 +53,6 @@ This section should clearly explain the types of financial products that will be
 
     - CG: `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=0x6b175474e89094c44da98b954eedeac495271d0f&vs_currencies=php`
     
-    - Bloom Exchange DAI:PHP endpoint being opened up
     
 4. How often is the provided price updated?
 
@@ -88,7 +86,6 @@ This section should clearly explain the types of financial products that will be
 
     - CMC: Yes, if historical prices endpoint is used, otherwise no
     - CG: No
-    - Bloom: No
 
 10. If there is a free tier available, how many queries does it allow for?
 
@@ -153,10 +150,9 @@ Link to the price feed pull request.
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized.
 
 DAIPHP uses CoinGecko (CG) and CoinMarketCap (CMC) for price information and an additional price feed will be added once [the only PH exchange to list DAI](https://www.bloom.solutions/) opens up their DAI:PHP endpoint very soon. These initial price sources were chosen as 
-- Bloom, the PH exchange offering DAI, is the only one exchange that we are aware of that offers a DAI:PHP trading pair
 - CG and CMC provide a readily available methodology for consolidating and validating price data between a particular crypto asset and fiat quote across exchanges worldwide (see https://www.coingecko.com/en/methodology and https://coinmarketcap.com/api/faq/ ) 
 
-Our initial approach in lieu of no other exchange having a DAI:PHP pair was to source and consolidate component price feeds of DAI:USD and USD:PHP, but it seems CG already does this with their [OpenExchangeRates](https://openexchangerates.org/) integration. In the near future, the [HaloDAO](https://halodao.com/) team (or any other team making use of this) will add more price feed sources as the DAI - PHP market builds volume and listings (which we are pushing them to do). 
+Our initial approach in lieu not having access to a "raw" exchange based DAI:PHP pair was to source and consolidate component price feeds of DAI:USD and USD:PHP, but it seems CG already does this with their [OpenExchangeRates](https://openexchangerates.org/) integration. In the future, the [HaloDAO](https://halodao.com/) team (or any other team making use of this) will add more price feed sources as the DAI - PHP market builds volume and listings (which we are pushing them to do). 
 
 Additionally, both CG and CMC sources offer free and publicly accessible DAI:PHP endpoints.
 
@@ -171,7 +167,6 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 
     - DAI:PHP from CoinMarketCap
     - DAI:PHP from CoinGecko
-    - DAI:PHP from [Bloom exchange](https://www.bloom.solutions/)
 
 2. **Pricing interval**
 
@@ -183,7 +178,7 @@ Describe how UMA tokenholders should arrive at the price in the case of a DVM pr
 
 4. **Result processing**
 
-    - Median between the DAI:PHP feeds of CG, CMC and Bloom
+    - Mean between the DAI:PHP feeds of CG, CMC
 
 <br>
 
