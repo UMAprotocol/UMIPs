@@ -47,15 +47,15 @@ Documentation on its usage is available [here](https://support.google.com/docs/a
 - What would be the cost of sending 15,000 queries? $0.
 
 ## PRICE FEED IMPLEMENTATION
-For the creation of the uSTONKS token, it is desired that the DVM return either the final closing index value of uSTONKS, or a 2-hour TWAP on the market price of uSTONKS-APR21. The type of price that the DVM will return is dependent on the timestamp the price request is made at. This timestamp is the expiry timestamp of the contract that is intended to use this price identifier, so the TWAP calculation is used pre-expiry and the closing index value of uSTONKS calculation is used at expiry.  This is very similar to the uGAS token and this design is outlined in [UMIP 22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md).
+For the creation of the uSTONKS token, it is desired that the DVM return either the final closing index value of uSTONKS, or a 2-hour TWAP on the market price of uSTONKS_APR21. The type of price that the DVM will return is dependent on the timestamp the price request is made at. This timestamp is the expiry timestamp of the contract that is intended to use this price identifier, so the TWAP calculation is used pre-expiry and the closing index value of uSTONKS calculation is used at expiry.  This is very similar to the uGAS token and this design is outlined in [UMIP 22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md).
 
 Because the uSTONKS index value is only used at expiry, it will not be possible for a token sponsor to become undercollateralized based upon its movement.  This means that only the Uniswap TWAP will need to be queried in real-time with a price feed.
 
 [Here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) is a reference implementation for an off-chain price feed that calculates the TWAP of a token based on Uniswap price data. 
 
 ## TECHNICAL SPECIFICATIONS
-- Price Identifier Name: uSTONKS-APR21
-- Base Currency: uSTONKS-APR21
+- Price Identifier Name: uSTONKS_APR21
+- Base Currency: uSTONKS_APR21
 - Quote currency: None. This is an index, but will be used with USDC.
 - Intended Collateral Currency: USDC
 - Collateral Decimals: 6
@@ -109,10 +109,10 @@ It is possible that, over the life of this price identifier, certain situations 
 
 **Before Expiry**
 
-If the price request's UTC timestamp is less than 1619812800 (April 30, 2021 @ 4:00PM EST), voters will need to calculate a 2-hour TWAP for the uSTONKS-APR21 token’s price in USDC. The following process should be used to calculate the TWAP.
+If the price request's UTC timestamp is less than 1619812800 (April 30, 2021 @ 4:00PM EST), voters will need to calculate a 2-hour TWAP for the uSTONKS_APR21 token’s price in USDC. The following process should be used to calculate the TWAP.
 1. The end TWAP timestamp equals the price request timestamp.
 2. The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
-3. A single Uniswap price is defined for each timestamp as the price that the uSTONKS-APR21 / USDC pool returns in the latest block where the block timestamp is <= the price request timestamp. This is the price of 1 uSTONKS-APR21 token in USDC. 
+3. A single Uniswap price is defined for each timestamp as the price that the uSTONKS_APR21 / USDC pool returns in the latest block where the block timestamp is <= the price request timestamp. This is the price of 1 uSTONKS_APR21 token in USDC. 
 4. The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will get an equal weight.
 5. This results should be rounded to 6 decimals.
 
@@ -121,7 +121,7 @@ For both implementations, voters should determine whether the returned price dif
 ## Security Considerations
 Security considerations are focused on the use of the token price for monitoring collateral ratios.
 - Token price manipulation - Under illiquid market conditions, an attacker could attempt to drive prices down to withdraw more collateral than normally allowed or drive prices up to trigger liquidations. However, it is important to note that almost all attacks that have been performed on DeFi projects are executed with flash loans, which allows the attacker to obtain leverage and instantaneously manipulate a price and extract collateral. Additionally, flash loans will have no effect on a tradable token price because the TWAP calculation is measured based on the price at the end of each block. Collateralization based off of a TWAP should make these attacks ineffective and would require attackers to use significantly more capital and take more risk to exploit any vulnerabilities.
-- Mismatch between TWAP and gap higher in token price - An aggressive gap higher in the token price accompanied by real buying and then a follow through rally could create a concern. In this scenario we could see the TWAP of the token significantly lag the actual market price and create an opportunity for sponsors to mint tokens with less collateral than what they can sell them from in the market. It is important to note that this is an edge case scenario either driven by an irrational change in market expectations or it can be driven by a “fat finger” mistake which is a vulnerability to any market. Even in this edge case we believe the design of the token and the parameters chosen should mitigate risks. The current Expiring Multi Party (EMP) contract requires sponsors to mint tokens with enough collateral to meet the Global Collateral Ratio (GCR) which has stood well above 200% for other contracts. Therefore, assuming the GCR is similar for uSTONKS-APR21, the market would need to first rally at least 100% before potentially being exposed. If the sponsor wishes to withdraw collateral below the GCR they would request a “slow withdrawal” which would subject him to a 2 hour “liveness period” where anybody can liquidate the position if it fell below the required collateral ratio. The combination of the GCR and 2 hour “liveness period” allows the 2 hour TWAP to “catch up” to the market price and would protect from this scenario and deter sponsors from attempting to exploit it.
+- Mismatch between TWAP and gap higher in token price - An aggressive gap higher in the token price accompanied by real buying and then a follow through rally could create a concern. In this scenario we could see the TWAP of the token significantly lag the actual market price and create an opportunity for sponsors to mint tokens with less collateral than what they can sell them from in the market. It is important to note that this is an edge case scenario either driven by an irrational change in market expectations or it can be driven by a “fat finger” mistake which is a vulnerability to any market. Even in this edge case we believe the design of the token and the parameters chosen should mitigate risks. The current Expiring Multi Party (EMP) contract requires sponsors to mint tokens with enough collateral to meet the Global Collateral Ratio (GCR) which has stood well above 200% for other contracts. Therefore, assuming the GCR is similar for uSTONKS_APR21, the market would need to first rally at least 100% before potentially being exposed. If the sponsor wishes to withdraw collateral below the GCR they would request a “slow withdrawal” which would subject him to a 2 hour “liveness period” where anybody can liquidate the position if it fell below the required collateral ratio. The combination of the GCR and 2 hour “liveness period” allows the 2 hour TWAP to “catch up” to the market price and would protect from this scenario and deter sponsors from attempting to exploit it.
 
 Security considerations, like the ones above, have been contemplated and addressed, but there is potential for security holes to emerge due to the novelty of this price identifier.
 
