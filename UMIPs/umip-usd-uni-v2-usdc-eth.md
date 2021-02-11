@@ -5,6 +5,7 @@
 | Authors    | Dev-1 (dev-1-lp-dollar), Dev-2 (dev-2-lp-dollar) |
 | Status     | Draft                                                                                                                                    |
 | Created    | February 10, 2021           |
+| Discourse Link | [Link](https://discourse.umaproject.org/t/add-usd-uniswap-v2-usdc-eth-as-a-price-identifier/204)         |
 
 ## Summary
 
