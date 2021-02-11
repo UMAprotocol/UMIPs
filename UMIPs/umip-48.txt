@@ -1,7 +1,7 @@
 # Headers
 | UMIP-48     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add GASETH-JUN21 as supported DVM price identifiers                                                                                             |
+| UMIP Title | Add GASETH_JUN21 as a supported price identifier                                                                                             |
 | Authors    | nonstopTheo 
 | Status     | Draft                                                                                                                                   |
 | Created    | February 10th, 2021                                                                                                                              |
