@@ -5,6 +5,7 @@
 | Authors    | Dev-1 (dev-1-lp-dollar), Dev-2 (dev-2-lp-dollar) |
 | Status     | Draft                                                                                                                                    |
 | Created    | February 10, 2021                                                                                                                        |
+| Discourse Link | [Link](https://discourse.umaproject.org/t/add-uniswap-v2-usdc-eth-as-a-supported-collateral-currency/205)                            |
  
 ## Summary
 This UMIP will add UNI V2 USDC-ETH LP tokens as an approved collateral currency. This will involve adding the currency to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 0.0000000465 UNI V2 USDC/ETH LP per request, as the USD price of UNI V2 USDC/ETH is ~$8655321480, this roughly translates to a little over $400 USD.
