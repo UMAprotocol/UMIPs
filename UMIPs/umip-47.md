@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add uSTONKS_APR21 as a price identifier              |
 | Authors    | Sean Brown (smb2796), Kevin Chan (kevin-uma)  |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Final                                                                                                                                    |
 | Created    | Feb 2, 2021   
 | [Discourse Link](https://discourse.umaproject.org/t/add-ustonks-mar21-price-identifier-umip/125) |  
 

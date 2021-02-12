@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add Wrapped Bitcoin as a collateral currency              |
 | Authors    | Logan (logan@opendao.io) |
-| Status     | Last Call                                                                                                                                   |
+| Status     | Final                                                                                                                                   |
 | Created    | Feb 2, 2021                                                                                                                           |
 | Link to Discourse   | https://discourse.umaproject.org/t/adding-wbtc-as-collateral-umip/123                                                           |
 
