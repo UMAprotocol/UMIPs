@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add OCEANUSD, USDOCEAN as price identifiers              |
 | Authors    | Logan (Logan@opendao.io)|
-| Status     | Last Call                                                                                                                                 |
+| Status     | Final                                                                                                                                 |
 | Created    | January 28, 2021                                                                                                                           |
 | Link to Discourse    | https://discourse.umaproject.org/t/adding-oceanusd-as-a-price-identifier/118                                                     |
 

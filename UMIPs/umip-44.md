@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|                                                                                                                                    
 | UMIP Title | Add YAM as a collateral currency                  |
 | Authors    | Ross Galloway (ross@yam.finance)  |
-| Status     | Last Call                                                                                    |      
+| Status     | Final                                                                                    |      
 | Forum Post | https://discourse.umaproject.org/t/adding-yam-as-collateral-umip/115                     |
 | Created    | January 23, 2021                                                                       |
 
