@@ -2,14 +2,11 @@
 ## HEADERS
 | UMIP [xx]     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add YAM-ETH, YAM-USD, and USD-YAM as price identifiers]                                                                                                  |
+| UMIP Title | Add YAMETH, ETHYAM, YAMUSD, and USDYAM as price identifiers]                                                                                                  |
 | Authors    | Ross (ross@yam.finance)
 | Status     | Draft                                                                                                                                  |
 | Created    | January 28th, 2021  
 | Forum Post | https://discourse.umaproject.org/t/add-yam-usd-and-yam-eth-price-identifiers/171
-
-//Note that an UMIP number will be assigned by an editor. When opening a pull request to submit your UMIP, please use an abbreviated title in the filename, umip-draft_title_abbrev.md.
-//The title should be 44 characters or less.
 
 # SUMMARY 
 
@@ -43,14 +40,13 @@ More information on YAM can be found on the website: https://yam.finance/
 
 1. What markets should the price be queried from? It is recommended to have at least 3 markets.
 
-Sushiswap - https://sushiswap.fi/pair/0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c
+Sushiswap 
 Huobi  
 Gate.io  
-Uniswap - https://info.uniswap.org/token/0x0aacfbec6a24756c20d41914f2caba817c0d8521 
 
 2.  Which specific pairs should be queried from each market?
 
-YAM/ETH on sushiswap and uniswap
+YAM/ETH on sushiswap 
 YAM/USDT on Huobi
 YAM/USDT on Gate
 ETH/USD per UMIP 6
@@ -63,7 +59,6 @@ ETH/USD per UMIP 6
  - Uniswap graph explorer
     https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
-//Need Huobi and Gate API endpoints if we use these
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 Need to add YAM specific info here 
@@ -95,25 +90,7 @@ Need to add YAM specific info here
 
 # PRICE FEED IMPLEMENTATION
 
-//To allow for the creation of bots that can programmatically calculate prices off-chain to liquidate and dispute transactions, you must create a price feed following the UMA Protocol format (outlined below). This price feed is also necessary to calculate developer mining rewards.
-
-//To meet this criteria, please include a link to a PR to the UMA [protocol repo](https://github.com/UMAprotocol/protocol) with an example price feed that inherits this [PriceFeedInterface](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/PriceFeedInterface.js). 
-
-//Classes of price identifiers that are supported by default and require no additional price feed include.
-
-//- Any currency pair available on [Cryptowatch](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js)
-
-//- [Uniswap prices](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js)
-
-//- [Balancer prices](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/BalancerPriceFeed.js)
-
-//Please provide a link to your price feed pull request.
-
-//- [ADD-LINK-TO-PULL-REQUEST]
-
-//BadgerDAO uses this implementation for their price feed to get a 2 hour TWAP for their bBadger and bwBTC/ETH pools.  We do not have an equivalent repository as far as I know but maybe we can modify as needed to create one?
-//https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger/index.js
-
+In progress
 
 # TECHNICAL SPECIFICATIONS
 
