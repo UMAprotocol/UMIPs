@@ -724,28 +724,28 @@ The LP Dollar team will use the price identifiers to enable fixed borrowing cost
 
 ## Technical Specifications
 
-Price Identifier Name: USD-UNI-V2-WBTC-ETH  
+Price Identifier Name: USD/UNI-V2-WBTC-ETH  
 Base Currency: USD  
 Quote currency: UNI-V2-WBTC-ETH  
 Intended Collateral Currency: UNI-V2-WBTC-ETH  
 Collateral Decimals: 18  
 Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)  
 
-Price Identifier Name: USD-UNI-V2-USDC-ETH  
+Price Identifier Name: USD/UNI-V2-USDC-ETH  
 Base Currency: USD  
 Quote currency: UNI-V2-USDC-ETH  
 Intended Collateral Currency: UNI-V2-USDC-ETH  
 Collateral Decimals: 18  
 Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)  
 
-Price Identifier Name: USD-UNI-V2-UNI-ETH  
+Price Identifier Name: USD/UNI-V2-UNI-ETH  
 Base Currency: USD  
 Quote currency: UNI-V2-UNI-ETH  
 Intended Collateral Currency: UNI-V2-UNI-ETH  
 Collateral Decimals: 18  
 Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)  
 
-Price Identifier Name: USD-UNI-V2-UMA-ETH  
+Price Identifier Name: USD/UNI-V2-UMA-ETH  
 Base Currency: USD  
 Quote currency: UNI-V2-UMA-ETH  
 Intended Collateral Currency: UNI-V2-UMA-ETH  
@@ -754,7 +754,7 @@ Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 
 
 ## Rationale
 
-The USD-UNI-V2 price identifiers will allow Uniswap liquidity providers to mint synthetic tokens in the UMA ecosystem. The first application developed by LP Dollar will allow liquidity providers to borrow against their LP tokens as collateral at a fixed rate. 
+The USD/UNI-V2 price identifiers will allow Uniswap liquidity providers to mint synthetic tokens in the UMA ecosystem. The first application developed by LP Dollar will allow liquidity providers to borrow against their LP tokens as collateral at a fixed rate. 
 
 ## Security Considerations
 Adding these new price identifiers should not effect the security to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing these identifiers should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
