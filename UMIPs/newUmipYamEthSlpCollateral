@@ -1,0 +1,48 @@
+## Headers
+| UMIP-xx  |                                                                                                                                         |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------|                                                                                                                                    
+| UMIP Title | Add ETH/YAM SLP tokens as a collateral currency                  |
+| Authors    | Ross Galloway (ross@yam.finance)  |
+| Status     | Draft                                                                                    |      
+| Forum Post | add when complete                     |
+| Created    | February 14, 2021                                                                       |
+
+## Summary (2-5 sentences)
+This UMIP will add ETH/YAM Sushiswap Liquidity Pool tokens to the supported collateral currencies to the AddressWhitelist contract, allowing UMA users to mint synthetics using ETH/YAM SLP tokens as the collateral currency. The proposed final fee is xxx ETH/YAM SLP tokens per request.
+
+## Motivation
+Adding ETH/YAM SLP tokens as a collateral currency to UMA will extend the use of the YAM governance token as a way to create new synthetic assets and will allow it to be used within products that are built upon UMA. ETH/YAM SLP tokens should be less volatile than YAM tokens on their own as they are backed 50/50 with ETH and YAM.  This will also free up additional liquidity as YAM holders will not have to choose between LPing their YAM tokens to earning YAM rewards and providing collateral to mint synthetics. YAM/ETH SLP tokens could be used as a collateral to mint perpetual stablecoins and other future synthetics. This adds additional utility to the YAM token and serves as a test case for adding additional governance and community LIquidity provider tokens to the UMA whitelist.
+
+The YamDAO is currently building out https://degenerative.finance, which is a derivatives front end built on UMA. Degenerative is the current custodian of the uGAS derivative and we plan to add more derivatives in the future. One planned derivative that we hope to cross list with OpenDAO (https://opendao.gitbook.io/whitepaper-v2/) is their perpetual stablecoin. We would provide the means to mint perpetual dollars with the collateral types currently offered and would like to also offer YAM as a collateral type.
+
+Yam is a collaborative community innovating at the intersection of decentralized governance and programmable finance. Our open, fair and ethical philosophy fosters an inclusive and energetic culture. We are a fair-launch DAO pushing the bounds of innovation and launching experiments to enable the very promise of what DeFi can become for the world: a global, permissionless financial ecosystem.
+
+The YamDAO has a treasury of approximately $6 million in stablecoins, ETH, and assorted other assets (as of 1/23/2020). The treasury does not contain YAM tokens. The YAM market-cap is approximately $23 million and trades with roughly $1 million of volume daily (https://www.coingecko.com/en/coins/yam). 
+
+Current Projects under the YAM umbrella:
+Degenerative Finance: Derivatives built using the UMA Protocol (https://degenerative.finance)
+Umbrella: Insurance protocol (in production)
+Yam DAO Set: Managed treasury product built on Set Protocol V2
+
+## Technical Specification
+To accomplish this upgrade, two changes need to be made:
+- The ETH/YAM SLP contract address, [0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c](https://etherscan.io/token/0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c) on Mainnet, needs to be added to the collateral currency AddressWhitelist introduced in UMIP-8.
+   
+- A final fee of xxx ETH/YAM SLP tokens needs to be added for YAM in the Store contract.
+
+## Rationale
+This change encourages wider adoption of the UMA protocol through strengthening ties with the YAM DAO. Beyond allowing YAM token holders to mint stablecoins and other future synthetic assets with their tokens, it opens up new strategies for treasury management within the DAO itself, including community backed credit lines.  
+
+xxx ETH/YAM SLP tokens was chosen because it is similar to the amount chosen for other collateral types.
+
+## Implementation
+This change has no implementation other than adding the ETH/YAM SLP contract address to the collateral currency AddressWhitelist and adding the YAM final fee to the Store contract.
+
+
+## Security considerations
+
+Anyone deploying a new priceless token contract using this collateral should take note to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent. $UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
+
+YAM/ETH SLP tokens themselves should present  little risk and no more than YAM itself which was already approved as a collateral currency in UMIP 44. It is a standard ERC-20 token. You can see the security concerns mentioned in UMIP 44 about YAM here:https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-44.md
+ 
+ 
