@@ -279,11 +279,11 @@ See YAM/USD
 
 3. **Input processing**
 
-    -     See YAM/USD 
+    - See YAM/USD 
 
 4. **Result processing** 
 
-    -     Round to 18 decimals
+    - Round to 18 decimals
 
 
 # Security considerations
