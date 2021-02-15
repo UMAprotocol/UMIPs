@@ -122,7 +122,7 @@ In progress
 
 - Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
 
-    - Pending UMIP (https://github.com/UMAprotocol/UMIPs/pull/154)
+    - Yes (https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-44.md)
 
 **5. Collateral Decimals** - YAM has 18 decimals (https://etherscan.io/token/0x0aacfbec6a24756c20d41914f2caba817c0d8521)
 
