@@ -62,7 +62,7 @@ ETH/USD per UMIP 6
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
-    #YAM
+- YAM
 ```
 {
 token(id:"0x0aacfbec6a24756c20d41914f2caba817c0d8521", block: {number: 11849560})
@@ -70,10 +70,9 @@ token(id:"0x0aacfbec6a24756c20d41914f2caba817c0d8521", block: {number: 11849560}
 } 
 ```
 
-   Returns ETH/YAM price
+- Returns ETH/YAM price
 
-   #USDC
-
+- USDC
 ```
 {
 token(id:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", block: {number: 11849560})
@@ -81,7 +80,6 @@ token(id:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", block: {number: 11849560}
 } 
 ```
    Returns ETH/USD price
-
    Divide ETH/YAM by ETH/USD to get USD/YAM
 
 
