@@ -13,7 +13,6 @@
 
 The DVM should support price requests for the DAI/PHP price index.
 
-<br />
 
 # MOTIVATION
 
