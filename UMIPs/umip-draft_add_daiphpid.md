@@ -8,7 +8,6 @@
 | Created           | Feb 3, 2021                                                                        |
 | Link to Discourse | [Discourse](https://discourse.umaproject.org/t/adding-dai-php-price-identifier/135)                                                                             |
 
-<br />
 
 # SUMMARY 
 
