@@ -51,7 +51,7 @@ YAM/USDT on Huobi
 YAM/USDT on Gate
 ETH/USD per UMIP 6
 
-2. Provide recommended endpoints to query for real-time prices from each market listed. 
+3. Provide recommended endpoints to query for real-time prices from each market listed. 
 
     - Sushiswap graph explorer
     https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
@@ -61,7 +61,27 @@ ETH/USD per UMIP 6
 
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
-Need to add YAM specific info here 
+
+YAM
+```
+{
+token(id:"0x0aacfbec6a24756c20d41914f2caba817c0d8521", block: {number: 11849560})
+    {derivedETH}
+} 
+```
+Returns ETH/YAM price
+
+USDC
+
+```
+{
+token(id:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", block: {number: 11849560})
+    {derivedETH}
+} 
+```
+Returns ETH/USD price
+
+Divide ETH/YAM by ETH/USD to get USD/YAM
 
 
 6.  Do these sources allow for querying up to 74 hours of historical data? 
