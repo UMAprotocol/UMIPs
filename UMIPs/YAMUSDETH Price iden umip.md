@@ -71,9 +71,15 @@ ETH/USD per UMIP 6
 
     * USDC: Returns ETH/USD price. Divide ETH/YAM by ETH/USD to get USD/YAM
 
-        ```{
-        token(id:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", block: {number: 11849560})
-        {derivedETH}
+        ```
+        {
+        token(
+            id:"0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", 
+            block: {number: 11849560}
+        )
+        {
+            derivedETH
+        }
         } 
   
 6.  Do these sources allow for querying up to 74 hours of historical data? 
