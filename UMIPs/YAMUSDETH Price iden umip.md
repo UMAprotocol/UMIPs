@@ -41,29 +41,25 @@ More information on YAM can be found on the website: https://yam.finance/
 1. What markets should the price be queried from? It is recommended to have at least 3 markets.
 
 - Sushiswap 
-- Huobi  
-- Gate.io  
+- Uniswap 
+- Huobi   
 
 2.  Which specific pairs should be queried from each market?
 
 - YAM/ETH on sushiswap
-- YAM/ETH on Huobi
-- YAM/ETH on Gate
+- YAM/ETH on Uniswap
 - YAM/USDT on Huobi
 - ETH/USD per UMIP 6
 
 3. Provide recommended endpoints to query for real-time prices from each market listed. 
 
-    - Sushiswap Pool Address:
-    0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c
-    
+    - Sushiswap Pool Address: 0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c
+    - Uniswap Pool Address: 0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d
     - Huobi YAM/USDT: https://api.cryptowat.ch/markets/Huobi/yamusdt/price
-    - Huobi YAM/ETH: https://api.cryptowat.ch/markets/Huobi/yameth/price
-    - Gate.io YAM/ETH: https://api.cryptowat.ch/markets/gateio/yameth/price
-
+   
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
-    * Sushiswap Query using the Graph
+    * Sushiswap and Uniswap query using the Graph
 
         ```
         {
@@ -76,18 +72,15 @@ More information on YAM can be found on the website: https://yam.finance/
             }
         } 
         
-     - Huobi YAM/USDT: https://api.cryptowat.ch/markets/Huobi/yamusdt/price
-     - Huobi YAM/ETH: https://api.cryptowat.ch/markets/Huobi/yameth/price
-     - Gate.io YAM/ETH: https://api.cryptowat.ch/markets/gateio/yameth/price
-    
+     - Huobi YAM/USDT: https://api.cryptowat.ch/markets/huobi/yamusdt/ohlc?after=1612993806&before=1614100000&periods=60
+       
+    6.  Do these sources allow for querying up to 74 hours of historical data? 
 
-6.  Do these sources allow for querying up to 74 hours of historical data? 
-
-    - Yes, detailed in implementation section
+    - Yes
 
 7.  How often is the provided price updated?
 
-    - Every Block
+    - Every Block for uniswap and sushiswap. Every 60 seconds for Huobi
 
 8. Is an API key required to query these sources? 
 
@@ -218,9 +211,9 @@ Prices are primarily used by Priceless contracts to calculate a synthetic tokenâ
 
 The addition of YAMETH, ETHYAM, YAMUSD, and USDYAM fits into a larger goal of advancing the adoption of the UMA protocol by allowing YAM to be used as collateral for minting derivatives on the Degenerative platform, as well as other UMA based synthetics. This furthers adoption of the protocol by encouraging a convergence of capital from different projects and increasing TVL.
 
-Using the Sushiswap Price should give the most accurate price for YAM/ETH on the market as it has the deepest liquidity. All AMM pools should be queried using a 1 minute TWAP to prevent flash-loan attacks and liquidations.
+Using the Sushiswap Price should give the most accurate price for YAM/ETH on the market as it has the deepest liquidity. Uniswap liquidity is increasing but much lower. All AMM pools should be queried using a 1 minute TWAP to prevent flash-loan attacks and liquidations.
 
-The YAM/USDT pools on Huobi and Gate.io have the most volume. Much more than YAM/ETH.
+The YAM/USDT pool on Huobi has more volume than YAM/ETH.
 
 
 # IMPLEMENTATION
@@ -229,12 +222,14 @@ The YAM/USDT pools on Huobi and Gate.io have the most volume. Much more than YAM
 
 1. **What prices should be queried for and from which markets?**
 
-    1. Query YAM/ETH Price from Sushiswap using 1 minute TWAP (https://app.sushiswap.fi/pair/0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c)
-    2. Query YAM/ETH price from Huobi
-    3. Query YAM/ETH price from Gate.io 
-    4. Take the median of prices acquired from steps 1-3 to get the final YAM/ETH price
-    5. Round to 18 decimals
-    6. (for ETH/YAM) Take the Inverse of the result of step 6 (1/ YAM/ETH) to get the ETH/YAM price.
+    1. Query YAM/ETH Price from Sushiswap using 1 minute TWAP (0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c)
+    2. Query YAM/ETH Price from Uniswap using 1 minute TWAP (0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d)
+    3. Query YAM/USDT price from Huobi
+    4. Query the USD/ETH Price as per UMIP-6
+    5. Multiply the YAM/USDT price found in step 3 by the USD/ETH price to get the Huobi YAM/ETH price
+    6. Take the median of prices acquired from steps 1,2, and 5 to get the final YAM/ETH price
+    7. Round to 18 decimals
+    8. (for ETH/YAM) Take the Inverse of the result of step 7 (1/ YAM/ETH) to get the ETH/YAM price.
 
 2. **Pricing interval**
 
@@ -254,14 +249,14 @@ The YAM/USDT pools on Huobi and Gate.io have the most volume. Much more than YAM
 
 1. **What prices should be queried for and from which markets?**
 
-    1. Query YAM/ETH Price from Sushiswap using 1 minute TWAP (https://sushiswap.fi/pair/0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c)
-    2. Query the YAM/USDT price on Gate.io
+    1. Query YAM/ETH Price from Sushiswap using 1 minute TWAP (0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c)
+    2. Query YAM/ETH Price from Uniswap using 1 minute TWAP (0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d)
     3. Query the ETH/USD Price as per UMIP-6
-    4. Multiply the YAM/ETH prices in steps 1 and 2 by the ETH/USD price to get the YAM/USD price
+    4. Multiply the YAM/ETH prices in steps 1 and 2 by the ETH/USD price to get the respective YAM/USD prices.
     5. Query the YAM/USDT Price on Huobi 
-    6. Take the median of prices acquired from steps 4-5 to get the final YAM/USD price
+    6. Take the median of prices acquired from steps 4 & 5 to get the final YAM/USD price
     7. Round to 6 Decimals
-    8. (for USD/YAM) Take the Inverse of the result of step 6 (1/ YAM/USD) to get the USD/YAM price.
+    8. (for USD/YAM) Take the Inverse of the result of step 7 (1/ YAM/USD) to get the USD/YAM price.
 
 2. **Pricing interval**
 
@@ -280,8 +275,7 @@ The YAM/USDT pools on Huobi and Gate.io have the most volume. Much more than YAM
 
 # Security considerations
 
-
-Sushiswap is the most liquid DEX and it is an on-chain pooled AMM style exchange, if liquidity is withdrawn too fast, there may be a risk in the price peg, and therefore the integrity of the system. In the current setting, there would need to be a significant event that erodes confidence in YAM and the token, causing Sushiswap liquidity to be withdrawn quickly and en-masse. This threat is mitigated via YAM incentives paid to liquidity providers who stake their tokens. Furthermore, in also querying Huobi and Gate.io, this risk is minimized.
+Sushiswap is the most liquid DEX and it is an on-chain pooled AMM style exchange, if liquidity is withdrawn too fast, there may be a risk in the price peg, and therefore the integrity of the system. In the current setting, there would need to be a significant event that erodes confidence in YAM and the token, causing Sushiswap liquidity to be withdrawn quickly and en-masse. This threat is mitigated via YAM incentives paid to liquidity providers who stake their tokens. The price on uniswap should follow sushiswap due to on chain arbitrage unless there is a serious problem with Ethereum. Furthermore, in also querying Huobi this risk is minimized.
 
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference assetâ€™s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 
