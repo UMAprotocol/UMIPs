@@ -1,10 +1,10 @@
 
 ## HEADERS
-| UMIP [xx]     |                                                                                                                                  |
+| UMIP-50     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add YAMETH, ETHYAM, YAMUSD, and USDYAM as price identifiers                                                                                                  |
 | Authors    | Ross (ross@yam.finance)
-| Status     | Draft                                                                                                                                  |
+| Status     | Last Call                                                                                                                                  |
 | Created    | January 28th, 2021  
 | Forum Post | https://discourse.umaproject.org/t/add-yam-usd-and-yam-eth-price-identifiers/171
 
@@ -53,13 +53,13 @@ More information on YAM can be found on the website: https://yam.finance/
 
 3. Provide recommended endpoints to query for real-time prices from each market listed. 
 
-    - Sushiswap Pool Address: 0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c
-    - Uniswap Pool Address: 0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d
+    - Sushiswap YAM/ETH Pool Address: 0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c
+    - Uniswap YAM/ETH Pool Address: 0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d
     - Huobi YAM/USDT: https://api.cryptowat.ch/markets/Huobi/yamusdt/price
    
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
-    * Sushiswap and Uniswap query using the Graph
+    * Sushiswap and Uniswap price data is onchain. One example of how a voter can query this price, would be with the subgraph query shown below:
 
         ```
         {
@@ -70,7 +70,8 @@ More information on YAM can be found on the website: https://yam.finance/
             {
                 derivedETH
             }
-        } 
+        }
+        ``` 
         
      - Huobi YAM/USDT: https://api.cryptowat.ch/markets/huobi/yamusdt/ohlc?after=1612993806&before=1614100000&periods=60
        
@@ -100,7 +101,7 @@ More information on YAM can be found on the website: https://yam.finance/
 
 # PRICE FEED IMPLEMENTATION
 
-In progress
+These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js), [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
 # TECHNICAL SPECIFICATIONS
 
@@ -118,7 +119,7 @@ In progress
 
     - YES
 
-- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
+- Is your collateral currency already approved to be used by UMA financial contracts? 
 
     - Yes (https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-44.md)
 
@@ -136,13 +137,13 @@ In progress
 
 **3. Quote currency** - USD
 
-**4. Intended Collateral Currency** - USD
+**4. Intended Collateral Currency** - USDT
 
 - Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
     - Yes
 
-- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
+- Is your collateral currency already approved to be used by UMA financial contracts? 
 
     - Yes. Per UMIP 18
 
@@ -166,7 +167,7 @@ In progress
 
     - YES
 
-- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
+- Is your collateral currency already approved to be used by UMA financial contracts?
 
     - Pending UMIP (https://github.com/UMAprotocol/UMIPs/pull/154)
 
@@ -192,7 +193,7 @@ In progress
 
     - YES
 
-- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
+- Is your collateral currency already approved to be used by UMA financial contracts?
 
     - Yes
 
@@ -218,60 +219,25 @@ The YAM/USDT pool on Huobi has more volume than YAM/ETH.
 
 # IMPLEMENTATION
 
-**For YAM/ETH and ETH/YAM **
+**For YAM/ETH and ETH/YAM**
 
-1. **What prices should be queried for and from which markets?**
-
-    1. Query YAM/ETH Price from Sushiswap using 1 minute TWAP (0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c)
-    2. Query YAM/ETH Price from Uniswap using 1 minute TWAP (0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d)
-    3. Query YAM/USDT price from Huobi
-    4. Query the USD/ETH Price as per UMIP-6
-    5. Multiply the YAM/USDT price found in step 3 by the USD/ETH price to get the Huobi YAM/ETH price
-    6. Take the median of prices acquired from steps 1,2, and 5 to get the final YAM/ETH price
-    7. Round to 18 decimals
-    8. (for ETH/YAM) Take the Inverse of the result of step 7 (1/ YAM/ETH) to get the ETH/YAM price.
-
-2. **Pricing interval**
-
-    - Per Ethereum Block (roughly 12 seconds)
-
-3. **Input processing**
-
-    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-
-4. **Result processing** 
-
-    - Round to 18 decimals
-      
-<br>
+    1. Query YAM/ETH Price from Sushiswap using 1 minute TWAP (0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c).
+    2. Query YAM/ETH Price from Uniswap using 1 minute TWAP (0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d).
+    3. Query YAM/USDT price from Huobi.
+    4. Query the USD/ETH Price as per UMIP-6.
+    5. Multiply the YAM/USDT price found in step 3 by the USD/ETH price to get the Huobi YAM/ETH price.
+    6. Take the median of prices acquired from steps 1, 2, and 5 and round to 18 decimals get the final YAM/ETH price.
+    7. (for ETH/YAM) Take the Inverse of the result of step 7 (1/ YAM/ETH) and round to 18 decimals to get the ETH/YAM price.
 
 **For YAM/USD and USD/YAM** 
 
-1. **What prices should be queried for and from which markets?**
-
-    1. Query YAM/ETH Price from Sushiswap using 1 minute TWAP (0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c)
-    2. Query YAM/ETH Price from Uniswap using 1 minute TWAP (0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d)
-    3. Query the ETH/USD Price as per UMIP-6
+    1. Query YAM/ETH Price from Sushiswap using 1 minute TWAP (0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c).
+    2. Query YAM/ETH Price from Uniswap using 1 minute TWAP (0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d).
+    3. Query the ETH/USD Price as per UMIP-6.
     4. Multiply the YAM/ETH prices in steps 1 and 2 by the ETH/USD price to get the respective YAM/USD prices.
-    5. Query the YAM/USDT Price on Huobi 
-    6. Take the median of prices acquired from steps 4 & 5 to get the final YAM/USD price
-    7. Round to 6 Decimals
-    8. (for USD/YAM) Take the Inverse of the result of step 7 (1/ YAM/USD) to get the USD/YAM price.
-
-2. **Pricing interval**
-
-    - On chain intervals to be per Ethereum block (roughly 12 seconds). Intervals for centralized exchanges should be the price closest in time before the queried Ethereum block.
-
-3. **Input processing**
-
-    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-
-4. **Result processing** 
-
-    - Round to 6 decimals
-
-<br>
-
+    5. Query the YAM/USDT Price on Huobi. 
+    6. Take the median of prices acquired from steps 4 & 5 and round to 6 decimals to get the YAM/USD price.
+    7. (for USD/YAM) Take the Inverse of the result of step 6 (1/ YAM/USD) and round to 18 decimals to get the USD/YAM price.
 
 # Security considerations
 
