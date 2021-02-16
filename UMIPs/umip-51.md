@@ -7,9 +7,9 @@
 | Created    | February 16, 2021                                                                                                                           |
 
 ## Summary
-This UMIP will have the effect of introducing a new ExpiringMultiParty contract template that allows for optimistic price settlement.
+This UMIP will have the effect of introducing a new ExpiringMultiParty contract template that allows for optimistic expiry price settlement. A description of the optimistic oracle can be found in UMIP-49.
 
-The template also allows deployers to use custom transformation libraries to transform the price, the identifier passed to the optimistic oracle or DVM, and the collateralization requirement.
+The template also allows deployers to use custom financial product libraries to transform the price, the identifier passed to the optimistic oracle or DVM, and the collateralization requirement. Examples of financial product libraries can be found in this [directory](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/financial-templates/common/financial-product-libraries). (If you do not want to use a financial product library, you can pass the zero address `0x0`.)
 
 Additionally, the token precision matches the collateral precision for contracts deployed with this template, reducing the complexity of price calculation and the potential for errors.
 
