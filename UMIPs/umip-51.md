@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-#    |                                                                                                                                          |
+| UMIP-51    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add WBTCUSD, USDWBTC as price identifiers              |
 | Authors    | Logan (Logan@opendao.io)                               |
-| Status     | Draft                                                                                                                                 |
+| Status     | Last Call                                                                                                                                 |
 | Created    | February 2, 2021                                                                                                                           |
 | Discourse Link   | https://discourse.umaproject.org/t/adding-wbtc-usd-price-identifier-umip/124                                              |
 
