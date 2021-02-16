@@ -27,7 +27,6 @@ The motivation for these price identifiers is explained in [umip-22](https://git
 
 Please refer to [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md).
 
-<br>
 
 # PRICE FEED IMPLEMENTATION
 
