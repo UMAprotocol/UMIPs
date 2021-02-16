@@ -21,6 +21,8 @@ To accomplish this upgrade, a few actions will need to be taken:
 
 Note: this change will only create the optimistic oracle. New financial contracts that utilize the optimistic oracle will need to be deployed for it to become useful, and the DVM will require an upgrade to handle ancillary data.
 
+TODO: Describe the steps for using the Optimstic Oracle in detail.
+
 ## Rationale
 
 This new contract allows the optimistic settlement of prices, reducing the number of DVM votes required for expiring multi-party contracts. It also allows for funding rate proposals, a pre-requisite for perpetual multi-party contracts.
