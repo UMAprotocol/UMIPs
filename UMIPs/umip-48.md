@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH_JUN21 as a supported price identifier                                                                                             |
 | Authors    | nonstopTheo (nonstoptheo@yam.finance)
-| Status     | Draft                                                                                                                                   |
+| Status     | Last Call                                                                                                                                   |
 | Created    | February 10th, 2021                                                                                                                              |
 | Link to Discourse| https://discourse.umaproject.org/t/umip-48-add-gaseth-jun21-as-a-supported-price-identifier/217
 
@@ -30,9 +30,7 @@ Please refer to [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs
 
 # PRICE FEED IMPLEMENTATION
 
-Identifier name: GASETH_JUN21
-
-To further explain the price feed implementation beyond what is stated in [umip-22]: The price feed being used is the Uniswap price feed and only the Uniswap TWAP calculation will need to be queried in real-time. The Uniswap price feed is referenced [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js)
+To further explain the price feed implementation beyond what is stated in [umip-22]: The price feed being used is the Uniswap price feed and only the Uniswap TWAP calculation will need to be queried in real-time. The Uniswap price feed is referenced [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js).
 
 
 # TECHNICAL SPECIFICATIONS
@@ -47,9 +45,7 @@ To further explain the price feed implementation beyond what is stated in [umip-
 
 **5. Collateral Decimals** - 18 decimals
 
-**6. Rounding** - 6 decimals
-
-<br>
+**6. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
 # IMPLEMENTATION
 The identifier requires updated timestamps.
@@ -59,8 +55,6 @@ For a price request made at or after the Unix timestamp `1625097600` (July 1, 20
 For a price request made before `1625097600`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the listed synthetic token in ETH. The synthetic token address will be listed in the Technical Specification section.
 
 Updated rounding: 6 decimals
-
-<br>
 
 # Security considerations
 
