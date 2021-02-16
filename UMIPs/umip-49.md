@@ -1,6 +1,6 @@
 ## HEADERS
 
-| UMIP [#]          |                                                                                     |
+| UMIP-49          |                                                                                     |
 | ----------------- | ----------------------------------------------------------------------------------- |
 | UMIP Title        | Add DAIPHP and PHPDAI as a price identifier                                         |
 | Authors           | Chris Verceles (chris.verceles@halodao.com), James Orola (james.orola@halodao.com)  |
@@ -18,12 +18,10 @@ The DVM currently does not support the DAIPHP or PHPDAI price index. Supporting 
 
 Examples of a person interacting with a contract that uses this price identifier would be;
 
-    - in trading pairs on Philippine cryptocurrency exchanges
-    - basis for on chain, on demand liquidity in cross border remittance (our team is starting with the Singapore Philippine corridor with [ZkSync](https://zksync.io/faq/intro.html), [Argent](http://argent.xyz/), [SG stablecoin on ramp](https://www.xfers.com/sg/) and [PH off ramp](https://www.bloom.solutions/) who would use the synthetic Philippine Peso )
+    - In trading pairs on Philippine cryptocurrency exchanges
+    - Basis for on chain, on demand liquidity in cross border remittance (our team is starting with the Singapore Philippine corridor with [ZkSync](https://zksync.io/faq/intro.html), [Argent](http://argent.xyz/), [SG stablecoin on ramp](https://www.xfers.com/sg/) and [PH off ramp](https://www.bloom.solutions/) who would use the synthetic Philippine Peso )
 
 More information on what we aim to achieve can be found here: [website](https://halodao.com)
-
-<br />
 
 # MARKETS & DATA SOURCES
 
@@ -86,7 +84,6 @@ More information on what we aim to achieve can be found here: [website](https://
     - CMC: $29/ mo for Hobbyist plan which bumps call credits to 40K /mo
     - CG: Free!
 
-<br />
 
 # PRICE FEED IMPLEMENTATION
 
@@ -98,7 +95,6 @@ Link to the price feed pull issue:
 
 - https://github.com/UMAprotocol/protocol/issues/2474
 
-<br>
 
 # TECHNICAL SPECIFICATIONS
 
@@ -124,7 +120,7 @@ Link to the price feed pull issue:
 
 - DAI has 18 Decimals (obtained [here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f)).
 
-**6. Rounding** - Closest, 0.5 up
+**6. Rounding** - 18 decimal places.
 
 ## PHPDAI
 
@@ -148,9 +144,7 @@ Link to the price feed pull issue:
 
 - DAI has 18 Decimals (obtained [here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f)).
 
-**6. Rounding** - Closest, 0.5 up
-
-<br>
+**6. Rounding** - 18 decimal places.
 
 # RATIONALE
 
@@ -164,29 +158,32 @@ Our initial approach in lieu of not having access to a "raw" exchange based DAI:
 
 Additionally, both CG and CMC sources offer free and publicly accessible DAI:PHP endpoints, which we would then invert in the price feed implementation to arrive at the PHP:DAI rate.
 
-<br>
-
 # IMPLEMENTATION
 
-1. **What prices should be queried for and from which markets?**
+1. Voters should query for the DAIPHP rate from CoinMarketCap and CoinGecko at the nearest timestamp that is earlier than the price request timestmap.
+2. Voters should then calculate the mean of the CMC and CG results.
+3. This result should be rounded to 18 decimal places to return the DAIPHP price.
+4. To get the PHPDAI price, the inverse of DAIPHP should be calculated. (1/(DAIPHP)). This should be rounded to 18 decimal places.
+
+
+**What prices should be queried for and from which markets?**
 
    - DAI:PHP from CoinMarketCap
    - DAI:PHP from CoinGecko
 
-2. **Pricing interval**
+**Pricing interval**
 
    - 300 seconds
 
-3. **Input processing**
+**Input processing**
 
    - Human intervention in extreme circumstances where the result differs from broad market consensus
 
-4. **Result processing**
+**Result processing**
 
    - Mean between the DAI:PHP feeds of CG, CMC
    - Invert the resulting DAI:PHP rate (for example, if DAI:PHP returns 48, then PHP:DAI rate = 1/48) to get the PHP:DAI rate
 
-<br>
 
 # Security considerations
 

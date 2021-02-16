@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add renDOGE as a collateral currency              |
 | Authors    | Logan Fulcher (logan@opendao.io) |
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | January 20,2021                                                                                                                           |
 | Link to Discourse    | https://discourse.umaproject.org/t/adding-rendoge-as-collateral-umip/24/30                                                 |
 

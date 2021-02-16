@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add Ocean as a collateral currency              |
 | Authors    | Logan (logan@opendao.io) |
-| Status     | Final                                                                                                                                   |
+| Status     | Approved                                                                                                                                   |
 | Created    | January 28, 2021                                                                                                                           |
 | Created    | January 28, 2021                                                                                                                           |
 |Link to Discourse|  https://discourse.umaproject.org/t/adding-ocean-as-collateral-umip/117                                                               |
