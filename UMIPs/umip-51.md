@@ -27,16 +27,15 @@ More information on the WBTC network can be found on the website: https://wbtc.n
 
 ## Markets and Data Sources
 
-1) What markets should the price be queried from? It is recommended to have at least 3 markets.
+What markets should the price be queried from? It is recommended to have at least 3 markets.
 
-Binance, Sushiswap, and Uniswap should be used to construct the price.These 3 exchanges comprise a significant amount of WBTC trade volume and have available pricefeeds on Cryptowatch. 
+- Binance, Sushiswap, and Uniswap should be used to construct the price.These 3 exchanges comprise a significant amount of WBTC trade volume and have available pricefeeds on Cryptowatch. 
 
+Which specific pairs should be queried from each market?
 
-2) Which specific pairs should be queried from each market?
+- Binance: WBTC/BTC, Sushiswap WBTC/ETH, Uniswap: WBTC/ETH, ETHUSD per [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md) and BTCUSD per [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md).
 
-Binance: WBTC/BTC, Sushiswap WBTC/ETH, Uniswap: WBTC/ETH, ETHUSD per [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md) and BTCUSD per [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md).
-
-3) Provide recommended endpoints to query for real-time prices from each market listed.
+Provide recommended endpoints to query for real-time prices from each market listed.
 
 Binance: WBTC/BTC 
 - https://api.binance.com/api/v3/ticker/price?symbol=WBTCBTC
@@ -48,13 +47,10 @@ Sushiswap: WBTC/ETH
 Uniswap: WBTC/ETH
 - https://info.uniswap.org/pair/0xbb2b8038a1640196fbe3e38816f3e67cba72d940
 
+How often is the provided price updated?
+- The lower bound on the price update frequency is a minute.
 
-1) How often is the provided price updated?
-
-The lower bound on the price update frequency is a minute.
-
-
-5) Provide recommended endpoints to query for historical prices from each market listed.
+Provide recommended endpoints to query for historical prices from each market listed.
 
 Binance: WBTC/BTC 
 - https://api.binance.com/api/v3/klines?symbol=WBTCETH&interval=1d
@@ -66,30 +62,23 @@ Sushiswap:WBTC/ETH
 Uniswap:WBTC/ETH
 - https://info.uniswap.org/pair/0xbb2b8038a1640196fbe3e38816f3e67cba72d940
 
+Do these sources allow for querying up to 74 hours of historical data?
+- Yes
 
-6) Do these sources allow for querying up to 74 hours of historical data?
+How often is the provided price updated?
+- The lower bound on the price update frequency is a minute.
 
-Yes
+Is an API key required to query these sources?
+- Cryptowatch has a free tier that would be suitable for voters. Bot operators will need to use an API key.
+- 
+Is there a cost associated with usage?
+- No
 
-7) How often is the provided price updated?
+If there is a free tier available, how many queries does it allow for?
+- The lower bound on the number of queries allowed per hour is >> 1000.
 
-The lower bound on the price update frequency is a minute.
-
-8) Is an API key required to query these sources?
-
-No
-
-9) Is there a cost associated with usage?
-
-No
-
-10) If there is a free tier available, how many queries does it allow for?
-
-The lower bound on the number of queries allowed per hour is >> 1000.
-
-11) What would be the cost of sending 15,000 queries?
-
-Approximately $0
+What would be the cost of sending 15,000 queries?
+- Approximately $0
 
 
 ## Price Feed Implementation
