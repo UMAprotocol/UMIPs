@@ -44,7 +44,7 @@ To further explain the price feed implementation beyond what is stated in [umip-
 
 **3. Quote currency** - uGAS
 
-**4. Intended Collateral Currency** - wETH
+**4. Intended Collateral Currency** - WETH
 
 **5. Collateral Decimals** - 18 decimals
 
