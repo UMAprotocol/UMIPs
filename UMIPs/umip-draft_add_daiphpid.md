@@ -19,7 +19,6 @@ The DVM currently does not support the DAIPHP or PHPDAI price index. Supporting 
 Examples of a person interacting with a contract that uses this price identifier would be;
 
     - in trading pairs on Philippine cryptocurrency exchanges
-
     - basis for on chain, on demand liquidity in cross border remittance (our team is starting with the Singapore Philippine corridor with [ZkSync](https://zksync.io/faq/intro.html), [Argent](http://argent.xyz/), [SG stablecoin on ramp](https://www.xfers.com/sg/) and [PH off ramp](https://www.bloom.solutions/) who would use the synthetic Philippine Peso )
 
 More information on what we aim to achieve can be found here: [website](https://halodao.com)
@@ -42,7 +41,6 @@ More information on what we aim to achieve can be found here: [website](https://
 3. Provide recommended endpoints to query for real-time prices from each market listed.
 
    - CMC: `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=DAI&convert=PHP&CMC_PRO_API_KEY=<free tier api key>`
-
    - CG: `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=0x6b175474e89094c44da98b954eedeac495271d0f&vs_currencies=php`
 
 4. How often is the provided price updated?
@@ -96,7 +94,7 @@ Link to the UMA protocol PR:
 
 - https://github.com/UMAprotocol/protocol/pull/2480
 
-Link to the price feed pull request.
+Link to the price feed pull issue:
 
 - https://github.com/UMAprotocol/protocol/issues/2474
 
