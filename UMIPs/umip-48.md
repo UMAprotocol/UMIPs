@@ -30,8 +30,7 @@ Please refer to [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs
 
 # PRICE FEED IMPLEMENTATION
 
-Technical specifications are the same as in [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md) except: 
-- Identifier name: GASETH_JUN21
+Identifier name: GASETH_JUN21
 
 To further explain the price feed implementation beyond what is stated in [umip-22]: The price feed being used is the Uniswap price feed and only the Uniswap TWAP calculation will need to be queried in real-time. The Uniswap price feed is referenced [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js)
 
@@ -40,9 +39,9 @@ To further explain the price feed implementation beyond what is stated in [umip-
 
 **1. Price Identifier Name** - GASETH_JUN21
 
-**2. Base Currency** - ETH
+**2. Base Currency** - uGAS
 
-**3. Quote currency** - uGAS
+**3. Quote currency** - ETH
 
 **4. Intended Collateral Currency** - WETH
 
@@ -50,27 +49,16 @@ To further explain the price feed implementation beyond what is stated in [umip-
 
 **6. Rounding** - 6 decimals
 
-
 <br>
 
-# RATIONALE
-Please reference the Rationale section in [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md) for a full walkthrough of the rationale behind calculating aggregatory gas prices.
-
-- Why this implementation of the identifier as opposed to other implementation designs?
-
+# IMPLEMENTATION
 The identifier requires updated timestamps.
 
 For a price request made at or after the Unix timestamp `1625097600` (July 1, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20.
 
 For a price request made before `1625097600`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the listed synthetic token in ETH. The synthetic token address will be listed in the Technical Specification section.
 
-
-<br>
-
-# IMPLEMENTATION
-Technical specifications are the same as in [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md) except: 
-- Identifier name: GASETH_JUN21
-
+Updated rounding: 6 decimals
 
 <br>
 
