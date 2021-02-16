@@ -2,7 +2,7 @@
 ## HEADERS
 | UMIP [xx]     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add YAMETH, ETHYAM, YAMUSD, and USDYAM as price identifiers]                                                                                                  |
+| UMIP Title | Add YAMETH, ETHYAM, YAMUSD, and USDYAM as price identifiers                                                                                                  |
 | Authors    | Ross (ross@yam.finance)
 | Status     | Draft                                                                                                                                  |
 | Created    | January 28th, 2021  
@@ -24,7 +24,7 @@ The DVM currently does not support the YAMETH, ETHYAM, YAMUSD or USDYAM price in
 
 Supporting the YAMUSD price identifier would enable the creation of a YAM backed stablecoin, built using one of the perpetual stablecoin frameworks being developed on UMA. YAM token holders can utilize this as a hedging tool, and could go long or use it for other financial purposes. There is also potential for the YAM DAO itself to use YAM reserves or newly minted tokens as a community backed line of credit to mint YAM backed stablecoins to support its mission or to add liquidity to UMA synths supported on Degenerative.finance. 
 
-A user would lock YAM in order to mint a new overcollateralized dollar-pegged token.  This price feed would be used to determine the liquidation price of the collateral. If the Perpetual token has a funding rate, the price feed would also be used to determine it and would dictate whether there is a premium on repayment to return the YAM collateral.
+A user would lock YAM in order to mint a new overcollateralized dollar-pegged token. This price feed would be used to determine the liquidation price of the collateral. If the Perpetual token has a funding rate, the price feed would also be used to determine it and would dictate whether there is a premium on repayment to return the YAM collateral.
 
 Supporting the YAM/ETH and ETH/YAM price identifiers would enable the creation of similar products that use YAM as collateral with ETH denominated as a reference price. 
 
@@ -306,7 +306,6 @@ Because there is only 1 liquid exchange and it is an on-chain AMM style, if liqu
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified. As noted above, $UMA-holders should also consider re-defining this identifier as liquidity in the underlying asset changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
-
 
 
 
