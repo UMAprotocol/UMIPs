@@ -98,7 +98,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ## Technical Specifications
 
-- Price Identifier Name: WBTCUSD
+### WBTCUSD
 - Base Currency: WBTC
 - Quote Currency: USD
 - Intended Collateral Currency: USDC
@@ -107,7 +107,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 - Collateral Decimals: 6 decimals
 - Rounding: Round to 6 decimals.
 
-- Price Identifier Name: USDWBTC
+### USDWBTC
 - Base Currency: USD
 - Quote Currency: WBTC
 - Intended Collateral Currency: WBTC
