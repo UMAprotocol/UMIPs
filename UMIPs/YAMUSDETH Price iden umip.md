@@ -12,10 +12,10 @@
 
 The DVM should support price requests for the following indexes
 
-YAM/ETH 
-ETH/YAM 
-YAM/USD
-USD/YAM 
+   - YAM/ETH 
+   - ETH/YAM 
+   - YAM/USD
+   - USD/YAM 
 
 
 # MOTIVATION
@@ -40,27 +40,26 @@ More information on YAM can be found on the website: https://yam.finance/
 
 1. What markets should the price be queried from? It is recommended to have at least 3 markets.
 
-Sushiswap 
-Huobi  
-Gate.io  
+- Sushiswap 
+- Huobi  
+- Gate.io  
 
 2.  Which specific pairs should be queried from each market?
 
-YAM/ETH on sushiswap 
-YAM/USDT on Huobi
-YAM/USDT on Gate
-ETH/USD per UMIP 6
+- YAM/ETH on sushiswap
+- YAM/ETH on Huobi
+- YAM/ETH on Gate
+- YAM/USDT on Huobi
+- ETH/USD per UMIP 6
 
 3. Provide recommended endpoints to query for real-time prices from each market listed. 
 
     - Sushiswap Pool Address:
     0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c
-
-    - Uniswap Pool Address:
-    0xe2aab7232a9545f29112f9e6441661fd6eeb0a5d
     
-    - CryptoWatch
-    https://cryptowat.ch/assets/yam
+    - Huobi YAM/USDT: https://api.cryptowat.ch/markets/Huobi/yamusdt/price
+    - Huobi YAM/ETH: https://api.cryptowat.ch/markets/Huobi/yameth/price
+    - Gate.io YAM/ETH: https://api.cryptowat.ch/markets/gateio/yameth/price
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
@@ -77,8 +76,9 @@ ETH/USD per UMIP 6
             }
         } 
         
-    * Huobi and Gate.io Queries
-    https://cryptowat.ch/assets/yam
+     - Huobi YAM/USDT: https://api.cryptowat.ch/markets/Huobi/yamusdt/price
+     - Huobi YAM/ETH: https://api.cryptowat.ch/markets/Huobi/yameth/price
+     - Gate.io YAM/ETH: https://api.cryptowat.ch/markets/gateio/yameth/price
     
 
 6.  Do these sources allow for querying up to 74 hours of historical data? 
@@ -255,11 +255,11 @@ The YAM/USDT pools on Huobi and Gate.io have the most volume. Much more than YAM
 1. **What prices should be queried for and from which markets?**
 
     1. Query YAM/ETH Price from Sushiswap using 1 minute TWAP (https://sushiswap.fi/pair/0x0f82e57804d0b1f6fab2370a43dcfad3c7cb239c)
-    2. Query the ETH/USD Price as per UMIP-6
-    3. Multiply the YAM/ETH price by the ETH/USD price to get the YAM/USD price
-    4. Query the YAM/USDT price on Gate.io
+    2. Query the YAM/USDT price on Gate.io
+    3. Query the ETH/USD Price as per UMIP-6
+    4. Multiply the YAM/ETH prices in steps 1 and 2 by the ETH/USD price to get the YAM/USD price
     5. Query the YAM/USDT Price on Huobi 
-    6. Take the median of prices acquired from steps 3-5 to get the final YAM/USD price
+    6. Take the median of prices acquired from steps 4-5 to get the final YAM/USD price
     7. Round to 6 Decimals
     8. (for USD/YAM) Take the Inverse of the result of step 6 (1/ YAM/USD) to get the USD/YAM price.
 
