@@ -74,7 +74,7 @@ More information on YAM can be found on the website: https://yam.finance/
         
      - Huobi YAM/USDT: https://api.cryptowat.ch/markets/huobi/yamusdt/ohlc?after=1612993806&before=1614100000&periods=60
        
-    6.  Do these sources allow for querying up to 74 hours of historical data? 
+6.  Do these sources allow for querying up to 74 hours of historical data? 
 
     - Yes
 
