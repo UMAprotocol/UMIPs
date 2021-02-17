@@ -1,8 +1,8 @@
 ## Headers
 
-| UMIP-15    |                                                                                            |
+| UMIP-55    |                                                                                            |
 | ---------- | ------------------------------------------------------------------------------------------ |
-| UMIP Title | Approve Updated DVM Voting Contract to Mitigate Flash-loans During Token Balance Snapshots |
+| UMIP Title | Approve Upgraded DVM Voting Contract to add ancillaryData                                  |
 | Authors    | Matt Rice (matt@umaproject.org)                                                            |
 | Status     | Draft                                                                                      |
 | Created    | February 16, 2021                                                                          |
@@ -60,7 +60,7 @@ To upgrade the transaction will involve 5 steps:
 
 1. Voting.sol and the [VotingUpgrader contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/umips/VotingUpgrader.sol)
 must be deployed. Once done, the addresses will be listed in this UMIP below.
-1. The new Voting.sol must be given minting priviledges for the UMA token to allow it to pay inflationary rewards.
+1. The new Voting.sol must be given minting privileges for the UMA token to allow it to pay inflationary rewards.
 1. Finder ownership must be passed to the `VotingUpgrader`.
 1. The existing voting contract's ownership must be passed to the `VotingUpgrader`.
 1. The `VotingUpgrader`'s `upgrade()` method must be called.
