@@ -36,6 +36,7 @@ The mainnet contract address:
 
 *OptimisticOracle* - https://etherscan.io/address/0x287a1ba52e030459f163f48b2ae468a085003a07
 
+
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin, and the final audit report can be reviewed [here](https://blog.openzeppelin.com/uma-audit-phase-4/)
 

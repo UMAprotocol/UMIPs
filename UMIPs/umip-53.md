@@ -18,7 +18,8 @@ The Perpetual contract template will allow for the creation of non-expiring synt
 # Technical Specification
 To accomplish this upgrade, a new financial contract template must be deployed.
 
-After deployment, this new `PerpetualCreator` contract should be approved as a ContractCreator in the Registry.
+
+After deployment, this new `PerpetualCreator` contract should be approved as a ContractCreator in the Registry. 
 
 Note: the voters only vote for the approval -- the deployment has no effect on the protocol until added as a ContractCreator.
 Like the expiring multi-party contract template, the perpetual template is used to create synthetic tokens that are securely collateralized without an on-chain price feed. These tokens are designed with mechanisms to incentivize token sponsors (those who create synthetic tokens) to properly collateralize their positions. These mechanisms include a liquidation and dispute process that allows token holders to be rewarded for identifying improperly collateralized token sponsor positions. The dispute process relies on an oracle, the UMA DVM, to settle disputes regarding liquidations.
