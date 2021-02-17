@@ -33,3 +33,5 @@ The `OptimisticOracle` contract can be found [here](https://github.com/UMAprotoc
 
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin, and the final audit report can be reviewed [here](https://blog.openzeppelin.com/uma-audit-phase-4/)
+
+This contract introduces the idea of a DVM trial because Optimistic Oracle users don't need to be explicitly registered with the DVM. Users of the Optimistic Oracle are encouraged to pay fees to the store as approved contracts do. However, they are also able to use the Optimistic Oracle without doing so on a trial basis. Each contracts' requests are distinguished at the DVM-level so the voters _can_ choose to reject requests if contracts are abusing this trial. The voters are expected to develop a consensus off-chain about what acceptable trial usage, but user contracts should be aware that using the Optimistic Oracle without paying fees and following DVM rules will be subject them to the voters' trial terms.
