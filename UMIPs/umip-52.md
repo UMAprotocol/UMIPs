@@ -1,5 +1,5 @@
 ## Headers
-| UMIP-49     |                                                                                                                                          |
+| UMIP-52     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add Optimistic Oracle              |
 | Authors    | John Shutt (john@umaproject.org) |
@@ -7,7 +7,7 @@
 | Created    | February 16, 2021                                                                                                                           |
 
 ## Summary (2-5 sentences)
-This UMIP will have the effect of introducing a new optimistic oracle contract that will allow optimistic settlement of prices and funding rates without a vote from the DVM. This will reduce the number of votes required from the DVM and is a pre-requisite for use of the new Perpetual (UMIP-50) and EMP (UMIP-51) contracts.
+This UMIP will have the effect of introducing a new optimistic oracle contract that will allow optimistic settlement of prices and funding rates without a vote from the DVM. This will reduce the number of votes required from the DVM and is a pre-requisite for use of the new Perpetual (UMIP-53) and EMP (UMIP-54) contracts.
 
 ## Motivation
 Prior to addition of the optimistic oracle, every expiring multi-party contract would require a vote from the DVM to establish a final settlement price. The optimistic oracle allows for optimistic settlement of expiring contracts with a liveness window for disputes, similar to how liquidations and withdrawals happen today. The optimistic oracle also allows for optimistic proposals of funding rates, allowing the implementation of a perpetual multi-party contract that does not expire.

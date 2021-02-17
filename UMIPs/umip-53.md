@@ -1,5 +1,5 @@
 # Headers
-| UMIP-4     |                                                                                                                                          |
+| UMIP-53     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Register new Perpetual financial contract with DVM                                                                                                 |
 | Authors    | John Shutt (john@umaproject.org) |
@@ -21,7 +21,7 @@ Like the expiring multi-party contract template, the perpetual template is used 
 
 Unlike the expiring multi-party template, the perpetual template includes a funding rate mechanism, which allows for contracts that track a price continually without ever expiring. Funding rate proposals are made optimistically and disputes can be forwarded to the DVM.
 
-For details on optimistic funding rate and price proposals, see UMIP-49, which describes the optimistic oracle.
+For details on optimistic funding rate and price proposals, see UMIP-52, which describes the optimistic oracle.
 
 A deployment of a perpetual synthetic token is defined by the following parameters.
 
