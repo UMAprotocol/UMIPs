@@ -14,7 +14,7 @@ Prior to addition of the optimistic oracle, every expiring multi-party contract 
 
 ## Technical Specification
 To accomplish this upgrade, a few actions will need to be taken:
-- A new `OptimisticOracle` contract will need to be deployed.
+- A new `OptimisticOracle` contract will need to be deployed. Once deployed, the contract address will be added to this UMIP.
 - A transaction will need to be proposed to add this new address to the `Finder` contract under the name `“OptimisticOracle”`.
 	- This is how other contracts will find the optimistic oracle and reference it.
 - The DVM will need to be upgraded to recognize disputes sent to it by the optimistic oracle and to handle ancillary data.
@@ -29,7 +29,7 @@ This new contract allows the optimistic settlement of prices, reducing the numbe
 
 ## Implementation
 
-The `OptimisticOracle` contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/oracle/implementation/OptimisticOracle.sol). It has been audited and will require no changes.
+The `OptimisticOracle` contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/implementation/OptimisticOracle.sol). It has been audited and will require no changes.
 
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin, and the final audit report can be reviewed [here](https://blog.openzeppelin.com/uma-audit-phase-4/)

@@ -50,8 +50,8 @@ Deploying a perpetual synthetic token also requires deploying a `ConfigStore` wi
 
 # Implementation
 
-Please see this [directory](https://github.com/UMAprotocol/protocol/tree/master/core/contracts/financial-templates/implementation).
-The directory contains both the [implementation](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/financial-templates/perpetual-multi-party/implementation/Perpetual.sol) of the `Perpetual` template and the [deployer contract](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/financial-templates/perpetual-multi-party/implementation/PerpetualCreator.sol) that will be registered with the DVM to allow users to deploy their own `Perpetual` contract.
+Please see this [directory](https://github.com/UMAprotocol/protocol/tree/master/core/contracts/financial-templates/perpetual-multi-party/).
+The directory contains both the [implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/perpetual-multi-party/Perpetual.sol) of the `Perpetual` template and the [deployer contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/perpetual-multi-party/PerpetualCreator.sol) that will be registered with the DVM to allow users to deploy their own `Perpetual` contract.
 
 # Security considerations
 
