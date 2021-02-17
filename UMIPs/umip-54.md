@@ -44,6 +44,11 @@ A deployment of an expiring multi-party synthetic token is defined by the follow
 
 Please see this [directory](https://github.com/UMAprotocol/protocol/tree/master/packages/core/contracts/financial-templates/expiring-multiparty). The directory contains both the [implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/expiring-multiparty/ExpiringMultiParty.sol) of the `ExpiringMultiParty` template and the [deployer contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/expiring-multiparty/ExpiringMultiPartyCreator.sol) that will be registered with the DVM to allow users to deploy their own `ExpiringMultiParty` contract.
 
+The mainnet contract addresses are as follows:
+
+*ExpiringMultiPartyLib* - https://etherscan.io/address/0xa10648Da824330d7C7670E26a234bEf442E77f20
+*ExpiringMultiPartyCreator* - https://etherscan.io/address/0xddfc7e3b4531158acf4c7a5d2c3cb0ee81d018a5
+
 ## Security considerations
 
 This repo has been audited by OpenZeppelin, and the final audit report can be reviewed [here](https://blog.openzeppelin.com/uma-audit-phase-4/)

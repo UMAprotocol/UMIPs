@@ -18,7 +18,7 @@ The Perpetual contract template will allow for the creation of non-expiring synt
 # Technical Specification
 To accomplish this upgrade, a new financial contract template must be deployed.
 
-After deployment, this new `PerpetualCreator` contract should be approved as a ContractCreator in the Registry. 
+After deployment, this new `PerpetualCreator` contract should be approved as a ContractCreator in the Registry.
 
 Note: the voters only vote for the approval -- the deployment has no effect on the protocol until added as a ContractCreator.
 Like the expiring multi-party contract template, the perpetual template is used to create synthetic tokens that are securely collateralized without an on-chain price feed. These tokens are designed with mechanisms to incentivize token sponsors (those who create synthetic tokens) to properly collateralize their positions. These mechanisms include a liquidation and dispute process that allows token holders to be rewarded for identifying improperly collateralized token sponsor positions. The dispute process relies on an oracle, the UMA DVM, to settle disputes regarding liquidations.
@@ -56,6 +56,11 @@ Deploying a perpetual synthetic token also requires deploying a `ConfigStore` wi
 
 Please see this [directory](https://github.com/UMAprotocol/protocol/tree/master/core/contracts/financial-templates/perpetual-multi-party/).
 The directory contains both the [implementation](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/perpetual-multi-party/Perpetual.sol) of the `Perpetual` template and the [deployer contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/perpetual-multi-party/PerpetualCreator.sol) that will be registered with the DVM to allow users to deploy their own `Perpetual` contract.
+
+The mainnet contract addresses are as follows:
+
+*PerpetualLib* - https://etherscan.io/address/0x026ed73a36b37b871be7bfd25d1c62b9bfb358b5
+*PerpetualCreator* - https://etherscan.io/address/0xe9f67235c1b0ee401e5f5e119fb9dfc9753f10f9
 
 # Security considerations
 
