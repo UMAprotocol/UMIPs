@@ -113,13 +113,15 @@ Currently the most liquid exchange with USD or stablecoin markets for WBTC is BK
 
 In the current setting, there will need to be a significant event that erodes confidence in WBTC and the token for it to be a security or PR concern.
 
+A 1 minute TWAP is being used when querying for DEX prices to prevent any attempted price manipulation on the pools.
+
 ## Implementation
 
 Voters should use the following process to determine the WBTCUSD and USDWBTC prices.
 1. The WBTCBTC rate from Binance should be queried. The price at the timestamp that is closest but earlier than the price request timestamp should be used.
 2. Using the implementation defined in UMIP-7, voters should query for the BTCUSD rate at the price request timestamp.
 3. The results of steps 2 and 3 should be multiplied to return the Binance WBTC/USD price.
-4. The Sushiswap and Uniswap WBTC/ETH prices should be queried for the block that is closest but earlier than the price request timestmap.
+4. The Sushiswap and Uniswap WBTC/ETH prices should be queried for the block that is closest but earlier than the price request timestamp. This block should be used as the end bound for a one minute TWAP on both the Sushiswap and Uniswap prices. 
 5. Using the implementation defined in UMIP-6, voters should query for the ETHUSD rate at the price request timestamp.
 6. The Sushiswap WBTC/ETH rate should be multiplied by ETHUSD to return the Sushiswap WBTC/USD price.
 7. The Uniswap WBTC/ETH rate should be multiplied by ETHUSD to return the Uniswap WBTC/USD price.
