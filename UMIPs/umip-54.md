@@ -11,7 +11,7 @@ This UMIP will have the effect of introducing a new ExpiringMultiParty contract 
 
 The template also allows deployers to use custom financial product libraries to transform the price, the identifier passed to the optimistic oracle or DVM, and the collateralization requirement. Examples of financial product libraries can be found in this [directory](https://github.com/UMAprotocol/protocol/tree/master/packages/core/contracts/financial-templates/common/financial-product-libraries). (If you do not want to use a financial product library, you can pass the zero address `0x0`.)
 
-Additionally, the token precision matches the collateral precision for contracts deployed with this template, reducing the complexity of price calculation and the potential for errors.
+Additionally, the token precision matches the collateral precision for contracts deployed with this template, which means the identifiers used with this template don't need to match the decimals of the collateral currency.
 
 ## Motivation & Rationale
 
