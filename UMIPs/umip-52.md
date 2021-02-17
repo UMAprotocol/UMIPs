@@ -56,6 +56,25 @@ See the updated
 [Voting.sol](https://github.com/UMAprotocol/protocol/blob/f29b368a5fb616317790e030cef3a88be60fab84/packages/core/contracts/oracle/implementation/Voting.sol)
 for details on how this was implemented. Note: the changes were fairly minor.
 
+To upgrade the transaction will involve 5 steps:
+
+1. Voting.sol and the [VotingUpgrader contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/umips/VotingUpgrader.sol)
+must be deployed. Once done, the addresses will be listed in this UMIP below.
+1. The new Voting.sol must be given minting priviledges for the UMA token to allow it to pay inflationary rewards.
+1. Finder ownership must be passed to the `VotingUpgrader`.
+1. The existing voting contract's ownership must be passed to the `VotingUpgrader`.
+1. The `VotingUpgrader`'s `upgrade()` method must be called.
+
+See
+[this script](https://github.com/UMAprotocol/protocol/blob/f29b368a5fb616317790e030cef3a88be60fab84/packages/core/scripts/voting-upgrade-umip/1_Propose.js)
+for more details on how this is performed.
+
+Step 1 happens beforehand. Steps 2-5 must be approved by the voters, which will be done in the vote for this UMIP.
+
+Relevant Addresses (do not approve unless they are verified):
+- `Voting`: 
+- `VotingUpgrader`:
+
 ## Security considerations
 
 These changes _have_ been audited by OpenZeppelin and the full audit report can be read [here](https://blog.openzeppelin.com/uma-audit-phase-4/).
