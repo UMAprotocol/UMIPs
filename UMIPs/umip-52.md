@@ -17,7 +17,7 @@ To accomplish this upgrade, a few actions will need to be taken:
 - A new `OptimisticOracle` contract will need to be deployed. Once deployed, the contract address will be added to this UMIP.
 - A transaction will need to be proposed to add this new address to the `Finder` contract under the name `“OptimisticOracle”`.
 	- This is how other contracts will find the optimistic oracle and reference it.
-- The DVM will need to be upgraded to recognize disputes sent to it by the optimistic oracle and to handle ancillary data.
+- The DVM will need to be upgraded to recognize disputes sent to it by the optimistic oracle and to handle ancillary data (UMIP-55).
 
 Note: this change will only create the optimistic oracle. New financial contracts that utilize the optimistic oracle will need to be deployed for it to become useful, and the DVM will require an upgrade to handle ancillary data.
 
