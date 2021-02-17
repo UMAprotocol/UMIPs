@@ -4,7 +4,7 @@
 | ---------- | ------------------------------------------------------------------------------------------ |
 | UMIP Title | Approve Upgraded DVM Voting Contract to add ancillaryData                                  |
 | Authors    | Matt Rice (matt@umaproject.org)                                                            |
-| Status     | Draft                                                                                      |
+| Status     | Last Call                                                                                     |
 | Created    | February 16, 2021                                                                          |
 
 ## Summary
@@ -72,8 +72,8 @@ for more details on how this is performed.
 Step 1 happens beforehand. Steps 2-5 must be approved by the voters, which will be done in the vote for this UMIP.
 
 Relevant Addresses (do not approve unless they are verified):
-- `Voting`: 
-- `VotingUpgrader`:
+- `Voting`: [0x8B1631ab830d11531aE83725fDa4D86012eCCd77](https://etherscan.io/address/0x8b1631ab830d11531ae83725fda4d86012eccd77)
+- `VotingUpgrader`: [0xEb07cd1Bb36514d4E6c0438FfaD62Cc96498723c](https://etherscan.io/address/0xeb07cd1bb36514d4e6c0438ffad62cc96498723c)
 
 ## Security considerations
 
