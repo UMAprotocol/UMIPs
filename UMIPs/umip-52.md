@@ -19,7 +19,7 @@ To accomplish this upgrade, a few actions will need to be taken:
 	- This is how other contracts will find the optimistic oracle and reference it.
 - The DVM will need to be upgraded to recognize disputes sent to it by the optimistic oracle and to handle ancillary data (UMIP-55).
 
-Note: this change will only create the optimistic oracle. New financial contracts that utilize the optimistic oracle will need to be deployed for it to become useful, and the DVM will require an upgrade to handle ancillary data.
+Note: this change will only create the optimistic oracle. New financial contracts that utilize the optimistic oracle will need to be deployed for it to become useful. Until all steps above are performed, the deployed OptimisticOracle _should not_ be used in production since it will not be able to raise disputes to the DVM.
 
 TODO: Describe the steps for using the Optimstic Oracle in detail.
 
