@@ -55,4 +55,4 @@ The directory contains both the [implementation](https://github.com/UMAprotocol/
 
 # Security considerations
 
-This repo has been audited by OpenZeppelin, and the final audit report will be made available [here](https://docs.umaproject.org/uma/index.html).
+This repo has been audited by OpenZeppelin, and the final audit report can be reviewed [here](https://blog.openzeppelin.com/uma-audit-phase-4/)

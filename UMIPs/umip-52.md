@@ -32,4 +32,4 @@ This new contract allows the optimistic settlement of prices, reducing the numbe
 The `OptimisticOracle` contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/core/contracts/oracle/implementation/OptimisticOracle.sol). It has been audited and will require no changes.
 
 ## Security considerations
-Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin, and the final audit report will be made available [here](https://docs.umaproject.org/uma/index.html).
+Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin, and the final audit report can be reviewed [here](https://blog.openzeppelin.com/uma-audit-phase-4/)
