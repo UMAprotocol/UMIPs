@@ -4,7 +4,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add YAMETH, ETHYAM, YAMUSD, and USDYAM as price identifiers                                                                                                  |
 | Authors    | Ross (ross@yam.finance)
-| Status     | Last Call                                                                                                                                  |
+| Status     | Final                                                                                                                                  |
 | Created    | January 28th, 2021  
 | Forum Post | https://discourse.umaproject.org/t/add-yam-usd-and-yam-eth-price-identifiers/171
 

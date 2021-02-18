@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add Optimistic Oracle              |
 | Authors    | John Shutt (john@umaproject.org) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Final                                                                                                                                    |
 | Created    | February 16, 2021                                                                                                                           |
 
 ## Summary (2-5 sentences)
