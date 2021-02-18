@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH_JUN21 as a supported price identifier                                                                                             |
 | Authors    | nonstopTheo (nonstoptheo@yam.finance)
-| Status     | Last Call                                                                                                                                   |
+| Status     | Final                                                                                                                                   |
 | Created    | February 10th, 2021                                                                                                                              |
 | Link to Discourse| https://discourse.umaproject.org/t/umip-48-add-gaseth-jun21-as-a-supported-price-identifier/217
 

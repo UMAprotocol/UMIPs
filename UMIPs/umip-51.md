@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add WBTCUSD, USDWBTC as price identifiers              |
 | Authors    | Logan (Logan@opendao.io)                               |
-| Status     | Last Call                                                                                                                                 |
+| Status     | Final                                                                                                                                 |
 | Created    | February 2, 2021                                                                                                                           |
 | Discourse Link   | https://discourse.umaproject.org/t/adding-wbtc-usd-price-identifier-umip/124                                              |
 
