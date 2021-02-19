@@ -29,7 +29,7 @@ Adding TVL identifiers enables the creation of synthetic assets with a price tha
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
 - Rounding: Round to nearest 3 decimal places (fourth decimal place digit >= 5 rounds up and < 5 rounds down)
 - Intended Collateral Type: USDC
-- Collateral Decimals: 6
+- Scaling Decimals: 18 (1e18)
 - Pricing Interval: 60 minutes
 - Dispute timestamp rounding: down 
 
@@ -41,7 +41,7 @@ Adding TVL identifiers enables the creation of synthetic assets with a price tha
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad consensus.
 - Rounding: Round to nearest 3 decimal places (fourth decimal place digit >= 5 rounds up and < 5 rounds down)
 - Intended Collateral Type: USDC
-- Collateral Decimals: 6
+- Scaling Decimals: 18 (1e18)
 - Pricing Interval: 60 minutes
 - Dispute timestamp rounding: down 
 

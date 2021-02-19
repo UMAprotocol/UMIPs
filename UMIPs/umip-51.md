@@ -93,7 +93,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 - Intended Collateral Currency: USDC
 - Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 - Is your collateral currency already approved to be used by UMA financial contracts?: YES
-- Collateral Decimals: 6 decimals
+- Scaling Decimals: 18 (1e18)
 - Rounding: Round to 6 decimals.
 
 ### USDWBTC
@@ -102,7 +102,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 - Intended Collateral Currency: WBTC
 - Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 - Is your collateral currency already approved to be used by UMA financial contracts?: YES
-- Collateral Decimals: 8 decimals
+- Scaling Decimals: 18 (1e18)
 - Rounding: Round to 8 decimals.
 
 ## Rationale

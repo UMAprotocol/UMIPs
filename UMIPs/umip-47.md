@@ -58,7 +58,7 @@ Because the uSTONKS index value is only used at expiry, it will not be possible 
 - Base Currency: uSTONKS_APR21
 - Quote currency: None. This is an index, but will be used with USDC.
 - Intended Collateral Currency: USDC
-- Collateral Decimals: 6
+- Scaling Decimals: 18 (1e18)
 - Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
 ## RATIONALE

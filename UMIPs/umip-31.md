@@ -1,3 +1,9 @@
+# Disclaimer
+
+This price identifier has been deprecated. It is highly recommended that contract deployers do not use this identifier in its current state for new contracts. Price requests from contracts created after 02/20/21 00:00 UTC will likely not be resolved correctly. 
+
+Reasoning: The new EMP template proposed in [UMIP-54](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-54.md) requires that all price identifiers be scaled to 18 decimals. There are live contracts using the old EMP template which require this price identifier to be scaled equal the number of decimals in USDC (6) or renBTC (8). Because of this, the DVM could return prices incorrectly for new contracts that use this identifier.
+
 ## Headers
 | UMIP-31     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -28,12 +34,12 @@ The definition of this identifier should be:
 - Identifier name: STABLESPREAD/USDC
 - Base Currency: STABLESPREAD
 - Quote Currency: USDC
-- Decimals: 6
+- Scaling Decimals: 6 (1e6)
 
 - Identifier name: STABLESPREAD/BTC
 - Base Currency: STABLESPREAD
 - Quote Currency: BTC
-- Decimals: 8
+- Scaling Decimals: 8 (1e8)
 
 - Data Sources: {Bittrex: UST/USDT, Uniswap V2: UST/USDT} for UST, {Binance: BUSD/USDT, Uniswap V2: BUSD/USDT} for BUSD, {Bittrex: CUSD/USDT} for CUSD, {Bitfinex: UST/USD, Kraken: USDT/USD} for USDT, {Kraken: USDC/USD, Bitstamp: USDC/USD} for USDC, {Kraken: BTC/USD, Bitstamp: BTC/USD} for BTC
 - Result Processing: For each constituent asset of the basket, the average of both exchanges

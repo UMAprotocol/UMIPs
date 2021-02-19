@@ -136,7 +136,7 @@ https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger
 
     - Yes
 
-**5. Collateral Decimals** - 18
+**5. Scaling Decimals** - 18 (1e18)
 
 **6. Rounding** - Round to 18 decimal places
 
@@ -159,7 +159,7 @@ https://github.com/ConcourseOpen/DeFi-Pulse-Adapters/blob/master/projects/badger
 
     - Yes
 
-**5. Collateral Decimals** - 18
+**5. Scaling Decimals** - 18 (1e18)
 
 **6. Rounding** - Round to 18 decimal places
 

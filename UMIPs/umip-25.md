@@ -29,6 +29,7 @@ The motivation for these price identifiers is explained in [umip-22](https://git
 ## Technical Specification
 Technical specifications are the same as in [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md) except: 
 - Identifier name: GASETH-FEB21 and GASETH-MAR21
+- Scaling Decimals: 18 (1e18)
 
 ## Rationale
 Please reference the Rationale section in [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md) for a full walkthrough of the rationale behind calculating aggregatory gas prices.

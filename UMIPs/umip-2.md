@@ -33,6 +33,7 @@ The definition of this identifier should be:
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
+- Scaling Decimals: 18 (1e18)
 
 ## Rationale
 We explored two primary alternative designs:

@@ -35,6 +35,7 @@ The definition of this identifier should be:
 * Rounding: Closest, 0.5 up
 * Pricing Interval: 60 seconds
 * Dispute timestamp rounding: down
+* Scaling Decimals: 18 (1e18)
 
  And
 
@@ -48,6 +49,7 @@ The definition of this identifier should be:
 * Rounding: Closest, 0.5 up
 * Pricing Interval: 60 seconds
 * Dispute timestamp rounding: down
+* Scaling Decimals: 18 (1e18)
 
 ## Implementation
 The value of the XAUUSD or XAUPERL identifier for a given timestamp should be determined by querying for the price of XAUUSD from Tradermade’s API for that timestamp. To determine the value of XAUPERL, the price of PERLUSDT will also need to be queried from Binance for that timestamp.

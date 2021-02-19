@@ -43,7 +43,7 @@ To further explain the price feed implementation beyond what is stated in [umip-
 
 **4. Intended Collateral Currency** - WETH
 
-**5. Collateral Decimals** - 18 decimals
+**5. Scaling Decimals** - 18 (1e18)
 
 **6. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 

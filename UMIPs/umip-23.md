@@ -1,3 +1,9 @@
+# Disclaimer
+
+This price identifier has been deprecated. It is highly recommended that contract deployers do not use this identifier in its current state for new contracts. Price requests from contracts created after 02/20/21 00:00 UTC will likely not be resolved correctly. 
+
+Reasoning: The new EMP template proposed in [UMIP-54](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-54.md) requires that all price identifiers be scaled to 18 decimals. There are live contracts using the old EMP template which require this price identifier to be scaled equal the number of decimals in renBTC (8). Because of this, the DVM could return prices incorrectly for new contracts that use this identifier. 
+
 ## Headers
 | UMIP-23     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -32,6 +38,7 @@ The definition of this identifier should be:
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
+- Scaling Decimals: 8 (1e8)
  
 ## Rationale
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized.
