@@ -314,7 +314,7 @@ The DVM should support price requests for the UMA/USD, USD/UMA price index.
 
 ## Motivation
 
-The DVM currently does not support the LINK/USD or USD/LINK index.
+The DVM currently does not support the UMA/USD or USD/UMA index.
 
 Cost: Pricing for this index is easy to access through open centralized exchange APIs, and cross-exchange price discrepancies are typically negligible.
 
