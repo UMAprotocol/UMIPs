@@ -127,49 +127,43 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
     - Binance: LINK/USDT
     - OKEx: LINK/USDT
 
- 2. Provide recommended websites to manually inspect real-time and historical prices.
-
-    - Coinbase Pro LINK/USD: <https://cryptowat.ch/charts/COINBASE-PRO:LINK-USD>
-    - Binance LINK/USDT: <https://cryptowat.ch/charts/BINANCE:LINK-USDT>
-    - OKEx LINK/USDT: <https://cryptowat.ch/charts/OKEX:LINK-USDT>
-
- 3. Provide recommended endpoints to query for real-time prices from each market listed.
+ 2. Provide recommended endpoints to query for real-time prices from each market listed.
 
     - Coinbase Pro LINK/USD: <https://api.cryptowat.ch/markets/coinbase-pro/linkusd/price>
     - Binance LINK/USDT: <https://api.cryptowat.ch/markets/binance/linkusdt/price>
     - OKEx LINK/USDT: <https://api.cryptowat.ch/markets/okex/linkusdt/price>
 
- 4. How often is the provided price updated?
+ 3. How often is the provided price updated?
 
     - The lower bound on the price update frequency is a minute.
 
- 5. Provide recommended endpoints to query for historical prices from each market listed.
+ 4. Provide recommended endpoints to query for historical prices from each market listed.
 
     - Coinbase Pro: <https://api.cryptowat.ch/markets/coinbase-pro/linkusd/ohlc?after=1613450520&before=1613450520&periods=60>
     - Binance: <https://api.cryptowat.ch/markets/binance/linkusdt/ohlc?after=1613450520&before=1613450520&periods=60>
     - OKEx: <https://api.cryptowat.ch/markets/okex/linkusdt/ohlc?after=1613450520&before=1613450520&periods=60>
 
- 6. Do these sources allow for querying up to 74 hours of historical data?
+ 5. Do these sources allow for querying up to 74 hours of historical data?
 
     - Yes
 
- 7. How often is the provided price updated?
+ 6. How often is the provided price updated?
 
     - The lower bound on the price update frequency is a minute.
 
- 8. Is an API key required to query these sources?
+ 7. Is an API key required to query these sources?
 
     - No
 
- 9. Is there a cost associated with usage?
+ 8. Is there a cost associated with usage?
 
     - Yes
 
- 10. If there is a free tier available, how many queries does it allow for?
+ 9.  If there is a free tier available, how many queries does it allow for?
 
       - The lower bound on the number of queries allowed per hour is >> 1000.
 
- 11. What would be the cost of sending 15,000 queries?
+ 10. What would be the cost of sending 15,000 queries?
 
       - Approximately $5
 
