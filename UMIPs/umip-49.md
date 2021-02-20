@@ -120,7 +120,7 @@ Link to the price feed pull issue:
 
 - DAI has 18 Decimals (obtained [here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f)).
 
-**6. Rounding** - 18 decimal places.
+**6. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
 ## PHPDAI
 
@@ -144,7 +144,7 @@ Link to the price feed pull issue:
 
 - DAI has 18 Decimals (obtained [here](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f)).
 
-**6. Rounding** - 18 decimal places.
+**6. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
 # RATIONALE
 
