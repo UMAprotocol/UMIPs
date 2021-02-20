@@ -73,25 +73,25 @@ Associated AAVE price feeds are available via Cryptowatch. No other further feed
 ### Technical Specifications
 
 #### AAVE/USD:
-  -  Price Identifier Name: AAVE/USD
+  -  Price Identifier Name: `AAVEUSD`
   -  Base Currency: AAVE
   -  Quote Currency: USD
-  -  Intended Collateral Currency: USDT
+  -  Intended Collateral Currency: USDC
   -  Collateral Decimals: 6
   -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
   -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
-  -  Is your collateral currency already approved to be used by AAVE financial contracts?: YES
+  -  Is your collateral currency already approved to be used by UMA financial contracts?: YES
 
 #### USD/AAVE:
 
-  -  Price Identifier Name: USD/AAVE
+  -  Price Identifier Name: `USDAAVE`
   -  Base Currency: USD
   -  Quote Currency: AAVE
   -  Intended Collateral Currency: AAVE
   -  Collateral Decimals: 18
   -  Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
   -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
-  -  Is your collateral currency already approved to be used by AAVE financial contracts?: In progress
+  -  Is your collateral currency already approved to be used by UMA financial contracts?: In progress
 
 ### Implementation
 
@@ -135,9 +135,9 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
  3. Provide recommended endpoints to query for real-time prices from each market listed.
 
-    - Coinbase Pro AAVE/USD: <https://api.cryptowat.ch/markets/coinbase-pro/linkusd/price>
-    - Binance AAVE/USDT: <https://api.cryptowat.ch/markets/binance/linkusdt/price>
-    - OKEx AAVE/USDT: <https://api.cryptowat.ch/markets/okex/linkusdt/price>
+    - Coinbase Pro LINK/USD: <https://api.cryptowat.ch/markets/coinbase-pro/linkusd/price>
+    - Binance LINK/USDT: <https://api.cryptowat.ch/markets/binance/linkusdt/price>
+    - OKEx LINK/USDT: <https://api.cryptowat.ch/markets/okex/linkusdt/price>
 
  4. How often is the provided price updated?
 
@@ -180,25 +180,25 @@ Associated LINK price feeds are available via Cryptowatch. No other further feed
 ### Technical Specifications
 
 #### LINK/USD:
--  Price Identifier Name: LINK/USD
+-  Price Identifier Name: `LINKUSD`
 -  Base Currency: LINK
 -  Quote Currency: USD
--  Intended Collateral Currency: USDT
+-  Intended Collateral Currency: USDC
 -  Collateral Decimals: 6
 -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
--  Is your collateral currency already approved to be used by LINK financial contracts?: YES
+-  Is your collateral currency already approved to be used by UMA financial contracts?: YES
 
 #### USD/LINK
 
--  Price Identifier Name: USD/LINK
+-  Price Identifier Name: `USDLINK`
 -  Base Currency: USD
 -  Quote Currency: LINK
 -  Intended Collateral Currency: LINK
 -  Collateral Decimals: 18
 -  Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
--  Is your collateral currency already approved to be used by LINK financial contracts?: In progress 
+-  Is your collateral currency already approved to be used by UMA financial contracts?: In progress 
 
 ### Implementation
 
@@ -279,25 +279,25 @@ Associated SNX price feeds are available via Cryptowatch. No other further feeds
 
 #### SNX/USD
 
--  Price Identifier Name: SNX/USD
+-  Price Identifier Name: `SNXUSD`
 -  Base Currency: SNX
 -  Quote Currency: USD
--  Intended Collateral Currency: USDT
+-  Intended Collateral Currency: USDC
 -  Collateral Decimals: 6
 -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
--  Is your collateral currency already approved to be used by SNX financial contracts?: YES
+-  Is your collateral currency already approved to be used by UMA financial contracts?: YES
 
 #### USD/SNX
 
--  Price Identifier Name: USD/SNX
+-  Price Identifier Name: `USDSNX`
 -  Base Currency: USD
 -  Quote Currency: SNX
 -  Intended Collateral Currency: SNX
 -  Collateral Decimals: 18
 -  Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
--  Is your collateral currency already approved to be used by SNX financial contracts?: In progress 
+-  Is your collateral currency already approved to be used by UMA financial contracts?: In progress 
 
 ### Implementation
 
@@ -385,10 +385,10 @@ Associated UMA price feeds are available via Cryptowatch. No other further feeds
 
 #### UMA/USD
 
--  Price Identifier Name: UMA/USD
+-  Price Identifier Name: `UMAUSD`
 -  Base Currency: UMA
 -  Quote Currency: USD
--  Intended Collateral Currency: USDT
+-  Intended Collateral Currency: USDC
 -  Collateral Decimals: 6
 -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
@@ -396,7 +396,7 @@ Associated UMA price feeds are available via Cryptowatch. No other further feeds
 
 #### USD/UMA
 
--  Price Identifier Name: USD/UMA
+-  Price Identifier Name: `USDUMA`
 -  Base Currency: USD
 -  Quote Currency: UMA
 -  Intended Collateral Currency: UMA
@@ -485,25 +485,25 @@ Associated UNI price feeds are available via Cryptowatch. No other further feeds
 
 #### UNI/USD
 
--  Price Identifier Name: UNI/USD
+-  Price Identifier Name: `UNIUSD`
 -  Base Currency: UNI
 -  Quote Currency: USD
--  Intended Collateral Currency: USDT
+-  Intended Collateral Currency: USDC
 -  Collateral Decimals: 6
 -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
--  Is your collateral currency already approved to be used by UNI financial contracts?: YES
+-  Is your collateral currency already approved to be used by UMA financial contracts?: YES
 
 #### USD/UNI
 
--  Price Identifier Name: USD/UNI
+-  Price Identifier Name: `USDUNI`
 -  Base Currency: USD
 -  Quote Currency: UNI
 -  Intended Collateral Currency: UNI
 -  Collateral Decimals: 18
 -  Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
--  Is your collateral currency already approved to be used by UNI financial contracts?: In progress
+-  Is your collateral currency already approved to be used by UMA financial contracts?: In progress
 
 ### Implementation
 
