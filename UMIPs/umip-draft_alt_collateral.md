@@ -39,7 +39,7 @@ LINK is already a top 10 cryptocurrency by market capitalization. As one the mos
 To accomplish this upgrade, two changes need to be made:
 
  * The LINK address, [0x514910771af9ca656af840dff83e8264ecf986ca][link], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 10 LINK needs to be added for the LINK in the Store contract. (~$325 at time of writing)
+ * A final fee of 12.5 LINK needs to be added for the LINK in the Store contract. (~$430 at time of writing)
 
  [link]: https://etherscan.io/token/0x514910771af9ca656af840dff83e8264ecf986ca
 
@@ -54,7 +54,7 @@ SNX is a top 30 cryptocurrency by market capitalization. As one the most liquid 
 
 To accomplish this upgrade, two changes need to be made:
  * The SNX address, [0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f][snx], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 17.5 SNX needs to be added for the SNX in the Store contract. (~$450 at time of writing)
+ * A final fee of 20 SNX needs to be added for the SNX in the Store contract. (~$450 at time of writing)
 
  [snx]: https://etherscan.io/token/0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f
 
