@@ -337,9 +337,9 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
  2. Provide recommended endpoints to query for real-time prices from each market listed.
 
-    - Coinbase Pro AAVE/USD: <https://api.cryptowat.ch/markets/coinbase-pro/umausd/price>
-    - Binance AAVE/USDT: <https://api.cryptowat.ch/markets/binance/umausdt/price>
-    - OKEx AAVE/USDT: <https://api.cryptowat.ch/markets/okex/umausdt/price>
+    - Coinbase Pro UMA/USD: <https://api.cryptowat.ch/markets/coinbase-pro/umausd/price>
+    - Binance UMA/USDT: <https://api.cryptowat.ch/markets/binance/umausdt/price>
+    - OKEx UMA/USDT: <https://api.cryptowat.ch/markets/okex/umausdt/price>
 
  3. How often is the provided price updated?
 
