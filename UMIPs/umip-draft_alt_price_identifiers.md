@@ -115,7 +115,7 @@ Associated AAVE price feeds are available via Cryptowatch. No other further feed
 
 Voters should query for the price of AAVE/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
 
-1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
+1.  When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2.  The median of these results should be taken
 3.  The median from step 2 should be rounded to six decimals to determine the AAVEUSD price.
 4.  The value of USDAAVE will follow the exact same process but undergo one additional step: it will be the result of dividing 1/AAVEUSD rounded to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
@@ -218,7 +218,7 @@ Associated LINK price feeds are available via Cryptowatch. No other further feed
 
 Voters should query for the price of LINK/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
 
- 1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
+ 1.  When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
  2.  The median of these results should be taken
  3.  The median from step 2 should be rounded to six decimals to determine the LINKUSD price.
  4.  The value of USDLINK will follow the exact same process but undergo one additional step: it will be the result of dividing 1/LINKUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
@@ -319,7 +319,7 @@ Associated SNX price feeds are available via Cryptowatch. No other further feeds
 
 Voters should query for the price of SNX/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
 
-1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
+1.  When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2.  The median of these results should be taken
 3.  The median from step 2 should be rounded to six decimals to determine the SNXUSD price.
 4.  The value of USDSNX will follow the exact same process but undergo one additional step: it will be the result of dividing 1/SNXUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
@@ -426,7 +426,7 @@ Associated UMA price feeds are available via Cryptowatch. No other further feeds
 
 Voters should query for the price of UMA/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
 
-1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
+1.  When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2.  The median of these results should be taken
 3.  The median from step 2 should be rounded to six decimals to determine the UMAUSD price.
 4.  The value of USDUMA will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UMAUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
@@ -527,7 +527,7 @@ Associated UNI price feeds are available via Cryptowatch. No other further feeds
 
 Voters should query for the price of UNI/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
 
-1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
+1.  When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2.  The median of these results should be taken
 3.  The median from step 2 should be rounded to six decimals to determine the UNIUSD price.
 4.  The value of USDUNI will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UNIUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
