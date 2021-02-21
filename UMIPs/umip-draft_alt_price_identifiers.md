@@ -8,6 +8,21 @@
 | Discourse Link| <https://discourse.umaproject.org/t/add-price-identifiers-for-aave-link-snx-uma-uni-against-usd/247>
 <br>
 
+# Overview
+This proposal is for adding the following price identifiers to be supported:
+
+ * AAVE/USD, USD/AAVE
+ * LINK/USD, USD/LINK
+ * SNX/USD, USD/SNX
+ * UMA/USD, USD/UMA
+ * UNI/USD, USD/UNI
+
+# Motivation
+
+The purpose of adding these price identifiers is to be able to mint synthetic tokens priced at the defi protocol's token valued against USD. By doing so, users who mint synthetic tokens and sell them to the market are able to short the protocol. Similarly, users who buy the synthetic token are able to long the protocol.
+
+If the inverse price identifier is used (e.g. USD/UMA) and the same altcoin token is employed as collateral, then the value of the synthetic token can be traded in place of the underlying collateral without having to sell the underlying asset.
+
 # AAVE (Aave Token)
 
 ## Summary
@@ -61,7 +76,9 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
  9. If there is a free tier available, how many queries does it allow for?
 
-    - The lower bound on the number of queries allowed per hour is >> 1000.
+    - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying all three exchanges will cost 0.015 API credits). 
+    - Therefore, querying all three exchanges can be performed 665 times per day.  
+    - In other words, all three exchanges can be queried at most every 130 seconds.
 
  10. What would be the cost of sending 15,000 queries?
 
@@ -101,8 +118,8 @@ Voters should query for the price of AAVE/USD at the price request timestamp on 
 1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
 2.  The median of these results should be taken
 3.  The median from step 2 should be rounded to six decimals to determine the AAVEUSD price.
-4.  The value of USDAAVE will follow the exact same process but undergo one additional step: it will be the result of dividing 1/AAVEUSD.
- For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+4.  The value of USDAAVE will follow the exact same process but undergo one additional step: it will be the result of dividing 1/AAVEUSD rounded to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
+For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 <br>
 
@@ -162,7 +179,9 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
  9.  If there is a free tier available, how many queries does it allow for?
 
-      - The lower bound on the number of queries allowed per hour is >> 1000.
+        - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying all three exchanges will cost 0.015 API credits). 
+        - Therefore, querying all three exchanges can be performed 665 times per day.  
+        - In other words, all three exchanges can be queried at most every 130 seconds.
 
  10. What would be the cost of sending 15,000 queries?
 
@@ -202,7 +221,7 @@ Voters should query for the price of LINK/USD at the price request timestamp on 
  1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
  2.  The median of these results should be taken
  3.  The median from step 2 should be rounded to six decimals to determine the LINKUSD price.
- 4.  The value of USDLINK will follow the exact same process but undergo one additional step: it will be the result of dividing 1/LINKUSD.
+ 4.  The value of USDLINK will follow the exact same process but undergo one additional step: it will be the result of dividing 1/LINKUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
  For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 <br>
@@ -260,7 +279,9 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
  9. If there is a free tier available, how many queries does it allow for?
 
-    - The lower bound on the number of queries allowed per hour is >> 1000.
+    - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying all three exchanges will cost 0.015 API credits). 
+    - Therefore, querying all three exchanges can be performed 665 times per day.  
+    - In other words, all three exchanges can be queried at most every 130 seconds.
 
   10. What would be the cost of sending 15,000 queries?
 
@@ -301,8 +322,7 @@ Voters should query for the price of SNX/USD at the price request timestamp on C
 1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
 2.  The median of these results should be taken
 3.  The median from step 2 should be rounded to six decimals to determine the SNXUSD price.
-4.  The value of USDSNX will follow the exact same process but undergo one additional step: it will be the result of dividing 1/SNXUSD.
-
+4.  The value of USDSNX will follow the exact same process but undergo one additional step: it will be the result of dividing 1/SNXUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 <br>
@@ -364,7 +384,9 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
  9. If there is a free tier available, how many queries does it allow for?
 
-    - The lower bound on the number of queries allowed per hour is >> 1000.
+    - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying all three exchanges will cost 0.015 API credits). 
+    - Therefore, querying all three exchanges can be performed 665 times per day.
+    - In other words, all three exchanges can be queried at most every 130 seconds.
 
   10. What would be the cost of sending 15,000 queries?
 
@@ -407,8 +429,7 @@ Voters should query for the price of UMA/USD at the price request timestamp on C
 1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
 2.  The median of these results should be taken
 3.  The median from step 2 should be rounded to six decimals to determine the UMAUSD price.
-4.  The value of USDUMA will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UMAUSD.
-
+4.  The value of USDUMA will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UMAUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 <br>
@@ -466,7 +487,9 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
  9.  If there is a free tier available, how many queries does it allow for?
 
-     - The lower bound on the number of queries allowed per hour is >> 1000.
+        - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying all three exchanges will cost 0.015 API credits). 
+        - Therefore, querying all three exchanges can be performed 665 times per day.  
+        - In other words, all three exchanges can be queried at most every 130 seconds.
 
  10. What would be the cost of sending 15,000 queries?
 
@@ -507,12 +530,12 @@ Voters should query for the price of UNI/USD at the price request timestamp on C
 1.  When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
 2.  The median of these results should be taken
 3.  The median from step 2 should be rounded to six decimals to determine the UNIUSD price.
-4.  The value of USDUNI will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UNIUSD.
- For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+4.  The value of USDUNI will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UNIUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
+For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 <br>
 
 # Security Considerations
-These are the first identifiers proposed for registration with the DVM which are not based on existing trading pairs. Adding these new identifiers by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing these identifiers should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
+Adding these new identifiers by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing these identifiers should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 
 $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for these identifiers and also contemplate de-registering these identifiers if security holes are identified. As noted above, $UMA-holders should also consider re-defining this identifier as liquidity in the underlying asset changes, or if added robustness is necessary to prevent market manipulation.
