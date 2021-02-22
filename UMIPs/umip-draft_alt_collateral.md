@@ -75,6 +75,24 @@ To accomplish this upgrade, two changes need to be made:
  [uma]: https://etherscan.io/token/0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828
 
 
+### Security Considerations
+
+Using UMA as collateral for synthetic tokens should not pose a risk to the
+protocol. Any UMA that is "locked" as collateral will be effectively taken off the market. Hence, it will decrease the circulating supply thereby likely increasing the Cost of Corruption (CoC).
+
+The other consideration to be made is the token's usage for voting.
+Synthetic tokens that use UMA as collateral may see significant decreases in
+locked $UMA during governance voting. In general, this may cause potential synthetic token collateral amounts to significantly fluctuate. Though, all else
+equal, any improper collateralization caused would be handled the same as any other EMP contract:  
+ - (i) a position sponsor can only immediately remove the amount of collateral that would keep their position above the GCR,
+ - (ii) if any sponsor attempts to perform a withdraw of their $UMA, they won't be able to use that $UMA to be able to influence any disputes regarding that position. 
+
+Using UMA as collateral may also serve as a way to temporarily take $UMA tokens off the market without the effects of otherwise burning or selling the tokens. Storing UMA as collateral may also as another line of defense before performing a "buy-and-burn" operation to decrease circulating supply to thereby increase the Cost of Corruption.
+
+> For additional discussion, see also ["Should UMA be added on lending protocols" on Discourse][discourse-uma].
+
+ [discourse-uma]: https://discourse.umaproject.org/t/should-uma-be-added-on-lending-protocols/87/3
+
 ---
 
 ## UNI (Uniswap Token)
