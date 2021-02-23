@@ -21,7 +21,9 @@ This proposal is for adding the following price identifiers to be supported:
 
 The purpose of adding these price identifiers is to be able to mint synthetic tokens priced at the defi protocol's token valued against USD. By doing so, users who mint synthetic tokens and sell them to the market are able to short the protocol. Similarly, users who buy the synthetic token are able to long the protocol.
 
-If the inverse price identifier is used (e.g. USD/UMA) and the same altcoin token is employed as collateral, then the value of the synthetic token can be traded in place of the underlying collateral without having to sell the underlying asset.
+If the inverse price identifier is used (e.g. USD/UMA) and the same altcoin token is employed as collateral, then the value of the synthetic token can be traded in place of the underlying collateral without having to sell the underlying asset.  
+<br>
+<p style="text-align: center">* * *</p>
 
 # AAVE (Aave Token)
 
@@ -84,7 +86,7 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
      - Approximately $5
 
-### Price Feed Implementation
+## Price Feed Implementation
 
 Associated AAVE price feeds are available via Cryptowatch. No other further feeds required.
 
@@ -120,6 +122,15 @@ Voters should query for the price of AAVE/USD at the price request timestamp on 
 3.  The median from step 2 should be rounded to six decimals to determine the AAVEUSD price.
 4.  The value of USDAAVE will follow the exact same process but undergo one additional step: it will be the result of dividing 1/AAVEUSD rounded to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+### Rationale
+We choose to have both `AAVEUSD` and `USDAAVE` price identifiers to allow for products that use either AAVE or stable USDC as collateral. Using USDC as collateral allows for speculating on the price of `AAVEUSD` -- risking liquidation if AAVE increases, while using AAVE as collateral allows for borrowing synthetic USDC equivalents tracking `USDAAVE` -- risking liquidation if AAVE decreases.
+
+We picked the top 3 exchanges by trading volume to avoid price movements solely to do poor liquidity.
+
+A time interval of 1 minute is the most granular time interval supported by the API. We choose a small time interval to ensure that positions track with any large price movements that may occur -- given that this may be a volatile instrument.
+
+We choose to use a median of three exchanges to balance the overhead of additionally required API calls for liquidation bots between an increased sample size of market prices. The median of the prices was choose instead of a simple arithmetic average to handle the scenarios where a given exchange is halted, unresponsive, or has erratic price movement. Quoted prices in USD are rounded to 6 amounts since (i) the USDC ERC20 contract only has 6 decimal places, and (ii) most exchanges only quote prices in USD between 2 to 6 decimal places.
 
 <br>
 
@@ -224,6 +235,15 @@ Voters should query for the price of LINK/USD at the price request timestamp on 
  4.  The value of USDLINK will follow the exact same process but undergo one additional step: it will be the result of dividing 1/LINKUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
  For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
+### Rationale
+We choose to have both `SNXUSD` and `USDSNX` price identifiers to allow for products that use either SNX or stable USDC as collateral. Using USDC as collateral allows for speculating on the price of `SNXUSD` -- risking liquidation if SNX increases, while using SNX as collateral allows for borrowing synthetic USDC equivalents tracking `USDSNX` -- risking liquidation if SNX decreases.
+
+We picked the top 3 exchanges by trading volume to avoid price movements solely to do poor liquidity.
+
+A time interval of 1 minute is the most granular time interval supported by the API. We choose a small time interval to ensure that positions track with any large price movements that may occur -- given that this may be a volatile instrument.
+
+We choose to use a median of three exchanges to balance the overhead of additionally required API calls for liquidation bots between an increased sample size of market prices. The median of the prices was choose instead of a simple arithmetic average to handle the scenarios where a given exchange is halted, unresponsive, or has erratic price movement. Quoted prices in USD are rounded to 6 amounts since (i) the USDC ERC20 contract only has 6 decimal places, and (ii) most exchanges only quote prices in USD between 2 to 6 decimal places.
+
 <br>
 
 # SNX (Synthetix Network Token)
@@ -324,6 +344,15 @@ Voters should query for the price of SNX/USD at the price request timestamp on C
 3.  The median from step 2 should be rounded to six decimals to determine the SNXUSD price.
 4.  The value of USDSNX will follow the exact same process but undergo one additional step: it will be the result of dividing 1/SNXUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+### Rationale
+We choose to have both `LINKUSD` and `USDLINK` price identifiers to allow for products that use either LINK or stable USDC as collateral. Using USDC as collateral allows for speculating on the price of `LINKUSD` -- risking liquidation if LINK increases, while using LINK as collateral allows for borrowing synthetic USDC equivalents tracking `USDLINK` -- risking liquidation if LINK decreases.
+
+We picked the top 3 exchanges by trading volume to avoid price movements solely to do poor liquidity.
+
+A time interval of 1 minute is the most granular time interval supported by the API. We choose a small time interval to ensure that positions track with any large price movements that may occur -- given that this may be a volatile instrument.
+
+We choose to use a median of three exchanges to balance the overhead of additionally required API calls for liquidation bots between an increased sample size of market prices. The median of the prices was choose instead of a simple arithmetic average to handle the scenarios where a given exchange is halted, unresponsive, or has erratic price movement. Quoted prices in USD are rounded to 6 amounts since (i) the USDC ERC20 contract only has 6 decimal places, and (ii) most exchanges only quote prices in USD between 2 to 6 decimal places.
 
 <br>
 
@@ -432,6 +461,22 @@ Voters should query for the price of UMA/USD at the price request timestamp on C
 4.  The value of USDUMA will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UMAUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
+
+### Rationale
+We choose to have both `UMAUSD` and `USDUMA` price identifiers to allow for products that use either UMA or stable USDC as collateral. Using USDC as collateral allows for speculating on the price of `UMAUSD` -- risking liquidation if UMA increases, while using UMA as collateral allows for borrowing synthetic USDC equivalents tracking `USDUMA` -- risking liquidation if UMA decreases.
+
+We picked the top 3 exchanges by trading volume to avoid price movements solely to do poor liquidity.
+
+A time interval of 1 minute is the most granular time interval supported by the API. We choose a small time interval to ensure that positions track with any large price movements that may occur -- given that this may be a volatile instrument.
+
+We choose to use a median of three exchanges to balance the overhead of additionally required API calls for liquidation bots between an increased sample size of market prices. The median of the prices was choose instead of a simple arithmetic average to handle the scenarios where a given exchange is halted, unresponsive, or has erratic price movement. Quoted prices in USD are rounded to 6 amounts since (i) the USDC ERC20 contract only has 6 decimal places, and (ii) most exchanges only quote prices in USD between 2 to 6 decimal places.
+
+
+## Security Considerations
+From our understanding, there are no significant negative concerns stemming from introducing a UMA/USD pair. The price identifier bears the same implications as any other price identifier that synthetic assets are built on. This includes the risk of liquidation -- which would force UMA tokens changing owners via liquidation if the price of UMA/USD where to significantly *increase* causing positions to be under-collateralized.
+
+One of the more pressing concerns has been using UMA as collateral -- a matter discussed in UMIP-#. In short, increasing the amount of UMA locked as collateral temporarily decreases the market supply -- thereby increasing the Cost of Corruption, increasing the security of the DVM.
+
 <br>
 
 # UNI (Uniswap Token)
@@ -532,6 +577,15 @@ Voters should query for the price of UNI/USD at the price request timestamp on C
 3.  The median from step 2 should be rounded to six decimals to determine the UNIUSD price.
 4.  The value of USDUNI will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UNIUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+### Rationale
+We choose to have both `UNIUSD` and `USDUNI` price identifiers to allow for products that use either UNI or stable USDC as collateral. Using USDC as collateral allows for speculating on the price of `UNIUSD` -- risking liquidation if UNI increases, while using UNI as collateral allows for borrowing synthetic USDC equivalents tracking `USDUNI` -- risking liquidation if UNI decreases.
+
+We picked the top 3 exchanges by trading volume to avoid price movements solely to do poor liquidity.
+
+A time interval of 1 minute is the most granular time interval supported by the API. We choose a small time interval to ensure that positions track with any large price movements that may occur -- given that this may be a volatile instrument.
+
+We choose to use a median of three exchanges to balance the overhead of additionally required API calls for liquidation bots between an increased sample size of market prices. The median of the prices was choose instead of a simple arithmetic average to handle the scenarios where a given exchange is halted, unresponsive, or has erratic price movement. Quoted prices in USD are rounded to 6 amounts since (i) the USDC ERC20 contract only has 6 decimal places, and (ii) most exchanges only quote prices in USD between 2 to 6 decimal places.
 
 <br>
 
