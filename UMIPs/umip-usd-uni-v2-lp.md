@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-usd-uni-v2-lp-DRAFT    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add USD UNI-V2 LP token price identifiers              |
+| UMIP Title | Add USD UNI-V2 WBTC-ETH, USDC-ETH, UNI-ETH, UMA-ETH LP token price identifiers              |
 | Authors    | Dev-1 (dev-1-lp-dollar), Dev-2 (dev-2-lp-dollar) |
 | Status     | Draft                                                                                                                                    |
 | Created    | February 09, 2021           |
