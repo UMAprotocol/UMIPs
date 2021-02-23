@@ -124,23 +124,11 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
      167105037364529719
      ```
 
-3) Third, the ETHUSD price must be queried and used to calculate the USD value of the WETH reserves. 
-
-    The methodology to query the price of ETHUSD is similar to [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), with a different exchange list and decimal precision.  
-
-    Base Currency: ETH  
-    Quote Currency: USD  
-
-    Exchanges: Coinbase Pro (ETH:USD), Kraken (ETH:USD), Bitfinex (ETH:USD), Bitstamp (ETH:USD)  
-    Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
-    Price Steps: 0.01 (2 decimals in more general trading format)  
-    Rounding: Closest, 0.5 up  
-    Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down relative to requested price feed timestamp
+3) Third, the ETHUSD price must be queried and used to calculate the USD value of the WETH reserves. The methodology used to query the price of ETHUSD is [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md).  
     
-    After finding the median ETH:USD price, calculate the USD value of the WETH reserves.
+    After finding the ETH:USD price per UMIP-6, calculate the USD value of the WETH reserves. This result should have 8 decimals, rounding the closest 0.5 up.
     
-    Example calculation with Median ETH:USD = 1716.12:
+    Example calculation with UMIP-6 producing ETH:USD price = 1716.12000:
     
     ```
     USD value of WETH reserves = WETH in reserves * WETH:USD = 
@@ -150,23 +138,11 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     = 167321523.18154308
     ```
     
-4) Fourth, the BTC:USD price must be queried and used to calculate the USD value of the WBTC reserves. 
-
-    The methodology to query the price of BTC:USD is similar to [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md), with a different exchange list and decimal precision.  
-
-    Base Currency: BTC  
-    Quote Currency: USD  
-
-    Exchanges: Coinbase Pro (BTC:USD), Kraken (BTC:USD), Bitfinex (BTC:USD), Bitstamp (BTC:USD)  
-    Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
-    Price Steps: 0.01 (2 decimals in more general trading format)  
-    Rounding: Closest, 0.5 up  
-    Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down relative to requested price feed timestamp 
+4) Fourth, the BTC:USD price must be queried and used to calculate the USD value of the WBTC reserves. The methodology used to query the price of BTC:USD is [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md).
     
-    After finding the median BTC:USD price, calculate the USD value of the WBTC reserves.
+    After finding the BTC:USD price per UMIP-7, calculate the USD value of the WBTC reserves. This result should have 8 decimals, rounding the closest 0.5 up.
     
-    Example calculation with Median BTC:USD = 45938.30:
+    Example calculation with Median BTC:USD = 45938.30000000:
     
     ```
     USD value of total WBTC reserves = WBTC in reserves * BTC:USD
@@ -174,7 +150,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     = 3667.03647028 * 45938.30 = 168457421.48266372
     ```
 
-5) Fifth, use the UNI-V2-WBTC-ETH total supply of LP tokens and USD value of reserves to calculate the USD value of each LP token (UNI-V2-WBTC-ETH:USD).
+5) Fifth, use the UNI-V2-WBTC-ETH total supply of LP tokens and USD value of reserves to calculate the USD value of each LP token (UNI-V2-WBTC-ETH:USD). This result should have 8 decimals, rounding the closest 0.5 up.
 
     Example calculation of UNI-V2-WBTC-ETH:USD:
   
@@ -185,22 +161,20 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
   
     = (168457421.48266372 + 167321523.18154308) / .167105037364528719
   
-    = 2009388525.6835613
+    = 2009388525.68356130
     ```
-6) Finally, invert UNI-V2-WBTC-ETH:USD to calculate USD:UNI-V2-WBTC-ETH and scale it by 1e18, rounding any trailing decimals:
+6) Finally, invert UNI-V2-WBTC-ETH:USD to calculate USD:UNI-V2-WBTC-ETH. This result should have 18 decimals, rounding the closest 0.5 up.
 
     Example final calculation:
   
     ```
     USD:UNI-V2-WBTC-ETH = 
   
-    (1 / UNI-V2-WBTC-ETH:USD) * 1e18
+    (1 / UNI-V2-WBTC-ETH:USD)
   
-    = (1 / 2009388525.6835613) * 1e18 
+    = (1 / 2009388525.68356130)
   
-    = 497663835.15
-  
-    = 497663835
+    = 0.000000000497663835
     ```
 
 | Uniswap V2 USDC-ETH   |                                                                                                 |
@@ -306,23 +280,11 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
      2572499047307646516
      ```
 
-3) Third, the ETHUSD price must be queried and used to calculate the USD value of the WETH reserves. 
+3) Third, the ETHUSD price must be queried and used to calculate the USD value of the WETH reserves. The methodology used to query the price of ETHUSD is [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md).  
 
-    The methodology to query the price of ETHUSD is similar to [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), with a different exchange list and decimal precision.  
+    After finding the median ETH:USD price, calculate the USD value of the WETH reserves. This result should have 8 decimals, rounding the closest 0.5 up.
 
-    Base Currency: ETH  
-    Quote Currency: USD  
-
-    Exchanges: Coinbase Pro (ETH:USD), Kraken (ETH:USD), Bitfinex (ETH:USD), Bitstamp (ETH:USD)  
-    Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
-    Price Steps: 0.01 (2 decimals in more general trading format)  
-    Rounding: Closest, 0.5 up  
-    Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down relative to requested price feed timestamp
-
-    After finding the median ETH:USD price, calculate the USD value of the WETH reserves.
-
-    Example calculation with Median ETH:USD = 1716.12:
+    Example calculation with Median ETH:USD = 1716.12000:
 
     ```
     USD value of WETH reserves = WETH in reserves * WETH:USD = 
@@ -332,7 +294,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     = 146991258.60660332
     ```
 
-4) Fourth, use the UNI-V2-USDC-ETH total supply of LP tokens and USD value of reserves to calculate the USD value of each LP token (UNI-V2-USDC-ETH:USD). USDC is treated as equal to USD.
+4) Fourth, use the UNI-V2-USDC-ETH total supply of LP tokens and USD value of reserves to calculate the USD value of each LP token (UNI-V2-USDC-ETH:USD). This result should have 8 decimals, rounding the closest 0.5 up. USDC is treated as equal to USD.
 
     Example calculation of UNI-V2-USDC-ETH:USD:
 
@@ -345,20 +307,18 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
   
     = 115535858.75781949
     ```
-6) Finally, invert UNI-V2-USDC-ETH:USD to calculate USD:UNI-V2-USDC-ETH and scale it by 1e18, rounding any trailing decimals:
+6) Finally, invert UNI-V2-USDC-ETH:USD to calculate USD:UNI-V2-USDC-ETH. This result should have 18 decimals, rounding the closest 0.5 up.
 
     Example final calculation:
 
     ```
     USD:UNI-V2-USDC-ETH = 
   
-    (1 / UNI-V2-USDC-ETH:USD) * 1e18
+    (1 / UNI-V2-USDC-ETH:USD)
   
-    = (1 / 115535858.75781949) * 1e18 
+    = (1 / 115535858.75781949)
   
-    = 8655321479.854582
-  
-    = 8655321480
+    = 0.000000008655321480
     ```
     
 | Uniswap V2 UNI-ETH   |                                                                                                 |
@@ -464,23 +424,11 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
      370996507251705192965257
      ```
 
-3) Third, the ETHUSD price must be queried and used to calculate the USD value of the WETH reserves. 
+3) Third, the ETHUSD price must be queried and used to calculate the USD value of the WETH reserves. The methodology used to query the price of ETHUSD is [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md).  
 
-    The methodology to query the price of ETHUSD is similar to [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), with a different exchange list and decimal precision.  
+    After finding the median ETH:USD price, calculate the USD value of the WETH reserves. This result should have 8 decimals, rounding the closest 0.5 up.
 
-    Base Currency: ETH  
-    Quote Currency: USD  
-
-    Exchanges: Coinbase Pro (ETH:USD), Kraken (ETH:USD), Bitfinex (ETH:USD), Bitstamp (ETH:USD)  
-    Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
-    Price Steps: 0.01 (2 decimals in more general trading format)  
-    Rounding: Closest, 0.5 up  
-    Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down relative to requested price feed timestamp
-
-    After finding the median ETH:USD price, calculate the USD value of the WETH reserves.
-
-    Example calculation with Median ETH:USD = 1716.12:
+    Example calculation with Median ETH:USD = 1716.12000:
 
     ```
     USD value of WETH reserves = WETH in reserves * WETH:USD = 
@@ -495,24 +443,24 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     Base Currency: UNI  
     Quote Currency: USD  
 
-    Exchanges: Coinbase Pro (UNI:USD), Kraken (UNI:USD), Bitfinex (UNI:USD)
+    Exchanges: Coinbase Pro (UNI:USD), Binance (UNI:USDT), Bitfinex (UNI:USD)
     Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
     Price Steps: 0.01 (2 decimals in more general trading format)  
     Rounding: Closest, 0.5 up  
     Pricing Interval: 60 seconds  
     Dispute timestamp rounding: down relative to requested price feed timestamp 
 
-    After finding the median UNI:USD price, calculate the USD value of the UNI reserves.
+    After finding the median UNI:USD(T) price, calculate the USD value of the UNI reserves. This result should have 8 decimals, rounding the closest 0.5 up.
 
-    Example calculation with Median UNI:USD = 20.58:
+    Example calculation with Median UNI:USD(T) = 20.58:
 
     ```
     USD value of total UNI reserves = UNI in reserves * UNI:USD
     
-    = 6951264.42324589890590596 * 20.58 = 143057021.8304006
+    = 6951264.42324589890590596 * 20.58 = 143057021.83040060
     ```
 
-5) Fifth, use the UNI-V2-UNI-ETH total supply of LP tokens and USD value of reserves to calculate the USD value of each LP token (UNI-V2-UNI-ETH:USD).
+5) Fifth, use the UNI-V2-UNI-ETH total supply of LP tokens and USD value of reserves to calculate the USD value of each LP token (UNI-V2-UNI-ETH:USD). This result should have 8 decimals, rounding the closest 0.5 up.
 
     Example calculation of UNI-V2-UNI-ETH:USD:
 
@@ -521,24 +469,22 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
   
     (USD value of UNI reserves + USD value of WETH reserves) / UNI-V2-UNI-ETH total supply of LP tokens)
   
-    = (143057021.8304006 + 131583140.29680333) / 370996.507251705192964257
+    = (143057021.83040060 + 131583140.29680333) / 370996.507251705192964257
   
-    = 740.2769480545874
+    = 740.27694805
     ```
-6) Finally, invert UNI-V2-UNI-ETH:USD to calculate USD:UNI-V2-UNI-ETH and scale it by 1e18, rounding any trailing decimals:
+6) Finally, invert UNI-V2-UNI-ETH:USD to calculate USD:UNI-V2-UNI-ETH. This result should have 18 decimals, rounding the closest 0.5 up.
 
     Example final calculation:
 
     ```
     USD:UNI-V2-UNI-ETH = 
   
-    (1 / UNI-V2-UNI-ETH:USD) * 1e18
+    (1 / UNI-V2-UNI-ETH:USD)
   
-    = (1 / 740.2769480545874) * 1e18 
+    = (1 / 740.27694805)
   
-    = 1350845791737744.2
-  
-    = 1350845791737744
+    = 0.001350845791746115
     ```
     
 | Uniswap V2 UMA-ETH   |                                                                                                 |
@@ -644,30 +590,18 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
      8925567938786896588578
      ```
 
-3) Third, the ETHUSD price must be queried and used to calculate the USD value of the WETH reserves. 
+3) Third, the ETHUSD price must be queried and used to calculate the USD value of the WETH reserves. The methodology used to query the price of ETHUSD is [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md).  
 
-    The methodology to query the price of ETHUSD is similar to [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), with a different exchange list and decimal precision.  
+    After finding the median ETH:USD price, calculate the USD value of the WETH reserves. This result should have 8 decimals, rounding the closest 0.5 up.
 
-    Base Currency: ETH  
-    Quote Currency: USD  
-
-    Exchanges: Coinbase Pro (ETH:USD), Kraken (ETH:USD), Bitfinex (ETH:USD), Bitstamp (ETH:USD)  
-    Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
-    Price Steps: 0.01 (2 decimals in more general trading format)  
-    Rounding: Closest, 0.5 up  
-    Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down relative to requested price feed timestamp
-
-    After finding the median ETH:USD price, calculate the USD value of the WETH reserves.
-
-    Example calculation with Median ETH:USD = 1716.12:
+    Example calculation with Median ETH:USD = 1716.12000:
 
     ```
     USD value of WETH reserves = WETH in reserves * WETH:USD = 
     
     = 1350.358508316793260065 * 1716.12 
     
-    = 2317377.2432926153
+    = 2317377.24329262
     ```
 
 4) Fourth, the UMA:USD price must be queried and used to calculate the USD value of the UMA reserves.  
@@ -684,17 +618,17 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
 
     Note, that while using USDT markets is not ideal, protecting against a flash crash or spike in Coinbase Pro is deemed to be sufficient for inclusion. Should USDT suffer an adverse event, UMA holders should consider it an extreme event and fall back to the Coinbase Pro (UMA:USD) market.
 
-    After finding the median UMA:USD(T) price, calculate the USD value of the UMA reserves.
+    After finding the median UMA:USD(T) price, calculate the USD value of the UMA reserves. This result should have 8 decimals, rounding the closest 0.5 up.
 
     Example calculation with median UMA:USD(T) = 28.08:
 
     ```
     USD value of total UMA reserves = UMA in reserves * UMA:USD(T)
     
-    = 82869.968529556752869482 * 28.08 = 2326988.7163099535
+    = 82869.968529556752869482 * 28.08 = 2326988.71630995
     ```
 
-5) Fifth, use the UNI-V2-UMA-ETH total supply of LP tokens and USD value of reserves to calculate the USD value of each LP token (UNI-V2-UMA-ETH:USD).
+5) Fifth, use the UNI-V2-UMA-ETH total supply of LP tokens and USD value of reserves to calculate the USD value of each LP token (UNI-V2-UMA-ETH:USD). This result should have 8 decimals, rounding the closest 0.5 up.
 
     Example calculation of UNI-V2-UMA-ETH:USD:
 
@@ -703,22 +637,22 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
   
     (USD value of UMA reserves + USD value of WETH reserves) / UNI-V2-UMA-ETH total supply of LP tokens)
   
-    = (2326988.7163099535 + 2317377.2432926153) / 8925.567938786896587578
+    = (2326988.71630995 + 2317377.24329262) / 8925.567938786896587578
   
-    = 520.3440264478901
+    = 520.3440264478902
     ```
-6) Finally, invert UNI-V2-UMA-ETH:USD to calculate USD:UNI-V2-UMA-ETH and scale it by 1e18, rounding any trailing decimals:
+6) Finally, invert UNI-V2-UMA-ETH:USD to calculate USD:UNI-V2-UMA-ETH. This result should have 8 decimals, rounding the closest 0.5 up.
 
     Example final calculation:
 
     ```
     USD:UNI-V2-UMA-ETH = 
   
-    (1 / UNI-V2-UMA-ETH:USD) * 1e18
+    (1 / UNI-V2-UMA-ETH:USD)
   
-    = (1 / 520.3440264478901) * 1e18 
+    = (1 / 520.3440264478902)
   
-    = 1921805477092654  
+    0.001921805477092653  
     ```
 
 
