@@ -1,7 +1,7 @@
 # Headers
 | UMIP-#     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add UNI-V2 LP tokens as whitelisted collateral currencies              |
+| UMIP Title | Add UNI-V2 LP tokens WBTC-ETH, USDC-ETH, UNI-ETH, and UMA-ETH, as whitelisted collateral currencies              |
 | Authors    | Dev-1 (dev-1-lp-dollar), Dev-2 (dev-2-lp-dollar) |
 | Status     | Draft                                                                                                                                    |
 | Created    | February 09, 2021                                                                                                                        |
