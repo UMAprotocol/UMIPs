@@ -1,7 +1,7 @@
  **Headers**
 | UMIP [#]   |      |
 |------------|------|
-| UMIP Title | Add price identifiers for {AAVE, LINK, SNX, UMA, UNI}/USD and inverse pairs |
+| UMIP Title | Add price identifiers for AAVEUSD, USDAAVE; LINKUSD, USDLINK; SNXUSD, USDSNX; UMAUSD, USDUMA; UNIUSD, USDUNI |
 | Authors    | Josh Bowden (josh@ferrosync.io) |
 | Status     | Draft |
 | Created    | February 17th, 2021 |
@@ -11,11 +11,11 @@
 # Overview
 This proposal is for adding the following price identifiers to be supported:
 
- * AAVE/USD, USD/AAVE
- * LINK/USD, USD/LINK
- * SNX/USD, USD/SNX
- * UMA/USD, USD/UMA
- * UNI/USD, USD/UNI
+ * AAVEUSD, USDAAVE
+ * LINKUSD, USDLINK
+ * SNXUSD, USDSNX
+ * UMAUSD, USDUMA
+ * UNIUSD, USDUNI
 
 # Motivation
 
