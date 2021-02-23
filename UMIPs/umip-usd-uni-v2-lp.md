@@ -136,7 +136,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     Price Steps: 0.01 (2 decimals in more general trading format)  
     Rounding: Closest, 0.5 up  
     Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down
+    Dispute timestamp rounding: down relative to requested price feed timestamp
     
     After finding the median ETH:USD price, calculate the USD value of the WETH reserves.
     
@@ -162,7 +162,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     Price Steps: 0.01 (2 decimals in more general trading format)  
     Rounding: Closest, 0.5 up  
     Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down  
+    Dispute timestamp rounding: down relative to requested price feed timestamp 
     
     After finding the median BTC:USD price, calculate the USD value of the WBTC reserves.
     
@@ -318,7 +318,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     Price Steps: 0.01 (2 decimals in more general trading format)  
     Rounding: Closest, 0.5 up  
     Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down
+    Dispute timestamp rounding: down relative to requested price feed timestamp
 
     After finding the median ETH:USD price, calculate the USD value of the WETH reserves.
 
@@ -476,7 +476,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     Price Steps: 0.01 (2 decimals in more general trading format)  
     Rounding: Closest, 0.5 up  
     Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down
+    Dispute timestamp rounding: down relative to requested price feed timestamp
 
     After finding the median ETH:USD price, calculate the USD value of the WETH reserves.
 
@@ -500,7 +500,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     Price Steps: 0.01 (2 decimals in more general trading format)  
     Rounding: Closest, 0.5 up  
     Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down  
+    Dispute timestamp rounding: down relative to requested price feed timestamp 
 
     After finding the median UNI:USD price, calculate the USD value of the UNI reserves.
 
@@ -656,7 +656,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     Price Steps: 0.01 (2 decimals in more general trading format)  
     Rounding: Closest, 0.5 up  
     Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down
+    Dispute timestamp rounding: down relative to requested price feed timestamp
 
     After finding the median ETH:USD price, calculate the USD value of the WETH reserves.
 
@@ -680,7 +680,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     Price Steps: 0.01 (2 decimals in more general trading format)  
     Rounding: Closest, 0.5 up  
     Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down
+    Dispute timestamp rounding: down relative to requested price feed timestamp
 
     Note, that while using USDT markets is not ideal, protecting against a flash crash or spike in Coinbase Pro is deemed to be sufficient for inclusion. Should USDT suffer an adverse event, UMA holders should consider it an extreme event and fall back to the Coinbase Pro (UMA:USD) market.
 
