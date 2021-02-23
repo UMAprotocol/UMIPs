@@ -17,7 +17,7 @@ The DVM currently does not support Uniswap V2 LP tokens.
 
 By enabling LP token price identifiers, UMA will open the door for the creation of synths with CFMM (constant function market maker) LP positions.
 
-The LP Dollar team will use the price identifiers to enable fixed borrowing costs for Uniswap V2 liquidity providers.
+The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity providers (LPs) of WBTC-ETH, USDC-ETH, UNI-ETH, and UMA-ETH. Users will be able to deposit their LP tokens as collateral and mint synthetic USD tokens against them. The synthetic USD tokens, when sold on the open market, have a fixed borrow cost determined by the relative value of the synthetic token compared to 1 USD. The UMA team has released synthetics that aleady enable this type of borrowing for other assets (WETH, renBTC), with mechanism details that can be found here: https://medium.com/uma-project/the-yield-dollar-on-uma-3a492e79069f.
 
 ## Data Sources & Price Feed Implementation
 
