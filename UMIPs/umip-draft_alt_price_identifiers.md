@@ -97,7 +97,7 @@ Associated AAVE price feeds are available via Cryptowatch. No other further feed
   -  Base Currency: AAVE
   -  Quote Currency: USD
   -  Intended Collateral Currency: USDC
-  -  Collateral Decimals: 6
+  -  Scaling Decimals: 18
   -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
   -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
   -  Is your collateral currency already approved to be used by UMA financial contracts?: YES
@@ -108,7 +108,7 @@ Associated AAVE price feeds are available via Cryptowatch. No other further feed
   -  Base Currency: USD
   -  Quote Currency: AAVE
   -  Intended Collateral Currency: AAVE
-  -  Collateral Decimals: 18
+  -  Scaling Decimals: 18
   -  Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
   -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
   -  Is your collateral currency already approved to be used by UMA financial contracts?: In progress
@@ -209,7 +209,7 @@ Associated LINK price feeds are available via Cryptowatch. No other further feed
 -  Base Currency: LINK
 -  Quote Currency: USD
 -  Intended Collateral Currency: USDC
--  Collateral Decimals: 6
+-  Scaling Decimals: 18
 -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 -  Is your collateral currency already approved to be used by UMA financial contracts?: YES
@@ -220,7 +220,7 @@ Associated LINK price feeds are available via Cryptowatch. No other further feed
 -  Base Currency: USD
 -  Quote Currency: LINK
 -  Intended Collateral Currency: LINK
--  Collateral Decimals: 18
+-  Scaling Decimals: 18
 -  Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 -  Is your collateral currency already approved to be used by UMA financial contracts?: In progress 
@@ -319,7 +319,7 @@ Associated SNX price feeds are available via Cryptowatch. No other further feeds
 -  Base Currency: SNX
 -  Quote Currency: USD
 -  Intended Collateral Currency: USDC
--  Collateral Decimals: 6
+-  Scaling Decimals: 18
 -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 -  Is your collateral currency already approved to be used by UMA financial contracts?: YES
@@ -330,7 +330,7 @@ Associated SNX price feeds are available via Cryptowatch. No other further feeds
 -  Base Currency: USD
 -  Quote Currency: SNX
 -  Intended Collateral Currency: SNX
--  Collateral Decimals: 18
+-  Scaling Decimals: 18
 -  Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 -  Is your collateral currency already approved to be used by UMA financial contracts?: In progress 
@@ -435,7 +435,7 @@ Associated UMA price feeds are available via Cryptowatch. No other further feeds
 -  Base Currency: UMA
 -  Quote Currency: USD
 -  Intended Collateral Currency: USDC
--  Collateral Decimals: 6
+-  Scaling Decimals: 18
 -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 -  Is your collateral currency already approved to be used by UMA financial contracts?: YES
@@ -446,7 +446,7 @@ Associated UMA price feeds are available via Cryptowatch. No other further feeds
 -  Base Currency: USD
 -  Quote Currency: UMA
 -  Intended Collateral Currency: UMA
--  Collateral Decimals: 18
+-  Scaling Decimals: 18
 -  Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 -  Is your collateral currency already approved to be used by UMA financial contracts?: In progress 
@@ -552,7 +552,7 @@ Associated UNI price feeds are available via Cryptowatch. No other further feeds
 -  Base Currency: UNI
 -  Quote Currency: USD
 -  Intended Collateral Currency: USDC
--  Collateral Decimals: 6
+-  Scaling Decimals: 18
 -  Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 -  Is your collateral currency already approved to be used by UMA financial contracts?: YES
@@ -563,7 +563,7 @@ Associated UNI price feeds are available via Cryptowatch. No other further feeds
 -  Base Currency: USD
 -  Quote Currency: UNI
 -  Intended Collateral Currency: UNI
--  Collateral Decimals: 18
+-  Scaling Decimals: 18
 -  Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
 -  Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 -  Is your collateral currency already approved to be used by UMA financial contracts?: In progress
