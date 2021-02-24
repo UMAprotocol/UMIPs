@@ -4,7 +4,7 @@
 | ----------------- | ----------------------------------------------------------------------------------- |
 | UMIP Title        | Add DAIPHP and PHPDAI as a price identifier                                         |
 | Authors           | Chris Verceles (chris.verceles@halodao.com), James Orola (james.orola@halodao.com)  |
-| Status            | Final                                                                               |
+| Status            | Approved                                                                               |
 | Created           | Feb 3, 2021                                                                         |
 | Link to Discourse | [Discourse](https://discourse.umaproject.org/t/adding-dai-php-price-identifier/135) |
 

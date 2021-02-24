@@ -4,7 +4,7 @@
 | ---------- | ------------------------------------------------------------------------------------------ |
 | UMIP Title | Approve Upgraded DVM Voting Contract to add ancillaryData                                  |
 | Authors    | Matt Rice (matt@umaproject.org)                                                            |
-| Status     | Final                                                                                     |
+| Status     | Approved                                                                                     |
 | Created    | February 16, 2021                                                                          |
 
 ## Summary

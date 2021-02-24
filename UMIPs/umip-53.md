@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Register new Perpetual financial contract with DVM                                                                                                 |
 | Authors    | John Shutt (john@umaproject.org) |
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | February 16, 2021                                                                                                                           |
 
 
