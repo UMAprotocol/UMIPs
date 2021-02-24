@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Approve New EMP Financial Contract Template              |
 | Authors    | John Shutt (john@umaproject.org) |
-| Status     | Final                                                                                                                             |
+| Status     | Approved                                                                                                                             |
 | Created    | February 16, 2021                                                                                                                           |
 
 ## Summary
