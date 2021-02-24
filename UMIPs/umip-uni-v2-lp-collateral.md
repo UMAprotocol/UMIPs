@@ -23,10 +23,10 @@ UMA = $28.98
  
 | Currency (LP token) |  Total Reserves | LP Token Supply | LP Token in Dollars | Final Fee in LP token |
 | ------------------- | --------------- | --------------- | ------------------- | -------------------- |
-| WBTC-ETH | WBTC: 4,004.25660 <br /> ETH: 108,354.69868 | 0.183766117503018792 | ```((4,004.25660 * 48,659.32) + (108,354.69868 * 1,803.90)) / 0.183766117503018792``` = $2,123,924,962.41 | `400 / 2,123,924,962.41` = 0.00000018833057056127
-| USDC-ETH | USDC: 176,760,773.71622 <br /> ETH: 97,320.84342 | 2.961635437353718411 | ```((176,760,773.71622 * 1) + (97,320.84342 * 1,803.90)) / 2.961635437353718411``` = $118,960,571.14 | `400 / 118,960,571.14` = 0.00000336245863790664
-| UNI-ETH  | UNI: 6,619,997.29037 <br /> ETH: 77,263.63438 | 362,909.728355933628948352 | ```((6,619,997.29037 * 21.05) + (77,263.63438 * 1,803.90)) / 362,909.728355933628948352``` = $768.03 | `400 / 768.03` = 0.52081298907594755413
-| UMA-ETH  | UMA: 81,710.86344 <br /> ETH: 1,310.95349 | 8,717.786395937747945885 | ```((81,710.86344 * 28.98) + (1,310.95349 * 1,803.90)) / 8,717.786395937747945885``` = $542.89 | `400 / 542.89` = 0.73679750962441746947
+| WBTC-ETH | WBTC: 4,004.25660 <br /> ETH: 108,354.69868 | 0.183766117503018792 | ```((4,004.25660 * 48,659.32) + (108,354.69868 * 1,803.90)) / 0.183766117503018792``` = $2,123,924,962.41 | 0.0000002 (~$425)
+| USDC-ETH | USDC: 176,760,773.71622 <br /> ETH: 97,320.84342 | 2.961635437353718411 | ```((176,760,773.71622 * 1) + (97,320.84342 * 1,803.90)) / 2.961635437353718411``` = $118,960,571.14 | 0.0000035 (~$415)
+| UNI-ETH  | UNI: 6,619,997.29037 <br /> ETH: 77,263.63438 | 362,909.728355933628948352 | ```((6,619,997.29037 * 21.05) + (77,263.63438 * 1,803.90)) / 362,909.728355933628948352``` = $768.03 | 0.55 (~$425)
+| UMA-ETH  | UMA: 81,710.86344 <br /> ETH: 1,310.95349 | 8,717.786395937747945885 | ```((81,710.86344 * 28.98) + (1,310.95349 * 1,803.90)) / 8,717.786395937747945885``` = $542.89 | 0.8 (~$430)
 
 
 
@@ -42,19 +42,19 @@ To accomplish this upgrade, two changes need to be made for each UNI-V2 pair:
 
 *WBTC-ETH*
 - The UNI-V2 WBTC-ETH LP address, 0xBb2b8038a1640196FbE3e38816F3e67Cba72D940, needs to be added to the collateral currency whitelist.
-- A final fee of 0.00000018833057056127 needs to be added for UNI-V2 WBTC-ETH LP in the Store contract.
+- A final fee of 0.0000002 needs to be added for UNI-V2 WBTC-ETH LP in the Store contract.
 
 *USDC-ETH*
 - The UNI-V2 USDC-ETH LP address, 0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc, needs to be added to the collateral currency whitelist.
-- A final fee of 0.00000336245863790664 needs to be added for UNI-V2 USDC-ETH LP in the Store contract.
+- A final fee of 0.0000035 needs to be added for UNI-V2 USDC-ETH LP in the Store contract.
 
 *UNI-ETH*
 - The UNI-V2 UNI-ETH LP address, 0xd3d2E2692501A5c9Ca623199D38826e513033a17, needs to be added to the collateral currency whitelist.
-- A final fee of 0.52081298907594755413 needs to be added for UNI-V2 UNI-ETH LP in the Store contract.
+- A final fee of 0.55 needs to be added for UNI-V2 UNI-ETH LP in the Store contract.
 
 *UMA-ETH*
 - The UNI-V2 UMA-ETH LP address, 0x88D97d199b9ED37C29D846d00D443De980832a22, needs to be added to the collateral currency whitelist.
-- A final fee of 0.73679750962441746947 needs to be added for UNI-V2 UMA-ETH LP in the Store contract.
+- A final fee of 0.8 needs to be added for UNI-V2 UMA-ETH LP in the Store contract.
 
 
 ## Rationale
