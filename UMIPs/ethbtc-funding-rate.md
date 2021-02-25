@@ -107,7 +107,7 @@ ETHBTC_FR: {
 - Quote currency: None. This is a percentage.
 - Tracked Synthetic Collateral Currency: USDC
 - Scaling Decimals: 18
-- Rounding: Round to nearest 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Rounding: Round to nearest 18 decimal places (19th decimal place digit >= 5 rounds up and < 5 rounds down)
 - Synthetic Name: To be added
 - Synthetic Address: To be added
 - AMM Pool Address: To be added
@@ -115,11 +115,11 @@ ETHBTC_FR: {
 
 ## RATIONALE
 
-To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate. The funding rate will be determined with the following formula:
-- [ETHBTC-PERP - ETHBTC] / ETHBTC / 86400
-- `ETHBTC` denotes the ETHBTC price gathered with the methodology created in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md).
+To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate times the cumulative funding rate multiplier (CFRM). The funding rate will be determined with the following formula:
+- [ETHBTC-PERP - ETHBTC-FV] / ETHBTC-FV / 86400
+- `ETHBTC-FV` denotes the ETHBTC price gathered with the methodology shown in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md) multiplied by the CFRM.
 - `ETHBTC-PERP` denotes the five minute TWAP of the synthetic created with this funding rate identifier. This synth will be pooled with USDC. 
-- 86400 is the number of seconds per day. Assuming all other prices stay constant, this effectively gives the funding rate per second that would be needed to move a synthetic token's value back to peg in one day.  
+- 86400 is the number of seconds per day. Assuming all other prices stay constant, this effectively gives the funding rate per second that would need to be applied to move a synthetic token's value back to fair value in one day.  
 
 Add XYZ rationale including an example walk through of a funding rate application.
 
@@ -128,11 +128,13 @@ A five minute TWAP is used to query the ETHBTC-PERP price. The TWAP is used to d
 ## IMPLEMENTATION
 Voters should determine which pricing implementation to use depending on when the price request was submitted.
 
-1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the ETHBTC price at the disputed funding rate proposal timestamp and round this result to 8 decimal places.
-2. Query for the ETHBTC-PERP 5 minute TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated USDC. Round this result to 8 decimal places.
-3. Subtract the result of step 1 from the result of step 2. [ETHBTC-PERP - ETHBTC]
-4. Divide the result of step 3 by the ETHBTC rate. [ETHBTC-PERP - ETHBTC]/ETHBTC.
-5. Divide the result from step 5 by 86400 (# of seconds in a day) to get the funding rate per second. Voters should then round this result to 8 decimal places 
+1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the ETHBTC price at the disputed funding rate proposal timestamp.
+2. Query for the cumulative funding rate multiplier at the same timestamp.
+3. Multiply the ETHBTC price from step 1 by the CFRM from step 2 to get the fair value of the ETHBTC synthetic (ETHBTC-FV). [ETHBTC * CFRM].
+4. Query for the ETHBTC-PERP 5 minute TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USDC.
+5. Subtract the result of step 3 from the result of step 4. [ETHBTC-PERP - ETHBTC-FV].
+6. Divide the result of step 5 by the ETHBTC rate. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
+7. Divide the result from step 6 by 86400 (# of seconds in a day) to get the funding rate per second. Voters should then round this result to 18 decimal places.
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
