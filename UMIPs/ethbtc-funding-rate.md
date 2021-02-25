@@ -130,8 +130,8 @@ Voters should determine which pricing implementation to use depending on when th
 
 1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the ETHBTC price at the disputed funding rate proposal timestamp and round this result to 8 decimal places.
 2. Query for the ETHBTC-PERP 5 minute TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated USDC. Round this result to 8 decimal places.
-3. Subtract the result of step 1 from the result in step 4. [ETHBTC-PERP - ETHBTC]
-4. Divide the result of step 3 by the ETHBTC rate to get the percent difference between the two [ETHBTC-PERP - ETHBTC]/ETHBTC.
+3. Subtract the result of step 1 from the result of step 2. [ETHBTC-PERP - ETHBTC]
+4. Divide the result of step 3 by the ETHBTC rate. [ETHBTC-PERP - ETHBTC]/ETHBTC.
 5. Divide the result from step 5 by 86400 (# of seconds in a day) to get the funding rate per second. Voters should then round this result to 8 decimal places 
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
