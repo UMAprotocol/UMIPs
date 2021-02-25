@@ -237,7 +237,7 @@ Query for the WBTC/ETH price using the below [subgraph query](https://thegraph.c
     }
 ```
 
-2. The WBTC/ETH price is determined by dividing `reserve0` by `reserve1`. This price should be queried using a 2-hour TWAP.
+2. The WBTC/ETH price is determined by dividing `reserve0` by `reserve1`. This price should be queried using a 5-minute TWAP.
 3. Take the median of the results between Sushiswap and Uniswap.
 4. Using the specifications in UMIP 6 query for the price of ETHUSD.
 5. Multiple the results of steps 2 and 3 together to get the WBTC/USD price
@@ -251,7 +251,7 @@ To find the price for USD/bBadger perform the following steps:
 
 1. Query the `getPricePerFullShare` method on contract `0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28`. This information is on-chain and can be queried in any way that a voter wishes at the price request block. 
 2. Multiply this value by 1e-18 to get the ratio of one bBadger token to underlying badger tokens (i.e. bBadger/Badger).
-3. Query for the price of Badger/WBTC on Sushiswap. This price should be queried using a 2-hour TWAP. Pool address: `0x110492b31c59716ac47337e616804e3e3adc0b4a`. Multiply this by the WBTC/USD price obtained earlier to get Badger/USD.
+3. Query for the price of Badger/WBTC on Sushiswap. This price should be queried using a 5-minute TWAP. Pool address: `0x110492b31c59716ac47337e616804e3e3adc0b4a`. Multiply this by the WBTC/USD price obtained earlier to get Badger/USD.
 4. Repeat step 3 for Uniswap. Pool address: `0xcd7989894bc033581532d2cd88da5db0a4b12859`
 5. Query for the price of Badger/USDT on Huobi.
 6. Take the median of steps 3-5 to get Badger/USD.

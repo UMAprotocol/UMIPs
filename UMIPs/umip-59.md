@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-usd-uni-v2-lp-DRAFT    |                                                                                                                                          |
+| UMIP-59    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add USD UNI-V2 WBTC-ETH, USDC-ETH, UNI-ETH, UMA-ETH LP token price identifiers              |
+| UMIP Title | Add USD/UNI_V2_WBTC_ETH_LP, USD/UNI_V2_USDC_ETH_LP, USD/UNI_V2_UNI_ETH_LP, USD/UNI_V2_UMA_ETH_LP token price identifiers              |
 | Authors    | Dev-1 (dev-1-lp-dollar), Dev-2 (dev-2-lp-dollar) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | February 09, 2021           |
 | Link to Discourse | [Discourse](https://discourse.umaproject.org/t/add-usd-uni-v2-wbtc-eth-as-a-price-identifier/148)                                 |
 
@@ -21,7 +21,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
 
 ## Data Sources & Price Feed Implementation
 
-| Uniswap V2 WBTC-ETH   |                                                                                                 |
+| Uniswap V2 WBTC-ETH (UNI_V2_WBTC_ETH_LP)   |                                                                                                 |
 |------------|------------------------------------------------------------------------------------------------------------------- |
 | Contract Address | [0xBb2b8038a1640196FbE3e38816F3e67Cba72D940](https://etherscan.io/address/0xbb2b8038a1640196fbe3e38816f3e67cba72d940) |
 | Decimals | 18 |
@@ -177,7 +177,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     = 0.000000000497663835
     ```
 
-| Uniswap V2 USDC-ETH   |                                                                                                 |
+| Uniswap V2 USDC-ETH (USD/UNI_V2_USDC_ETH_LP)  |                                                                                                 |
 |------------|------------------------------------------------------------------------------------------------------------------- |
 | Contract Address | [0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc](https://etherscan.io/address/0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc) |
 | Decimals | 18 |
@@ -321,7 +321,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     = 0.000000008655321480
     ```
     
-| Uniswap V2 UNI-ETH   |                                                                                                 |
+| Uniswap V2 UNI-ETH (USD/UNI_V2_USDC_ETH_LP)   |                                                                                                 |
 |------------|------------------------------------------------------------------------------------------------------------------- |
 | Contract Address | [0xd3d2E2692501A5c9Ca623199D38826e513033a17](https://etherscan.io/address/0xd3d2E2692501A5c9Ca623199D38826e513033a17) |
 | Decimals | 18 |
@@ -440,15 +440,15 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
 
 4) Fourth, the UNI:USD price must be queried and used to calculate the USD value of the UNI reserves.  
 
-    Base Currency: UNI  
-    Quote Currency: USD  
+- Base Currency: UNI  
+- Quote Currency: USD  
 
-    Exchanges: Coinbase Pro (UNI:USD), Binance (UNI:USDT), Bitfinex (UNI:USD)
-    Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
-    Price Steps: 0.01 (2 decimals in more general trading format)  
-    Rounding: Closest, 0.5 up  
-    Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down relative to requested price feed timestamp 
+- Exchanges: Coinbase Pro (UNI:USD), Binance (UNI:USDT), Bitfinex (UNI:USD)
+- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
+- Price Steps: 0.01 (2 decimals in more general trading format)  
+- Rounding: Closest, 0.5 up  
+- Pricing Interval: 60 seconds  
+- Dispute timestamp rounding: down relative to requested price feed timestamp 
 
     After finding the median UNI:USD(T) price, calculate the USD value of the UNI reserves. This result should have 8 decimals, rounding the closest 0.5 up.
 
@@ -487,7 +487,7 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
     = 0.001350845791746115
     ```
     
-| Uniswap V2 UMA-ETH   |                                                                                                 |
+| Uniswap V2 UMA-ETH (USD/UNI_V2_UMA_ETH_LP)   |                                                                                                 |
 |------------|------------------------------------------------------------------------------------------------------------------- |
 | Contract Address | [0x88D97d199b9ED37C29D846d00D443De980832a22](https://etherscan.io/address/0x88D97d199b9ED37C29D846d00D443De980832a22) |
 | Decimals | 18 |
@@ -606,15 +606,15 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
 
 4) Fourth, the UMA:USD price must be queried and used to calculate the USD value of the UMA reserves.  
 
-    Base Currency: UMA  
-    Quote Currency: USD  
+- Base Currency: UMA  
+- Quote Currency: USD  
 
-    Exchanges: Coinbase Pro (UMA:USD), Binance (UMA:USDT), OKEx (UMA:USDT)
-    Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
-    Price Steps: 0.01 (2 decimals in more general trading format)  
-    Rounding: Closest, 0.5 up  
-    Pricing Interval: 60 seconds  
-    Dispute timestamp rounding: down relative to requested price feed timestamp
+- Exchanges: Coinbase Pro (UMA:USD), Binance (UMA:USDT), OKEx (UMA:USDT)
+- Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.  
+- Price Steps: 0.01 (2 decimals in more general trading format)  
+- Rounding: Closest, 0.5 up  
+- Pricing Interval: 60 seconds  
+- Dispute timestamp rounding: down relative to requested price feed timestamp
 
     Note, that while using USDT markets is not ideal, protecting against a flash crash or spike in Coinbase Pro is deemed to be sufficient for inclusion. Should USDT suffer an adverse event, UMA holders should consider it an extreme event and fall back to the Coinbase Pro (UMA:USD) market.
 
@@ -658,33 +658,33 @@ The price identifiers will enable fixed borrowing costs for Uniswap V2 liquidity
 
 ## Technical Specifications
 
-Price Identifier Name: USD/UNI-V2-WBTC-ETH  
-Base Currency: USD  
-Quote currency: UNI-V2-WBTC-ETH  
-Intended Collateral Currency: UNI-V2-WBTC-ETH  
-Collateral Decimals: 18  
-Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)  
+- Price Identifier Name: USD/UNI_V2_WBTC_ETH_LP
+- Base Currency: USD  
+- Quote currency: UNI_V2_WBTC_ETH_LP  
+- Intended Collateral Currency: UNI_V2_WBTC_ETH_LP  
+- Collateral Decimals: 18  
+- Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)  
 
-Price Identifier Name: USD/UNI-V2-USDC-ETH  
-Base Currency: USD  
-Quote currency: UNI-V2-USDC-ETH  
-Intended Collateral Currency: UNI-V2-USDC-ETH  
-Collateral Decimals: 18  
-Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)  
+- Price Identifier Name: USD/UNI_V2_USDC_ETH_LP  
+- Base Currency: USD  
+- Quote currency: UNI_V2_USDC_ETH_LP  
+- Intended Collateral Currency: UNI_V2_USDC_ETH_LP  
+- Collateral Decimals: 18  
+- Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)  
 
-Price Identifier Name: USD/UNI-V2-UNI-ETH  
-Base Currency: USD  
-Quote currency: UNI-V2-UNI-ETH  
-Intended Collateral Currency: UNI-V2-UNI-ETH  
-Collateral Decimals: 18  
-Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)  
+- Price Identifier Name: USD/UNI_V2_USDC_ETH_LP  
+- Base Currency: USD  
+- Quote currency: UNI_V2_USDC_ETH_LP 
+- Intended Collateral Currency: UNI_V2_USDC_ETH_LP 
+- Collateral Decimals: 18  
+- Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)  
 
-Price Identifier Name: USD/UNI-V2-UMA-ETH  
-Base Currency: USD  
-Quote currency: UNI-V2-UMA-ETH  
-Intended Collateral Currency: UNI-V2-UMA-ETH  
-Collateral Decimals: 18  
-Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Price Identifier Name: USD/UNI_V2_UMA_ETH_LP  
+- Base Currency: USD  
+- Quote currency: UNI_V2_UMA_ETH_LP   
+- Intended Collateral Currency: UNI_V2_UMA_ETH_LP  
+- Collateral Decimals: 18  
+- Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
 
 ## Rationale
 
