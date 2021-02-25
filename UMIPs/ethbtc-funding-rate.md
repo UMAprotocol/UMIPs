@@ -81,7 +81,7 @@ Because this uses existing price feeds, the only additional work that is require
 ```
 ETHBTC_FR: {
     type: "expression",
-    expression: "(ETH/BTC - ETHBTC_PERP) / ETH/BTC / 86400",
+    expression: "(ETHBTC_PERP - ETH/BTC) / ETH/BTC / 86400",
     lookback: 7200,
     minTimeBetweenUpdates: 60,
     priceFeedDecimals: 18,
@@ -116,7 +116,7 @@ ETHBTC_FR: {
 ## RATIONALE
 
 To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate. The funding rate will be determined with the following formula:
-- [ETHBTC - ETHBTC-PERP] / ETHBTC / 86400
+- [ETHBTC-PERP - ETHBTC] / ETHBTC / 86400
 - `ETHBTC` denotes the ETHBTC price gathered with the methodology created in UMIP-4: link - normalized to ETH.
 - `ETHBTC-PERP` denotes the five minute TWAP of the synthetic created with this funding rate identifier. This synth will be pooled with USDC, so the price should be converted to a rate in BTC by multiplying the ETHBTC_PERP/USDC rate by the USDBTC price. 
 - 86400 is the number of seconds per day. Assuming all other prices stay constant, this effectively gives the funding rate per second that would be needed to move a synthetic token's value back to peg in one day.  
@@ -132,9 +132,9 @@ Voters should determine which pricing implementation to use depending on when th
 2. Query for the ETHBTC-PERP 5 minute TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP in USDC.
 3. Query for the USDBTC price using the implementation defined in [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md).
 4. Multiply the results of steps 2 and 3 together to get the ETHBTC-PERP/BTC rate. This result should be rounded to 8 decimal places.
-5. Subtract the result of step 4 from the result in step 1. [ETHBTC - ETHBTC-PERP/BTC]
-6. Divide the result of step 3 by the ETHBTC rate to get the percent difference between the two [ETHBTC - ETHBTC-PERP/BTC]/ETHBTC.
-7. Divide the result from step 5 by 86400 (# of seconds in a day) to get the funding rate per second. Voters should then round this result to X decimal places 
+5. Subtract the result of step 1 from the result in step 4. [ETHBTC-PERP/BTC - ETHBTC]
+6. Divide the result of step 3 by the ETHBTC rate to get the percent difference between the two [ETHBTC-PERP/BTC - ETHBTC]/ETHBTC.
+7. Divide the result from step 5 by 86400 (# of seconds in a day) to get the funding rate per second. Voters should then round this result to 8 decimal places 
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
