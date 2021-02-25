@@ -117,7 +117,7 @@ ETHBTC_FR: {
 
 To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate. The funding rate will be determined with the following formula:
 - [ETHBTC-PERP - ETHBTC] / ETHBTC / 86400
-- `ETHBTC` denotes the ETHBTC price gathered with the methodology created in UMIP-4: link - normalized to ETH.
+- `ETHBTC` denotes the ETHBTC price gathered with the methodology created in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md).
 - `ETHBTC-PERP` denotes the five minute TWAP of the synthetic created with this funding rate identifier. This synth will be pooled with USDC, so the price should be converted to a rate in BTC by multiplying the ETHBTC_PERP/USDC rate by the USDBTC price. 
 - 86400 is the number of seconds per day. Assuming all other prices stay constant, this effectively gives the funding rate per second that would be needed to move a synthetic token's value back to peg in one day.  
 
