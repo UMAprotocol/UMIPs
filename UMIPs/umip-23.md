@@ -1,6 +1,6 @@
 # Disclaimer
 
-This price identifier has been deprecated. It is highly recommended that contract deployers do not use this identifier in its current state for new contracts. Price requests from contracts created after 02/20/21 00:00 UTC will likely not be resolved correctly. 
+This price identifier has been deprecated. It is highly recommended that contract deployers do not use this identifier in its current state for new contracts. Price requests for this identifier from contracts created after 02/26/21 00:00 UTC will likely not be resolved correctly. Price requests from contracts created before this time will not be impacted.
 
 Reasoning: The new EMP template proposed in [UMIP-54](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-54.md) requires that all price identifiers be scaled to 18 decimals. There are live contracts using the old EMP template which require this price identifier to be scaled equal the number of decimals in renBTC (8). Because of this, the DVM could return prices incorrectly for new contracts that use this identifier. 
 
