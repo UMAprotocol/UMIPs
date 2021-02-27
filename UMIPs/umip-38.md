@@ -1,3 +1,9 @@
+# Disclaimer
+
+These price identifiers have been deprecated. It is highly recommended that contract deployers do not use this identifier in its current state for new contracts. Price requests for this identifier from contracts created after 02/26/21 00:00 UTC will likely not be resolved correctly. Price requests from contracts created before this time will not be impacted.
+
+Reasoning: The new EMP template proposed in [UMIP-54](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-54.md) requires that all price identifiers be scaled to 18 decimals. There are live contracts using the old EMP template which require these price identifiers to be scaled equal the number of decimals in USDC (6). Because of this, the DVM could return prices incorrectly for new contracts that use either one of these identifiers.
+
 ## Headers
 - UMIP-38
 - UMIP title: Add price identifiers COMPUSDC-APR-FEB28/USDC and COMPUSDC-APR-MAR28/USDC
@@ -60,7 +66,6 @@ This price should be queried from the highest volume Uniswap pool (Whichever one
 
 The source of truth for this data is the Compound USDC cToken's (cUSDC) `borrowRatePerBlock()` method. As of the writing of this UMIP, the agreed-upon cUSDC smart contract address is `0x39aa39c021dfbae8fac545936693ac917d5e7563`. This price identifier aggregates the value returned by `borrowRatePerBlock()` over every block from the 30 days ending at the cutoff/expiration timestamp (`1614470400` for `COMPUSDC-APR-FEB28/USDC` and `1616889600` for `COMPUSDC-APR-MAR28/USDC`).
 
-
 It is recommended to gather the raw data from an Ethereum archive node. Alternatively, this data is indexed in the [Graph Protocol](https://thegraph.com/explorer/subgraph/graphprotocol/compound-v2). As of writing this UMIP, Graph Protocol is free. However, they have plans to start charging for access in the future. In the future, querying 30 days worth of blocks may cost up to $20 USD. This UMIP's price identifier will only be used for the DVM to return the synthetic token's expiration price. Therefore, this high price won't be incurred by liquidator bots.
 
 Raw data is also available for download at the [Tendies Exchange public endpoint](https://cache.tendies.exchange/borrow_rate_per_block.json). This endpoint is updated with every new block but delayed by 20 block confirmations. This endpoint is free to use. To generate a similar file, governors can use and/or modify this [open source indexer script](https://github.com/evanmays/tendies-exchange/tree/master/indexer).
@@ -91,7 +96,7 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 **4. Intended Collateral Currency** - USDC
 
-**5. Collateral Decimals** - 6
+**5. Scaling Decimals** - 6 (1e6)
 
 **6a. Rounding Pre Cutoff** - Round to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
 
@@ -115,7 +120,7 @@ The intention is that the aggregated APR won't be used for liquidations. This is
 
 **4. Intended Collateral Currency** - USDC
 
-**5. Collateral Decimals** - 6
+**5. Scaling Decimals** - 6 (1e6)
 
 **6a. Rounding Pre Cutoff** - Round to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
 

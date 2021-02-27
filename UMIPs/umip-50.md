@@ -123,7 +123,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
     - Yes (https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-44.md)
 
-**5. Collateral Decimals** - YAM has 18 decimals (https://etherscan.io/token/0x0aacfbec6a24756c20d41914f2caba817c0d8521)
+**5. Scaling Decimals** - 18 (1e18)
 
 **6. Rounding** - Round to 18 decimal places. 
 
@@ -147,7 +147,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
     - Yes. Per UMIP 18
 
-**5. Collateral Decimals** - USDT, which is used in this calculation, has 6 decimals (https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7)
+**5. Scaling Decimals** - 18 (1e18)
 
 **6. Rounding** - Round to 6 decimal places. 
 
@@ -171,7 +171,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
     - Pending UMIP (https://github.com/UMAprotocol/UMIPs/pull/154)
 
-**5. Collateral Decimals** - YAM has 18 decimals (https://etherscan.io/token/0x0aacfbec6a24756c20d41914f2caba817c0d8521)
+**5. Scaling Decimals** - 18 (1e18)
 
 **6. Rounding** - Round to 18 decimal places.
 
@@ -197,7 +197,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
     - Yes
 
-**5. Collateral Decimals** - ETH has 18 decimals 
+**5. Scaling Decimals** - 18 (1e18)
 
 **6. Rounding** - Round to 18 decimal places. 
 

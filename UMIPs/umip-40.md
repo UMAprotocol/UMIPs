@@ -114,7 +114,7 @@ The [price feed implementation](https://github.com/UMAprotocol/protocol/pull/245
 
     Yes, it is.
 
-**5. Collateral Decimals** - 6 decimals.
+**5. Scaling Decimals** - 18 (1e18).
 
 **6. Rounding** - Rounded to 6 decimals in accordance with above.
 

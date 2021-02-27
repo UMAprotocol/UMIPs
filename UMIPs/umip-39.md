@@ -129,7 +129,7 @@ Pricing this identifier requires the use of a combination of price feeds. The pr
 
     - Yes
 
-**5. Collateral Decimals** - 18
+**5. Scaling Decimals** - 18 (1e18)
 
 **6. Rounding** - Round to 18 decimal places
 
@@ -152,7 +152,7 @@ Pricing this identifier requires the use of a combination of price feeds. The pr
 
     - Yes
 
-**5. Collateral Decimals** - 18
+**5. Scaling Decimals** - 18 (1e18)
 
 **6. Rounding** - Round to 18 decimal places
 

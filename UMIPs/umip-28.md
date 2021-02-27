@@ -35,6 +35,7 @@ The definition of this identifier should be:
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 1 second
 - Dispute timestamp rounding: down
+- Scaling Decimals: 18 (1e18)
  
 ## Rationale
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized.

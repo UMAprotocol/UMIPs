@@ -29,6 +29,7 @@ The definition of this identifier should be:
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
+- Scaling Decimals: 18 (1e18)
 
 As of the time of writing, the Coinbase Pro market for $COMPUSD is not yet live, though it is expected to go live on Monday, June 22, 2020. Until the Coinbase Pro market officially goes live and starts trading, the technical specification of this identifier is to take the median of available exchanges (eg Poloniex COMPUSDT and FTX COMPUSD). Once Coinbase Pro is live and stable, the technical specification of this identifier will be the median across Coinbase Pro, Poloniex, and FTX.
 

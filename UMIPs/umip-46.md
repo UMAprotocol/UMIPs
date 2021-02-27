@@ -75,7 +75,7 @@ Associated OCEAN price feeds are available via Cryptowatch.  No other further fe
 - Base Currency: OCEAN
 - Quote Currency: USD
 - Intended Collateral Currency: USDC
-- Collateral Decimals: 6
+- Scaling Decimals: 18 (1e18)
 - Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 - Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 - Is your collateral currency already approved to be used by UMA financial contracts?: YES
@@ -84,11 +84,10 @@ Associated OCEAN price feeds are available via Cryptowatch.  No other further fe
 - Base Currency: USD
 - Quote Currency: OCEAN
 - Intended Collateral Currency: OCEAN
-- Collateral Decimals: 18
+- Scaling Decimals: 18 (1e18)
 - Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
 - Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
-- Is your collateral currency already approved to be used by UMA financial contracts?: In progress
-https://github.com/opendao-protocols/UMIPs/blob/umip-oceantoken-collateral/UMIPs/umip-draft_OCEAN_collateral.md
+- Is your collateral currency already approved to be used by UMA financial contracts?: YES
 
 
 ## Rationale

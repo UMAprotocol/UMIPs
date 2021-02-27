@@ -1,3 +1,9 @@
+# Disclaimer
+
+This price identifier has been deprecated. It is highly recommended that contract deployers do not use this identifier in its current state. Price requests from new contracts to the DVM for this identifier will likely not be resolved correctly. 
+
+Reasoning: the specified timestamp is outdated. 
+
 # Headers
 | UMIP-22     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -36,6 +42,7 @@ The definition of this identifier should be:
 - Post-Timestamp Price Rounding: Closest, 0.5 up
 - Pricing Interval: 1 second
 - Dispute timestamp rounding: down
+- Scaling Decimals: (1e18)
 
 ## Rationale
 
