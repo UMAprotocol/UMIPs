@@ -54,15 +54,24 @@ The definition of this identifier should be:
 ## Implementation
 The value of the XAUUSD or XAUPERL identifier for a given timestamp should be determined by querying for the price of XAUUSD from Tradermade’s API for that timestamp. To determine the value of XAUPERL, the price of PERLUSDT will also need to be queried from Binance for that timestamp.
 
-Users can query “https://marketdata.tradermade.com/api/v1/minute_historical?currency=XAUUSD&date_time=2020-11-11-13:01&api_key=apikey” and use the close price as reference.
+Historical XAUUSD prices from TraderMade are available on minute increments. Price requests should use the minute price that is nearest and earlier than the price request timestamp. To do this, voters should use the open price of the OHLC period that the price request timestamp falls in. TraderMade endpoints are queried based on the OHLC period's close time.
 
-This close price rounded to 5 decimals is the value of XAUUSD.
+As an example, a request for a XAUUSD price at 2020-11-11-01:52:16 should use query for the period ending at 2020-11-11-01:53:00 and use the open price. 
 
-After querying the price of XAUUSD and PERLUSD at the timestamp, XAUUSD is divided by PERLUSD to get XAUPERL and leave the result as is. This is the settlement price voters should look for.
+The TraderMade endpoint used would be: https://marketdata.tradermade.com/api/v1/minute_historical?currency=XAUUSD&date_time=2020-11-11-01:53&api_key=apikey
 
-Tradermade’s price feed is an aggregated feed from multiple Tier One and Two Banks, Market-Makers and Data Providers. They are popular with Quantitative Traders, Fintech companies and Institutional customers who require a high quality and trusted feed.
+If querying for the XAUUSD price, this open price rounded to 5 decimals should be returned as the value of XAUUSD. If XAUUSD is being used in the XAUPERL calculation, this result should be left as is.
 
-Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found [here](https://marketdata.tradermade.com/documentation).
+After querying the price of XAUUSD and PERLUSD at the timestamp, XAUUSD is divided by PERLUSD to get XAUPERL and rounded to 5 decimals. This is the settlement price voters should look for.
+
+TraderMade’s price feed is an aggregated feed from multiple Tier One and Two Banks, Market-Makers and Data Providers. They are popular with Quantitative Traders, Fintech companies and Institutional customers who require a high quality and trusted feed.
+
+Liquidation and dispute bots should have their own subscription to price feeds. TraderMade's API documentation can be found [here](https://marketdata.tradermade.com/documentation). A reference TraderMade implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/TraderMadePriceFeed.js).
+
+### Weekend & Holiday Prices
+For price requests that happen in time periods when the FX market is not open (weekends and certain holidays), voters will need to use the last available price before the price request timestamp. As an example, a voter should use the Friday XAUUSD closing price for a price request that happens in off-market hours on a Saturday.
+
+Please note that this is different than the normal calculation process, which requires using the open price of the period that the price request falls in.
 
 ## Security considerations
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
