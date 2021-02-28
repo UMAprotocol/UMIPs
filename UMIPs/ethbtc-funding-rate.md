@@ -126,7 +126,7 @@ Add XYZ rationale including an example walk through of a funding rate applicatio
 A five minute TWAP is used to query the ETHBTC-PERP price. The TWAP is used to decrease the risks of attempted ETHBTC-PERP price manipulation.
 
 ## IMPLEMENTATION
-Voters should determine which pricing implementation to use depending on when the price request was submitted.
+To calculate the ETHBTC-FR, voters should use the following process:
 
 1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the ETHBTC price at the disputed funding rate proposal timestamp.
 2. Query for the cumulative funding rate multiplier at the same timestamp.
