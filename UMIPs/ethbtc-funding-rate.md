@@ -23,7 +23,7 @@ Funding rate proposals and disputes function similarly to normal UMA price reque
 It should be noted that this is an altered price reporting from what has been used historically by UMA contracts. With the introduction of the [Optimistic Oracle](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-52.md) and new [EMP](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-54.md) and [Perpetual contract](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-53.md) templates, all price and funding rate requests will be handled by the Optimistic Oracle, and will only be sent to the voters of the DVM in the case of a price or funding rate dispute.
 
 *Note*:
-For future funding rates, it is likely that a more generalized funding rate identifier should be created and used. A generalized funding rate identifier would be able to support any funding rate request by making use of ancillary data. Link to UMIP section. This UMIP is reduced in scope and specifically only creates a methodology for the ETHBTC funding rate and is being proposed so that this identifier can be used as an example of how a funding rate would work for a specific synthetic. 
+For future funding rates, it is likely that a more generalized funding rate identifier should be created and used. A generalized funding rate identifier would be able to support any funding rate request by making use of [ancillary data](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-55.md#motivation--rationale). This UMIP is reduced in scope and specifically only creates a methodology for the ETHBTC funding rate and is being proposed so that this identifier can be used as an example of how a funding rate would work for a specific synthetic. 
 
 ## MARKETS & DATA SOURCES
 
