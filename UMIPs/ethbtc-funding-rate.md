@@ -138,6 +138,27 @@ To calculate the ETHBTC-FR, voters should use the following process:
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
+### Cumulative Funding Rate Multiplier (CFRM) Calculation
+
+The contract specific CFRM is stored on-chain in each perpetual contract. Voters can query this on-chain data in any way that they wish, for the block that the funding rate request was made in. 
+
+1. Call the `fundingRate` method on the ETHBTC-PERP.
+
+The results will be in this format:
+
+```
+{
+    rate,
+    identifier,
+    cumulativeMultiplier,
+    updateTime,
+    applicationTime,
+    proposalTime
+}
+```
+
+Voters should use the `cumulativeMultipler` field.
+
 ## Security Considerations
 Adding this identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of funding rate proposers and disputers that can correctly manage the funding rate process.
 
