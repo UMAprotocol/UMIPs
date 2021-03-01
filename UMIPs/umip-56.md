@@ -3,7 +3,7 @@
 |------------|---|
 | UMIP Title | Add AAVE, LINK, SNX, UMA & UNI as collateral |
 | Authors    | Josh Bowden (josh@ferrosync.io)
-| Status     | Last Call |
+| Status     | Approved |
 | Created    | 2020-02-17 |
 | Discourse Link | https://discourse.umaproject.org/t/add-aave-link-snx-uma-uni-as-collateral/246
 <br>
