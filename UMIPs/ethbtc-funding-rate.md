@@ -81,7 +81,7 @@ Because this uses existing price feeds, the only additional work that is require
 ```
 ETHBTC_FR: {
     type: "expression",
-    expression: "(ETHBTC_PERP - ETH/BTC) / ETH/BTC / 31536000",
+    expression: "(ETHBTC_PERP - ETH/BTC * CFRM) / (ETH/BTC * CFRM) / 31536000",
     lookback: 7200,
     minTimeBetweenUpdates: 60,
     priceFeedDecimals: 18,
