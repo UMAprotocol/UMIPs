@@ -16,9 +16,9 @@ This funding rate identifier requires querying for the price of the synthetic to
 
 ## MOTIVATION
 
-Without an expiry date to keep a synthetic token pegged to its underlying price, UMA’s perpetual contract requires that a funding rate be levied when there is a difference between the synthetic’s price and the underlying index. This will pressure the overvalued side to unwind its position or encourage the undervalued side to create a larger position. This mechanic is similar to what centralized exchanges use to keep their perpetual synthetics inline with its underlier
+Without an expiry date to keep a synthetic token pegged to its underlying price, UMA’s perpetual contract requires that a funding rate be levied when there is a difference between the synthetic’s price and the underlying index. This will pressure the overvalued side to unwind its position or encourage the undervalued side to create a larger position. This mechanic is similar to what centralized exchanges use to keep their perpetual synthetics in line with its underlier
 
-Funding rate proposals and disputes function similarly to normal UMA price requests. At any time, a proposer can propose a new funding rate in return for a reward. If the funding rate proposal is not disputed within its liveness period, that proposed rate is then used to continuously adjust the value of 1 synthetic token. 
+Funding rate proposals and disputes function similarly to normal UMA price requests. At any time, a proposer can propose a new funding rate in return for a reward. If the funding rate proposal is not disputed within its liveness period, that proposed rate is then used to continuously adjust the value synthetic token sponsors' debt. If it is disputed, 
 
 It should be noted that this is an altered price reporting from what has been used historically by UMA contracts. With the introduction of the [Optimistic Oracle](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-52.md) and new [EMP](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-54.md) and [Perpetual contract](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-53.md) templates, all price and funding rate requests will be handled by the Optimistic Oracle, and will only be sent to the voters of the DVM in the case of a price or funding rate dispute.
 
@@ -133,7 +133,7 @@ To calculate the ETHBTC-FR, voters should use the following process:
 3. Multiply the ETHBTC price from step 1 by the CFRM from step 2 to get the fair value of the ETHBTC synthetic (ETHBTC-FV). [ETHBTC * CFRM].
 4. Query for the ETHBTC-PERP 5 minute TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USDC.
 5. Subtract the result of step 3 from the result of step 4. [ETHBTC-PERP - ETHBTC-FV].
-6. Divide the result of step 5 by the ETHBTC rate. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
+6. Divide the result of step 5 by the ETHBTC-FV rate from step 3. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
 7. Divide the result from step 6 by 86400 (# of seconds in a day) to get the funding rate per second. Voters should then round this result to 18 decimal places.
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
