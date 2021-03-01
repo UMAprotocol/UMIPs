@@ -3,7 +3,7 @@
 |------------|------|
 | UMIP Title | Add price identifiers for AAVEUSD, USDAAVE; LINKUSD, USDLINK; SNXUSD, USDSNX; UMAUSD, USDUMA; UNIUSD, USDUNI |
 | Authors    | Josh Bowden (josh@ferrosync.io) |
-| Status     | Last Call |
+| Status     | Approved |
 | Created    | February 17th, 2021 |
 | Discourse Link| <https://discourse.umaproject.org/t/add-price-identifiers-for-aave-link-snx-uma-uni-against-usd/247>
 <br>

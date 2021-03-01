@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add USD/UNI_V2_WBTC_ETH_LP, USD/UNI_V2_USDC_ETH_LP, USD/UNI_V2_UNI_ETH_LP, USD/UNI_V2_UMA_ETH_LP token price identifiers              |
 | Authors    | Dev-1 (dev-1-lp-dollar), Dev-2 (dev-2-lp-dollar) |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | February 09, 2021           |
 | Link to Discourse | [Discourse](https://discourse.umaproject.org/t/add-usd-uni-v2-wbtc-eth-as-a-price-identifier/148)                                 |
 
