@@ -81,7 +81,7 @@ Because this uses existing price feeds, the only additional work that is require
 ```
 ETHBTC_FR: {
     type: "expression",
-    expression: "(ETHBTC_PERP - ETH/BTC) / ETH/BTC / 86400",
+    expression: "(ETHBTC_PERP - ETH/BTC) / ETH/BTC / 31536000",
     lookback: 7200,
     minTimeBetweenUpdates: 60,
     priceFeedDecimals: 18,
@@ -116,10 +116,10 @@ ETHBTC_FR: {
 ## RATIONALE
 
 To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate times the cumulative funding rate multiplier (CFRM). The funding rate will be determined with the following formula:
-- [ETHBTC-PERP - ETHBTC-FV] / ETHBTC-FV / 86400
+- [ETHBTC-PERP - ETHBTC-FV] / ETHBTC-FV / 31536000
 - `ETHBTC-FV` denotes the ETHBTC price gathered with the methodology shown in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md) multiplied by the CFRM.
 - `ETHBTC-PERP` denotes the five minute TWAP of the synthetic created with this funding rate identifier. This synth will be pooled with USDC. 
-- 86400 is the number of seconds per day. Assuming all other prices stay constant, this effectively gives the funding rate per second that would need to be applied to move a synthetic token's value back to fair value in one day.  
+- 31536000 is the number of seconds in a year. Assuming all other prices stay constant, this effectively gives the funding rate per second that would need to be applied to move a synthetic token's value back to fair value in one year.  
 
 Add XYZ rationale including an example walk through of a funding rate application.
 
@@ -134,7 +134,7 @@ To calculate the ETHBTC-FR, voters should use the following process:
 4. Query for the ETHBTC-PERP 5 minute TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USDC.
 5. Subtract the result of step 3 from the result of step 4. [ETHBTC-PERP - ETHBTC-FV].
 6. Divide the result of step 5 by the ETHBTC-FV rate from step 3. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
-7. Divide the result from step 6 by 86400 (# of seconds in a day) to get the funding rate per second. Voters should then round this result to 18 decimal places.
+7. Divide the result from step 6 by 31536000 (# of seconds in a year) to get the funding rate per second. Voters should then round this result to 18 decimal places.
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
