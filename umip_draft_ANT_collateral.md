@@ -4,7 +4,7 @@
 - Author Chandler De Kock (chandler@umaproject.org) and Joseph Charlesworth (joe@aragon.org)
 - Status: Draft
 - Created: <2 March 2021>
-- Discourse Link: <Link>
+- Discourse Link: <https://discourse.umaproject.org/t/ant-as-collateral/297>
 
 ## Summary (2-5 sentences)
 Aragon Association would like to propose adding ANT as a collateral type to UMA Protocol in order to be able create KPI options for the Aragon community. The first step in this process involves adding ANT as a collateral type. The second step will involve establishing a suitable KPI in conjunction with the Aragon community for use in the KPI option.
