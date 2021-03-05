@@ -16,7 +16,7 @@ Adding ANT as a collateral type is required in order to be able to create a KPI 
 To accomplish this upgrade, two changes need to be made:
 
 - The ANT address, 0xa117000000f279d81a1d3cc75430faa017fa5a2e, needs to be added to the collateral currency whitelist introduced in UMIP-8.
-- A final fee of 250 ANT needs to be added in the Store contract.
+- A final fee of 160 ANT needs to be added in the Store contract. The lowest price over the past 3 months for ANT is $2.7 so 160 ANT is a little bit of a buffer from the ~$400 needed.
 
 ## Rationale
 Adding ANT as collateral to UMA protocol is a pre-requisite to being able to use ANT as collateral in a KPI option. 
