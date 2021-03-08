@@ -258,7 +258,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **6. Scaling Decimals** - 18 (1e18)
 
-**7. Rounding** - Round to 18 decimal places. (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
+**7. Rounding** - Round to 8 decimal places. (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
  
 <br>
 
@@ -292,7 +292,7 @@ For all TWAP implementations, the TWAP start time should be determined by the la
 
     1. Query DIGG/WBTC Price from Sushiswap using 30 minute TWAP (0x9a13867048e01c663ce8ce2fe0cdae69ff9f35e3).
     2. Query DIGG/WBTC Price from Uniswap using 30 minute TWAP (0xe86204c4eddd2f70ee00ead6805f917671f56c52).
-    3. Take the mean of steps 1 and 2 and multiply by 1e1 for scaling to get the DIGG/WBTC price. This result should have 8 decimals, rounding the closest 0.5 up.
+    3. Take the mean of steps 1 and 2 to get the DIGG/WBTC price. This result should have 8 decimals, rounding the closest 0.5 up.
 
 **For DIGG/ETH**
 
@@ -302,7 +302,7 @@ For all TWAP implementations, the TWAP start time should be determined by the la
     4. Query WBTC/ETH Price from Uniswap using 30 minute TWAP (0xbb2b8038a1640196fbe3e38816f3e67cba72d940).
     5. Take the mean of steps 1 and 2 to get the DIGG/WBTC price.
     6. Take the mean of steps 3 and 4 to get the WBTC/ETH price.
-    7. Multiply steps 5 and 6 and round to 18 decimal places to get the final DIGG/ETH price. 
+    7. Multiply steps 5 and 6 and round to 8 decimal places to get the final DIGG/ETH price. 
 
 
 **For DIGG/USD**
@@ -314,7 +314,7 @@ For all TWAP implementations, the TWAP start time should be determined by the la
     5. Query the ETH/USD Price as per UMIP-6.
     6. Take the mean of steps 1 and 2 to get the DIGG/WBTC price. 
     7. Take the mean of steps 3 and 4 to get the WBTC/ETH price.
-    8. Multiply steps 6 and 7 to get the DIGG/ETH price and multiply the result by 1e-9 for scaling. 
+    8. Multiply steps 6 and 7 to get the DIGG/ETH price. 
     9. Multiply the DIGG/ETH price acquired from step 8 by the ETH/USD price acquired in step 5 and round to 6 decimals to get the final DIGG/USD price.
 
 
@@ -342,7 +342,7 @@ For all TWAP implementations, the TWAP start time should be determined by the la
 
      - Mean for DIGG/WBTC and WBTC/ETH
      - DIGG/WBTC: 8 decimals
-     - DIGG/ETH: 18 decimals
+     - DIGG/ETH: 8 decimals
      - DIGG/USD: 6 decimals
 
 <br>
