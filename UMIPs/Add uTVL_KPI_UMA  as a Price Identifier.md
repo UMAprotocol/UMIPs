@@ -7,7 +7,7 @@
                 [Mhairi McAlpine mhairi@umaproject.org]
 | Status     | [Draft]                                                                                                                                   |
 | Created    | [4th March 2021] 
-| Link to Discourse    | [LINK to be added]                                                                               
+| Link to Discourse    | https://discourse.umaproject.org/t/add-utvl-kpi-uma-as-a-price-identifier/318]                                                                               
 <br>
 <br>
 <br>
