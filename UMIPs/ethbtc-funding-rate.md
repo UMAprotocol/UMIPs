@@ -138,7 +138,7 @@ To calculate the ETHBTC-FR, voters should use the following process:
 5. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USDC.
 6. Subtract the result of step 4 from the result of step 5. [ETHBTC-PERP - ETHBTC-FV].
 7. Divide the result of step 6 by the ETHBTC-FV rate from step 4. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
-8. Divide the result from step 6 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1. Voters should then round this result to 18 decimal places.
+8. Divide the result of step 7 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1. Voters should then round this result to 18 decimal places.
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
