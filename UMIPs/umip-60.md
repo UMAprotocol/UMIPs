@@ -36,7 +36,7 @@ To accomplish this upgrade, two changes need to be made:
 
 The DeFi Pulse Index is a digital asset index designed to track the performance of token within the Decentralized Finance industry. The index is weighted based on the value of each token’s circulating supply.
 The DPI Set is rebalanced monthly to realign to its market cap weighted index. As the index provides a broad exposure to different DeFi tokens there is plenty of potential to utilize DPI as collateral within the UMA ecosystem.
-Tokens within the DPI have been approved by e.g. UMIP 56.
+Tokens within the DPI have been approved as collateral by e.g. UMIP 56.
 
 ### Technical Specification
 
