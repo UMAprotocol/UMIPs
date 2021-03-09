@@ -13,8 +13,12 @@ The DVM should support price requests for the following indexes
 
    - INDEX/ETH 
    - ETH/INDEX 
+   - INDEX/USD
+   - USD/INDEX
    - DPI/ETH
-   - ETH/DPI 
+   - ETH/DPI
+   - DPI/USD
+   - USD/DPI
 
 
 # MOTIVATION
@@ -122,7 +126,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 - Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
-    - YES
+    - Yes
 
 - Is your collateral currency already approved to be used by UMA financial contracts? 
 
@@ -196,7 +200,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 - Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
-    - YES
+    - Yes
 
 - Is your collateral currency already approved to be used by UMA financial contracts?
 
@@ -222,7 +226,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 - Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
-    - YES
+    - Yes
 
 - Is your collateral currency already approved to be used by UMA financial contracts? 
 
@@ -270,7 +274,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 - Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
-    - YES
+    - Yes
 
 - Is your collateral currency already approved to be used by UMA financial contracts?
 
@@ -296,7 +300,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 - Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
-    - YES
+    - Yes
 
 - Is your collateral currency already approved to be used by UMA financial contracts?
 
