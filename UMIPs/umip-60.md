@@ -5,7 +5,7 @@
 | Authors    | Gottlieb Freudenreich (gottlieb.freudenreich@gmail.com)
 | Status     | Proposed |
 | Created    | 2020-03-08 |
-| Discourse Link | https://discourse.umaproject.org/t/add-aave-link-snx-uma-uni-as-collateral/246
+| Discourse Link | 
 <br>
 
 # Summary
@@ -50,7 +50,7 @@ To accomplish this upgrade, two changes need to be made:
 ---
 
 ## Rationale
-The rationale behind this change is giving deployers more useful collateral currency options. This is an advancement into a better type of collateral.
+The rationale behind this change is giving deployers more useful collateral currency options. This is an advancement into a new types of collateral and would allow DPI and INDEX holders to create options and synthetic assets within the UMA ecosystem.
 
 $400 USD equivalent was chosen as the final fee because it is equal to or above the mimimum of already approved coins.
 
