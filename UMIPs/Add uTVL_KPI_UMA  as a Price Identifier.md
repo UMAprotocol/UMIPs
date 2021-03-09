@@ -227,7 +227,7 @@ It is assumed for this purpose that 1DAI=1USDC=1USDT=1rDAI=$1.  While this assum
 There are other forms of dollar stablecoins which are not approved as collateral within the UMA protocol.  To maintain consistency it is suggested that this assumption is made for any other non-algorithmic stablecoin. 
 
 4. FiveLiquidity Tokens (wBTC-Eth, USDC-Eth, UNI-Eth, UMA-Eth, bwBTC/ETH_SLP) are approved as collateral within the UMA protocol. 
-It is recommended that any additional proposal to add liquidity tokens as approved collateral currencies are evaluated against UMIP 59 and follow those market and data sources unless there is good reason for deviance
+It is recommended that any additional proposal to add liquidity tokens as approved collateral currencies are evaluated against UMIP 59 and follow those market and data sources to calculate dollar value unless there is good reason for deviance.  Note that the calculation of the dollar value of the liquidity token occurs in the penultimate step of the UMIP (Step 5). 
 
 5.There are a variety of price identifiers for native ERC20 tokens.  Calculation of the dollar value should follow the relevant UMIP where it exists, and where there is no Price Identifier UMIP, the highest volume [ERC20]/USD* market should be used.
 
