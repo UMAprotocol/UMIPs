@@ -2,7 +2,8 @@
 ## HEADERS
 | UMIP [#]     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | [Key Performance Indicator; Total Value Locked UMA Price Identifier                                                                                                  |
+| UMIP Title | [Add uTVL_KPI_UMA  as a Price Identifier
+                                                                                                  |
 | Authors    | [Hart Lambur hart@umaproject.org, Mhairi McAlpine mhairi@umaproject.org]
 	       
 | Status     | [Draft]
@@ -22,7 +23,7 @@ This UMIP enables the DVM to support price requests based on the TVL of UMA
 
 A synthetic option is minted against a base collateral, in this case UMA, which expires at 00.00(UTC) June 30th 2021.
 
-Options are redeemed on the basis of TVL/10^8, with a floor of 0.1 and a ceiling of 2.
+Options are redeemed on the basis of TVL/10^9, with a floor of 0.1 and a ceiling of 2.
 
 The value locked is calculated using the methods included in previous UMIPs which have price identifies associated with collateral types where available, collateral types which do not have an associated Price Identifier, or which are not yet approved will follow these presidents where available. 
 
@@ -59,21 +60,9 @@ A list of these assets is [available on our docs site](https://docs.umaproject.o
  - [wEth] - the wrapped native token of the Ethereum Network (henceforth referred to as ETH)
  - [renBTC, wBTC] - wrapped ERC20 versions of Bitcoin (henceforth referred to as BTC)
  - [DAI, USDC, USDT, rDai]  - ERC20 dollar stable coins (henceforth referred to as USD)
- - [wBTC-Eth, USDC-Eth, UNI-Eth, UMA-Eth] -UNI Liquidity Tokens (henceforth referred to as uLQ)
- - [bwBTC/ETH SLP] Sushi Liquidity Tokens (henceforth referred to a sLQ)
 
-Additionally there are a number of “native” ERC20 tokens which are also accepted as collateral, namely
- - bBadger, 
- - PERL, 
- - DSD, 
- - renDoge, 
- - OCEAN, 
- - YAM, 
- - Aave, 
- - Link, 
- - SNX, 
- - UMA, 
- - UNI
+Additionally there are a number of liquidity tokens that are accepted as collateral, as well as "native" ERC20 tokens.
+
 
 It is proposed that these are treated in the above groups for the purposes of determining markets and data sources.  For discussion on this see #Rationale 
 
@@ -95,128 +84,76 @@ Note that the price identifier of UMIP 7 is depreciated, see rationale for furth
 Should other non-algorithmic USD stablecoins be added to the accepted collateral currency whitelist prior to expiry, these should also be similarly grouped and assumed to be worth exactly 1USD
 Note - See rationale for further discussion
 
-	4. uLQ 	- Uniswap (calculations performed as per UMIP 59)
+	4. Liquidity Provider Tokens.  	- follow specifications as per UMIP 59 unless there is a known reason for devience)
 https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-59.md
 Should other Uniswap liquidity tokens be added to the accepted collateral currency whitelist prior to expiry, these should also be similarly calculated.
 Note - see rationale for further discussion
 
 
-	5. sLQ 	- Sushiswap (calculations performed as per UMIP 39)
-https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-39.md
-Should other Uniswap liquidity tokens be added to the accepted collateral currency whitelist prior to expiry, these should also be similarly calculated.
-Note - see rationale for further discussion
-
-
-	6. DSD - Uniswap (calculation performed as per UMIP 37
-https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-37.md
-
-	7. bBadger - Sushiswap (calculations performed as per UMIP 39)
-https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-39.md
-
- 	8. PERL - Binance (calculations performed as per UMIP 13)
-https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-13.md
-
-	9. Ocean - Binance, Bittrex, BitZ (calculations performed as per UMIP 46)
-https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-46.md
-
-	10. YAM - Sushiswap, Uniswap (calculations performed as per UMIP 50)
-https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-50.md
-
-	11. Aave, Link, SNX, UMA, UNI - Coinbase, Binance, OKEx (calculations performed as per UMIP 57
-https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-57.md
-
-	12. RenDoge.  Binance, Huobi, OKEx.
+	5. Native ERC20 Tokens 
+		- where a price identifier UMIP exists that defines a dollar value, this should be used.
+		- where no price identifier exists,the highest volume USD* markets should be used.
 
 **Note - see rationale for further discussion**
 
 2.  Which specific pairs should be queried from each market?
 	1. ETH 	-  see UMIP 6 
-	2. BTC 		- see UMIP 7
-	3. USD 	 - no query requirement  
-	4. uLQ 	- see UMIP 59
-	5. sLQ 	- see UMIP 39
-	6. DSD 	- see UMIP 37
-	7. bBadger - 	- see UMIP 39
-	8. PERL 	- see UMIP 13
-	9. Ocean	- see UMIP 46
-	10. YAM  - 	- see  UMIP 50
-	11. Aave, Link, SNX, UMA, UNI - see UMIP 57
-	12. RenDoge.  Doge/USDT
+	2. BTC 	- see UMIP 7
+	3. USD 	- no query requirement  
+	4. Liquidity Provider Tokens 	- see UMIP 59
+	5. Native ERC20 Tokens - follow directions in PI UMIP if possible, otherwise [ERC20]/USD* markets
 
 3. Provide recommended endpoints to query for real-time prices from each market listed. 
 
 	1. ETH 	- see UMIP 6
-	2. BTC 		- see UMIP 7
-	3. USD 	 - no query requirement  
-	4. uLQ 	- see UMIP 59
-	5. sLQ 	- see UMIP 39
-	6. DSD 	- see UMIP 37
-	7. bBadger - 	- see UMIP 39
-	8. PERL 	- see UMIP 13
-	9. Ocean	- see UMIP 46
-	10. YAM  - 	- see  UMIP 50
-	11. Aave, Link, SNX, UMA, UNI - see UMIP 57
-	12. RenDoge.  Binance -  
-		https://api.cryptowat.ch/markets/binance/dogeusdt/price
- 		https://api.cryptowat.ch/markets/bittrex/dogeusdt/price 
-		https://api.cryptowat.ch/markets/huobi/dogeusdt/price
+	2. BTC 	- see UMIP 7
+	3. USD 	- no query requirement  
+	4. Liquidity Provider Tokens - see UMIP 59
+	5. Native ERC20 tokens - see relevant PI UMIPs, where no UMIP exist suitable endpoint should be identified at expiry.
 
 4. How often is the provided price updated?
 	1. ETH 	- see UMIP 6
-	2. BTC 		- see UMIP 7
+	2. BTC 	- see UMIP 7
 	3. USD 	 - n/a - assumed to be consistent
-	4. uLQ 	- see UMIP 59
-	5. sLQ 	- see UMIP 39
-	6. DSD 	- see UMIP 37
-	7. bBadger - 	- see UMIP 39
-	8. PERL 	- see UMIP 13
-	9. Ocean	- see UMIP 46
-	10. YAM  - 	- see  UMIP 50
-	11. Aave, Link, SNX, UMA, UNI - see UMIP 57
-	12. RenDoge - The lower bound on the update frequency is 1 minute.
+	4. Liquidity Provider Tokens 	- see UMIP 59
+	5. Native ERC20 tokens - see relevant PI UMIPs, where no UMIP exists, provided price update tbd
 
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
 	1. ETH 	- see UMIP 6
-	2. BTC 		- see UMIP 7
+	2. BTC 	- see UMIP 7
 	3. USD 	 - n/a - historical price is always $1
-	4. uLQ 	- see UMIP 59
-	5. sLQ 	- see UMIP 39
-	6. DSD 	- see UMIP 37
-	7. bBadger - 	- see UMIP 39
-	8. PERL 	- see UMIP 13
-	9. Ocean	- see UMIP 46
-	10. YAM  - 	- see  UMIP 50
-	11. Aave, Link, SNX, UMA, UNI - see UMIP 57
-	12. Rendoge  ??UNCLEAR??
+	4. Liquidity Provider tokens - see UMIP 59
+	5. Native ERC20 tokens - see relevant PI UMIPs, where no UMIP exists endpoint tbd.
+
 
 6.  Do these sources allow for querying up to 74 hours of historical data? 
 
   	- See relevant UMIPs
- 	- RenDoge ??Unclear??
+ 	
 
 7.  How often is the provided price updated?
 
    	- Where updated prices are required, relevant UMIPs refer to the frequency
-	- RenDoge - lower bound is 1 minute 
+	
 
 8. Is an API key required to query these sources? 
+	
 	 - See Relevant UMIPs
- 	 - API key is required to query cryptowatch for RenDoge 
+ 	
 
 
 9. Is there a cost associated with usage? 
 
 	- See relevant UMIPS
-	- - RenDoge, there is a cost associated with the use of cryptowatch.
-
+	
 10. If there is a free tier available, how many queries does it allow for?
 
     - The cost impact of this PI would be negligible.
 
 11.  What would be the cost of sending 15,000 queries?
 
-	 - There is no need to sent 15, 000 queries for this price identifier as it does not require bots. 
+ - There is no need to sent 15, 000 queries for this price identifier as it does not require bots. 
 
 <br>
 
@@ -237,7 +174,7 @@ As there is no requirement for ongoing monitoring through liquidation or dispute
 If your price identifier is a currency pair, your quote currency will be the
 denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
 
-- There is no quote currency, the denominator is fixed at 10^8 (100 Million)
+- There is no quote currency, the denominator is fixed at 10^9 (1 Billion)
 
  - This price identifier does not have a quote currency as it is designed not to be tied to a currency price metric,.
 
@@ -245,7 +182,9 @@ Please be aware that the value of any UMA synthetic token is the value of the pr
 
 - The collateral redemption is designed to be tied to the value of the TVL of the protocol by design.
 
-**4. Intended Collateral Currency** - UMA
+**4. Intended Collateral Currency** 
+ 
+ - UMA
 
 Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
@@ -275,7 +214,6 @@ Is your collateral currency already approved to be used by UMA financial contrac
 
  - This price identifier offers a guarantee that these options will be of value, even if this key metric is poor through the floor price mechanism, however the nature of UMA is such that the amount of value that can be locked in the protocol is potentially limitless and consequently a ceiling price is required to limit provide a cap.
 
-
  - The methods used to calculate the dollar value of each of the collateral currencies have been chosen to adhere to previous design decisions in such calculations through UMIPs that have already been approved through our governance procedure however note the following assumptions.
 
 1. It is assumed for this purpose that 1wEth = 1Eth
@@ -288,17 +226,13 @@ There are other forms of wrapped BTC which are not approved as collateral within
 It is assumed for this purpose that 1DAI=1USDC=1USDT=1rDAI=$1.  While this assumption may be somewhat inaccurate, it has minimal impact on the overall calculation, cuts down on processing complexity and works on a “common sense” attitude that a dollar stablecoin is worth exactly $1.
 There are other forms of dollar stablecoins which are not approved as collateral within the UMA protocol.  To maintain consistency it is suggested that this assumption is made for any other non-algorithmic stablecoin. 
 
-4. Four Uniswap Liquidity Tokens (wBTC-Eth, USDC-Eth, UNI-Eth, UMA-Eth) are approved as collateral within the UMA protocol. 
-It is recommended that any additional proposal to add Uniswap liquidity tokens as approved collateral currencies are evaluated against UMIP 59 and follow those market and data sources unless there is good reason for deviance
+4. FiveLiquidity Tokens (wBTC-Eth, USDC-Eth, UNI-Eth, UMA-Eth, bwBTC/ETH_SLP) are approved as collateral within the UMA protocol. 
+It is recommended that any additional proposal to add liquidity tokens as approved collateral currencies are evaluated against UMIP 59 and follow those market and data sources unless there is good reason for deviance
 
-5. One Sushisaw Liquidity Token ( [bwBTC/ETH SLP) is approved as collateral in the UMA Protocol. 
-It is recommended that any additional proposal to add Uniswap liquidity tokens as approved collateral currencies are evaluated against UMIP 39 and follow those market and data sources unless there is good reason for deviance.
-
-6. RenDoge is approved as a collateral currency in UMA, however there is no associated price identifier UMIP.  
-It is recommended that for this purpose, 1 RenDoge = 1 Doge.  While that assumption may be somewhat inaccurate, it has minimal impact on the overall calculation,  cuts down on processing complexity, and works on a “common sense” attitude that wrapped Doge on the Eth chain are equivalent in value to native doge. The most common doge pair is Doge/USDT, the three markets with greatest volume as reported by Coingecko were chosen.
+5.There are a variety of price identifiers for native ERC20 tokens.  Calculation of the dollar value should follow the relevant UMIP where it exists, and where there is no Price Identifier UMIP, the highest volume [ERC20]/USD* market should be used.
 
  - There is no need for price processing.  This is a snapshot based on a particular time, however it may be useful for TVL Options holders to have oversight of the ongoing TVL and consequently the value of their options on an ongoing basis.  There are currently two dashboards that track the TVL of UMA - 
-	 - [SimpleID](https://monitor.simpleid.xyz/uma)
+	- [SimpleID](https://monitor.simpleid.xyz/uma)
  	- [Yuen](https://docs.google.com/spreadsheets/d/e/2PACX-1vSEMURxiVQuu6jSDp2zmI7kdKKaJjgmhWNiVjwStyJekDx9hWgclKzm_yv9iyj82IRP4d9dZ8rgvCCB/pubhtml) 
 
  - These currently monitor different contracts and calculate the value slightly differently.
@@ -310,15 +244,21 @@ It is recommended that for this purpose, 1 RenDoge = 1 Doge.  While that assumpt
 
 # IMPLEMENTATION
 
+ - The contracts to be tracked include 
+	- Any EMP contract
+ 	- Any Perpetual contract
+	- Any perpetual pool party contract
+ - The total value locked is the value of the collateral locked in the relevant contracts.
  - The dollar value of each of the contracts should be calculated using the UMIPs and guidence in the Markets and Data section.  
  - These should then be summed to obtain the total value locked (TVL) measured in dollars.
- - The TVL as measured in dollars should then be divided by 10^8
+ - The TVL as measured in dollars should then be divided by 10^9
 
 
 
 1. **What prices should be queried for and from which markets?**
 
- - The dollar value of each of the contracts should be calculated using the UMIPs and guidence in the Markets and Data section.  
+ - The dollar value of each of the contracts should be calculated using the UMIPs and guidence in the Markets and Data section. 
+ - Where there is no price identifier UMIP, the price should be queried from the highest volume USD* market
 
 2. **Pricing interval**
 
@@ -335,7 +275,7 @@ It is recommended that for this purpose, 1 RenDoge = 1 Doge.  While that assumpt
 
 4. **Result processing** 
 
-    - Divide TVL by 10^8 and apply the food and ceiling price rounding.
+    - Divide TVL by 10^9 and apply the food and ceiling price rounding.
 
 <br>
 
@@ -358,8 +298,8 @@ It is recommended that for this purpose, 1 RenDoge = 1 Doge.  While that assumpt
 
 4. What are current or future concern possibilities with the way the price identifier is defined?
 
- - It is likely that new forms of collateral will be approved prior to the expiry date.  These need to be added to this price identifier to be considered for inclusion in the TVL calculations.
- - It is possible that price identifiers for collateral types amy be altered, consideration should be given to whether to stick to the above method of calculating TVL or update
+ - It is likely that new forms of collateral will be approved prior to the expiry date.  It is possible that they may not have a significant USD* market.  Should a direct calculation not be possible the highest volume ETH market should be queried and conversion to a dollar value performed through UMIP6.
+ - It is possible that price identifiers for collateral types amy be altered prior to expiry
  - It is possible that collateral types may be removed.  This would not impact on this PI as they would not feature in any relevant contract. 
  
 
