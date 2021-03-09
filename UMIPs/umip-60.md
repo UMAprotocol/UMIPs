@@ -3,10 +3,9 @@
 |------------|---|
 | UMIP Title | Add INDEX & DPI as collateral |
 | Authors    | Gottlieb Freudenreich (gottlieb.freudenreich@gmail.com)
-| Status     | Proposed |
+| Status     | Proposal |
 | Created    | 2020-03-08 |
 | Discourse Link | 
-<br>
 
 # Summary
 
