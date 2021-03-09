@@ -3,7 +3,7 @@
 |------------|---|
 | UMIP Title | Add INDEXETH, INDEXUSD, DPIETH and DPIUSD as price identifier |
 | Authors    | Gottlieb Freudenreich (gottlieb.freudenreich@gmail.com)
-| Status     | Proposed |
+| Status     | Proposal |
 | Created    | 2020-03-08 |
 | Discourse Link | 
 
@@ -190,7 +190,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ## INDEX/ETH
 
-**1. Price Identifier Name** - INDEX/ETH
+**1. Price Identifier Name** - INDEXETH
 
 **2. Base Currency** - INDEX
 
