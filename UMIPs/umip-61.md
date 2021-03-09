@@ -25,7 +25,7 @@ The DVM should support price requests for the following indexes
 
 The DVM currently does not support the INDEXETH, ETHINDEX, INDEXUSD, USDINDEX, DPIETH, ETHDPI, DPIUSD and USDDPI price indices.
 
-Supporting the DPIUSD and INDEXUSD price identifier would enable the creation of a DPI/INDEX backed stablecoin, built using one of the perpetual stablecoin frameworks being developed on UMA. DPI/INDEX token holders can utilize this as a hedging tool, and could go long or use it for other financial purposes. There is also potential for the Index Cooperation to use INDEX reserves to build KPI Options within the UMA protocol.
+Supporting the DPIUSD and INDEXUSD price identifier would enable the creation of a DPI/INDEX backed stablecoin, built using one of the perpetual stablecoin frameworks being developed on UMA. DPI/INDEX token holders can utilize this as a hedging tool, and could go long or use it for other financial purposes. There is also potential for the Index Cooperative to use INDEX reserves to build KPI Options within the UMA protocol.
 
 A user would lock DPI/INDEX in order to mint a new overcollateralized dollar-pegged token. This price feed would be used to determine the liquidation price of the collateral. If the Perpetual token has a funding rate, the price feed would also be used to determine it and would dictate whether there is a premium on repayment to return the INDEX/DPI collateral.
 

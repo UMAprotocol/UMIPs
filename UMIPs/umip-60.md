@@ -17,7 +17,7 @@ This UMIP will add INDEX and DPI to the supported collateral currencies on the g
 ## INDEX (Index Cooperative Token)
 ### Motivation 
 
-INDEX is the governance token which presides over the Index Cooperative which is the curater of the DeFi Pulse Index. 
+INDEX is the governance token which presides over the Index Cooperative the curater of the DeFi Pulse Index. 
 The Index Cooperative has 130 million TVL and could utilize its governance token and/or treasury funds as collateral within the UMA ecosystem.  
 
 
@@ -35,7 +35,8 @@ To accomplish this upgrade, two changes need to be made:
 ### Motivation
 
 The DeFi Pulse Index is a digital asset index designed to track the performance of token within the Decentralized Finance industry. The index is weighted based on the value of each token’s circulating supply.
-The DPI Set is rebalanced monthly to realign to its market cap weighted index. As the index provides a broad exposure to different DeFi tokens there is plenty of potential to utilize DPI as collateral within the UMA ecosystem. 
+The DPI Set is rebalanced monthly to realign to its market cap weighted index. As the index provides a broad exposure to different DeFi tokens there is plenty of potential to utilize DPI as collateral within the UMA ecosystem.
+Tokens within the DPI have been approved by e.g. UMIP 56.
 
 ### Technical Specification
 
