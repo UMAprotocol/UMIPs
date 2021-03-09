@@ -42,7 +42,7 @@ The DPI Set is rebalanced monthly to realign to its market cap weighted index. A
 To accomplish this upgrade, two changes need to be made:
 
  * The DPI address, [0x1494ca1f11d487c2bbe4543e90080aeba4ba3c2b][dpi], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 1 DPI needs to be added for the LINK in the Store contract. (~$466 at time of writing)
+ * A final fee of 1 DPI needs to be added for the DPI in the Store contract. (~$466 at time of writing)
 
  [dpi]: https://etherscan.io/token/0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b
 

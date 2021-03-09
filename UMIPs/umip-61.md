@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-61   |   |
 |------------|---|
-| UMIP Title | Add INDEXETH & DPIETH as price identifier |
+| UMIP Title | Add INDEXETH, INDEXUSD, DPIETH and DPIUSD as price identifier |
 | Authors    | Gottlieb Freudenreich (gottlieb.freudenreich@gmail.com)
 | Status     | Proposed |
 | Created    | 2020-03-08 |
@@ -23,7 +23,7 @@ The DVM should support price requests for the following indexes
 
 # MOTIVATION
 
-The DVM currently does not support the INDEXETH, ETHINDEX, DPIETH or ETHDPI price indices.
+The DVM currently does not support the INDEXETH, ETHINDEX, INDEXUSD, USDINDEX, DPIETH, ETHDPI, DPIUSD and USDDPI price indices.
 
 Supporting the DPIUSD and INDEXUSD price identifier would enable the creation of a DPI/INDEX backed stablecoin, built using one of the perpetual stablecoin frameworks being developed on UMA. DPI/INDEX token holders can utilize this as a hedging tool, and could go long or use it for other financial purposes. There is also potential for the Index Cooperation to use INDEX reserves to build KPI Options within the UMA protocol.
 
@@ -33,7 +33,7 @@ Supporting the INDEX/ETH or DPI/ETH and ETH/INDEX or ETH/DPI price identifiers w
 
 The creation of a ETH denominated price index for INDEX/DPI would more easily allow for the use of INDEX/DPI collateral in ETH denominated synthetics like uGAS.
 
-The Marketcap of INDEX is currently around $23 million. The Marketcap of DPI is currently around $23 million. While this is not a lot compared to the amount of ETH available to use to mint new synthetics, it is an untapped market that we can build around to provide additional utility to our community. 
+The Marketcap of INDEX is currently around $23 million. The Marketcap of DPI is currently around $140 million. While this is not a lot compared to the amount of ETH available to use to mint new synthetics, it is an untapped market that we can build around to provide additional utility to our community. 
 
 More information on INDEX/DPI can be found on the website: https://www.indexcoop.com/
 
