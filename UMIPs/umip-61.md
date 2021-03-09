@@ -5,7 +5,7 @@
 | Authors    | Gottlieb Freudenreich (gottlieb.freudenreich@gmail.com)
 | Status     | Proposal |
 | Created    | 2020-03-08 |
-| Discourse Link | 
+| Discourse Link | https://discourse.umaproject.org/t/add-index-and-dpi-price-identifiers/327
 
 # SUMMARY 
 
