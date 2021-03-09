@@ -2,7 +2,7 @@
 - UMIP <#> 
 - UMIP title: ANT as collateral
 - Author Chandler De Kock (chandler@umaproject.org) and Joseph Charlesworth (joe@aragon.org)
-- Status: Draft
+- Status: Approved
 - Created: <2 March 2021>
 - Discourse Link: <https://discourse.umaproject.org/t/ant-as-collateral/297>
 
