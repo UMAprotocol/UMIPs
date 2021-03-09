@@ -65,7 +65,7 @@ More information on INDEX/DPI can be found on the website: https://www.indexcoop
    
 5. Provide recommended endpoints to query for historical prices from each market listed. 
 
-    * Uniswap and Sushiswap price data is onchain. One example of how a voter can query this price, would be with the subgraph query shown below:
+    * Uniswap, Sushiswap and Balancer price data is onchain. One example of how a voter can query this price, would be with the subgraph query shown below:
 
         ```
         {
