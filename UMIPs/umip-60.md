@@ -1,9 +1,9 @@
 ## Headers
-- UMIP <#> 
-- UMIP title: ANT as collateral
+- UMIP-60 
+- UMIP title: Approve ANT as a collateral currency
 - Author Chandler De Kock (chandler@umaproject.org) and Joseph Charlesworth (joe@aragon.org)
-- Status: Approved
-- Created: <2 March 2021>
+- Status: Last Call
+- Created: March 2, 2021 
 - Discourse Link: <https://discourse.umaproject.org/t/ant-as-collateral/297>
 
 ## Summary (2-5 sentences)
@@ -18,10 +18,10 @@ Aragon is one of the market leaders in decentralised governance technology softw
 To accomplish this upgrade, two changes need to be made:
 
 - The ANT address, 0xa117000000f279d81a1d3cc75430faa017fa5a2e, needs to be added to the collateral currency whitelist introduced in UMIP-8.
-- A final fee of 120 ANT needs to be added in the Store contract. The lowest price over the past 3 months for ANT is $2.7 so 160 ANT is a little bit of a buffer from the ~$400 needed.
+- A final fee of 120 ANT needs to be added in the Store contract. This is approximately $600 at current ANT rates.
 
 ## Rationale
-Adding ANT as collateral to UMA protocol is a pre-requisite to being able to use ANT as collateral in a KPI option. 
+Adding ANT as collateral to UMA protocol is a pre-requisite to being able to use ANT as collateral in a KPI options contract. 
 
 ## Implementation
 This change has no implementation other than proposing the aforementioned governance transaction that will be proposed.
