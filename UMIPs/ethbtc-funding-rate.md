@@ -76,7 +76,7 @@ To determine the ETHBTC_PERP synth price on Uniswap, the [UniswapPriceFeed](http
 
 To combine these rates in a mathematical expression, the [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js) is used.
 
-Price feed functionality to incorporate the CFRM and Token Scaling Multiplier (TSM) will still need to be built. Additionally, the CryptowatchPriceFeed does not currently support TWAP calculations, so this will need to be added.
+Price feed functionality to incorporate the CFRM and Token Scaling Multiplier (TSM) will still need to be built. Additionally, the CryptowatchPriceFeed does not currently support TWAP calculations, so this functionality will need to be added.
 
 Once these items are taken care of, a [default price feed config](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js) will be defined. Because some of this functionality is still being built out, this default price feed config will likely be different then what is shown below, but will follow this general patten.  
 
@@ -85,11 +85,10 @@ ETHBTC_FR: {
     type: "expression",
     expression: `
         ETHBTC_FV = ETH/BTC * CFRM * TOKEN_SCALING;
-        (ETHBTC_PERP - ETHBTC_FV) / (ETHBTC_FV) / 86400 * (-1)
+        min(-0.000011574074074, max(0.000011574074074, (ETHBTC_PERP - ETHBTC_FV) / (ETHBTC_FV) / 86400 * (-1)))
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
-    priceFeedDecimals: 18,
     customFeeds: {
       ETHBTC_PERP: { type: "uniswap", twapLength: 3600, address: "0xETHBTC_PERP_POOL" },
       "ETH/BTC": {
@@ -128,6 +127,10 @@ To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding
 
 A one hour TWAP is used for the ETHBTC-PERP and ETHBTC-FV rates. This calculation was modeled off of the [FTX Funding rate calculation](https://help.ftx.com/hc/en-us/articles/360027946571-Funding), which also uses a 1-hour TWAP.
 
+86400 was chosen for two reasons. The current funding rate is continuously applied to sponsors' positions, so the proposed funding rate needs to be adjusted to a rate that reflects a continuous rate (per second rate). A day was chosen as the interval to move the fair value and perpetual price back to peg, because this follows existing and proven patterns created by CEX's like FTX.
+
+Min and max bounds of -0.000011574074074 and 0.000011574074074 were chosen because these are the funding rate calculations that represent a 100% drift of perp from peg. You can arrive at these amounts with 1/86400.
+
 ## IMPLEMENTATION
 To calculate the ETHBTC-FR, voters should use the following process:
 
@@ -138,7 +141,9 @@ To calculate the ETHBTC-FR, voters should use the following process:
 5. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USDC.
 6. Subtract the result of step 4 from the result of step 5. [ETHBTC-PERP - ETHBTC-FV].
 7. Divide the result of step 6 by the ETHBTC-FV rate from step 4. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
-8. Divide the result of step 7 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1. Voters should then round this result to 18 decimal places.
+8. Divide the result of step 7 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1.
+9. Implement min and max bounds on this result with: min(-0.000011574074074, max(0.000011574074074, result)).
+10. Voters should then round this result to 18 decimal places.
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
