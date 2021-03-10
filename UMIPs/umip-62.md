@@ -85,7 +85,7 @@ ETHBTC_FR: {
     type: "expression",
     expression: `
         ETHBTC_FV = ETH/BTC * CFRM * TOKEN_SCALING;
-        min(-0.000011574074074, max(0.000011574074074, (ETHBTC_PERP - ETHBTC_FV) / (ETHBTC_FV) / 86400 * (-1)))
+        max(-0.000011574074074, min(0.000011574074074, (ETHBTC_PERP - ETHBTC_FV) / (ETHBTC_FV) / 86400 * (-1)))
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
@@ -142,7 +142,7 @@ To calculate the ETHBTC-FR, voters should use the following process:
 6. Subtract the result of step 4 from the result of step 5. [ETHBTC-PERP - ETHBTC-FV].
 7. Divide the result of step 6 by the ETHBTC-FV rate from step 4. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
 8. Divide the result of step 7 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1.
-9. Implement min and max bounds on this result with: min(-0.000011574074074, max(0.000011574074074, result)).
+9. Implement min and max bounds on this result with: max(-0.000011574074074, min(0.000011574074074, result)).
 10. Voters should then round this result to 18 decimal places.
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
