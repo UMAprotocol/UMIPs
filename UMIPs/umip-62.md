@@ -1,11 +1,11 @@
 ## Headers
-| UMIP-47    |                                                                                                                                          |
+| UMIP-62    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ETHBTC_FR as a price identifier              |
 | Authors    | Sean Brown (smb2796), Kevin Chan (kevin-uma)  |
-| Status     | Approved                                                                                                                                    |
-| Created    | Feb 2, 2021   
-| Discourse Link: TBD|  
+| Status     | Last Call                                                                                                                                    |
+| Created    | Feb 24, 2021   
+| [Discourse Link](https://discourse.umaproject.org/t/add-ethbtc-fr-as-a-supported-price-identifier/260) |  
 
 ## SUMMARY
 

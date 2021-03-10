@@ -1,10 +1,10 @@
 
 ## HEADERS
-| UMIP [#]     |                                                                                                                                  |
+| UMIP-61     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add DIGGBTC, DIGGETH, and DIGGUSD as price identifiers                                                                                                  |
 | Authors    | Alex (abgtrading30@gmail.com)
-| Status     | Approved                                                                                                                                   |
+| Status     | Last Call                                                                                                                                   |
 | Created    | February 22, 2021 
 | Link to Discourse    | https://discourse.umaproject.org/t/add-digg-btc-digg-eth-digg-usd-as-token-price-identifiers/254                                                                              
 <br>
