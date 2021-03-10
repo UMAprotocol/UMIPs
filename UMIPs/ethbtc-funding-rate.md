@@ -131,9 +131,9 @@ A one hour TWAP is used for the ETHBTC-PERP and ETHBTC-FV rates. This calculatio
 ## IMPLEMENTATION
 To calculate the ETHBTC-FR, voters should use the following process:
 
-1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the 1-hour ETHBTC TWAP, ending at the disputed funding rate proposal timestamp.
-2. For each distinct price query in the 1-hour TWAP, query for the cumulative funding rate multiplier (CFRM) at the same timestamps.
-3. For each timestamp within the 1-hour TWAP, the CFRM and ETHBTC rate should be multiplied to get the 1-hour TWAP of ETHBTC * CFRM. 
+1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the 1-hour ETHBTC TWAP, ending at the disputed funding rate proposal timestamp. This will consist of ~60 queries for each 60 second price period in that hour.
+2. For each distinct 60 second price period in the 1-hour TWAP, query for the cumulative funding rate multiplier (CFRM) at the same timestamps.
+3. For each period within the 1-hour TWAP, the CFRM and ETHBTC rate should be multiplied to get the 1-hour TWAP of ETHBTC * CFRM. 
 4. Query for the Token Scaling Multiplier (TSM) for the ETHBTC_PERP, and multiply this by the result from step 3 to get the ETHBTC-FV.
 5. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USDC.
 6. Subtract the result of step 4 from the result of step 5. [ETHBTC-PERP - ETHBTC-FV].
