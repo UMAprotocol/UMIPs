@@ -10,7 +10,7 @@
 # Summary
 
 This UMIP will add INDEX and DPI to the supported collateral currencies on the global whitelist contract, allowing the usage of these 2 assets as collateral currencies.
-More information on INDEX/DPI can be found on the website: https://www.indexcoop.com/
+More information on INDEX and DPI can be found on the website: https://www.indexcoop.com/
 
 # Proposed Collateral Currencies
 
