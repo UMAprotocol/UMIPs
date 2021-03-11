@@ -52,7 +52,7 @@ To accomplish this upgrade, two changes need to be made:
 ## Rationale
 The rationale behind this change is giving deployers more useful collateral currency options. This is an advancement into a new types of collateral and would allow DPI and INDEX holders to create options and synthetic assets within the UMA ecosystem.
 
-$400 USD equivalent was chosen as the final fee because it is equal to or above the mimimum of already approved coins.
+24 INDEX and 1 DPI have been chosen as a $400 USD equivalent for the final fee because it is equal to or above the mimimum of already approved collateral.
 
 ## Implementation
 
@@ -61,6 +61,8 @@ This change has no implementation other than proposing the two aforementioned go
 ### Security Considerations
 
 Since the underlying tokens are persistently valuable tokens, including the token should impose no additional risk to the protocol.
+
+If a single token inside the DPI experiences extrem volatility (e.g. goes to 0), the DPI value would drop by the value of that token within DPI.
 
 The main implication is for contract deployers and users who are considering using contracts with these assets as the collateral currency. They should recognize and accept the volatility risk of using this, and ensure appropriate required collateralization rations (140%+), as well as a network of liquidator and support bots to ensure solvency.
 
