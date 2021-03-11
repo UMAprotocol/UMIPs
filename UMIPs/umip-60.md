@@ -18,7 +18,7 @@ More information on INDEX and DPI can be found on the website: https://www.index
 ### Motivation 
 
 INDEX is the governance token which presides over the Index Cooperative the curater of the DeFi Pulse Index. 
-The Index Cooperative has 130 million TVL and could utilize its governance token and/or treasury funds as collateral within the UMA ecosystem.  
+The Index Cooperative has $130 million TVL and could utilize its governance token and/or treasury funds as collateral within the UMA ecosystem.  
 
 
 ### Technical Specification
