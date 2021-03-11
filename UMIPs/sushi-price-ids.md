@@ -66,7 +66,7 @@ These price identifiers will use price feeds that already exist. Both will use t
 
 ## RATIONALE
 
-TBA
+TBA 
 
 ## IMPLEMENTATION
 
@@ -81,5 +81,13 @@ TBA
 
 ### XSUSHIUSD and USDXSUSHI
 
+As noted in the Rationale section, XSUSHI is a LP token given specifically to SUSHI token stakers. 1 XSUSHI is equivalent to a number of SUSHI tokens represented by the total amount of SUSHI locked in the XSUSHI contract divided by the total supply of XSUSHI.
+
+1. At the block that the price request timestamp is at, the `balanceOf` [SUSHI](https://etherscan.io/address/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2) for the XSUSHI contract address, [0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272](https://etherscan.io/address/0x8798249c2e607446efb7ad49ec89dd1865ff4272), needs to be queried for.
+2. Voters should then query for the `totalSupply` of XSUSHI in the same block.
+3. The `balanceOf` SUSHI should be divided by the `totalSupply` of XSUSHI to determine the number of SUSHI that each XSUSHI is worth.
+4. The price of SUSHIUSD should then be gathered in the same manner as explained in the section above.
+5. The result of step 3 and step 4 should be multiplied to get the price of XSUSHIUSD. Voters should then round this result to 6 decimal places.
+6. USDXSUSHI follows the same pattern except adds the additional step of taking the inverse of the XSUSHIUSD result. 
 
 ## Security Considerations
