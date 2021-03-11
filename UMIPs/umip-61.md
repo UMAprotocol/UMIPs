@@ -333,16 +333,16 @@ The USD/ETH and ETH/USD Price can be calculated as per UMIP-6.
     1. Query INDEX/ETH Price from Uniswap using 1 minute TWAP (0x3452a7f30a712e415a0674c0341d44ee9d9786f9).
     2. Query INDEX/ETH Price from Sushiswap using 1 minute TWAP (0xa73df646512c82550c2b3c0324c4eedee53b400c).
     3. Query INDEX/ETH Price from Balancer using 1 minute TWAP (0xcf19a7c81fcf0e01c927f28a2b551405e58c77e5).
-    4. Take the median of prices acquired from steps 1, 2, and 3 and round to 18 decimals get the final INDEX/ETH price.
-    5. (for ETH/INDEX) Take the Inverse of the result of step 7 (1/ INDEX/ETH) and round to 18 decimals to get the ETH/INDEX price.
+    4. Take the median of prices acquired from steps 1, 2, and 3 and round to 18 decimals to get the final INDEX/ETH price.
+    5. (for ETH/INDEX) Take the Inverse of the result of step 4 (1/ INDEX/ETH) and round to 18 decimals to get the ETH/INDEX price.
 
 **For INDEX/USD and USD/INDEX** 
 
     1. Query INDEX/ETH Price from Uniswap using 1 minute TWAP (0x3452a7f30a712e415a0674c0341d44ee9d9786f9).
     2. Query INDEX/ETH Price from Sushiswap using 1 minute TWAP (0xa73df646512c82550c2b3c0324c4eedee53b400c).
     3. Query INDEX/ETH Price from Balancer using 1 minute TWAP (0xcf19a7c81fcf0e01c927f28a2b551405e58c77e5).
-    3. Query the ETH/USD Price as per UMIP-6.
-    4. Multiply the INDEX/ETH prices in steps 1, 2 and 3 by the ETH/USD price to get the respective INDEX/USD prices.
+    4. Query the ETH/USD Price as per UMIP-6.
+    5. Multiply the INDEX/ETH prices in steps 1, 2 and 3 by the ETH/USD price to get the respective INDEX/USD prices.
     6. Take the median of prices acquired from step 4 and round to 6 decimals to get the INDEX/USD price.
     7. (for USD/INDEX) Take the Inverse of the result of step 6 (1/ INDEX/USD) and round to 18 decimals to get the USD/INDEX price.
 
@@ -359,8 +359,8 @@ The USD/ETH and ETH/USD Price can be calculated as per UMIP-6.
     1. Query DPI/ETH Price from Uniswap using 1 minute TWAP (0x4d5ef58aac27d99935e5b6b4a6778ff292059991).
     2. Query DPI/ETH Price from Sushiswap using 1 minute TWAP (0x34b13f8cd184f55d0bd4dd1fe6c07d46f245c7ed).
     3. Query DPI/ETH Price from Balancer using 1 minute TWAP (0x2aa3041fe813cfe572969216c6843c33f14f9194).
-    3. Query the ETH/USD Price as per UMIP-6.
-    4. Multiply the DPI/ETH prices in steps 1, 2 and 3 by the ETH/USD price to get the respective DPI/USD prices.
+    4. Query the ETH/USD Price as per UMIP-6.
+    5. Multiply the DPI/ETH prices in steps 1, 2 and 3 by the ETH/USD price to get the respective DPI/USD prices.
     6. Take the median of prices acquired from step 4 and round to 6 decimals to get the DPI/USD price.
     7. (for USD/DPI) Take the Inverse of the result of step 6 (1/ DPI/USD) and round to 18 decimals to get the USD/DPI price.
 
