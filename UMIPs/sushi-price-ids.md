@@ -9,13 +9,19 @@
 
 ## SUMMARY
 
-The DVM should support price requests for the price of SUSHI in USD, the price of xSUSHI in USD or the inverse of these.
+The DVM should support price requests for SUSHI/USD, USD/SUSHI, XSUSHI/USD or USD/XSUSHI.
 
 ## MOTIVATION
 
-The DVM currently does not support these price identifiers. SUSHI and XSUSHI are also being proposed as supported collateral types, and using these as collateral together with these price identifiers would allow SUSHI or XSUSHI holders to get leverage on their holdings by minting yield-dollar type stablecoins. Adding SUSHI/USD and XSUSHI/USD will also allow for the creation of covered call options backed by SUSHI or XSUSHI.
+The DVM currently does not support these price identifiers. SUSHI and XSUSHI are also being proposed as supported collateral types, and using these as collateral together with these price identifiers would allow SUSHI or XSUSHI holders to get leverage on their holdings by minting yield-dollar type stablecoins. Adding SUSHI/USD and XSUSHI/USD will also allow for the creation of synthetic Sushi or XSUSHI, or more bespoke contracts such as covered call options backed by SUSHI or XSUSHI.
 
 ## MARKETS & DATA SOURCES
+
+- Contract Addresses:
+
+[SUSHI](https://etherscan.io/address/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2)
+[XSUSHI](https://etherscan.io/address/0x8798249c2e607446efb7ad49ec89dd1865ff4272)
+[SUSHI/ETH LP](https://etherscan.io/address/0x795065dcc9f64b5614c407a6efdc400da6221fb0)
 
 - Markets: SushiSwap, Binance, Huobi
 - Pairs: 
@@ -25,14 +31,26 @@ Binance: SUSHI/USDT
 Huobi: SUSHI/USDT
 ETH/USD follows the methodology in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md).
 
-- Live Price Endpoints: TBA
+- Live Price Endpoints:
+  
+Binance: https://api.cryptowat.ch/markets/binance/sushiusdt/price
+Huobi: https://api.cryptowat.ch/markets/huobi/sushiusdt/price
+
 - Update time: Every second for CW. Every block for SushiSwap. 
-- Historical Price Endpoints: TBA
+- Historical Price Endpoints:
+
+Binance: https://api.cryptowat.ch/markets/binance/sushiusdt/ohlc?after=1612880040&before=1612880040&periods=60
+Huobi: https://api.cryptowat.ch/markets/huobi/sushiusdt/ohlc?after=1612880040&before=1612880040&periods=60
+SushiSwap: 
+
 - Do these sources allow for querying up to 74 hours of historical data? Yes
 - How often is the provided price updated? Every 60 seconds for CW. Every block for SushiSwap.
-- Is an API key required to query these sources? CW requires .
+- Is an API key required to query these sources? CW has a free tier, but requires an API key beyond that.
 - Is there a cost associated with usage? Yes. Cryptowatch requires a purchase of credits beyond their free tier.
-- If there is a free tier available, how many queries does it allow for? TBA.
+- If there is a free tier available, how many queries does it allow for?
+
+The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying the two exchanges will cost 0.010 API credits). This would allow for 1000 free queries per day.
+
 - What would be the cost of sending 15,000 queries? $5.
 
 ## PRICE FEED IMPLEMENTATION
@@ -66,7 +84,7 @@ These price identifiers will use price feeds that already exist. Both will use t
 
 ## RATIONALE
 
-TBA 
+
 
 ## IMPLEMENTATION
 
@@ -91,3 +109,9 @@ As noted in the Rationale section, XSUSHI is a LP token given specifically to SU
 6. USDXSUSHI follows the same pattern except adds the additional step of taking the inverse of the XSUSHIUSD result. 
 
 ## Security Considerations
+
+Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
+
+There are some security considerations associated with adding a low float token like XSUSHI as collateral. These are explained further in the XSUSHI collateral UMIP. 
+
+$UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified. As noted above, $UMA-holders should also consider re-defining this identifier as liquidity in the underlying asset changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
