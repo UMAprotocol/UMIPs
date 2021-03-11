@@ -84,7 +84,11 @@ These price identifiers will use price feeds that already exist. Both will use t
 
 ## RATIONALE
 
+The three markets chosen for pricing SUSHI/USD were picked because they are three of the highest daily trading volume markets available.
 
+SushiSwap has lower daily volume than some other CEXs like OKEx, but it seems correct to use SushiSwap since it is SUSHI's native market and will assumably continue to have one of the highest trading volumes.
+
+Typically it is best practice to use a TWAP when pricing with DEX markets. A TWAP is not used in this implementation because SushiSwap is only one of the three sources used for the median, so any irregular price action or attempted manipulation will be invalidated anyways.
 
 ## IMPLEMENTATION
 
