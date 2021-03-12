@@ -11,7 +11,7 @@ This UMIP will add Sushi and xSushi as approved collateral currencies. This will
 
 ## Motivation
 
-SUSHI and xSUSHI are both ERC-20 tokens used by the SushiSwap community. SUSHI is the governance token of SushiSwap and is also used to stake to receive additional SUSHI rewards. When SUSHI holders stake SUSHI, they receive xSUSHI in return. Each xSUSHI is thus exchangeable for a certain amount of staked SUSHI tokens.
+SUSHI and xSUSHI are both ERC-20 tokens used by the SushiSwap community. SUSHI is the governance token of SushiSwap and is also used for staking. When SUSHI holders stake SUSHI, they receive xSUSHI in return. Each xSUSHI is thus exchangeable for a certain amount of staked SUSHI tokens.
 
 Adding SUSHI and xSUSHI as collateral types will allow for a variety of contract deployments. These could be used with the SUSHI/xSUSHI price identifiers that are also being proposed, to create SUSHI/xSUSHI backed yield dollars, or SUSHI/xSUSHI covered calls. 
 
