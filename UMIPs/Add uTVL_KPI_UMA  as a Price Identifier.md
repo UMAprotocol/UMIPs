@@ -275,7 +275,7 @@ It is recommended that any additional proposal to add liquidity tokens as approv
 
 4. **Result processing** 
 
-    - Divide TVL by 10^9 and apply the food and ceiling price rounding.
+    - Divide TVL by 10^9 and apply the floor and ceiling price rounding.
 
 <br>
 
