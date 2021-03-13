@@ -14,7 +14,7 @@ This UMIP proposes adding USDBTC_V2, BCHNBTC_V2, ELASTIC_STABLESPREAD/USDC_V2, S
 
 ## Motivation
 
-With the introduction of the new EMP template proposed in UMIP-52, all price identifiers are required to be scaled by 10^18 when submitted on-chain. This is in contrast to the pattern in old EMP contracts, where the price identifier needed to be scaled to match the scaling factor of the collateral currency that the identifier was being used with. This means that price identifiers that were used in an old EMP contract that had a non-18 decimal collateral currency cannot be used with the new contracts.
+With the introduction of the new EMP template proposed in UMIP-52, all price identifiers are required to be scaled by 10^18 when submitted on-chain. This is in contrast to the function in old EMP contracts, where the price identifier needed to be scaled to match the scaling factor of the collateral currency that the identifier was being used with. This means that price identifiers that are being used in an old EMP contract that has a non-18 decimal collateral currency cannot be used with the new contracts.
 
 Because of this, many price identifiers have been deprecated. This UMIP simply reproposes those price identifiers with slightly altered price identifier names and a scaling specification of 18 decimals. Everything else about these identifiers remains the same.
 
