@@ -154,7 +154,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 - Is your collateral currency already approved to be used by UMA financial contracts? 
 
-    - Yes. Per UMIP 18
+    - Yes. Per UMIP 8
 
 **5. Scaling Decimals** - 18 (1e18)
 
@@ -204,7 +204,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 - Is your collateral currency already approved to be used by UMA financial contracts?
 
-    - Yes
+    - Yes. Per UMIP 10
 
 **5. Scaling Decimals** - 18 (1e18)
 
@@ -254,7 +254,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 - Is your collateral currency already approved to be used by UMA financial contracts? 
 
-    - Yes. Per UMIP 18
+    - Yes. Per UMIP 8
 
 **5. Scaling Decimals** - 18 (1e18)
 
@@ -304,7 +304,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 - Is your collateral currency already approved to be used by UMA financial contracts?
 
-    - Yes
+    - Yes. Per UMIP 10
 
 **5. Scaling Decimals** - 18 (1e18)
 
