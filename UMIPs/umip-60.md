@@ -2,7 +2,7 @@
 - UMIP-60 
 - UMIP title: Approve ANT as a collateral currency
 - Author Chandler De Kock (chandler@umaproject.org) and Joseph Charlesworth (joe@aragon.org)
-- Status: Last Call
+- Status: Approved
 - Created: March 2, 2021 
 - Discourse Link: <https://discourse.umaproject.org/t/ant-as-collateral/297>
 

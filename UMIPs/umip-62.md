@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add ETHBTC_FR as a price identifier              |
 | Authors    | Sean Brown (smb2796), Kevin Chan (kevin-uma)  |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | Feb 24, 2021   
 | [Discourse Link](https://discourse.umaproject.org/t/add-ethbtc-fr-as-a-supported-price-identifier/260) |  
 
@@ -85,7 +85,7 @@ ETHBTC_FR: {
     type: "expression",
     expression: `
         ETHBTC_FV = ETH/BTC * CFRM * TOKEN_SCALING;
-        max(-0.000011574074074, min(0.000011574074074, (ETHBTC_PERP - ETHBTC_FV) / (ETHBTC_FV) / 86400 * (-1)))
+        max(-0.00001, min(0.00001, (ETHBTC_PERP - ETHBTC_FV) / (ETHBTC_FV) / 86400 * (-1)))
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
@@ -129,7 +129,7 @@ A one hour TWAP is used for the ETHBTC-PERP and ETHBTC-FV rates. This calculatio
 
 86400 was chosen for two reasons. The current funding rate is continuously applied to sponsors' positions, so the proposed funding rate needs to be adjusted to a rate that reflects a continuous rate (per second rate). A day was chosen as the interval to move the fair value and perpetual price back to peg, because this follows existing and proven patterns created by CEX's like FTX.
 
-Min and max bounds of -0.000011574074074 and 0.000011574074074 were chosen because these are the funding rate calculations that represent a 100% drift of perp from peg. You can arrive at these amounts with 1/86400.
+Min and max bounds of -0.00001 and 0.00001 were chosen because these are the funding rate calculations that represent a 100% drift of perp from peg. You can arrive at these amounts with 1/86400.
 
 ## IMPLEMENTATION
 To calculate the ETHBTC-FR, voters should use the following process:
@@ -142,7 +142,7 @@ To calculate the ETHBTC-FR, voters should use the following process:
 6. Subtract the result of step 4 from the result of step 5. [ETHBTC-PERP - ETHBTC-FV].
 7. Divide the result of step 6 by the ETHBTC-FV rate from step 4. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
 8. Divide the result of step 7 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1.
-9. Implement min and max bounds on this result with: max(-0.000011574074074, min(0.000011574074074, result)).
+9. Implement min and max bounds on this result with: max(-0.00001, min(0.00001, result)).
 10. Voters should then round this result to 18 decimal places.
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
