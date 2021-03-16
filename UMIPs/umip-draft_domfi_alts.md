@@ -10,8 +10,12 @@
 <br>
 
 # SUMMARY 
-The DVM should support price requests for the following dominance indices.
-The price identifiers can be defined as:
+The DVM should support price requests for the relative market capitalization indices of these top 9 cryptocurrencies (according to CoinGecko). These indices are commonly known as *"dominance"* indices.
+
+The price identifiers are constructed using the following formulations below.
+
+> Note: The actual price identifier values are whole numbers out of 100. For example, a value of 12.34% is represented as the value
+> raw decimal value of `12.34`. Therefore, all price identifier values for dominance indices will always be within the range `0.00 <= x < 100.00`, for some dominance index value `x`.
 
 ```
 BCHDOM →    [Total BCH supply]
@@ -34,7 +38,7 @@ ETHDOM →    [Total ETH supply]
           * [Price of ETHUSD]
           / [Total crypto market cap (USD)]
 
-LINKDOM →    [Total LINK supply]
+LINKDOM →   [Total LINK supply]
           * [Price of LINKUSD]
           / [Total crypto market cap (USD)]
 
@@ -42,7 +46,7 @@ LTCDOM →    [Total LTC supply]
           * [Price of LTCUSD]
           / [Total crypto market cap (USD)]
 
-USDTDOM →    [Total USDT supply]
+USDTDOM →   [Total USDT supply]
           * [Price of USDTUSD]
           / [Total crypto market cap (USD)]
 
@@ -53,19 +57,21 @@ XRPDOM →    [Total XRP supply]
 
 # MOTIVATION
 
-This section should clearly explain the types of financial products that will be created and the mechanics of an example financial product using this price identifier. Please answer the following questions:
+The DVM currently does not support the listed dominance indices. Synthetic tokens which track market dominance could be used as hedging tools in one’s portfolio. These synthetic tokens can also be used as tools to speculate on a cryptocurrency's market share relative to all other cryptocurrencies.
 
 1. What are the financial positions enabled by creating this synthetic that do not already exist?
 
-    - [ANSWER]
+    - These synthetic tokens will enable users to enter into financial positions based on a particular coins market dominance. Previously, our team created an instrument on UMA to be able take positions on the,
+      - (i) relative market cap of Bitcoin (BTCDOM), as well as,
+      - (ii) all alt-coins against Bitcoin (ALTDOM).
+    - These new price identifiers allow users to take positions to long or short the relative market cap of these top 9 crypocurrencies.
+    - More importantly, not all these underlying cryptocurrencies are available to be traded on Ethereum.
 
 2. Please provide an example of a person interacting with a contract that uses this price identifier. 
 
-    - Remember, price identifiers **return the units of the collateral currency**. 
+    > TODO: This example is backwards! It should be DAI/LTCDOM
 
-         - For example, if at expiry the price id returns 1 and the contract is collateralized in renBTC, each synth would be worth 1 renBTC.
-
-    - [ANSWER]
+    - A user happens to be bearish on the relative market capitalization of Litecoin (LTC). Assume there is a LTCDOM/DAI synthetic EMP with a 150% GCR. If LTC dominance is at 0.77%, the a price identifier will have an index price of 0.77 LTCDOM/DAI (or ~1.2987 DAI/LTCDOM). They put up 100 DAI as collateral to mint ~86.58 LTCDOM synthetic tokens. They then sell the 86.58 LTCDOM tokens on the market for ~66.66 DAI in exchange. Say the index price drops to 0.51% and the user wishes to close their position. They buy back 86.58 LTCDOM tokens at a market price of 0.51 LTCDOM/DAI (or ~1.9608 DAI/LTCDOM), receiving 
 
 3. Consider adding market data  (e.g., if we add a “Dai alternative,” the author could show the market size of Dai)
 
