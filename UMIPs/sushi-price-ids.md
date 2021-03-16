@@ -118,6 +118,8 @@ SUSHIUSD: {
 }
 ```
 
+The same configs would hold true for USDXSUSHI or USDSUSHI, with the added step of taking the inverse of the XSUSHIUSD or SUSHIUSD rates.
+
 ## TECHNICAL SPECIFICATIONS
 
 - Price Identifier Name: SUSHIUSD
