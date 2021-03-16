@@ -92,7 +92,7 @@ Note - see rationale for further discussion
 
 	5. Native ERC20 Tokens 
 		- where a price identifier UMIP exists that defines a dollar value, this should be used.
-		- where no price identifier exists,the highest volume USD* markets should be used.
+		- where no price identifier exists,the three highest volume USD* markets should be used.
 
 **Note - see rationale for further discussion**
 
@@ -101,7 +101,7 @@ Note - see rationale for further discussion
 	2. BTC 	- see UMIP 7
 	3. USD 	- no query requirement  
 	4. Liquidity Provider Tokens 	- see UMIP 59
-	5. Native ERC20 Tokens - follow directions in PI UMIP if possible, otherwise [ERC20]/USD* markets
+	5. Native ERC20 Tokens - follow directions in PI UMIP if possible, otherwise [ERC20]/USD* markets, where USD* is either USD or USD stablecoin.
 
 3. Provide recommended endpoints to query for real-time prices from each market listed. 
 
@@ -226,10 +226,10 @@ There are other forms of wrapped BTC which are not approved as collateral within
 It is assumed for this purpose that 1DAI=1USDC=1USDT=1rDAI=$1.  While this assumption may be somewhat inaccurate, it has minimal impact on the overall calculation, cuts down on processing complexity and works on a “common sense” attitude that a dollar stablecoin is worth exactly $1.
 There are other forms of dollar stablecoins which are not approved as collateral within the UMA protocol.  To maintain consistency it is suggested that this assumption is made for any other non-algorithmic stablecoin. 
 
-4. FiveLiquidity Tokens (wBTC-Eth, USDC-Eth, UNI-Eth, UMA-Eth, bwBTC/ETH_SLP) are approved as collateral within the UMA protocol. 
+4. Five Liquidity Tokens (wBTC-Eth, USDC-Eth, UNI-Eth, UMA-Eth, bwBTC/ETH_SLP) are approved as collateral within the UMA protocol. 
 It is recommended that any additional proposal to add liquidity tokens as approved collateral currencies are evaluated against UMIP 59 and follow those market and data sources to calculate dollar value unless there is good reason for deviance.  Note that the calculation of the dollar value of the liquidity token occurs in the penultimate step of the UMIP (Step 5). 
 
-5.There are a variety of price identifiers for native ERC20 tokens.  Calculation of the dollar value should follow the relevant UMIP where it exists, and where there is no Price Identifier UMIP, the highest volume [ERC20]/USD* market should be used.
+5.There are a variety of price identifiers for native ERC20 tokens.  Calculation of the dollar value should follow the relevant UMIP where it exists, and where there is no Price Identifier UMIP, the three highest volume [ERC20]/USD* markets should be queried and the median value used.
 
  - There is no need for price processing.  This is a snapshot based on a particular time, however it may be useful for TVL Options holders to have oversight of the ongoing TVL and consequently the value of their options on an ongoing basis.  There are currently two dashboards that track the TVL of UMA - 
 	- [SimpleID](https://monitor.simpleid.xyz/uma)
@@ -287,9 +287,11 @@ It is recommended that any additional proposal to add liquidity tokens as approv
 
 2. How could this price ID be exploited?
 
- - It is possible that as expiry approaches, a user may be able to purchase a large number of TVL option on the open market, should the TVL be significantly below the level required to achieve the ceiling level, then add large amounts of collateral to an UMA contract slightly before expiry to temporarily drive up the TVL, redeem the synthetic tokens, then withdraw liquidity immediately afterwards.
+ - It is possible that as expiry approaches, a user may be able to purchase a large number of TVL option on the open market, should the TVL be significantly below the level required to achieve the ceiling level, then add large amounts of collateral to an UMA contract slightly before expiry to temporarily drive up the TVL, redeem the synthetic tokens, then withdraw the collateral immediately afterwards.
 
- - It is also possible that a user may purchase UMATVL at a low price, lock substantial amounts of collateral in UMA contracts causing the TVLUMA price to rise, then sell the UMATVL tokens at a profit and withdraw the liquidity.
+ - It is possible that a user may purchase uTVL_KPI_UMA at a low price, lock substantial amounts of collateral in UMA contracts causing the uTVL_KPI_UMA price to rise, then sell the these tokens at a profit and immediately withdraw the collateral from the contracts.
+ 
+  - It is possible that as expiry approaches a user may purchase a large number  uTVL_KPI_UMA at a low price near expiry on the open market should the TVL be significantly below the level required to achieve the ceiling of 2 $UMA per option, then deposit substantial amounts of collateral in UMA contracts with the intention of temporarily driving up the returns from the options, then immediately withdraw the collateral after expiry, causing an artificial spike in the TVL.  Technical solutions were explored however it was considered that given the variety of potential manipulation and that whatever constraints put in place to mitigate this could be gamed, the DVM was a superior method of addressing any such attempts. In the event of such a manipulation attempt, and a dispute being raised, voters should come to consensus on what a true measure of the TVL locked in the protocol would have been by excluding the collateral used in the manipulation attempt.
   
 
 3. Do the instructions for determining the price provide people with enough certainty?
