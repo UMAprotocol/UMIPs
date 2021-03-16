@@ -54,7 +54,69 @@ The free tier is limited to 10 API credits per 24-hours; the cost of querying th
 - What would be the cost of sending 15,000 queries? $5.
 
 ## PRICE FEED IMPLEMENTATION
-These price identifiers will use price feeds that already exist. Both will use the [Cryptowatch](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js) and [Uniswap](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) price feeds to get the price of SUSHIUSD, and the XSUSHI identifiers will also use the [LPPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/LPPriceFeed.js) to determine the amount of SUSHI that each XSUSHI is redeemable for.
+These price identifiers will use price feeds that already exist. Both will use the [Cryptowatch](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js), [Uniswap](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [Expression](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js) price feeds to get the price of SUSHIUSD. The XSUSHI identifiers will also use the [LPPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/LPPriceFeed.js) to determine the amount of SUSHI that each XSUSHI is redeemable for.
+
+The default price feed config for SUSHIUSD would follow this pattern:
+
+```
+SUSHIUSD: {
+    type: "expression",
+    expression: `
+        SPOT_SUSHISWAP = SPOT_SUSHISWAP_ETH * ETHUSD;
+        median(SPOT_BINANCE, SPOT_HUOBI, SPOT_SUSHISWAP)
+    `,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      SPOT_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "sushiusdt" },
+      SPOT_HUOBI: { type: "cryptowatch", exchange: "huobi", pair: "sushiusdt" },
+      SPOT_SUSHISWAP: { type: "uniswap", address: "0x795065dCc9f64b5614C407a6EFDC400DA6221FB0" },
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+            { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+            { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+            { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+        }
+    }
+}
+```
+
+The default price feed config for XSUSHIUSD would follow this pattern:
+
+```
+SUSHIUSD: {
+    type: "expression",
+    expression: `
+        SPOT_SUSHISWAP = SPOT_SUSHISWAP_ETH * ETHUSD;
+        SUSHIUSD = median(SPOT_BINANCE, SPOT_HUOBI, SPOT_SUSHISWAP);
+        SUSHIUSD * SUSHI_PER_SHARE
+    `,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      SPOT_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "sushiusdt" },
+      SPOT_HUOBI: { type: "cryptowatch", exchange: "huobi", pair: "sushiusdt" },
+      SPOT_SUSHISWAP: { type: "uniswap", address: "0x795065dCc9f64b5614C407a6EFDC400DA6221FB0" },
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+            { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+            { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+            { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+      },
+      SUSHI_PER_SHARE: {
+        type: "lp",
+        poolAddress: "0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272", 
+        tokenAddress: "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2"
+      },
+    }
+}
+```
 
 ## TECHNICAL SPECIFICATIONS
 
