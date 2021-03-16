@@ -1,9 +1,9 @@
 ## Headers
 | UMIP-64   |   |
 |------------|---|
-| UMIP Title | Add INDEXETH, ETHINDEX, INDEXUSD, USDINDEX, DPIETH, ETHDPI, DPIUSD and USDDPI as price identifier |
+| UMIP Title | Add INDEXETH, ETHINDEX, INDEXUSD, USDINDEX, DPIETH, ETHDPI, DPIUSD and USDDPI as price identifiers |
 | Authors    | Gottlieb Freudenreich (gottlieb.freudenreich@gmail.com)
-| Status     | Proposal |
+| Status     | Last Call |
 | Created    | 2020-03-08 |
 | Discourse Link | https://discourse.umaproject.org/t/add-index-and-dpi-price-identifiers/327
 
