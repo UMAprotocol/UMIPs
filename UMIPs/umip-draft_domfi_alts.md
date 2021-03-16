@@ -2,10 +2,10 @@
 | UMIP [#]   | |
 |------------|------------|
 | UMIP Title | Add BCHDOM, BNBDOM, BSVDOM, DOTDOM, ETHDOM, LINKDOM, LTCDOM, USDTDOM & XRPDOM as a price identifiers |
-| Authors    | Domination Finance (Josh Bowden <josh@ferrosync.io>, Michal Cymbalisty <michal@domination.finance>, et. al.)
+| Authors    | Domination Finance (Josh Bowden (<josh@ferrosync.io>), Michal Cymbalisty (<michal@domination.finance>), et. al.)
 | Status     | Draft |
 | Created    | March 16, 2021 |
-| Link to Discourse    | [LINK] |
+| Link to Discourse | https://discourse.umaproject.org/t/add-bchdom-bnbdom-bsvdom-dotdom-ethdom-linkdom-ltcdom-usdtdom-xrpdom-as-a-price-identifiers/346 |
 <br>
 <br>
 
@@ -69,190 +69,169 @@ The DVM currently does not support the listed dominance indices. Synthetic token
 
 2. Please provide an example of a person interacting with a contract that uses this price identifier. 
 
-    > TODO: This example is backwards! It should be DAI/LTCDOM
-
-    - A user happens to be bearish on the relative market capitalization of Litecoin (LTC). Assume there is a LTCDOM/DAI synthetic EMP with a 150% GCR. If LTC dominance is at 0.77%, the a price identifier will have an index price of 0.77 LTCDOM/DAI (or ~1.2987 DAI/LTCDOM). They put up 100 DAI as collateral to mint ~86.58 LTCDOM synthetic tokens. They then sell the 86.58 LTCDOM tokens on the market for ~66.66 DAI in exchange. Say the index price drops to 0.51% and the user wishes to close their position. They buy back 86.58 LTCDOM tokens at a market price of 0.51 LTCDOM/DAI (or ~1.9608 DAI/LTCDOM), receiving 
-
-3. Consider adding market data  (e.g., if we add a “Dai alternative,” the author could show the market size of Dai)
+    - A user wanting to short a particular cryptocurrency's market dominance can mint synthetics and then market sell them.
+    - A user wanting to long a particular cryptocurrency's market dominance can market buy a synthetic token.
 
 <br> 
 
 # MARKETS & DATA SOURCES
 
- **Required questions**
+The data source used for these indicies is provided by CoinGecko as a reliable and actively maintained source for coin market dominance. Additional clarification is providing in *Rationale*.
 
-1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+1. Provide recommended endpoints to query for real-time prices from each market listed. 
 
-    - [ANSWER]
-
-2.  Which specific pairs should be queried from each market?
-
-    - [ANSWER]
-
-2. Provide recommended endpoints to query for real-time prices from each market listed. 
-
-    - These should match the data sources used in  "Price Feed Implementation". 
-
-    - [ADD-ENDPOINTS]
+    - See endpoints listed in *Price Feed Implementation*
     
-4. How often is the provided price updated?
+2. How often is the provided price updated?
 
-    - [ANSWER]
+    - 1 min
 
-5. Provide recommended endpoints to query for historical prices from each market listed. 
+3. Provide recommended endpoints to query for historical prices from each market listed. 
 
-    - [ADD-ENDPOINTS]
+    - See endpoints listed in *Price Feed Implementation*
 
-6.  Do these sources allow for querying up to 74 hours of historical data? 
+4.  Do these sources allow for querying up to 74 hours of historical data? 
 
-    - [ANSWER]
+    - Yes
 
-7.  How often is the provided price updated?
+5. Is an API key required to query these sources? 
 
-    - [ANSWER]
+    - No
 
-8. Is an API key required to query these sources? 
+6. Is there a cost associated with usage? 
 
-    - [ANSWER]
+    - No
 
-9. Is there a cost associated with usage? 
+7.  If there is a free tier available, how many queries does it allow for?
 
-    - [ANSWER]
+    - N/A, access is free but rate limited to no more than 1 query/sec
 
-10. If there is a free tier available, how many queries does it allow for?
+8.   What would be the cost of sending 15,000 queries?
 
-    - [ANSWER]
-
-11.  What would be the cost of sending 15,000 queries?
-
-     - [ANSWER]
+     - $0
 
 <br>
 
 # PRICE FEED IMPLEMENTATION
 
-To allow for the creation of bots that can programmatically calculate prices off-chain to liquidate and dispute transactions, you must create a price feed following the UMA Protocol format (outlined below). This price feed is also necessary to calculate developer mining rewards.
+An existing implementation of a price feed using the `api.domination.finance` endpoint is already implemented. Additional feeds will need to be enabled for the 9 price identifiers that are specified in this UMIP. The associated endpoints for these price identifiers are below.
 
-To meet this criteria, please include a link to a PR to the UMA [protocol repo](https://github.com/UMAprotocol/protocol) with an example price feed that inherits this [PriceFeedInterface](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/PriceFeedInterface.js). 
+BNB:
+ * https://api.domination.finance/api/v0/price/bnbdom
+ * https://api.domination.finance/api/v0/price/bnbdom/history
 
-Classes of price identifiers that are supported by default and require no additional price feed include.
+BCH:
+ * https://api.domination.finance/api/v0/price/bchdom
+ * https://api.domination.finance/api/v0/price/bchdom/history
 
-- Any currency pair available on [Cryptowatch](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js)
+BSV:
+ * https://api.domination.finance/api/v0/price/bsvdom
+ * https://api.domination.finance/api/v0/price/bsvdom/history
 
-- [Uniswap prices](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js)
+DOT:
+ * https://api.domination.finance/api/v0/price/dotdom
+ * https://api.domination.finance/api/v0/price/dotdom/history
 
-- [Balancer prices](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/BalancerPriceFeed.js)
+ETH:
+ * https://api.domination.finance/api/v0/price/ethdom
+ * https://api.domination.finance/api/v0/price/ethdom/history
 
-Please provide a link to your price feed pull request.
+LINK:
+ * https://api.domination.finance/api/v0/price/linkdom
+ * https://api.domination.finance/api/v0/price/linkdom/history
 
-- [ADD-LINK-TO-PULL-REQUEST]
+LTC:
+ * https://api.domination.finance/api/v0/price/ltcdom
+ * https://api.domination.finance/api/v0/price/ltcdom/history
+
+USDT:
+ * https://api.domination.finance/api/v0/price/usdtdom
+ * https://api.domination.finance/api/v0/price/usdtdom/history
+
+XRP:
+ * https://api.domination.finance/api/v0/price/xrpdom
+ * https://api.domination.finance/api/v0/price/xrpdom/history
+
 
 <br>
 
 # TECHNICAL SPECIFICATIONS
 
-**1. Price Identifier Name** - [ADD NAME]
+**1. Price Identifier Names**
+    
+ - `BCHDOM`
+ - `BNBDOM`
+ - `BSVDOM`
+ - `DOTDOM`
+ - `ETHDOM`
+ - `LINKDOM`
+ - `LTCDOM`
+ - `USDTDOM`
+ - `XRPDOM`
 
-**2. Base Currency** - [ADD BASE CURRENCY]
+> Since all the market dominance price identifiers are indices based off of a raw percentage, there is no inherent base or quote currency involved.
 
-**3. Quote currency** - [ADD QUOTE CURRENCY]
+**2. Intended Collateral Currency** - DAI
 
-- If your price identifier is a currency pair, your quote currency will be the
-denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+- Is your collateral currency already approved to be used by UMA financial contracts?
 
-- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+    - Yes
 
-- [Response - if applicable]
+**3. Scaling Decimals** - 18
 
-**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+**4. Rounding**
 
-- Does the value of this collateral currency match the standalone value of the listed quote currency? 
+> **Note:**  
+> The price identifier values are represented as whole numbers between `0.00` and `100.00`, inclusive. For example, a market dominance of 12.34% is represented as the value
+> raw decimal value of `12.34` and will be represented on-chain as the raw value `12340000000000000000`.  
+> Appropriate scaling on-chain to 18 decimal places to "convert to wei" is applied as usual.
 
-    - [ANSWER]
-
-- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use. 
-
-    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies. 
-
-    - [ANSWER]
-
-**5. Collateral Decimals** - [ADD DECIMALS]
-
-- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency. 
-
-- **Example**
-
-    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)). 
-
-**6. Rounding** - [ADD ROUNDING]
-
-- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
-
-- **Example** 
-
-    - Round to 3 decimal places. 
-
-    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023. 
+ - The index value is rounded to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
 
 <br>
 
 # RATIONALE
 
-The rationale should flesh out the specification by describing what motivated the design and why particular design decisions were made, as well as any alternative designs that were considered.
+Prices are primarily used in UMA to calculate a synthetic token’s value in case of liquidation or expiration. Contract counterparties, such as those running liquidation bots, also use the price index to ensure that sponsors are adequately collateralized.
 
-- [RESPONSE]
+While coin domination can be succinctly represented as a single percentage, the underlying mechanisms for calculating it are quite involved and can dramatically differ by multiple percentage points from one data source to another. Calculating dominance involves knowing the current supply of a cryptocurrency, the prevailing market price of CRYPTOCURRENCY/USD, and the total market capitalization of all tokens in USD. More importantly, calculating the total market capitalization of all tokens in USD is a challenge since different data sources may altogether not include particular alt-coins thereby affecting all coin market dominance percentages.
 
-**Example questions**
+At the moment, market dominance is commonly referenced through three major sources: TradingView, CoinMarketCap & CoinGecko. However, unlike trading pairs which exhibit strong redundancy without deviation largely due to arbitrage incentives, each data source can vary by multiple percentage points due to differing calculation methodologies. Namely, each site has different methodologies for which alt-coins to admit into the total market cap, and a given coin’s market price and total coin circulation amounts may differ, compounding over hundreds or even thousands of alt-coins. Additionally, on a technical note, live and historical data update frequency varies and historical data may be paywalled, making it significantly harder to successfully run liquidation and dispute bots with redundancy and without paying for API access. To make matters worse, had we proposed a scheme where multiple data sources were used, we’d have to decide on using either the median or mean of the data sources and then have to specify some logic to handle if one of the data sources went down or starting to significantly different from the rest, for example.
 
-- Why this implementation of the identifier as opposed to other implementation designs?
+In an effort to alleviate these challenges, the Domination Finance team was able to get in touch with Bobby & TM, the co-founders of CoinGecko. The CoinGecko team went above and beyond to meet the requisites, updating CoinGecko’s coin dominance live data to 1-3 minute intervals from what was previously 10 minutes. Although this may introduce a single point of failure, we felt that the costs in increased complexity and mental load on the stakeholders who need to use it (like speculators, sponsors, liquidators & disputers) outweighed the benefits, especially during this period where the synthetic token is newly launched.
 
-- What analysis can you provide on where to get the most robust prices? (Robust as in legitimate liquidity, legitimate volume, price discrepancies between exchanges, and trading volume between exchanges)
+While CoinGecko was able to provide the higher time granularity for coin dominance on short notice, historical data, necessary for dispute bots and voters, was unable to be immediately supplied from CoinGecko. Instead, constructing a separate caching service was necessary to track and record the historical data via polling CoinGecko's Live API to be able to compute historical coin dominance at a given point in time. Our caching API is more than sufficient to provide the historical data for dispute bots and voters.
 
-- What is the potential for the price to be manipulated on the chosen exchanges?
-
-- Should the prices have any processing (e.g., TWAP)? 
-
-    - If so, why was this processing method chosen?
+Initially, during normal operation, market dominance indices should closely track the value on CoinGecko. As more data sources for market dominance data are created and examined, voters are encouraged to add additional sources of information into the methodology for the price calculation.
 
 <br>
 
 # IMPLEMENTATION
 
-Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
-
-
 1. **What prices should be queried for and from which markets?**
 
-    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.  
-
-    - [ANSWER]
+    - The applicable price market dominance index should be queried dependeing on the
 
 2. **Pricing interval**
 
-    - [ANSWER]
+    - 1 min
 
 3. **Input processing**
 
-    - [ANSWER]
+    - None.
 
 4. **Result processing** 
 
-    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
-
-     - [ANSWER]
+    - See rounding rules in *Technical Specification*.
 
 <br>
 
 # Security considerations
 
-**Example questions**
+The current implementation relies on CoinGecko's and the Domination Finance's API endpoints to be able to receive accurate pricing information. Since calculating market dominance is an involved process with a number of variables at play, the trade-off is made to have a stable formulation from a single source instead of multiple sources which have widely varying calculation methodologies and public data availability.
 
-1. Where could manipulation occur?
+In the unlikely event that market index values returned from data sources are extreme outliers or erroneous compared to current market consensus, $UMA-holders may choose to use prevailing market consensus or using a nearby timestamp value instead.
 
-2. How could this price ID be exploited?
+Anyone deploying a new priceless token contract referencing these identifiers should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
 
-3. Do the instructions for determining the price provide people with enough certainty?
-
-4. What are current or future concern possibilities with the way the price identifier is defined?
-
-5. Are there any concerns around if the price identifier implementation is deterministic?
+$UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for these identifiers and also contemplate de-registering these identifiers if security holes are identified. As noted above, $UMA-holders should also consider re-defining this identifier as liquidity in the underlying asset changes, or if added robustness is necessary to prevent market manipulation.
