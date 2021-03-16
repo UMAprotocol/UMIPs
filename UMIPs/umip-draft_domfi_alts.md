@@ -5,7 +5,7 @@
 | Authors    | Domination Finance (Josh Bowden (<josh@ferrosync.io>), Michal Cymbalisty (<michal@domination.finance>), et. al.)
 | Status     | Draft |
 | Created    | March 16, 2021 |
-| Link to Discourse | https://discourse.umaproject.org/t/add-bchdom-bnbdom-bsvdom-dotdom-ethdom-linkdom-ltcdom-usdtdom-xrpdom-as-a-price-identifiers/346 |
+| Link to Discourse | https://discourse.umaproject.org/t/add-bchdom-bnbdom-bsvdom-dotdom-ethdom-linkdom-ltcdom-usdtdom-xrpdom-as-price-identifiers/346 |
 <br>
 <br>
 
