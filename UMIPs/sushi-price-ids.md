@@ -5,7 +5,7 @@
 | Authors    | Sean Brown (smb2796)  |
 | Status     | Draft                                                                                                                                    |
 | Created    | March 10, 2021   
-| Discourse Link |  
+| [Discourse Link](https://discourse.umaproject.org/t/propose-sushi-price-identifiers/334) |  
 
 ## SUMMARY
 
