@@ -134,7 +134,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Rounding** - Round to 18 decimal places. 
+**6. Rounding** - Round to 5 decimal places. 
 
 <br>
 
@@ -158,7 +158,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Rounding** - Round to 6 decimal places. 
+**6. Rounding** - Round to 5 decimal places. 
 
 <br>
 
@@ -182,9 +182,9 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Rounding** - Round to 18 decimal places.
+**6. Rounding** - Round to 5 decimal places.
 
-**7. Notes** - Uniswap pool to be queried using 1 minute TWAP (time weighted average price).
+**7. Notes** - Pools to be queried using 1 minute TWAP (time weighted average price). Balancer pool consists of 70/30 INDEX/ETH.
 
 <br>
 
@@ -208,9 +208,9 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Rounding** - Round to 18 decimal places. 
+**6. Rounding** - Round to 5 decimal places. 
 
-**7. Notes** - Uniswap pool to be queried using 1 minute TWAP (time weighted average price).
+**7. Notes** - Pools to be queried using 1 minute TWAP (time weighted average price). Balancer pool consists of 70/30 INDEX/ETH.
 
 <br>
 
@@ -234,7 +234,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Rounding** - Round to 18 decimal places. 
+**6. Rounding** - Round to 5 decimal places. 
 
 <br>
 
@@ -258,7 +258,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Rounding** - Round to 6 decimal places. 
+**6. Rounding** - Round to 5 decimal places. 
 
 <br>
 
@@ -282,9 +282,9 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Rounding** - Round to 18 decimal places.
+**6. Rounding** - Round to 5 decimal places.
 
-**7. Notes** - Uniswap pool to be queried using 1 minute TWAP (time weighted average price).
+**7. Notes** - Pools to be queried using 1 minute TWAP (time weighted average price). Balancer pool consists of 25/25/25/25 ETH/cUSDC/WBTC/DPI.
 
 <br>
 
@@ -308,9 +308,9 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Rounding** - Round to 18 decimal places. 
+**6. Rounding** - Round to 5 decimal places. 
 
-**7. Notes** - Uniswap pool to be queried using 1 minute TWAP (time weighted average price).
+**7. Notes** - Pools to be queried using 1 minute TWAP (time weighted average price). Balancer pool consists of 25/25/25/25 ETH/cUSDC/WBTC/DPI.
 
 <br>
 
@@ -334,8 +334,8 @@ The USD/ETH and ETH/USD Price can be calculated as per UMIP-6.
     2. Query INDEX/ETH Price from Sushiswap using 1 minute TWAP (0xa73df646512c82550c2b3c0324c4eedee53b400c).
     3. Query INDEX/ETH Price from Balancer using 1 minute TWAP (0xcf19a7c81fcf0e01c927f28a2b551405e58c77e5 - this is a 70/30 INDEX/ETH pool).
     4. Take the median of prices acquired from steps 1, 2, and 3.
-    5. Take the result from step 4 and round to 18 decimals to get the final INDEX/ETH price.
-    6. (for ETH/INDEX) Take the Inverse of the result of step 4 (1/ INDEX/ETH) and round to 18 decimals to get the ETH/INDEX price.
+    5. Take the result from step 4 and round to 5 decimals to get the final INDEX/ETH price.
+    6. (for ETH/INDEX) Take the Inverse of the result of step 4 (1/ INDEX/ETH) and round to 5 decimals to get the ETH/INDEX price.
 
 **For INDEX/USD and USD/INDEX** 
 
@@ -344,9 +344,9 @@ The USD/ETH and ETH/USD Price can be calculated as per UMIP-6.
     3. Query INDEX/ETH Price from Balancer using 1 minute TWAP (0xcf19a7c81fcf0e01c927f28a2b551405e58c77e5 - this is a 70/30 INDEX/ETH pool).
     4. Query the ETH/USD Price as per UMIP-6.
     5. Take the median of prices acquired from step 1, 2, and 3.
-    6. Multiply the INDEX/ETH price from step 5 by the ETH/USD price from step 4 to get the respective INDEX/USD prices.
-    7. Take the result from step 6 and round to 6 decimals to get the INDEX/USD price.
-    8. (for USD/INDEX) Take the Inverse of the result of step 6 (1/ INDEX/USD) and round to 18 decimals to get the USD/INDEX price.
+    6. Multiply the INDEX/ETH price from step 5 by the ETH/USD price from step 4 to get the median INDEX/USD price.
+    7. Take the result from step 6 and round to 5 decimals to get the INDEX/USD price.
+    8. (for USD/INDEX) Take the Inverse of the result of step 6 (1/ INDEX/USD) and round to 5 decimals to get the USD/INDEX price.
 
 **For DPI/ETH and ETH/DPI**
 
@@ -354,8 +354,8 @@ The USD/ETH and ETH/USD Price can be calculated as per UMIP-6.
     2. Query DPI/ETH Price from Sushiswap using 1 minute TWAP (0x34b13f8cd184f55d0bd4dd1fe6c07d46f245c7ed).
     3. Query DPI/ETH Price from Balancer using 1 minute TWAP (0x2aa3041fe813cfe572969216c6843c33f14f9194 - this is a 25/25/25/25 ETH/cUSDC/WBTC/DPI pool).
     4. Take the median of prices acquired from steps 1, 2, and 3.
-    5. Take the result from step 4 and round to 18 decimals to get the final DPI/ETH price.
-    6. (for ETH/DPI) Take the Inverse of the result of step 4 (1/ DPI/ETH) and round to 18 decimals to get the ETH/DPI price.
+    5. Take the result from step 4 and round to 5 decimals to get the final DPI/ETH price.
+    6. (for ETH/DPI) Take the Inverse of the result of step 4 (1/ DPI/ETH) and round to 5 decimals to get the ETH/DPI price.
 
 **For DPI/USD and USD/DPI** 
 
@@ -364,9 +364,9 @@ The USD/ETH and ETH/USD Price can be calculated as per UMIP-6.
     3. Query DPI/ETH Price from Balancer using 1 minute TWAP (0x2aa3041fe813cfe572969216c6843c33f14f9194  - this is a 25/25/25/25 ETH/cUSDC/WBTC/DPI pool).
     4. Query the ETH/USD Price as per UMIP-6.
     5. Take the median of prices acquired from step 1, 2, and 3.
-    6. Multiply the DPI/ETH price from step 5 by the ETH/USD price from step 4 to get the respective DPI/USD prices.
-    7. Take the result from step 6 and round to 6 decimals to get the DPI/USD price.
-    8. (for USD/DPI) Take the Inverse of the result of step 6 (1/ DPI/USD) and round to 18 decimals to get the USD/DPI price.
+    6. Multiply the DPI/ETH price from step 5 by the ETH/USD price from step 4 to get the median DPI/USD price.
+    7. Take the result from step 6 and round to 5 decimals to get the DPI/USD price.
+    8. (for USD/DPI) Take the Inverse of the result of step 6 (1/ DPI/USD) and round to 5 decimals to get the USD/DPI price.
 
 # Security considerations
 
