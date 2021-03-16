@@ -1,7 +1,7 @@
 ## HEADERS
 | UMIP [#]   | |
 |------------|------------|
-| UMIP Title | Add BCHDOM, BNBDOM, BSVDOM, DOTDOM, ETHDOM, LINKDOM, LTCDOM, USDTDOM & XRPDOM as a price identifiers |
+| UMIP Title | Add BCHDOM, BNBDOM, BSVDOM, DOTDOM, ETHDOM, LINKDOM, LTCDOM, USDTDOM & XRPDOM as price identifiers |
 | Authors    | Domination Finance (Josh Bowden (<josh@ferrosync.io>), Michal Cymbalisty (<michal@domination.finance>), et. al.)
 | Status     | Draft |
 | Created    | March 16, 2021 |
