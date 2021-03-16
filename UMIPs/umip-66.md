@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-xx    |                                                                                                                                          |
+| UMIP-66    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add USDBTC_18DEC, BCHNBTC_18DEC, ELASTIC_STABLESPREAD/USDC_18DEC, STABLESPREAD/USDC_18DEC, STABLESPREAD/BTC_18DEC and AMPLUSD_18DEC as supported price identifiers            |
 | Authors    | Sean Brown (@smb2796)                               |
-| Status     | Draft                                                                                                                                 |
+| Status     | Last Call                                                                                                                                 |
 | Created    | March 10, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/propose-v2-pids-for-all-depreciated-pis/336)   |                                              |
 

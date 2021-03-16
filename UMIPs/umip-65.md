@@ -1,19 +1,12 @@
 
 ## HEADERS
-| UMIP [#]     |                                                                                                                                  |
+| UMIP-65   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | [Add uTVL_KPI_UMA  as a Price Identifier
-                                                                                                  |
-| Authors    | [Hart Lambur hart@umaproject.org, Mhairi McAlpine mhairi@umaproject.org]
-	       
-| Status     | [Draft]
-
-| Created    | [4th March 2021] 
-
-| [Link to Discourse   -  https://discourse.umaproject.org/t/add-utvl-kpi-uma-as-a-price-identifier/318]                                                                               
-<br>
-<br>
-<br>
+| UMIP Title | Add uTVL_KPI_UMA  as a Price Identifier              |
+| Authors    | Hart Lambur hart@umaproject.org, Mhairi McAlpine mhairi@umaproject.org  |
+| Status     | Last Call                                                                                                                                   |
+| Created    | 4th March 2021   
+| [Discourse Link](https://discourse.umaproject.org/t/add-utvl-kpi-uma-as-a-price-identifier/318) | 
 
 # SUMMARY 
 

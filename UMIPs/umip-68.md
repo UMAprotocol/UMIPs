@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-Sushi    |                                                                                                                                          |
+| UMIP-68   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add SUSHIUSD, USDSUSHI, XSUSHIUSD, USDXSUSHI as supported price identifiers              |
 | Authors    | Sean Brown (smb2796)  |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                   |
 | Created    | March 10, 2021   
 | [Discourse Link](https://discourse.umaproject.org/t/propose-sushi-price-identifiers/334) |  
 
