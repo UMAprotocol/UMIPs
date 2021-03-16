@@ -5,6 +5,7 @@
 | Authors    | Sean Brown (@smb2796) |
 | Status     | Draft                                                                                                                                    |
 | Created    | March 10, 2021                                                                                                                           |
+| [Discourse Link](https://discourse.umaproject.org/t/add-sushi-and-xsushi-as-collateral-types/335)    |                                                                                                                     |
 
 ## Summary (2-5 sentences)
 This UMIP will add Sushi and xSushi as approved collateral currencies. This will involve adding these to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 25 SUSHI and 22 xSUSHI per request.
