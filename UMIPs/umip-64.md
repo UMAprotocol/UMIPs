@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-64   |   |
 |------------|---|
-| UMIP Title | Add INDEXETH, ETHINDEX, INDEXUSD, USDINDEX, DPIETH, ETHDPI, DPIUSD and USDDPI as price identifiers |
+| UMIP Title | Add INDEX/ETH, ETH/INDEX, INDEX/USD, USD/INDEX, DPI/ETH, ETH/DPI, DPI/USD and USD/DPI as price identifiers |
 | Authors    | Gottlieb Freudenreich (gottlieb.freudenreich@gmail.com)
 | Status     | Last Call |
 | Created    | 2020-03-08 |
@@ -23,9 +23,9 @@ The DVM should support price requests for the following indexes
 
 # MOTIVATION
 
-The DVM currently does not support the INDEXETH, ETHINDEX, INDEXUSD, USDINDEX, DPIETH, ETHDPI, DPIUSD and USDDPI price indices.
+The DVM currently does not support the INDEX/ETH, ETH/INDEX, INDEX/USD, USD/INDEX, DPI/ETH, ETH/DPI, DPI/USD and USD/DPI price indices.
 
-Supporting the DPIUSD and INDEXUSD price identifier would enable the creation of a DPI/INDEX backed stablecoin, built using one of the perpetual stablecoin frameworks being developed on UMA. DPI/INDEX token holders can utilize this as a hedging tool, and could go long or use it for other financial purposes. There is also potential for the Index Cooperative to use INDEX reserves to build KPI Options within the UMA protocol.
+Supporting the DPI/USD and INDEX/USD price identifiers would enable the creation of a DPI/INDEX backed stablecoin, built using one of the perpetual stablecoin frameworks being developed on UMA. DPI/INDEX token holders can utilize this as a hedging tool, and could go long or use it for other financial purposes. There is also potential for the Index Cooperative to use INDEX reserves to build KPI Options within the UMA protocol.
 
 A user would lock DPI/INDEX in order to mint a new overcollateralized dollar-pegged token. This price feed would be used to determine the liquidation price of the collateral. If the Perpetual token has a funding rate, the price feed would also be used to determine it and would dictate whether there is a premium on repayment to return the INDEX/DPI collateral.
 
@@ -116,7 +116,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ## USD/INDEX
 
-**1. Price Identifier Name** - USDINDEX
+**1. Price Identifier Name** - USD/INDEX
 
 **2. Base Currency** - USD
 
@@ -140,7 +140,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ## INDEX/USD 
 
-**1. Price Identifier Name** - INDEXUSD
+**1. Price Identifier Name** - INDEX/USD
 
 **2. Base Currency** - INDEX
 
@@ -164,7 +164,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ## ETH/INDEX
 
-**1. Price Identifier Name** - ETHINDEX
+**1. Price Identifier Name** - ETH/INDEX
 
 **2. Base Currency** - WETH
 
@@ -190,7 +190,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ## INDEX/ETH
 
-**1. Price Identifier Name** - INDEXETH
+**1. Price Identifier Name** - INDEX/ETH
 
 **2. Base Currency** - INDEX
 
@@ -216,7 +216,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ## USD/DPI
 
-**1. Price Identifier Name** - USDDPI
+**1. Price Identifier Name** - USD/DPI
 
 **2. Base Currency** - USD
 
@@ -240,7 +240,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ## DPI/USD 
 
-**1. Price Identifier Name** - DPIUSD
+**1. Price Identifier Name** - DPI/USD
 
 **2. Base Currency** - DPI
 
@@ -264,7 +264,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ## ETH/DPI
 
-**1. Price Identifier Name** - ETHDPI
+**1. Price Identifier Name** - ETH/DPI
 
 **2. Base Currency** - WETH
 
@@ -319,7 +319,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized. More complex computations (like incorporating additional exchanges, calculating a TWAP or VWAP, or imposing price bands, etc.) have the potential to add a greater level of precision and robustness to the definition of this identifier, particularly at settlement of each expiring synthetic token.
 
-The addition of INDEXETH, ETHINDEX, DPIUSD, and USDDPI fits into a larger goal of advancing the adoption of the UMA protocol by allowing INDEX and DPI to be used as collateral for minting derivatives within the UMA ecosystem, as well as other UMA based synthetics. This furthers adoption of the protocol by encouraging a convergence of capital from different projects and increasing TVL.
+The addition of INDEX/ETH, ETH/INDEX, DPI/USD, and USD/DPI fits into a larger goal of advancing the adoption of the UMA protocol by allowing INDEX and DPI to be used as collateral for minting derivatives within the UMA ecosystem, as well as other UMA based synthetics. This furthers adoption of the protocol by encouraging a convergence of capital from different projects and increasing TVL.
 
 Using the Uniswap Price should give the most accurate price for DPI/ETH and INDEX/ETH on the market as it has the deepest liquidity. Sushiswap liquidity is increasing but much lower. All AMM pools should be queried using a 1 minute TWAP to prevent flash-loan attacks and liquidations.
 
