@@ -114,7 +114,7 @@ The data source used for these indicies is provided by CoinGecko as a reliable a
 
 # PRICE FEED IMPLEMENTATION
 
-An existing implementation of a price feed using the `api.domination.finance` endpoint is already implemented. Additional feeds will need to be enabled for the 9 price identifiers that are specified in this UMIP. The associated endpoints for these price identifiers are below.
+An existing implementation of a price feed using the `api.domination.finance` endpoint is already implemented. Additional feeds will need to be enabled for the 9 price identifiers that are specified in this UMIP. The associated endpoints for these price identifiers are below. See the section that follows ("Price Feed Sources") that further explains the backing data source of this price feeds.
 
 BNB:
  * https://api.domination.finance/api/v0/price/bnbdom
@@ -152,6 +152,51 @@ XRP:
  * https://api.domination.finance/api/v0/price/xrpdom
  * https://api.domination.finance/api/v0/price/xrpdom/history
 
+
+## Price Feed Sources
+
+### CoinGecko Live API
+
+The CoinGecko live coin domination feed API is available at the following URL:
+
+```
+https://api.coingecko.com/api/v3/global/coin_dominance
+```
+
+> Note that the `api.domination.finance` endpoints directly derive from this CoinGecko endpoint. For example, these endpoints will pull the latest snapshot from the CoinGecko endpoint:
+> ```
+> https://api.domination.finance/api/v0/coingecko/coin_dominance
+> https://api.domination.finance/api/v0/price/{XYZ}dom
+> ```
+
+The response data uses the following JSON format:
+```
+[
+  "data": [{
+    "name": "BTC",
+    "id": "bitcoin",
+    "market_cap_usd": 287767856413.73145,
+    "dominance_percentage": 63.38458529247809
+  }],
+  "timestamp": 1605329724
+  ...
+]
+```
+
+Each coin whose market dominance is tracked is reported as an element within a JSON array, 
+ - `data` - an array of cryptocurrencies
+   - `name` - giving the colloquial ticker symbol,
+   - `id` - CoinGecko’s unique identifier for the coin,
+   - `market_cap_usd` - the total market capitalization in USD,
+   - `dominance_percentage` - the market dominance percentage as a decimal number from 0 to 100
+ - `timestamp` - the Unix timestamp when this data was generated from CoinGecko
+ 
+### Historical Data API
+Dispute bots and voters will need to query the cached historical data, dating back 74 hours. CoinGecko solely provides live data in minutely intervals, hence a custom solution was needed to ensure accurate historical data for a sufficient enough time frame.
+
+A reference implementation for a historical data caching solution is open-source and dual-licensed under MIT and Apache 2.0 to allow any stakeholder to host their own copy as well as provide a reference for any stakeholder who wishes to implement their own.
+
+The repository is available at: https://github.com/ferrosync/coingecko-cache
 
 <br>
 
@@ -210,7 +255,7 @@ Initially, during normal operation, market dominance indices should closely trac
 
 1. **What prices should be queried for and from which markets?**
 
-    - The applicable price market dominance index should be queried dependeing on the
+    - The applicable price market dominance index should be queried depending on the cryptocurrency of interest.
 
 2. **Pricing interval**
 
