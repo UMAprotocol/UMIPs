@@ -10,47 +10,54 @@
 <br>
 
 # SUMMARY 
-The DVM should support price requests for the relative market capitalization indices of these top 9 cryptocurrencies (according to CoinGecko). These indices are commonly known as *"dominance"* indices.
+The DVM should support price requests for the relative market capitalization indices of these top 9 cryptocurrencies (according to CoinGecko). These indices are commonly known as *"dominance"* indices. Compared to other typical UMIP price identifiers, these indices are *unit-less* since they are simply a percentage represented as a whole number.
+
+Each price identifier for a particular cryptocurrency's market share in general is calculated by taking,
+ * the total *circulating* supply of that cryptocurrency,
+ * multiplied by the current price of the token in USD,
+ * divided by the global market cap of all cryptocurrencies.
 
 The price identifiers are constructed using the following formulations below.
 
-> Note: The actual price identifier values are whole numbers out of 100. For example, a value of 12.34% is represented as the value
+> **REMARK**&emsp; The formulas shown below gives the reader a general concept of how one arrives at the prices of these indices. In general, there can be significant deviations and methodology as to how data providers actually calculate coin dominance. Calculating global cryptocurrency market cap involves curating 5000+ coins, in CoinGecko's case, as querying live USD prices and outstanding supply of each of those coins on the market -- as well as providing accessible API access. We give a more long form explanation in "Rationale".
+
+> **REMARK**&emsp; The actual price identifier values are whole numbers out of 100. For example, a value of 12.34% is represented as the value
 > raw decimal value of `12.34`. Therefore, all price identifier values for dominance indices will always be within the range `0.00 <= x < 100.00`, for some dominance index value `x`.
 
 ```
-BCHDOM →    [Total BCH supply]
+BCHDOM →    [Total BCH circulating supply]
           * [Price of BCHUSD]
           / [Total crypto market cap (USD)]
 
-BNBDOM →    [Total BNB supply]
+BNBDOM →    [Total BNB circulating supply]
           * [Price of BNBUSD]
           / [Total crypto market cap (USD)]
 
-BSVDOM →    [Total BSV supply]
+BSVDOM →    [Total BSV circulating supply]
           * [Price of BSVUSD]
           / [Total crypto market cap (USD)]
 
-DOTDOM →    [Total DOT supply]
+DOTDOM →    [Total DOT circulating supply]
           * [Price of DOTUSD]
           / [Total crypto market cap (USD)]
 
-ETHDOM →    [Total ETH supply]
+ETHDOM →    [Total ETH circulating supply]
           * [Price of ETHUSD]
           / [Total crypto market cap (USD)]
 
-LINKDOM →   [Total LINK supply]
+LINKDOM →   [Total LINK circulating supply]
           * [Price of LINKUSD]
           / [Total crypto market cap (USD)]
 
-LTCDOM →    [Total LTC supply]
+LTCDOM →    [Total LTC circulating supply]
           * [Price of LTCUSD]
           / [Total crypto market cap (USD)]
 
-USDTDOM →   [Total USDT supply]
+USDTDOM →   [Total USDT circulating supply]
           * [Price of USDTUSD]
           / [Total crypto market cap (USD)]
 
-XRPDOM →    [Total XRP supply]
+XRPDOM →    [Total XRP circulating supply]
           * [Price of XRPUSD]
           / [Total crypto market cap (USD)]
 ```
@@ -226,8 +233,7 @@ The repository is available at: https://github.com/ferrosync/coingecko-cache
 
 **4. Rounding**
 
-> **Note:**  
-> The price identifier values are represented as whole numbers between `0.00` and `100.00`, inclusive. For example, a market dominance of 12.34% is represented as the value
+> **REMARK**&emsp;The price identifier values are represented as whole numbers between `0.00` and `100.00`, inclusive. For example, a market dominance of 12.34% is represented as the value
 > raw decimal value of `12.34` and will be represented on-chain as the raw value `12340000000000000000`.  
 > Appropriate scaling on-chain to 18 decimal places to "convert to wei" is applied as usual.
 
@@ -259,7 +265,7 @@ Initially, during normal operation, market dominance indices should closely trac
 
 2. **Pricing interval**
 
-    - 1 min
+    - 1 min (round down relative to UTC)
 
 3. **Input processing**
 
