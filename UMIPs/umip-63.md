@@ -3,7 +3,7 @@
 |------------|---|
 | UMIP Title | Add INDEX & DPI as collateral |
 | Authors    | Gottlieb Freudenreich (gottlieb.freudenreich@gmail.com)
-| Status     | Last Call |
+| Status     | Approved |
 | Created    | 2020-03-08 |
 | Discourse Link | https://discourse.umaproject.org/t/add-index-and-dpi-as-collateral/326
 

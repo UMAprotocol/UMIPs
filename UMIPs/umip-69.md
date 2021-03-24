@@ -1,9 +1,9 @@
 ## HEADERS
-| UMIP [#]   | |
+| UMIP-69   | |
 |------------|------------|
 | UMIP Title | Add BCHDOM, BNBDOM, BSVDOM, DOTDOM, ETHDOM, LINKDOM, LTCDOM, USDTDOM & XRPDOM as price identifiers |
 | Authors    | Domination Finance (Josh Bowden (<josh@ferrosync.io>), Michal Cymbalisty (<michal@domination.finance>), et. al.)
-| Status     | Draft |
+| Status     | Last Call |
 | Created    | March 16, 2021 |
 | Link to Discourse | https://discourse.umaproject.org/t/add-bchdom-bnbdom-bsvdom-dotdom-ethdom-linkdom-ltcdom-usdtdom-xrpdom-as-price-identifiers/346 |
 <br>
@@ -205,6 +205,8 @@ A reference implementation for a historical data caching solution is open-source
 
 The repository is available at: https://github.com/ferrosync/coingecko-cache
 
+API documentation is available at: https://api.domination.finance/
+
 <br>
 
 # TECHNICAL SPECIFICATIONS
@@ -253,7 +255,7 @@ In an effort to alleviate these challenges, the Domination Finance team was able
 
 While CoinGecko was able to provide the higher time granularity for coin dominance on short notice, historical data, necessary for dispute bots and voters, was unable to be immediately supplied from CoinGecko. Instead, constructing a separate caching service was necessary to track and record the historical data via polling CoinGecko's Live API to be able to compute historical coin dominance at a given point in time. Our caching API is more than sufficient to provide the historical data for dispute bots and voters.
 
-Initially, during normal operation, market dominance indices should closely track the value on CoinGecko. As more data sources for market dominance data are created and examined, voters are encouraged to add additional sources of information into the methodology for the price calculation.
+Initially, during normal operation, market dominance indices should closely track the value on CoinGecko. As more data sources for market dominance data are created and examined, voters are encouraged to add additional sources of information into the methodology for the price calculation. CoinGecko's full methodology for calculating dominance indices is detailed [here](https://www.coingecko.com/en/methodology).
 
 <br>
 
@@ -261,7 +263,7 @@ Initially, during normal operation, market dominance indices should closely trac
 
 1. **What prices should be queried for and from which markets?**
 
-    - The applicable price market dominance index should be queried depending on the cryptocurrency of interest.
+    - The applicable price market dominance index should be queried depending on the cryptocurrency of interest. The current chosen method is to query for dominance indices from the Domination Finance API, which simply caches CoinGecko dominance data.   
 
 2. **Pricing interval**
 
@@ -274,6 +276,9 @@ Initially, during normal operation, market dominance indices should closely trac
 4. **Result processing** 
 
     - See rounding rules in *Technical Specification*.
+
+
+For all price requests, voters should ensure that the calculated price does not differ greatly from broad market consensus. This is meant to be vague as the $UMA tokenholders are responsible for defining broad market consensus. This is especially important when relying on a third-party caching API; one possible way to verify this would be to query from the less granular CoinGecko API and compare results against those returned by Domination Finance API.
 
 <br>
 

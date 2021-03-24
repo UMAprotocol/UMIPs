@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add SUSHI and xSUSHI as approved collateral currencies              |
 | Authors    | Sean Brown (@smb2796) |
-| Status     | Last Call                                                                                                                                   |
+| Status     | Approved                                                                                                                                   |
 | Created    | March 10, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-sushi-and-xsushi-as-collateral-types/335)    |                                                                                                                     |
 
