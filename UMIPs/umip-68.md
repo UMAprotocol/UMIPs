@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add SUSHIUSD, USDSUSHI, XSUSHIUSD, USDXSUSHI as supported price identifiers              |
 | Authors    | Sean Brown (smb2796)  |
-| Status     | Last Call                                                                                                                                   |
+| Status     | Approved                                                                                                                                  |
 | Created    | March 10, 2021   
 | [Discourse Link](https://discourse.umaproject.org/t/propose-sushi-price-identifiers/334) |  
 
