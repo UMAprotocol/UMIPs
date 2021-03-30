@@ -1,10 +1,10 @@
 # Headers
 
-| UMIP-TBD           |                                                                                           |
+| UMIP-71           |                                                                                           |
 |-------------------|--------------------------------------------------------------------------------------------|
-| UMIP Title        | Add XIOUSD, USDXIO, XIOETH, ETHXIO  as supported price identifiers                         |
+| UMIP Title        | Add XIOUSD, USDXIO, XIOETH, ETHXIO as supported price identifiers                         |
 | Authors           | Anthony Scarpulla (anthony@blockzerolabs.io) and Krasimir Raykov (kraykov1994@gmail.com)   |
-| Status            | Draft                                                                                      |
+| Status            | Last Call                                                                                      |
 | Create            | March 24th, 2021                                                                           |
 | Link to Discourse	| https://discourse.umaproject.org/t/umip-tbd-approve-xio-as-collateral-type/377             |
 
@@ -16,7 +16,6 @@ The DVM should support price requests for the following indexes
 - ETH/XIO
 - XIO/USD
 - USD/XIO
-
 
 
 # MOTIVATION
@@ -147,8 +146,6 @@ These price identifiers can use the [Uniswap](https://github.com/UMAprotocol/pro
 **7. Rounding** - Round to 6 decimal
 
 
-
-
 ## ETH/XIO
 
 **1. Price Identifier Name** - ETHXIO
@@ -234,6 +231,25 @@ A 1 hour TWAP will mitigate any risk of attempted price manipulation on the mark
 1. Query XIO/ETH Price from Uniswap using 1 hour TWAP and round to 6 decimals.
 2. (for ETH/XIO) Take the Inverse of the result of step 1 (1/ XIO/ETH)
 ```
+
+It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the
+tokenholders are responsible for defining broad market consensus.
+
+1. **What prices should be queried for and from which markets?**
+
+    - Prices are queried from Uniswap and listed in the `Technical Specifications` section.  
+
+2. **Pricing interval**
+
+    - Every block
+
+3. **Input processing**
+
+    - None.
+
+4. **Result processing** 
+
+    - See rounding rules in *Technical Specification*.
 
 # Security Considerations
 
