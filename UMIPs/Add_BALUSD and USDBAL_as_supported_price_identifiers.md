@@ -24,7 +24,7 @@ The DVM currently does not support these price identifiers. BAL is also being pr
 - Markets: Balancer, Binance, Coinbase Pro
 - Pairs: 
 
-Balancer: BAL /ETH
+Balancer: BAL/ETH
 Binance: BAL/USDT
 Coinbase Pro/USD
 ETH/USD follows the methodology in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md).
@@ -38,7 +38,9 @@ Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/balusd/price
 - Historical Price Endpoints:
 
 Binance: https://api.cryptowat.ch/markets/binance/balusdt/ohlc?after=1612880040&before=1612880040&periods=60
-Huobi: https://api.cryptowat.ch/markets/coinbase-pro/balusd/ohlc?after=1612880040&before=1612880040&periods=60
+
+Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/balusd/ohlc?after=1612880040&before=1612880040&periods=60
+
 Balancer: ?
 
 - Do these sources allow for querying up to 74 hours of historical data? Yes
