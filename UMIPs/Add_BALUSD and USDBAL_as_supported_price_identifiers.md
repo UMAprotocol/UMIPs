@@ -41,7 +41,7 @@ Binance: https://api.cryptowat.ch/markets/binance/balusdt/ohlc?after=1612880040&
 
 Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/balusd/ohlc?after=1612880040&before=1612880040&periods=60
 
-Balancer: ?
+Balancer : ?
 
 - Do these sources allow for querying up to 74 hours of historical data? Yes
 - How often is the provided price updated? Every 60 seconds for CW. Every block for Balancer.
