@@ -42,7 +42,7 @@ Supporting the XIO/ETH and ETH/XIO price identifiers would enable the creation o
 3. Provide recommended endpoints to query for real-time prices from each market listed.
 
     - XIO/ETH pair: https://info.uniswap.org/pair/0xe0cc5afc0ff2c76183416fb8d1a29f6799fb2cdf
-    - ETH/USDT pair: https://info.uniswap.org/pair/0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852
+    - ETH/USDT pair using UMIP 6
 
     All the data can be queried from the Uniswap V2 subgraph: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
@@ -144,7 +144,7 @@ These price identifiers can use the [Uniswap](https://github.com/UMAprotocol/pro
 
 **6. Scaling Decimals** - 18 (1e18)
 
-**7. Rounding** - Round to 18 decimal
+**7. Rounding** - Round to 6 decimal
 
 
 
@@ -165,13 +165,13 @@ These price identifiers can use the [Uniswap](https://github.com/UMAprotocol/pro
 
 - Is your collateral currency already approved to be used by UMA financial contracts?
 
-    - There is a pending UMIP (TBD)
+    - There is a pending [UMIP](https://github.com/UMAprotocol/UMIPs/pull/218/files)
 
 **5. Collateral Decimals** - 18 decimals
 
 **6. Scaling Decimals** - 18 (1e18)
 
-**7. Rounding** - Round to 18 decimal
+**7. Rounding** - Round to 6 decimal
 
 ## XIO/ETH
 
@@ -181,7 +181,7 @@ These price identifiers can use the [Uniswap](https://github.com/UMAprotocol/pro
 
 **3. Quote currency** - ETH
 
-**4. Intended Collateral Currency** - ETH
+**4. Intended Collateral Currency** - WETH
 
 - Does the value of this collateral currency match the standalone value of the listed quote currency?
 
@@ -195,7 +195,7 @@ These price identifiers can use the [Uniswap](https://github.com/UMAprotocol/pro
 
 **6. Scaling Decimals** - 18 (1e18)
 
-**7. Rounding** - Round to 18 decimal
+**7. Rounding** - Round to 6 decimal
 
 # RATIONALE
 
@@ -225,13 +225,13 @@ A 1 hour TWAP will mitigate any risk of attempted price manipulation on the mark
 1. Query XIO/ETH Price from Uniswap using 1 hour TWAP.
 2. Query the ETH/USD Price as per UMIP-6.
 3. Multiply the XIO/ETH price by the ETH/USD price and round to 6 decimals to get the XIO/USD price.
-4. (for USD/XIO) Take the Inverse of the result of step 3 (1/ XIO/USD) and round to 18 decimals to get the USD/XIO price.
+4. (for USD/XIO) Take the Inverse of the result of step 3 (1/ XIO/USD) to get the USD/XIO price.
 ```
 
 ## For XIO/ETH and ETH/XIO
 
 ```
-1. Query XIO/ETH Price from Uniswap using 1 hour TWAP and round to 18 decimals.
+1. Query XIO/ETH Price from Uniswap using 1 hour TWAP and round to 6 decimals.
 2. (for ETH/XIO) Take the Inverse of the result of step 1 (1/ XIO/ETH)
 ```
 
