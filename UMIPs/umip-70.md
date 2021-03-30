@@ -1,8 +1,8 @@
 ## Headers
-- UMIP-tbd
-- UMIP title: Approve XIO As Collateral Type | XIO Yield Dollar Creation
+- UMIP-70
+- UMIP title: Approve XIO As Collateral Type
 - Author: Anthony Scarpulla (anthony@blockzerolabs.io) and Krasimir Raykov (kraykov1994@gmail.com)
-- Status:
+- Status: Last Call
 - Created: March 23, 2021
 - Discourse Link: <https://discourse.umaproject.org/t/umip-tbd-approve-xio-as-collateral-type/377>
 
@@ -35,7 +35,7 @@ We see this as an innovative method of growing both the Blockzero and UMA commun
 ## Technical Specification
 To accomplish this upgrade, two changes need to be made:
 
-- The XIO address, 0x0f7F961648aE6Db43C75663aC7E5414Eb79b5704, needs to be added to the collateral currency whitelist introduced in UMIP-8.
+- The XIO address, [0x0f7F961648aE6Db43C75663aC7E5414Eb79b5704](https://etherscan.io/address/0x0f7F961648aE6Db43C75663aC7E5414Eb79b5704), needs to be added to the collateral currency whitelist introduced in UMIP-8.
 - A final fee of 1500 $XIO needs to be added in the Store contract. This is approximately $500 at current XIO rates.
 
 ## Rationale
