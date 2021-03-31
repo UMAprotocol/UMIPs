@@ -5,7 +5,7 @@
 | Authors    | Logan (logan@opendao.io) |
 | Status     | Draft                                                                                                                                   |
 | Created    | March 31, 2021                                                                                                                           |
-| Link to Discourse|    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                       |
+| Link to Discourse|    https://discourse.umaproject.org/t/add-bdp-as-collateral-umip/520                    |
 
 ## Summary
 The DVM should support price requests for the BDPUSD and USDBDP price index. These price identifiers will serve to support BDP token as collateral.
