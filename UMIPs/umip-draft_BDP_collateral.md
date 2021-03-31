@@ -5,7 +5,7 @@
 | Authors    | Logan (logan@opendao.io) |
 | Status     | Draft                                                                                                                                   |
 | Created    | March 31, 2021                                                                                                                           |
-| Link to Discourse|    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                       |
+| Link to Discourse|    https://discourse.umaproject.org/t/add-bdp-as-collateral-umip/520                       |
 
 ## Summary (2-5 sentences)
 This UMIP will add Big Data Protocol’s BDP to the supported collateral currencies on the global whitelist contract, allowing the usage of BDP as collateral currency. This serves as an important step to allow for the creation of the stablecoin backed by a basket of assets including BDP.
