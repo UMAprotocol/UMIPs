@@ -76,7 +76,7 @@ To determine the ETHBTC_PERP synth price on Uniswap, the [UniswapPriceFeed](http
 
 To combine these rates in a mathematical expression, the [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js) is used.
 
-Price feed functionality to incorporate the CFRM and Token Scaling Multiplier (TSM) will still need to be built. Additionally, the CryptowatchPriceFeed does not currently support TWAP calculations, so this functionality will need to be added.
+The CryptowatchPriceFeed does not currently support TWAP calculations, so this functionality will need to be added.
 
 Once these items are taken care of, a [default price feed config](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js) will be defined. Because some of this functionality is still being built out, this default price feed config will likely be different then what is shown below, but will follow this general patten.  
 
@@ -84,7 +84,7 @@ Once these items are taken care of, a [default price feed config](https://github
 ETHBTC_FR: {
     type: "expression",
     expression: `
-        ETHBTC_FV = ETH/BTC * CFRM * TOKEN_SCALING;
+        ETHBTC_FV = ETH/BTC * CFRM;
         max(-0.00001, min(0.00001, (ETHBTC_PERP - ETHBTC_FV) / (ETHBTC_FV) / 86400 * (-1)))
     `,
     lookback: 7200,
@@ -111,7 +111,7 @@ ETHBTC_FR: {
 - Base Currency: ETHBTC_FR
 - Quote currency: None. This is a percentage.
 - Scaling Decimals: 18
-- Rounding: Round to nearest 18 decimal places (19th decimal place digit >= 5 rounds up and < 5 rounds down)
+- Rounding: Round to nearest 9 decimal places (10th decimal place digit >= 5 rounds up and < 5 rounds down)
 - Synthetic Name: To be added
 - Synthetic Address: To be added
 - AMM Pool Address: To be added
@@ -119,9 +119,9 @@ ETHBTC_FR: {
 
 ## RATIONALE
 
-To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate times the cumulative funding rate multiplier (CFRM) and Token Scaling Multiplier (TSM). The funding rate will be determined with the following formula:
+To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate times the cumulative funding rate multiplier (CFRM). The funding rate will be determined with the following formula:
 - [ETHBTC-PERP - ETHBTC-FV] / ETHBTC-FV / 86400
-- `ETHBTC-FV` denotes the ETHBTC price gathered with the methodology shown in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md) multiplied by the CFRM and TSM.
+- `ETHBTC-FV` denotes the ETHBTC price gathered with the methodology shown in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md) multiplied by the CFRM.
 - `ETHBTC-PERP` denotes the one hour TWAP of the synthetic created with this funding rate identifier. This synth will be pooled with USDC. 
 - 86400 is the number of seconds in a day. Assuming all other prices stay constant, this effectively gives the funding rate per second that would need to be applied to move a synthetic token's value back to fair value in one day.  
 
@@ -136,14 +136,13 @@ To calculate the ETHBTC-FR, voters should use the following process:
 
 1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the 1-hour ETHBTC TWAP, ending at the disputed funding rate proposal timestamp. This will consist of ~60 queries for the close price of each 60 second price period in that hour.
 2. For each query time that was used in the ETHBTC 1-hour TWAP, query for the cumulative funding rate multiplier (CFRM) at the same timestamps.
-3. For each period within the 1-hour TWAP, the corresponding CFRM and ETHBTC rates should be multiplied to get the 1-hour TWAP of ETHBTC * CFRM. 
-4. Query for the Token Scaling Multiplier (TSM) for the ETHBTC_PERP, and multiply this by the result from step 3 to get the ETHBTC-FV.
-5. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USDC.
-6. Subtract the result of step 4 from the result of step 5. [ETHBTC-PERP - ETHBTC-FV].
-7. Divide the result of step 6 by the ETHBTC-FV rate from step 4. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
-8. Divide the result of step 7 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1.
-9. Implement min and max bounds on this result with: max(-0.00001, min(0.00001, result)).
-10. Voters should then round this result to 18 decimal places.
+3. For each period within the 1-hour TWAP, the corresponding CFRM and ETHBTC rates should be multiplied to get the 1-hour TWAP of ETHBTC * CFRM - referred to in future steps as ETHBTC-FV.
+4. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USD.
+5. Subtract the result of step 3 from the result of step 4. [ETHBTC-PERP - ETHBTC-FV].
+6. Divide the result of step 5 by the ETHBTC-FV rate from step 4. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
+7. Divide the result of step 6 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1.
+8. Implement min and max bounds on this result with: max(-0.00001, min(0.00001, result)).
+9. Voters should then round this result to 9 decimal places.
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -167,12 +166,6 @@ The results will be in this format:
 ```
 
 Voters should use the `cumulativeMultipler` field.
-
-### Token Scaling Multiplier
-
-Each perpetual contract is given a `tokenScaling` multiplier when launched. This parameter specifies how the tracked index should be scaled. This is for situations where the initial perpetual price is not set to the starting rate of the underlying index.
-
-Voters will need query for `tokenScaling` on the ETHBTC_PERP contract and use this within the `ETHBTC_FV` calculation. 
 
 ## Security Considerations
 Adding this identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of funding rate proposers and disputers that can correctly manage the funding rate process.
