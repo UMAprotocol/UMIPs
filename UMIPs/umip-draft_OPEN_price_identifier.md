@@ -5,7 +5,7 @@
 | Authors    | Logan (Logan@opendao.io)|
 | Status     | Draft                                                                                                                                 |
 | Created    | March 31, 2021                                                                                                                           |
-| Link to Discourse|    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                       |
+| Link to Discourse|    https://discourse.umaproject.org/t/adding-openusd-and-usdopen-as-price-identifiers/519                      |
 
 ## Summary 
 The DVM should support price requests for the OPENUSD and USDOPEN price indexes.
