@@ -10,10 +10,11 @@
 ## SUMMARY
 
 The DVM should support price requests for BAL/USD, USD/BAL.
+The canonical price identifiers on-chain should be BALUSD and USDBAL
 
 ## MOTIVATION
 
-The DVM currently does not support these price identifiers. BAL is also being proposed as a supported collateral types and using BAL as collateral together with these price identifiers would allow BAL holders to get leverage on their holdings by minting yield-dollar type stablecoins. Adding BAL/USD will also allow for the creation of synthetic BAL, or more bespoke contracts such as covered call options backed by BAL.
+The DVM currently does not support these price identifiers. BAL is also being proposed as a supported collateral type and using BAL as collateral together with these price identifiers would allow BAL holders to get leverage on their holdings by minting yield-dollar type stablecoins. Adding BAL/USD will also allow for the creation of synthetic BAL, or more bespoke contracts such as covered call options backed by BAL.
 
 ## MARKETS & DATA SOURCES
 
@@ -104,8 +105,8 @@ BALUSD: {
 ## RATIONALE
 
 The markets chosen for pricing BAL/USD were selected on the following basis 
-    - Bal/Eth on Balancer as it is the highest volume maket
-    - Bal/USDT on Binance as it is the highest volume  because they are three of the highest daily trading volume markets available
+    - Bal/Eth on Balancer as it is the highest volume market
+    - Bal/USDT on Binance as it is the second highest market and highest USD market
     - Bal/USD on Coinbase Pro as it the most robust of the high volume exchanges and is available through Cryptowatch.
 
 
