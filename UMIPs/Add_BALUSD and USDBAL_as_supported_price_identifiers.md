@@ -26,13 +26,17 @@ The DVM currently does not support these price identifiers. BAL is also being pr
 - Pairs: 
 
 Balancer: BAL/ETH
+
 Binance: BAL/USDT
+
 Coinbase Pro/USD
+
 ETH/USD follows the methodology in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md).
 
 - Live Price Endpoints:
   
 Binance: https://api.cryptowat.ch/markets/binance/balusdt/price
+
 Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/balusd/price
 
 - Update time: Every second for CW. Every block for Balancer. 
@@ -105,9 +109,12 @@ BALUSD: {
 ## RATIONALE
 
 The markets chosen for pricing BAL/USD were selected on the following basis 
-    - Bal/Eth on Balancer as it is the highest volume market
-    - Bal/USDT on Binance as it is the second highest market and highest USD market
-    - Bal/USD on Coinbase Pro as it the most robust of the high volume exchanges and is available through Cryptowatch.
+
+   - Bal/Eth on Balancer as it is the highest volume market
+
+  - Bal/USDT on Binance as it is the second highest market and highest USD market
+  
+  - Bal/USD on Coinbase Pro as it the most robust of the high volume exchanges and is available through Cryptowatch.
 
 
 Typically it is best practice to use a TWAP when pricing with DEX markets. A TWAP is not used in this implementation because Balancer is only one of the three sources used for the median, so any irregular price action or attempted manipulation will be invalidated anyways.
