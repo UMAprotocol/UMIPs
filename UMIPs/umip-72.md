@@ -128,8 +128,8 @@ The settlement price calculation and the standard price request calculation are 
 
 1. What prices should be queried for and from which markets?
 
-    - dVIX protocol ethVIX & iethVIX price feeds
-    - If the above fails users can use the dVIX API or Deribit. Please see the methodology paper for the options markets and strikes needed.
+    - dVIX protocol ethVIX & iethVIX Price Feed Interface (https://github.com/UMAprotocol/protocol/pull/2792)
+    - If the above fails users can use the dVIX API or Deribit data as described herein. Please see the methodology paper for the options markets and strikes needed.
 
 1. Pricing interval
 
