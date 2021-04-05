@@ -5,7 +5,7 @@
 | Authors    | Ross - Ross@yam.finance
 | Status     | Draft                                                                                                                                   |
 | Created    | March 31st 2021
-| Link to Discourse   | Create                                                                              |
+| Link to Discourse   | https://discourse.umaproject.org/t/add-a-1-price-identifier-to-the-dmv/600                                                                             |
 
 <br>
 
