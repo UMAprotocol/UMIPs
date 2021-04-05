@@ -1,8 +1,8 @@
 # Headers
 
-| UMIP-72 | |
+| UMIP-# | |
 |---------|-|
-| UMIP Title | ethVIX & iethVIX |
+| UMIP Title | Add ethVIX & iethVIX as price identifiers |
 | Authors | dVIX Developers |
 | Status | Draft |
 | Created | 03.31.2021 |
