@@ -128,7 +128,7 @@ Typically it is best practice to use a TWAP when pricing with DEX markets. A TWA
 3. Multiply the gathered ETHUSD price by BALETH to get the Balancer BALUSD price.
 4. Take the median of these.
 5. Round to 6 decimals to get the BALUSD price.
-6. To get the USDBAL price, voters should just take the inverse of BALUSD from step 5.
+6. To get the USDBAL price, voters should just take the inverse of the result of Step 4 (unrounded BALUSD price) then round to 6 decimal places.
 
 
 ## Security Considerations
