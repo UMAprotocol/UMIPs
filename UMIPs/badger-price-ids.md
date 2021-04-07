@@ -38,38 +38,22 @@ The price feeds for bBadger/USD and [bwBTC/ETH SLP]/USD will be exactly the same
 The bBadger/USD and USD/bBadger price feeds will be defined in a similar manner. As an example, the bBadger/USD price feed configuration will look something like:
 
 ```
-"USD/bBadger": {
+"bDigg/USD": {
     type: "expression",
-    // Note: lower-case variables are intermediate, upper-case are configured feeds.
     expression: `
-      wbtc_usd = mean(WBTC_ETH_SUSHI, WBTC_ETH_UNI) / USDETH;
-      badger_usd_sushi = wbtc_usd * BADGER_WBTC_SUSHI;
-      badger_usd_uni = wbtc_usd * BADGER_WBTC_UNI;
-      badger_usd = median(badger_usd_sushi, badger_usd_uni, BADGER_USD_HUOBI);
-      1 / (badger_usd * BBADGER_BADGER)
+      DIGGUSD * BDIGG_DIGG
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
     twapLength: 300,
     priceFeedDecimals: 18,
     customFeeds: {
-      WBTC_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58" },
-      WBTC_ETH_UNI: { type: "uniswap", uniswapAddress: "0xBb2b8038a1640196FbE3e38816F3e67Cba72D940" },
-      BADGER_WBTC_SUSHI: {
-        type: "uniswap",
-        uniswapAddress: "0x110492b31c59716ac47337e616804e3e3adc0b4a",
-        invertPrice: true
-      },
-      BADGER_WBTC_UNI: {
-        type: "uniswap",
-        uniswapAddress: "0xcd7989894bc033581532d2cd88da5db0a4b12859",
-        invertPrice: true
-      },
-      BADGER_USD_HUOBI: { type: "cryptowatch", exchange: "huobi", pair: "badgerusdt", twapLength: 0 },
-      BBADGER_BADGER: { type: "vault", address: "0x19d97d8fa813ee2f51ad4b4e04ea08baf4dffc28" }
+      BDIGG_DIGG: { type: "vault", address: "0x7e7e112a68d8d2e221e11047a72ffc1065c38e1a" }
     }
 }
 ```
+
+The DIGGUSD price feed config is defined [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js#L649). 
 
 
 # TECHNICAL SPECIFICATIONS
