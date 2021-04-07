@@ -158,6 +158,12 @@ The bBadger/USD pricing implementation will follow the same method that is laid 
 
 ## bDigg/USD & USD/bDigg
 
+To get the price of bDigg/USD perform the following steps.
+
+1. Query the getPricePerFullShare method on contract [0x7e7e112a68d8d2e221e11047a72ffc1065c38e1a](https://etherscan.io/address/0x7e7e112a68d8d2e221e11047a72ffc1065c38e1a). This information is on-chain and can be queried in any way that a voter wishes at the price request block.
+2. Gather the price of DIGGUSD by following the directions detailed in [UMIP-61](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-61.md).
+3. Multiply bDigg/Digg by Digg/USD and round to 18 decimals to get the bDigg/USD price.
+4. Take the inverse of the unrounded bDigg/USD result (1/(bDigg/USD)) to get the price of USD/bDigg. This price should then be rounded to 18 decimals.
 
 # Security considerations
 
