@@ -111,12 +111,13 @@ The DIGGUSD price feed config is defined [here](https://github.com/UMAprotocol/p
 
 # RATIONALE
 
-
+Pricing rationale is detailed in UMIP-39 and UMIP-61.
+ 
 # IMPLEMENTATION
 
 B wrapped tokens have 2 components to finding the underlying value of the tokens associated with them.  Each wrapped token has a pricePerFullShare, which is the amount of underlying tokens that 1 b token could be redeemed for through the withdraw function.  This underlying token can have different ways to determine its value depending on what type of token it is.
 
-The price per full share can be found by querying the contract of the token with `getPricePerFullShare` as seen in method 9 on this [contract](https://etherscan.io/address/0x19D97D8fA813EE2f51aD4B4e04EA08bAf4DFfC28#readProxyContract).
+The price per full share can be found by querying the contract of the token with `getPricePerFullShare` as seen in method 9 on this [contract](https://etherscan.io/address/0x7e7e112a68d8d2e221e11047a72ffc1065c38e1a#readProxyContract).
 
 getPricePerFullShare is a pure view logic function in which no one has any authority to manipulate:
 
