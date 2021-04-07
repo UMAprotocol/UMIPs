@@ -23,7 +23,7 @@ YFI is a best in class yield aggregator on Ethereum and is already a top 100 cry
 ### Technical Specification
 To accomplish this upgrade, two changes need to be made:
 
- * The AAVE address, [0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e][yfi], needs to be added to the collateral currency whitelist introduced in UMIP-8.
+ * The YFI address, [0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e][yfi], needs to be added to the collateral currency whitelist introduced in UMIP-8.
  * A final fee of 0.01 YFI needs to be added for the YFI in the Store contract. (~$400 at time of writing)
 
  [yfi]: https://etherscan.io/token/0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e
