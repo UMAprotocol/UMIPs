@@ -149,10 +149,12 @@ This returns the value of the balance of the vault divided by the number of shar
 For bDigg you could use the same getPricePerFullShare method (described above) from the contract to get the underlying amount, and then the underlying values can be queried to give the price of one bDigg token in USD.
 
 ## bBadger/USD
- 
+
+The bBadger/USD pricing implementation will follow the same method that is laid out in [UMIP-39](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-39.md#usdbbadger-1) for USD/bBadger. The one difference will be to not take the inverse of USD/bBadger in step 8 and instead the result of step 7 should be rounded to 18 decimals to get the price of bBadger/USD.
 
 ## [bwBTC/ETH SLP]/USD
 
+The bBadger/USD pricing implementation will follow the same method that is laid out in [UMIP-39](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-39.md#usd-bwbtceth-slp-1) for USD-[bwBTC/ETH SLP]. The one difference will be to not take the inverse of step 8 [bwBTC/ETH SLP]/USD in step 10 and instead round the result of step 9 to 18 decimals to get the [bwBTC/ETH SLP]/USD price.
 
 ## bDigg/USD & USD/bDigg
 
