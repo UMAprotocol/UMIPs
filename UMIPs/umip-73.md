@@ -1,16 +1,15 @@
 ## Headers
-| UMIP-tbd  |                                                                                                                                          |
+| UMIP-73  |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------| 
 | UMIP Title | Add BALUSD and USDBAL as supported price identifiers              |
 | Authors    | Mhairi McAlpine (mhairi@UMAproject.org)  |
-| Status     | Draft                                                                                                                     
+| Status     | Last Call                                                                                                                     
 | Created    | March 30, 2021   
 | [Discourse Link](https://discourse.umaproject.org/t/add-balusd-usdbal-as-supported-price-identifiers/512) |  
 
 ## SUMMARY
 
-The DVM should support price requests for BAL/USD, USD/BAL.
-The canonical price identifiers on-chain should be BALUSD and USDBAL
+The DVM should support requests for the price of 1 BAL token in USD, or the price of 1 USD in BAL. The canonical price identifiers on-chain should be BALUSD and USDBAL.
 
 ## MOTIVATION
 
@@ -46,7 +45,7 @@ Binance: https://api.cryptowat.ch/markets/binance/balusdt/ohlc?after=1612880040&
 
 Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/balusd/ohlc?after=1612880040&before=1612880040&periods=60
 
-Balancer : ?
+Balancer : The 80/20 BAL/WETH Balancer pool should be used. The address is: [0x59A19D8c652FA0284f44113D0ff9aBa70bd46fB4](https://etherscan.io/address/0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4)
 
 - Do these sources allow for querying up to 74 hours of historical data? Yes
 - How often is the provided price updated? Every 60 seconds for CW. Every block for Balancer.
@@ -75,7 +74,12 @@ BALUSD: {
     customFeeds: {
       SPOT_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "balusdt" },
       SPOT_COINBASE-PRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "balusd" },
-      SPOT_BALANCER: { type: "balancer", address: "0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4" },
+      SPOT_BALANCER: { 
+          type: "balancer", 
+          balancerAddress: "0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4", 
+          balancerTokenIn: "0xba100000625a3754423978a60c9317c58a424e3D",
+          balancerTokenOut: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+      },
       ETHUSD: {
         type: "medianizer",
         minTimeBetweenUpdates: 60,
@@ -110,14 +114,14 @@ BALUSD: {
 
 The markets chosen for pricing BAL/USD were selected on the following basis 
 
-   - Bal/Eth on Balancer as it is the highest volume market
+  - Bal/Eth on Balancer as it is the highest volume market.
 
-  - Bal/USDT on Binance as it is the second highest market and highest USD market
+  - Bal/USDT on Binance as it is the second highest market and highest USD market.
   
   - Bal/USD on Coinbase Pro as it the most robust of the high volume exchanges and is available through Cryptowatch.
 
 
-Typically it is best practice to use a TWAP when pricing with DEX markets. A TWAP is not used in this implementation because Balancer is only one of the three sources used for the median, so any irregular price action or attempted manipulation will be invalidated anyways.
+Typically it is best practice to use a TWAP when pricing with DEX markets. A TWAP is not used in this implementation because Balancer is only one of the three sources used for the median, so any irregular price action or attempted manipulation will be invalidated in most situations.
 
 ## IMPLEMENTATION
 
@@ -126,10 +130,11 @@ Typically it is best practice to use a TWAP when pricing with DEX markets. A TWA
 1. For the price request timestamp, query for the BALUSD(T) prices on Binance and Coinbase Pro and and the ETHUSD price by following the guidelines of UMIP-6. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
 2. For the block of the price request timestamp, query for the BALETH price from Balancer.
 3. Multiply the gathered ETHUSD price by BALETH to get the Balancer BALUSD price.
-4. Take the median of these.
+4. Take the median of the BALUSD results from Balancer, Coinbase Pro and Binance.
 5. Round to 6 decimals to get the BALUSD price.
 6. To get the USDBAL price, voters should just take the inverse of the result of Step 4 (unrounded BALUSD price) then round to 6 decimal places.
 
+As with all UMA price identifiers, voters are responsible for determining if the result of this calculation methodology differs from broad market consensus. This is meant to be vague as voters are responsible for defining broad market consensus. In these situations, the voters are responsible for coming to a consensus on the best alternative calculation methodology.
 
 ## Security Considerations
 
