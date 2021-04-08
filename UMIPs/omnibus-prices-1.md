@@ -608,7 +608,7 @@ These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMApro
 Voters should query for the price of MKR/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
 
 1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
-2. The median of these results should be taken
+2. The median of these results should be taken.
 3. The median from step 2 should be rounded to six decimals to determine the MKRUSD price.
 4. (for USD/MKR) Take the inverse of the result of step 3 (1/ MKR/USD) to get the USD/MKR price.
 
@@ -618,11 +618,102 @@ For both implementations, voters should determine whether the returned price dif
 
 ## MARKETS & DATA SOURCES
 
+**Required questions**
+
+Markets: Binance, Huobi, OKEx
+
+* Binance CRV/USDT: https://api.cryptowat.ch/markets/binance/crvusdt/price
+* Huobi CRV/USDT: https://api.cryptowat.ch/markets/huobi/crvusdt/price
+* OKEx CRV/USDT: https://api.cryptowat.ch/markets/okex/crvusdt/price
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency is a minute.
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+* Binance: https://api.cryptowat.ch/markets/binance/crvusdt/ohlc?after=1617848822&before=1617848822&periods=60
+* Huobi: https://api.cryptowat.ch/markets/huobi/crvusdt/ohlc?after=1617848822&before=1617848822&periods=60
+* OKEx: https://api.cryptowat.ch/markets/okex/crvusdt/ohlc?after=1617848822&before=1617848822&periods=60
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+   - Yes.
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency is a minute.
+
+Is an API key required to query these sources?
+
+   - No.
+
+Is there a cost associated with usage?
+
+   - Yes.
+
+If there is a free tier available, how many queries does it allow for?
+
+   - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying all three exchanges will cost 0.015 API credits).
+   - Therefore, querying all three exchanges can be performed 665 times per day.
+   - In other words, all three exchanges can be queried at most every 130 seconds.
+
+What would be the cost of sending 15,000 queries?
+
+    - Approximately $5
+
 ## PRICE FEED IMPLEMENTATION
+
+These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js).
 
 ## TECHNICAL SPECIFICATIONS
 
+### CRV/USD
+
+**Price Identifier Name:** CRVUSD
+
+**Base Currency:** CRV
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/CRV
+
+**Price Identifier Name:** USDCRV
+
+**Base Currency:** USD
+
+**Quote currency:** CRV
+
+**Intended Collateral Currency:** CRV
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
 ## IMPLEMENTATION
+
+Voters should query for the price of CRV/USD at the price request timestamp on Binance, Huobi, and OKEx. Recommended endpoints are provided in the markets and data sources section.
+
+1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
+2. The median of these results should be taken.
+3. The median from step 2 should be rounded to six decimals to determine the MKRUSD price.
+4. (for USD/CRV) Take the inverse of the result of step 3 (1/ CRV/USD) to get the USD/CRV price.
+
+For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 # REN
 
