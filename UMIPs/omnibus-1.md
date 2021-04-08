@@ -2,7 +2,7 @@
 | UMIP-tbd   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add USDT, yUSD, UST, sUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, NFTX, and RULER as approved collateral currencies              |
-| Authors    | John Shutt (john@umaproject.org) |
+| Authors    | Deepanshu Hooda (deepanshuhooda2000@gmail.com), John Shutt (john@umaproject.org) |
 | Status     | Draft                                                                                                                                    |
 | Created    | April 7, 2021                                                                                                                           |
 | [Discourse Link](TBD)    |                                                                                                                     |
