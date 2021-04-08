@@ -158,7 +158,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 1. Query yUSD/ETH Price from SushiSwap using 1 hour TWAP.
 2. Query the ETH/USD Price as per UMIP-6.
 3. Multiply the yUSD/ETH price by the ETH/USD price and round to 6 decimals to get the yUSD/USD price.
-4. (for USD/yUSD) Take the Inverse of the result of step 3 (1/ yUSD/USD) to get the USD/yUSD price.
+4. (for USD/yUSD) Take the inverse of the result of step 3 (1/ yUSD/USD) to get the USD/yUSD price.
 ```
 
 It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
@@ -272,7 +272,7 @@ Voters should query for the price of COMP/USD at the price request timestamp on 
 1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2. The median of these results should be taken
 3. The median from step 2 should be rounded to six decimals to determine the COMPUSD price.
-4. (for USD/COMP) Take the Inverse of the result of step 3 (1/ COMP/USD) to get the USD/COMP price.
+4. (for USD/COMP) Take the inverse of the result of step 3 (1/ COMP/USD) to get the USD/COMP price.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -389,7 +389,7 @@ Voters should query for the price of YFI/USD at the price request timestamp on K
 4. Multiply the YFI/ETH price by the ETH/USD price and round to 6 decimals to get the YFI/USD price.
 5. The median of the Kraken, Coinbase Pro, and SushiSwap results should be taken.
 6. The median from step 2 should be rounded to six decimals to determine the YFIUSD price.
-7. (for USD/YFI) Take the Inverse of the result of step 6 (1/ YFI/USD) to get the USD/YFI price.
+7. (for USD/YFI) Take the inverse of the result of step 6 (1/ YFI/USD) to get the USD/YFI price.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -397,11 +397,121 @@ For both implementations, voters should determine whether the returned price dif
 
 ## MARKETS & DATA SOURCES
 
+ **Required questions**
+
+Markets: SushiSwap
+
+SushiSwap: [ALCX/ETH](https://app.sushi.com/pair/0xc3f279090a47e80990fe3a9c30d24cb117ef91a8)
+
+Data: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+
+How often is the provided price updated?
+
+    - On each Ethereum block (i.e. every ~15 seconds)
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+    - Historical data can be fetched from the subgraph:
+```
+{
+  token(
+      id:"TOKEN_ADDRESS",
+      block: {number: BLOCK_NUMBER}
+  )
+  {
+      derivedETH
+  }
+}
+```
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+    - Yes.
+
+How often is the provided price updated?
+
+    - On each Ethereum block (i.e. every ~15 seconds)
+
+Is an API key required to query these sources?
+
+    - No.
+
+Is there a cost associated with usage?
+
+    - No.
+
+If there is a free tier available, how many queries does it allow for?
+
+    - No limits at the moment.
+
+What would be the cost of sending 15,000 queries?
+
+     - $0
+
 ## PRICE FEED IMPLEMENTATION
+
+These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
 ## TECHNICAL SPECIFICATIONS
 
+### ALCX/USD
+
+**Price Identifier Name:** ALCXUSD
+
+**Base Currency:** ALCX
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/ALCX
+
+**Price Identifier Name:** USDALCX
+
+**Base Currency:** USD
+
+**Quote currency:** ALCX
+
+**Intended Collateral Currency:** ALCX
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
 ## IMPLEMENTATION
+
+```
+1. Query yUSD/ETH Price from SushiSwap using 1 hour TWAP.
+2. Query the ETH/USD Price as per UMIP-6.
+3. Multiply the yUSD/ETH price by the ETH/USD price and round to 6 decimals to get the yUSD/USD price.
+4. (for USD/yUSD) Take the inverse of the result of step 3 (1/ yUSD/USD) to get the USD/yUSD price.
+```
+
+It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
+
+**What prices should be queried for and from which markets?**
+- Prices are queried from SushiSwap and listed in the `Technical Specifications` section.
+
+**Pricing interval**
+- Every block
+
+**Input processing**
+- None.
+
+**Result processing**
+- See rounding rules in `Technical Specification`.
 
 # MKR
 
