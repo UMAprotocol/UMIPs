@@ -48,8 +48,9 @@ The canonical identifiers should be `yUSDUSD`, `USDyUSD`, `COMPUSD`, `USDCOMP`, 
 
 2. Please provide an example of a person interacting with a contract that uses these price identifiers.
 
-- `COMP` (or any of these base currencies) could be used to mint yield dollars or other synthetics, and liquidators could identify undercollateralized positions by comparing the USD value of the synthetic to the value of the locked COMP collateral.
-- `COMP` call options could be minted and paid out based on the USD price of `COMP` at expiry.
+- Any of the base currencies could be used to mint yield dollars or other synthetics, and liquidators could identify undercollateralized positions by comparing the USD value of the synthetic to the value of the locked collateral.
+- Base currency call options could be minted and paid out based on the USD price of the base currency at expiry.
+- KPI options tied to the price of the base currency could be minted, with a payout increasing as the base currency price increases.
 
 # RATIONALE
 
