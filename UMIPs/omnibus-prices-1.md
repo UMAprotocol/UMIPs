@@ -949,11 +949,9 @@ SushiSwap: [NFTX/ETH](https://app.sushi.com/pair/0x31d64f9403e82243e71c2af9d8f56
 Data: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
 How often is the provided price updated?
-
     - On every Ethereum block (i.e. every ~15 seconds)
 
 Provide recommended endpoints to query for historical prices from each market listed.
-
     - Historical data can be fetched from the subgraph:
 ```
 {
@@ -968,27 +966,21 @@ Provide recommended endpoints to query for historical prices from each market li
 ```
 
 Do these sources allow for querying up to 74 hours of historical data?
-
     - Yes.
 
 How often is the provided price updated?
-
     - On each Ethereum block (i.e. every ~15 seconds)
 
 Is an API key required to query these sources?
-
     - No.
 
 Is there a cost associated with usage?
-
     - No.
 
 If there is a free tier available, how many queries does it allow for?
-
     - No limits at the moment.
 
 What would be the cost of sending 15,000 queries?
-
      - $0
 
 ## PRICE FEED IMPLEMENTATION
@@ -1060,11 +1052,114 @@ It should be noted that this identifier is potentially prone to attempted manipu
 
 ## MARKETS & DATA SOURCES
 
+ **Required questions**
+
+Markets: SushiSwap
+
+SushiSwap: [RULER/ETH](https://app.sushi.com/pair/0xb1eecfea192907fc4bf9c4ce99ac07186075fc51)
+
+Data: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+
+How often is the provided price updated?
+    - On every Ethereum block (i.e. every ~15 seconds)
+
+Provide recommended endpoints to query for historical prices from each market listed.
+    - Historical data can be fetched from the subgraph:
+```
+{
+  token(
+      id:"TOKEN_ADDRESS",
+      block: {number: BLOCK_NUMBER}
+  )
+  {
+      derivedETH
+  }
+}
+```
+
+Do these sources allow for querying up to 74 hours of historical data?
+    - Yes.
+
+How often is the provided price updated?
+    - On each Ethereum block (i.e. every ~15 seconds)
+
+Is an API key required to query these sources?
+    - No.
+
+Is there a cost associated with usage?
+    - No.
+
+If there is a free tier available, how many queries does it allow for?
+    - No limits at the moment.
+
+What would be the cost of sending 15,000 queries?
+     - $0
+
 ## PRICE FEED IMPLEMENTATION
+
+These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
 ## TECHNICAL SPECIFICATIONS
 
+### RULER/USD
+
+**Price Identifier Name:** RULERUSD
+
+**Base Currency:** RULER
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/RULER
+
+**Price Identifier Name:** USDRULER
+
+**Base Currency:** USD
+
+**Quote currency:** RULER
+
+**Intended Collateral Currency:** RULER
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
 ## IMPLEMENTATION
+
+```
+1. Query RULER/ETH Price from SushiSwap using 1 hour TWAP.
+2. Query the ETH/USD Price as per UMIP-6.
+3. Multiply the RULER/ETH price by the ETH/USD price and round to 6 decimals to get the RULER/USD price.
+4. (for USD/RULER) Take the inverse of the result of step 3 (1/ RULER/USD) to get the USD/RULER price.
+```
+
+It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
+
+**What prices should be queried for and from which markets?**
+- Prices are queried from SushiSwap and listed in the `Technical Specifications` section.
+
+**Pricing interval**
+- Every block
+
+**Input processing**
+- None.
+
+**Result processing**
+- See rounding rules in `Technical Specification`.
+
 
 # Security considerations
 
