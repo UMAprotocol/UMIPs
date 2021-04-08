@@ -710,7 +710,7 @@ Voters should query for the price of CRV/USD at the price request timestamp on B
 
 1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2. The median of these results should be taken.
-3. The median from step 2 should be rounded to six decimals to determine the MKRUSD price.
+3. The median from step 2 should be rounded to six decimals to determine the CRVUSD price.
 4. (for USD/CRV) Take the inverse of the result of step 3 (1/ CRV/USD) to get the USD/CRV price.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
@@ -719,11 +719,102 @@ For both implementations, voters should determine whether the returned price dif
 
 ## MARKETS & DATA SOURCES
 
+**Required questions**
+
+Markets: Coinbase Pro, Binance, OKEx
+
+* Coinbase Pro CRV/USD: https://api.cryptowat.ch/markets/coinbase-pro/renusd/price
+* Binance CRV/USDT: https://api.cryptowat.ch/markets/binance/renusdt/price
+* OKEx CRV/USDT: https://api.cryptowat.ch/markets/okex/renusdt/price
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency is a minute.
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+* Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/renusd/ohlc?after=1617848822&before=1617848822&periods=60
+* Binance: https://api.cryptowat.ch/markets/binance/renusd/ohlc?after=1617848822&before=1617848822&periods=60
+* OKEx: https://api.cryptowat.ch/markets/okex/renusd/ohlc?after=1617848822&before=1617848822&periods=60
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+   - Yes.
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency is a minute.
+
+Is an API key required to query these sources?
+
+   - No.
+
+Is there a cost associated with usage?
+
+   - Yes.
+
+If there is a free tier available, how many queries does it allow for?
+
+   - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying all three exchanges will cost 0.015 API credits).
+   - Therefore, querying all three exchanges can be performed 665 times per day.
+   - In other words, all three exchanges can be queried at most every 130 seconds.
+
+What would be the cost of sending 15,000 queries?
+
+    - Approximately $5
+
 ## PRICE FEED IMPLEMENTATION
+
+These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js).
 
 ## TECHNICAL SPECIFICATIONS
 
+### REN/USD
+
+**Price Identifier Name:** RENUSD
+
+**Base Currency:** REN
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/REN
+
+**Price Identifier Name:** USDREN
+
+**Base Currency:** USD
+
+**Quote currency:** REN
+
+**Intended Collateral Currency:** REN
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
 ## IMPLEMENTATION
+
+Voters should query for the price of REN/USD at the price request timestamp on Coinbase Pro, Binance, and OKEx. Recommended endpoints are provided in the markets and data sources section.
+
+1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
+2. The median of these results should be taken.
+3. The median from step 2 should be rounded to six decimals to determine the RENUSD price.
+4. (for USD/REN) Take the inverse of the result of step 3 (1/ REN/USD) to get the USD/REN price.
+
+For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 # RGT
 
