@@ -1,0 +1,1583 @@
+# Add yUSDUSD, USDyUSD, COMPUSD, USDCOMP, YFIUSD, USDYFI, ALCXUSD, USDALCX, RUNEUSD, USDRUNE, ALPHAUSD, USDALPHA, MKRUSD, USDMKR, CRVUSD, USDCRV, RENUSD, USDREN, RGTUSD, USDRGT, NFTXUSD, USDNFTX, RULERUSD, and USDRULER as price identifiers
+
+
+## HEADERS
+| UMIP [#]     |                                                                                                                                  |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| UMIP Title | [Add yUSDUSD, USDyUSD, COMPUSD, USDCOMP, YFIUSD, USDYFI, ALCXUSD, USDALCX, RUNEUSD, USDRUNE, ALPHAUSD, USDALPHA, MKRUSD, USDMKR, CRVUSD, USDCRV, RENUSD, USDREN, RGTUSD, USDRGT, NFTXUSD, USDNFTX, RULERUSD, and USDRULER as price identifiers]                                                                                                  |
+| Authors    | John Shutt (john@umaproject.org) |
+| Status     | Draft                                                                                                                                  |
+| Created    | April 7, 2021
+| Link to Discourse    | [LINK]
+
+# SUMMARY
+
+The DVM should support price requests for the below price indices:
+- yUSD/USD
+- USD/yUSD
+- COMP/USD
+- USD/COMP
+- YFI/USD
+- USD/YFI
+- ALCX/USD
+- USD/ALCX
+- RUNE/USD
+- USD/RUNE
+- ALPHA/USD
+- USD/ALPHA
+- MKR/USD
+- USD/MKR
+- CRV/USD
+- USD/CRV
+- REN/USD
+- USD/REN
+- RGT/USD
+- USD/RGT
+- NFTX/USD
+- USD/NFTX
+- RULER/USD
+- USD/RULER
+
+The canonical identifiers should be `yUSDUSD`, `USDyUSD`, `COMPUSD`, `USDCOMP`, `YFIUSD`, `USDYFI`, `ALCXUSD`, `USDALCX`, `RUNEUSD`, `USDRUNE`, `ALPHAUSD`, `USDALPHA`, `MKRUSD`, `USDMKR`, `CRVUSD`, `USDCRV`, `RENUSD`, `USDREN`, `RGTUSD`, `USDRGT`, `NFTXUSD`, `USDNFTX`, `RULERUSD`, and `USDRULER`.
+
+# MOTIVATION
+
+1. What are the financial positions enabled by adding these price identifiers that do not already exist?
+
+- These price identifiers allow the use of the base currencies as collateral for minting synthetics or call options. See also [UMIP-X]().
+
+2. Please provide an example of a person interacting with a contract that uses these price identifiers.
+
+- `COMP` (or any of these base currencies) could be used to mint yield dollars or other synthetics, and liquidators could identify undercollateralized positions by comparing the USD value of the synthetic to the value of the locked COMP collateral.
+- `COMP` call options could be minted and paid out based on the USD price of `COMP` at expiry.
+
+# RATIONALE
+
+All of these base currencies have deep liquidity on Uniswap, SushiSwap, or both, and some have good liquidity on centralized exchanges, as well. The specifications for each price identifier are based on how we can find the most accurate price for the base currency. So, if a token has deep liquidity and high volume on Uniswap but little or no CEX activity, we would use a Uniswap TWAP. If a token has deep liquidity and high volume on two CEXs and Uniswap, we would take the median of the three prices (with a TWAP for Uniswap).
+
+# yUSD
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+Markets: SushiSwap
+
+Pairs: [yUSD/ETH](https://app.sushi.com/pair/0x382c4a5147fd4090f7be3a9ff398f95638f5d39e)
+
+Data: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+
+How often is the provided price updated?
+
+    - On every Ethereum block (i.e. every ~15 seconds)
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+    - Historical data can be fetched from the subgraph:
+```
+{
+  token(
+      id:"TOKEN_ADDRESS",
+      block: {number: BLOCK_NUMBER}
+  )
+  {
+      derivedETH
+  }
+}
+```
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+    - Yes.
+
+How often is the provided price updated?
+
+    - On each Ethereum block (i.e. every ~15 seconds)
+
+Is an API key required to query these sources?
+
+    - No.
+
+Is there a cost associated with usage?
+
+    - No.
+
+If there is a free tier available, how many queries does it allow for?
+
+    - No limits at the moment.
+
+What would be the cost of sending 15,000 queries?
+
+     - $0
+
+## PRICE FEED IMPLEMENTATION
+
+These price identifiers can use the [Uniswap](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) price feed, so no new price feed is required, only configuring an existing one.
+
+## TECHNICAL SPECIFICATIONS
+
+### yUSD/USD
+
+**Price Identifier Name:** yUSDUSD
+
+**Base Currency:** yUSD
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/yUSD
+
+**Price Identifier Name:** USDyUSD
+
+**Base Currency:** USD
+
+**Quote currency:** yUSD
+
+**Intended Collateral Currency:** yUSD
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
+## IMPLEMENTATION
+
+```
+1. Query yUSD/ETH Price from Uniswap using 1 hour TWAP.
+2. Query the ETH/USD Price as per UMIP-6.
+3. Multiply the yUSD/ETH price by the ETH/USD price and round to 6 decimals to get the yUSD/USD price.
+4. (for USD/yUSD) Take the Inverse of the result of step 3 (1/ yUSD/USD) to get the USD/yUSD price.
+```
+
+It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
+
+**What prices should be queried for and from which markets?**
+- Prices are queried from SushiSwap and listed in the `Technical Specifications` section.
+
+**Pricing interval**
+- Every block
+
+**Input processing
+- None.
+
+**Result processing**
+- See rounding rules in `Technical Specification`.
+
+# COMP
+
+## MARKETS & DATA SOURCES
+
+**Required questions**
+
+Markets: Binance, OKEx, Coinbase Pro
+
+* Binance COMP/USDT: https://api.cryptowat.ch/markets/binance/compusdt/price
+* OKEx COMP/USDT: https://api.cryptowat.ch/markets/okex/compusdt/price
+* Coinbase Pro COMP/USD: https://api.cryptowat.ch/markets/coinbase-pro/compusd/price
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency is a minute.
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+* Binance: https://api.cryptowat.ch/markets/binance/compusdt/ohlc?after=1617848822&before=1617848822&periods=60
+* OKEx: https://api.cryptowat.ch/markets/okex/compusdt/ohlc?after=1617848822&before=1617848822&periods=60
+* Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/compusd/ohlc?after=1617848822&before=1617848822&periods=60
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+   - Yes.
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency is a minute.
+
+Is an API key required to query these sources?
+
+   - No.
+
+Is there a cost associated with usage?
+
+   - Yes.
+
+If there is a free tier available, how many queries does it allow for?
+
+   - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying all three exchanges will cost 0.015 API credits).
+   - Therefore, querying all three exchanges can be performed 665 times per day.
+   - In other words, all three exchanges can be queried at most every 130 seconds.
+
+What would be the cost of sending 15,000 queries?
+
+    - Approximately $5
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+### COMP/USD
+
+**Price Identifier Name:** COMPUSD
+
+**Base Currency:** COMP
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/yUSD
+
+**Price Identifier Name:** USDCOMP
+
+**Base Currency:** USD
+
+**Quote currency:** COMP
+
+**Intended Collateral Currency:** COMP
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
+## IMPLEMENTATION
+
+Voters should query for the price of AAVE/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
+
+1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
+2. The median of these results should be taken
+3. The median from step 2 should be rounded to six decimals to determine the AAVEUSD price.
+4. (for USD/COMP) Take the Inverse of the result of step 3 (1/ COMP/USD) to get the USD/COMP price.
+
+For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+# YFI
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# ALCX
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# RUNE
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# ALPHA
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# MKR
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# CRV
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# REN
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# RGT
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# NFTX
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# RULER
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+1. What markets should the price be queried from? It is recommended to have at least 3 markets.
+
+    - [ANSWER]
+
+2.  Which specific pairs should be queried from each market?
+
+    - [ANSWER]
+
+2. Provide recommended endpoints to query for real-time prices from each market listed.
+
+    - These should match the data sources used in  "Price Feed Implementation".
+
+    - [ADD-ENDPOINTS]
+
+4. How often is the provided price updated?
+
+    - [ANSWER]
+
+5. Provide recommended endpoints to query for historical prices from each market listed.
+
+    - [ADD-ENDPOINTS]
+
+6.  Do these sources allow for querying up to 74 hours of historical data?
+
+    - [ANSWER]
+
+7.  How often is the provided price updated?
+
+    - [ANSWER]
+
+8. Is an API key required to query these sources?
+
+    - [ANSWER]
+
+9. Is there a cost associated with usage?
+
+    - [ANSWER]
+
+10. If there is a free tier available, how many queries does it allow for?
+
+    - [ANSWER]
+
+11.  What would be the cost of sending 15,000 queries?
+
+     - [ANSWER]
+
+## PRICE FEED IMPLEMENTATION
+
+Associated price feeds are available via Cryptowatch, Uniswap, and SushiSwap. No other further feeds are needed.
+
+## TECHNICAL SPECIFICATIONS
+
+**1. Price Identifier Name** - [ADD NAME]
+
+**2. Base Currency** - [ADD BASE CURRENCY]
+
+**3. Quote currency** - [ADD QUOTE CURRENCY]
+
+- If your price identifier is a currency pair, your quote currency will be the
+denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+
+- Please be aware that the value of any UMA synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+
+- [Response - if applicable]
+
+**4. Intended Collateral Currency** - [ADD COLLATERAL CURRENCY]
+
+- Does the value of this collateral currency match the standalone value of the listed quote currency?
+
+    - [ANSWER]
+
+- Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+
+    - View [here](https://docs.umaproject.org/uma-tokenholders/approved-collateral-currencies) to see a list of approved collateral currencies.
+
+    - [ANSWER]
+
+**5. Collateral Decimals** - [ADD DECIMALS]
+
+- Price identifiers need to be automatically scaled to reflect the units of collateral that a price represents. Because of this, the amount of decimals that a price is scaled to needs to match the used collateral currency.
+
+- **Example**
+
+    - USDC has 6 Decimals (obtained [here](https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)).
+
+**6. Rounding** - [ADD ROUNDING]
+
+- **Note** - this should always be less than or equal to the `Intended Collateral Currency` field.
+
+- **Example**
+
+    - Round to 3 decimal places.
+
+    - If the price is .0235, then this would be rounded up to .024. If the price is .02349, then this would be rounded down to .023.
+
+<br>
+
+## IMPLEMENTATION
+
+Describe how UMA tokenholders should arrive at the price in the case of a DVM price request? Document each step a voter should take to query for and return a price at a specific timestamp. This should include a waterfall of if-then statements (e.g., if a certain exchange is not available, then proceed in a different way). Include the following in the description:
+
+
+1. **What prices should be queried for and from which markets?**
+
+    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
+
+    - [ANSWER]
+
+2. **Pricing interval**
+
+    - [ANSWER]
+
+3. **Input processing**
+
+    - [ANSWER]
+
+4. **Result processing**
+
+    - **Note** - a result processing of "median" is more resilient to market manipulation versus a result processing of "average"
+
+     - [ANSWER]
+
+<br>
+
+# Security considerations
+
+Adding these new identifiers by themselves poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
+
+$UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for these identifiers and also contemplate de-registering these identifiers if security holes are identified. As noted above, $UMA-holders should also consider re-defining these identifiers as liquidity in the underlying asset changes, or if added robustness (e.g. via TWAPs) are necessary to prevent market manipulation.
