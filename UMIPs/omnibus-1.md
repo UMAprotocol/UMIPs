@@ -12,12 +12,12 @@ This UMIP will add USDT, yUSD, UST, sUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV
 
 # Motivation
 
-Adding a collection of popular and liquid ERC20 tokens as collateral types will allow for a variety of contract deployments. These could be used with ERC20/USD price identifiers that are also being proposed to create yield dollars or covered calls collateralized by each of these tokens, among many other use cases.
+Adding a collection of popular and liquid ERC20 tokens as collateral types will allow for a variety of contract deployments. These could be used with ERC20/USD price identifiers that are also being proposed to create yield dollars, covered calls or KPI options, synthetics backed by newly approved stablecoins, and many other use cases.
 
-Proactively approving these collateral types and price feeds will make it easier for development teams and protocol treasuries to create new products using these ERC20 tokens.
+Proactively approving these collateral types and price feeds will make it easier for development teams and protocol treasuries to create new products with UMA.
 
 # Proposed Collateral Currencies
-Note : The final fee for all ERC20 tokens will be ~$400 at time of writing
+Note: The final fee for all ERC20 tokens will be ~$400 at time of writing
 
 
 ## USDT (Tether)
@@ -191,4 +191,4 @@ To accomplish this upgrade, two changes need to be made:
 
 These ERC20 tokens have shown to be persistently valuable given their liquidity and market capitalization, so including them as collateral currencies should impose no additional risk to the protocol.
 
-The only security implication is for contract deployers and users who are considering using EMP contracts with these tokens as the collateral currency. They should recognize that, relative to most fiat currencies, these assets are much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+The only security implication is for contract deployers and users who are considering using EMP contracts with these tokens as the collateral currency. They should recognize that, relative to most fiat currencies, these assets can be much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
