@@ -44,7 +44,7 @@ To accomplish this upgrade, two changes need to be made:
 
 ---
 
-## sUSD  (synthetic USD)
+## sUSD (Synthetix USD)
 
 ### Technical Specification
 To accomplish this upgrade, two changes need to be made:
@@ -56,7 +56,7 @@ To accomplish this upgrade, two changes need to be made:
 
 ---
 
-## yUSD  (YVAULT-LP-YCURVE)
+## yUSD (YVAULT-LP-YCURVE)
 
 ### Technical Specification
 To accomplish this upgrade, two changes need to be made:
@@ -110,9 +110,9 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
  * The ALPHA address, [0xa1faa113cbe53436df28ff0aee54275c13b40975][ALPHA], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 200 APLHA needs to be added for APLHA in the Store contract.
+ * A final fee of 200 ALPHA needs to be added for APLHA in the Store contract.
 
- [APLHA]: https://etherscan.io/token/0xa1faa113cbe53436df28ff0aee54275c13b40975
+ [ALPHA]: https://etherscan.io/token/0xa1faa113cbe53436df28ff0aee54275c13b40975
 
 ---
 
