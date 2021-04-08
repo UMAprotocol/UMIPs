@@ -1,14 +1,14 @@
 ## Headers
 | UMIP-tbd   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add USDT, yUSD, UST, sUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, NFTX, and RULER as approved collateral currencies              |
+| UMIP Title | Add USDT, yUSD, UST, sUSD, COMP, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, NFTX, and RULER as approved collateral currencies              |
 | Authors    | John Shutt (john@umaproject.org) |
 | Status     | Draft                                                                                                                                    |
 | Created    | April 7, 2021                                                                                                                           |
 | [Discourse Link](TBD)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
-This UMIP will add USDT, yUSD, UST, sUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, NFTX, and RULER as approved collateral currencies. This will involve adding each of these tokens to the whitelist and adding flat final fees to charge per-request.
+This UMIP will add USDT, yUSD, UST, sUSD, COMP, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, NFTX, and RULER as approved collateral currencies. This will involve adding each of these tokens to the whitelist and adding flat final fees to charge per-request.
 
 # Motivation
 
@@ -77,18 +77,6 @@ To accomplish this upgrade, two changes need to be made:
  * A final fee of 0.845 COMP needs to be added for COMP in the Store contract.
 
  [COMP]: https://etherscan.io/token/0xc00e94cb662c3520282e6f5717214004a7f26888
-
----
-
-## YFI (yearn.finance)
-
-### Technical Specification
-To accomplish this upgrade, two changes need to be made:
-
- * The YFI address, [0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e][YFI], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 0.01 YFI needs to be added for YFI in the Store contract.
-
- [YFI]: https://etherscan.io/token/0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e
 
 ---
 
