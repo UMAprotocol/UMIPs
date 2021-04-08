@@ -63,7 +63,7 @@ All of these base currencies have deep liquidity on Uniswap, SushiSwap, or both,
 
 Markets: SushiSwap
 
-Pairs: [yUSD/ETH](https://app.sushi.com/pair/0x382c4a5147fd4090f7be3a9ff398f95638f5d39e)
+SushiSwap: [yUSD/ETH](https://app.sushi.com/pair/0x382c4a5147fd4090f7be3a9ff398f95638f5d39e)
 
 Data: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
@@ -112,7 +112,7 @@ What would be the cost of sending 15,000 queries?
 
 ## PRICE FEED IMPLEMENTATION
 
-These price identifiers can use the [Uniswap](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) price feed, so no new price feed is required, only configuring an existing one.
+These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -155,7 +155,7 @@ These price identifiers can use the [Uniswap](https://github.com/UMAprotocol/pro
 ## IMPLEMENTATION
 
 ```
-1. Query yUSD/ETH Price from Uniswap using 1 hour TWAP.
+1. Query yUSD/ETH Price from SushiSwap using 1 hour TWAP.
 2. Query the ETH/USD Price as per UMIP-6.
 3. Multiply the yUSD/ETH price by the ETH/USD price and round to 6 decimals to get the yUSD/USD price.
 4. (for USD/yUSD) Take the Inverse of the result of step 3 (1/ yUSD/USD) to get the USD/yUSD price.
@@ -225,7 +225,7 @@ What would be the cost of sending 15,000 queries?
 
 ## PRICE FEED IMPLEMENTATION
 
-Associated price feeds are available via Cryptowatch. No other further feeds are needed.
+These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js).
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -247,7 +247,7 @@ Associated price feeds are available via Cryptowatch. No other further feeds are
 
 **Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
 
-### USD/yUSD
+### USD/COMP
 
 **Price Identifier Name:** USDCOMP
 
@@ -267,11 +267,11 @@ Associated price feeds are available via Cryptowatch. No other further feeds are
 
 ## IMPLEMENTATION
 
-Voters should query for the price of AAVE/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
+Voters should query for the price of COMP/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
 
 1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2. The median of these results should be taken
-3. The median from step 2 should be rounded to six decimals to determine the AAVEUSD price.
+3. The median from step 2 should be rounded to six decimals to determine the COMPUSD price.
 4. (for USD/COMP) Take the Inverse of the result of step 3 (1/ COMP/USD) to get the USD/COMP price.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
@@ -279,12 +279,119 @@ For both implementations, voters should determine whether the returned price dif
 # YFI
 
 ## MARKETS & DATA SOURCES
+**Required questions**
+
+Markets: SushiSwap, Kraken, Coinbase Pro
+
+* SushiSwap: https://app.sushi.com/pair/0x088ee5007c98a9677165d78dd2109ae4a3d04d0c
+* Kraken COMP/USD: https://api.cryptowat.ch/markets/kraken/yfiusd/price
+* Coinbase Pro COMP/USD: https://api.cryptowat.ch/markets/coinbase-pro/yfiusd/price
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency for the Cryptowatch feeds is a minute.
+   - The SushiSwap data is updated every Ethereum block (i.e. every ~15 seconds).
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+* SushiSwap: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+Historical data can be fetched from the subgraph:
+```
+{
+token(
+  id:"TOKEN_ADDRESS",
+  block: {number: BLOCK_NUMBER}
+)
+{
+  derivedETH
+}
+}
+```
+* Kraken: https://api.cryptowat.ch/markets/kraken/yfiusd/ohlc?after=1617848822&before=1617848822&periods=60
+* Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/yfiusd/ohlc?after=1617848822&before=1617848822&periods=60
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+   - Yes.
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency for the Cryptowatch feeds is a minute.
+   - The SushiSwap data is updated every Ethereum block (i.e. every ~15 seconds).
+
+Is an API key required to query these sources?
+
+   - No.
+
+Is there a cost associated with usage?
+
+   - Yes for the two Cryptowatch feeds, no for the SushiSwap subgraph.
+
+If there is a free tier available, how many queries does it allow for?
+
+   - For Cryptowatch, the free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying two exchanges will cost 0.010 API credits).
+   - Therefore, querying the two CEX exchanges can be performed 997 times per day.
+   - There are no limits for querying the SushiSwap subgraph.
+
+What would be the cost of sending 15,000 queries?
+
+    - Approximately $3.50
 
 ## PRICE FEED IMPLEMENTATION
 
+These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js), [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js), and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+
 ## TECHNICAL SPECIFICATIONS
 
+### YFI/USD
+
+**Price Identifier Name:** YFIUSD
+
+**Base Currency:** YFI
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/YFI
+
+**Price Identifier Name:** USDYFI
+
+**Base Currency:** USD
+
+**Quote currency:** YFI
+
+**Intended Collateral Currency:** YFI
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
 ## IMPLEMENTATION
+
+Voters should query for the price of YFI/USD at the price request timestamp on Kraken and Coinbase Pro. Recommended endpoints are provided in the markets and data sources section.
+
+1. When using the recommended endpoints for Kraken and Coinbase Pro, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
+2. Also query YFI/ETH Price from SushiSwap.
+3. Query the ETH/USD Price as per UMIP-6.
+4. Multiply the YFI/ETH price by the ETH/USD price and round to 6 decimals to get the YFI/USD price.
+5. The median of the Kraken, Coinbase Pro, and SushiSwap results should be taken.
+6. The median from step 2 should be rounded to six decimals to determine the YFIUSD price.
+7. (for USD/YFI) Take the Inverse of the result of step 6 (1/ YFI/USD) to get the USD/YFI price.
+
+For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 # ALCX
 
