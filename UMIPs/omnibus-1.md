@@ -8,7 +8,7 @@
 | [Discourse Link](TBD)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
-This UMIP will add X as approved collateral currencies. This will involve adding each of these tokens to the whitelist and adding flat final fees to charge per-request.
+This UMIP will add USDT, yUSD, UST, sUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, NFTX, and RULER as approved collateral currencies. This will involve adding each of these tokens to the whitelist and adding flat final fees to charge per-request.
 
 # Motivation
 
