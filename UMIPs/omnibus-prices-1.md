@@ -8,7 +8,7 @@
 | Authors    | John Shutt (john@umaproject.org) |
 | Status     | Draft                                                                                                                                  |
 | Created    | April 7, 2021
-| Link to Discourse    | [https://discourse.umaproject.org/t/add-yusdusd-usdyusd-compusd-usdcomp-yfiusd-usdyfi-alcxusd-usdalcx-runeusd-usdrune-alphausd-usdalpha-mkrusd-usdmkr-crvusd-usdcrv-renusd-usdren-rgtusd-usdrgt-nftxusd-usdnftx-rulerusd-and-usdruler-as-price-identifiers/714]
+| Link to Discourse    | [Link](https://discourse.umaproject.org/t/add-yusdusd-usdyusd-compusd-usdcomp-yfiusd-usdyfi-alcxusd-usdalcx-runeusd-usdrune-alphausd-usdalpha-mkrusd-usdmkr-crvusd-usdcrv-renusd-usdren-rgtusd-usdrgt-nftxusd-usdnftx-rulerusd-and-usdruler-as-price-identifiers/714)
 
 # SUMMARY
 
