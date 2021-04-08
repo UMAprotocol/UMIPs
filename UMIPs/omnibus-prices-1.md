@@ -384,7 +384,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 Voters should query for the price of YFI/USD at the price request timestamp on Kraken and Coinbase Pro. Recommended endpoints are provided in the markets and data sources section.
 
 1. When using the recommended endpoints for Kraken and Coinbase Pro, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
-2. Also query YFI/ETH Price from SushiSwap.
+2. Also query YFI/ETH Price from SushiSwap using 1 minute TWAP (time weighted average price).
 3. Query the ETH/USD Price as per UMIP-6.
 4. Multiply the YFI/ETH price by the ETH/USD price and round to 6 decimals to get the YFI/USD price.
 5. The median of the Kraken, Coinbase Pro, and SushiSwap results should be taken.
