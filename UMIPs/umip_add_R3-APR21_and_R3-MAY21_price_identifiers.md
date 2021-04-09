@@ -1,5 +1,5 @@
 ## HEADERS
-| UMIP [#]     |                                                                                                                                  |
+| UMIP 232     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add R3-APR21/RAI and R3-MAY21/RAI as supported price identifiers                                                                                          |
 | Authors    | Ashutosh Varma (ashutoshvarma11@live.com)
@@ -26,9 +26,9 @@ For a price request made before the expiry timestamp, the price will be resolved
 listed synthetic token in RAI.
 
 ## R3-APR21/RAI
-The R3 token tied to this price identifier will expire on the cutoff timestamp `1619568000` (28 April 2021 12:00:00 AM).
+The R3 token tied to this price identifier will expire on the cutoff timestamp `1619568000` (28 April 2021 12:00:00 AM UTC).
 ```
-CUTOFF = 1619568000         # 28 April 2021 12:00:00 AM
+CUTOFF = 1619568000         # 28 April 2021 12:00:00 AM UTC
 if dvm_timestamp >= CUTOFF:
   Resolve price to the 30-day total RAI annualized redemptionRate coefficient. (See implementation)
 else:
@@ -36,9 +36,9 @@ else:
 ```
 
 ## R3-MAY21/RAI
-The R3 token tied to this price identifier will expire on the cutoff timestamp `1622160000` (28 May 2021 12:00:00 AM).
+The R3 token tied to this price identifier will expire on the cutoff timestamp `1622160000` (28 May 2021 12:00:00 AM UTC).
 ```
-CUTOFF = 1622160000         # 28 May 2021 12:00:00 AM
+CUTOFF = 1622160000         # 28 May 2021 12:00:00 AM UTC
 if dvm_timestamp >= CUTOFF:
   Resolve price to the 30-day total RAI annualized redemptionRate coefficient. (See implementation)
 else:
@@ -125,8 +125,8 @@ All the data can be queried from the Uniswap V2 subgraph: https://thegraph.com/e
 
 ### Post Cutoff
 
-The source of truth for this data is the annualized value of RAI OracleRelayer contact's `redemptionRate()` method.
-As of the writing of this UMIP, the agreed-upon RAI OracleRelayer smart contract address is 0x4ed9C0dCa0479bC64d8f4EB3007126D5791f7851.
+The source of truth for this data is the annualized value of RAI OracleRelayer contract's `redemptionRate()` method.
+As of the writing of this UMIP, the agreed-upon RAI OracleRelayer smart contract address is [0x4ed9C0dCa0479bC64d8f4EB3007126D5791f7851](https://etherscan.io/address/0x4ed9C0dCa0479bC64d8f4EB3007126D5791f7851).
 
 This price identifier aggregates the value returned by `redemptionRate()` over every block from the 30 days ending at the cutoff/expiration
 timestamp (1619568000 for R3-APR21/RAI and 1622160000 for R3-MAY21/RAI).
@@ -437,7 +437,7 @@ This is due to the lack of information about the future.
 It is expected these prices become less volatile as the cutoff/expiration date nears.
 
 Security considerations, like the ones above, have been contemplated and addressed,
-but there is potential for security holes to emerge due to the novelty of this price identifier.
+but there is potential for security holes to emerge.
 
 Additionally, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract
 appropriately to avoid the loss of funds for synthetic token holders. Contract deployers should also ensure that there is a network of
