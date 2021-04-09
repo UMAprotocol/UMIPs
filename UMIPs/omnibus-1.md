@@ -26,7 +26,7 @@ Note: The final fee for all ERC20 tokens will be ~$400 at time of writing
 To accomplish this upgrade, two changes need to be made:
 
 * The USDT address, [0xdac17f958d2ee523a2206206994597c13d831ec7][USDT], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 400.95869700000003 USDT needs to be added for USDT in the Store contract.
+* A final fee of 400 USDT needs to be added for USDT in the Store contract.
 
 [USDT]: https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7
 
