@@ -44,7 +44,7 @@ The canonical identifiers should be `yUSDUSD`, `USDyUSD`, `COMPUSD`, `USDCOMP`, 
 
 1. What are the financial positions enabled by adding these price identifiers that do not already exist?
 
-- These price identifiers allow the use of the base currencies as collateral for minting synthetics or call options. See also [UMIP-X]().
+- These price identifiers allow the use of the base currencies as collateral for minting synthetics or call options. See also [the related collateral UMIP](https://github.com/UMAprotocol/UMIPs/pull/238).
 
 2. Please provide an example of a person interacting with a contract that uses these price identifiers.
 
