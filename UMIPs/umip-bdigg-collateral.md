@@ -11,7 +11,7 @@
 
 This UMIP will add bDigg, the BadgerDAO DIGG vault LP token, as an approved collateral currency. 
 
-This will involve adding it to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is X bDigg per request.
+This will involve adding it to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 0.016 bDigg per request.
 
 View [here](https://badgerdao.medium.com/sett-vault-user-guide-9040b2f4b7a4) for an overview of Badger DAO's Setts Vaults
 
