@@ -25,7 +25,7 @@ To accomplish this upgrade, two changes for each currency need to be made:
 
 - The RAI address, [0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919 ](https://etherscan.io/address/0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919 ),
   needs to be added to the collateral currency whitelist introduced in UMIP-8.
-- A final fee of 150 needs to be added for RAI in the Store contract.
+- A final fee of 160 needs to be added for RAI in the Store contract.
 
 
 ## Rationale
