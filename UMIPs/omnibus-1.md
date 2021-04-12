@@ -1,14 +1,14 @@
 ## Headers
 | UMIP-tbd   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add USDT, yUSD, UST, sUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, NFTX, and RULER as approved collateral currencies              |
+| UMIP Title | Add yUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, and NFTX as approved collateral currencies              |
 | Authors    | Deepanshu Hooda (deepanshuhooda2000@gmail.com), John Shutt (john@umaproject.org) |
 | Status     | Draft                                                                                                                                    |
 | Created    | April 7, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-usdt-yusd-ust-susd-comp-yfi-alcx-rune-alpha-mkr-crv-ren-rgt-nftx-and-ruler-as-approved-collateral-currencies/712/2)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
-This UMIP will add USDT, yUSD, UST, sUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, NFTX, and RULER as approved collateral currencies. This will involve adding each of these tokens to the whitelist and adding flat final fees to charge per-request.
+This UMIP will add yUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, and NFTX as approved collateral currencies. This will involve adding each of these tokens to the whitelist and adding flat final fees to charge per-request.
 
 # Motivation
 
@@ -20,41 +20,6 @@ Proactively approving these collateral types and price feeds will make it easier
 Note: The final fee for all ERC20 tokens will be ~$400 at time of writing
 
 
-## USDT (Tether)
-
-### Technical Specification
-To accomplish this upgrade, two changes need to be made:
-
-* The USDT address, [0xdac17f958d2ee523a2206206994597c13d831ec7][USDT], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 400 USDT needs to be added for USDT in the Store contract.
-
-[USDT]: https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7
-
----
-
-## UST (TerraUSD)
-
-### Technical Specification
-To accomplish this upgrade, two changes need to be made:
-
- * The UST address,[0xa47c8bf37f92abed4a126bda807a7b7498661acd][ust], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 400 UST needs to be added for UST in the Store contract.
-
- [UST]: https://etherscan.io/token/0xa47c8bf37f92abed4a126bda807a7b7498661acd
-
----
-
-## sUSD (Synthetix USD)
-
-### Technical Specification
-To accomplish this upgrade, two changes need to be made:
-
- * The sUSD address, [0x57ab1ec28d129707052df4df418d58a2d46d5f51][sUSD], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 400 sUSD needs to be added for sUSD in the Store contract.
-
- [sUSD]: https://etherscan.io/token/0x57ab1ec28d129707052df4df418d58a2d46d5f51
-
----
 
 ## yUSD (YVAULT-LP-YCURVE)
 
@@ -110,7 +75,7 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
  * The ALPHA address, [0xa1faa113cbe53436df28ff0aee54275c13b40975][ALPHA], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 200 ALPHA needs to be added for APLHA in the Store contract.
+ * A final fee of 255 ALPHA needs to be added for APLHA in the Store contract.
 
  [ALPHA]: https://etherscan.io/token/0xa1faa113cbe53436df28ff0aee54275c13b40975
 
@@ -173,18 +138,6 @@ To accomplish this upgrade, two changes need to be made:
 * A final fee of 2.25 NFTX needs to be added for NFTX in the Store contract.
 
 [NFTX]: https://etherscan.io/token/0x87d73e916d7057945c9bcd8cdd94e42a6f47f776
-
----
-
-## RULER (Ruler Protocol)
-
-### Technical Specification
-To accomplish this upgrade, two changes need to be made:
-
-* The RULER address, [0x2aeccb42482cc64e087b6d2e5da39f5a7a7001f8][RULER], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 1.2 RULER needs to be added for RULER in the Store contract.
-
-[RULER]: https://etherscan.io/token/0x2aeccb42482cc64e087b6d2e5da39f5a7a7001f8
 
 
 # Security considerations
