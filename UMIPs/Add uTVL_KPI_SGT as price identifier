@@ -1,0 +1,137 @@
+UMIP Create uTVL_KPI_SGT Price Identifier
+UMIP Title: Create KPI Options for SharedStake using SGT as Collateral
+Authors: Warren Muffett and Chimera
+Create: April 9th, 2021
+
+Summary
+Key Performance Indicator (KPI) options are synthetic tokens that redeem to protocol tokens with the redemption value determined by performance against that indicator. One example of a KPI is Total Value Locked (TVL).
+This UMIP enables the DVM to support price requests based on the TVL of SharedStake.
+A synthetic option is minted against a base collateral, in this case SGT, which expires at 00.00(UTC) December 31th 2021.
+Options are redeemed on the basis of TVL/10^9, with a floor of 0.1 and a ceiling of 2.
+The value locked is calculated by identifying the total values staked within the SGT pool, SGT/ETH LP liquidity mining pool, and vETH2 pool. The dollar value of each of the collateral types is then summed to provide the total value locked.
+Motivation
+The primary motivation for the development of KPI options is to allow protocols to incentivize Defi users to assist them to reach the protocol's identified goals. By leveraging their community resources, SharedStake can increase TVL, strengthen their governance token, and share value with their community members.
+Total Value Locked (TVL) is a frequently quoted key performance indicator and one which has a level of prominence in key Defi dashboards as an indicator of the health and growth of a protocol. 
+What are the financial positions enabled by creating this synthetic that do not already exist?
+•	This synthetic token will allow the creation of tokens which expire to a set rate of the collateral asset tokens based on a pre-identified bounded ratio as determined by the TVL of the protocol at the time of expiry.
+2.	Please provide an example of a person interacting with a contract that uses this price identifier.
+•	SharedStake may leverage its community and/or its reputation by minting TVL Options for its token which can be redeemed to a token amount as determined by the TVL of the protocol at the expiry point.
+•	A protocol community member, token holder, voter, or proximal Defi protocol participant may be gifted a TVL option by a protocol as an incentive to build the TVL of the protocol within the option timeframe and redeem at expiry.
+•	Any user may purchase a TVL Option for a protocol that they believe has the potential for growth in TVL prior to expiry.
+3.	The current TVL of SharedStake is approximately $49.4m as at 4:30(UTC) 10th April 2021.
+
+
+Markets and Data Sources
+There are three assets approved as Collateral within SharedStake’s staking contracts. These pools are single sided SGT, SGT/ETH LP, and vETH2 staking. To maintain consistency with existing price identifier UMIPs, it is suggested that TVL is calculated using the deepest Dex pools on Uniswap and Sushiswap.
+Additionally, there is a liquidity token that is accepted as collateral at Sharedstake.org, which the TVL can be calculated using the Uniswap liquidity / total circulating supply.
+It is proposed that these are treated in the above groups for the purposes of determining markets and data sources. For discussion on this see #Rationale
+Required questions
+1.	What markets should the price be queried from? It is recommended to have at least 3 markets.
+i.	ETH - Kraken, Binance and Coinbase (as per UMIP 6) https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
+ii.	Native ERC20 Token(SGT)
+	where a price identifier UMIP exists that defines a dollar value, this should be used.
+	where no price identifier exists, the three highest volume USD* markets should be used.
+Note - see rationale for further discussion
+2.	Which specific pairs should be queried from each market?
+i.	ETH - see UMIP 6
+ii.	Liquidity Provider Tokens - see UMIP 59
+iii.	Native ERC20 Tokens - follow directions in PI UMIP if possible, otherwise [ERC20]/USD* markets, where USD* is either USD or USD stable coin.
+3.	Provide recommended endpoints to query for real-time prices from each market listed.
+i.	ETH - see UMIP 6
+ii.	Liquidity Provider Tokens - see UMIP 59
+iii.	Native ERC20 tokens - see relevant PI UMIPs, where no UMIP exist suitable endpoint should be identified at expiry.
+4.	How often is the provided price updated?
+i.	ETH - see UMIP 6
+ii.	Liquidity Provider Tokens - see UMIP 59
+iii.	Native ERC20 tokens - see relevant PI UMIPs, where no UMIP exists, provided price update tbd
+5.	Provide recommended endpoints to query for historical prices from each market listed.
+i.	ETH - see UMIP 6
+ii.	Liquidity Provider tokens - see UMIP 59
+iii.	Native ERC20 tokens - see relevant PI UMIPs, where no UMIP exists endpoint tbd.
+6.	Do these sources allow for querying up to 74 hours of historical data?
+o	See relevant UMIPs
+7.	How often is the provided price updated?
+o	Where updated prices are required, relevant UMIPs refer to the frequency
+8.	Is an API key required to query these sources?
+o	See Relevant UMIPs
+9.	Is there a cost associated with usage?
+o	See relevant UMIPS
+10.	If there is a free tier available, how many queries does it allow for?
+o	The cost impact of this PI would be negligible.
+11.	What would be the cost of sending 15,000 queries?
+•	There is no need to send 15, 000 queries for this price identifier as it does not require bots.
+
+
+Price Feed Implementation
+As there is no requirement for ongoing monitoring through liquidation or dispute bots, a price feed is not required. The only requirement is a query of the UMA TVL statistic at the timestamp 00.00(UTC) on 31th December according to the data and markets as defined above.
+
+
+Technical Specifications
+1. Price Identifier Name - uTVL_KPI_SGT
+2. Base Currency - uTVL_SGT.
+3. Quote currency
+If your price identifier is a currency pair, your quote currency will be the denominator of your currency pair. If your price identifier does not have a quote currency, please explain the reasoning behind this.
+•	There is no quote currency, the denominator is fixed at 10^9 (1 Billion)
+•	This price identifier does not have a quote currency as it is designed not to be tied to a currency price metric.
+Please be aware that the value of any SGT synthetic token is the value of the price identifier in units of the collateral currency used. If a contract’s price identifier returns 1, and is collateralized in renBTC, each synthetic will be worth 1 renBTC. In most cases, the value of your quote currency and intended collateral currency should be equal.
+•	The collateral redemption is designed to be tied to the value of the TVL of the protocol by design.
+4. Intended Collateral Currency
+•	SGT
+Does the value of this collateral currency match the standalone value of the listed quote currency?
+•	No, this is a design feature.
+Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
+•	WAITING
+5. Collateral Decimals
+•	18
+6. Rounding - Round to 2 decimal places.
+•	If the price is 1.025, then this would be rounded up to 1.03. If the price is 1.0249999, then this would be rounded down to 1.02.
+•	if the value returned is less than 0.05 round up to 0.1 to provide a floor price.
+•	if the value returned is greater that 2 round down to 2 to provide a ceiling price.
+
+
+RATIONALE
+•	This synthetic is designed as an incentivization mechanism to leverage the SGT community, our partners and the wider DeFi userbase to grow our protocol as measured by our identified Key Performance Indicator of Total Value Locked.
+•	This price identifier offers a guarantee that these options will be of value, even if this key metric is poor through the floor price mechanism, however the nature of SGT is such that the amount of value that can be locked in the protocol is potentially limitless and consequently a ceiling price is required to limit provide a cap.
+•	The methods used to calculate the dollar value of each of the collateral currencies have been chosen to adhere to previous design decisions in such calculations through UMIPs that have already been approved through our governance procedure however note the following assumptions.
+1.	It is assumed for this purpose that 1vEth2 = 1Eth
+2.	A Liquidity Token (SGT/ETH Uni-V2) is approved to be staked within the SharedStake ecosystem. It is recommended that any additional proposal to add liquidity tokens as approved collateral currencies are evaluated against UMIP 59 and follow those market and data sources to calculate dollar value unless there is good reason for deviance. Note that the calculation of the dollar value of the liquidity token occurs in the penultimate step of the UMIP (Step 5).
+5.There are a variety of price identifiers for native ERC20 tokens. Calculation of the dollar value should follow the relevant UMIP where it exists, and where there is no Price Identifier UMIP, the three highest volume [ERC20]/USD* markets should be queried, and the median value used.
+•	There is no need for price processing. This is a snapshot based on a particular time; however, it may be useful for TVL Options holders to have oversight of the ongoing TVL and consequently the value of their options on an ongoing basis. There should be a dashboard developed to track the TVL of SharedStake, which will be proposed through their governance site.
+o	The use of dashboards was considered but rejected due to the potential for manipulation and the differences between their calculations of the values of the collateral assets and the value as determined by the relevant UMIPs in previous KPI calculations.
+
+
+IMPLEMENTATION
+•	The contracts to be tracked include
+o	Any EMP contract
+o	Any Perpetual contract
+o	Any perpetual pool party contract
+•	The total value locked is the dollar value of all three pools on SharedStake.org
+•	The dollar value of each of the contracts should be calculated using the UMIPs and guidance in the Markets and Data section.
+•	These should then be summed to obtain the total value locked (TVL) measured in dollars.
+•	The TVL as measured in dollars should then be divided by 10^9
+1.	What prices should be queried for and from which markets?
+•	The dollar value of each of the contracts should be calculated using the UMIPs and guidance in the Markets and Data section.
+•	Where there is no price identifier UMIP, the price should be queried from the highest volume USD* market
+2.	Pricing interval
+o	This will vary for each value, however, the relevant UMIPs provide a guide to the pricing interval for each
+3.	Input processing
+o	From the list of ExpiringMultiPartyCreator (available at https://github.com/UMAprotocol/protocol/blob/master/packages/affiliates/payouts/devmining-status.json), query all EMP addresses from createExpiringMultiParty() and call pfc() on all of them, repeat same steps for PerpetualCreator and just check the createPerpetual() event, to identify the amount of each collateral type locked in UMA contracts.
+•	The dollar value of each contract should then be calculated using the details supplied in the Markets and Data section referencing the relevant UMIPs
+•	These should then be summed to obtain the total value locked (TVL) measured in dollars.
+4.	Result processing
+o	Divide TVL by 10^9 and apply the floor and ceiling price rounding.
+
+
+Security considerations
+1.	Where could manipulation occur?
+•	Negligible opportunities for manipulation.
+2.	How could this price ID be exploited?
+•	It is possible that as expiry approaches, a user may be able to purchase a large number of TVL option on the open market, should the TVL be significantly below the level required to achieve the ceiling level, then add large amounts of collateral to an SharedStake contract slightly before expiry to temporarily drive up the TVL, redeem the synthetic tokens, then withdraw the collateral immediately afterwards.
+•	It is possible that a user may purchase uTVL_KPI_SGT at a low price, lock substantial amounts of collateral in SharedStake contracts causing the uTVL_KPI_SGT price to rise, then sell these tokens at a profit and immediately withdraw the collateral from the contracts.
+3.	Do the instructions for determining the price provide people with enough certainty?
+•	YES
+4.	What are current or future concern possibilities with the way the price identifier is defined?
+•	It is possible that price identifiers for collateral types may be altered prior to expiry
+•	It is possible that collateral types may be removed. This would not impact on this PI as they would not feature in any relevant contract.
+5.	Are there any concerns around if the price identifier implementation is deterministic?
+•	NO
