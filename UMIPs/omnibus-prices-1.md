@@ -157,7 +157,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 1. Query yUSD/ETH Price from SushiSwap using 15-minute TWAP.
 2. Query the ETH/USD Price as per UMIP-6.
 3. Multiply the yUSD/ETH price by the ETH/USD price and round to 6 decimals to get the yUSD/USD price.
-4. (for USD/yUSD) Take the inverse of the result of step 3 (1/ yUSD/USD) to get the USD/yUSD price.
+4. (for USD/yUSD) Take the inverse of the result of step 3 (1/ yUSD/USD), before rounding, to get the USD/yUSD price. Then, round to 6 decimals.
 ```
 
 It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
@@ -271,7 +271,7 @@ Voters should query for the price of COMP/USD at the price request timestamp on 
 1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2. The median of these results should be taken
 3. The median from step 2 should be rounded to six decimals to determine the COMPUSD price.
-4. (for USD/COMP) Take the inverse of the result of step 3 (1/ COMP/USD) to get the USD/COMP price.
+4. (for USD/COMP) Take the inverse of the result of step 2 (1/ COMP/USD) to get the USD/COMP price, and round to 6 decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -280,33 +280,20 @@ For both implementations, voters should determine whether the returned price dif
 ## MARKETS & DATA SOURCES
 **Required questions**
 
-Markets: SushiSwap, Kraken, Coinbase Pro
+Markets: Binance, OKEx, Coinbase Pro
 
-* SushiSwap: https://app.sushi.com/pair/0x088ee5007c98a9677165d78dd2109ae4a3d04d0c
-* Kraken COMP/USD: https://api.cryptowat.ch/markets/kraken/yfiusd/price
-* Coinbase Pro COMP/USD: https://api.cryptowat.ch/markets/coinbase-pro/yfiusd/price
+* Binance YFI/USD: https://api.cryptowat.ch/markets/binance/yfiusdt/price
+* OKEx YFI/USD: https://api.cryptowat.ch/markets/okex/yfiusdt/price
+* Coinbase Pro YFI/USD: https://api.cryptowat.ch/markets/coinbase-pro/yfiusd/price
 
 How often is the provided price updated?
 
    - The lower bound on the price update frequency for the Cryptowatch feeds is a minute.
-   - The SushiSwap data is updated every Ethereum block (i.e. every ~15 seconds).
 
 Provide recommended endpoints to query for historical prices from each market listed.
 
-* SushiSwap: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
-Historical data can be fetched from the subgraph:
-```
-{
-token(
-  id:"TOKEN_ADDRESS",
-  block: {number: BLOCK_NUMBER}
-)
-{
-  derivedETH
-}
-}
-```
-* Kraken: https://api.cryptowat.ch/markets/kraken/yfiusd/ohlc?after=1617848822&before=1617848822&periods=60
+* Binance: https://api.cryptowat.ch/markets/binance/yfiusdt/ohlc?after=1617848822&before=1617848822&periods=60
+* OKEx: https://api.cryptowat.ch/markets/okex/yfiusdt/ohlc?after=1617848822&before=1617848822&periods=60
 * Coinbase Pro: https://api.cryptowat.ch/markets/coinbase-pro/yfiusd/ohlc?after=1617848822&before=1617848822&periods=60
 
 Do these sources allow for querying up to 74 hours of historical data?
@@ -316,7 +303,6 @@ Do these sources allow for querying up to 74 hours of historical data?
 How often is the provided price updated?
 
    - The lower bound on the price update frequency for the Cryptowatch feeds is a minute.
-   - The SushiSwap data is updated every Ethereum block (i.e. every ~15 seconds).
 
 Is an API key required to query these sources?
 
@@ -324,21 +310,21 @@ Is an API key required to query these sources?
 
 Is there a cost associated with usage?
 
-   - Yes for the two Cryptowatch feeds, no for the SushiSwap subgraph.
+   - Yes
 
 If there is a free tier available, how many queries does it allow for?
 
-   - For Cryptowatch, the free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying two exchanges will cost 0.010 API credits).
-   - Therefore, querying the two CEX exchanges can be performed 997 times per day.
-   - There are no limits for querying the SushiSwap subgraph.
+   - For Cryptowatch, the free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying two exchanges will cost 0.015 API credits).
+   - Therefore, querying all three exchanges can be performed 665 times per day.
+   - In other words, all three exchanges can be queried at most every 130 seconds.
 
 What would be the cost of sending 15,000 queries?
 
-    - Approximately $3.50
+    - Approximately $5
 
 ## PRICE FEED IMPLEMENTATION
 
-These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js), [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js), and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+These price identifiers use [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js).
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -382,13 +368,10 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 Voters should query for the price of YFI/USD at the price request timestamp on Kraken and Coinbase Pro. Recommended endpoints are provided in the markets and data sources section.
 
-1. When using the recommended endpoints for Kraken and Coinbase Pro, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
-2. Also query YFI/ETH Price from SushiSwap using 1 minute TWAP (time weighted average price).
-3. Query the ETH/USD Price as per UMIP-6.
-4. Multiply the YFI/ETH price by the ETH/USD price and round to 6 decimals to get the YFI/USD price.
-5. The median of the Kraken, Coinbase Pro, and SushiSwap results should be taken.
-6. The median from step 2 should be rounded to six decimals to determine the YFIUSD price.
-7. (for USD/YFI) Take the inverse of the result of step 6 (1/ YFI/USD) to get the USD/YFI price.
+1. When using the recommended endpoints on Cryptowatch, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
+2. The median of the three results should be taken.
+3. The median from step 2 should be rounded to six decimals to determine the YFIUSD price.
+4. (for USD/YFI) Take the inverse of the result of step 2 (1/ YFI/USD) to get the USD/YFI price, and round to six decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -492,10 +475,10 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 ## IMPLEMENTATION
 
 ```
-1. Query yUSD/ETH Price from SushiSwap using 15-minutes TWAP.
+1. Query ALCX/ETH Price from SushiSwap using 15-minutes TWAP.
 2. Query the ETH/USD Price as per UMIP-6.
-3. Multiply the yUSD/ETH price by the ETH/USD price and round to 6 decimals to get the yUSD/USD price.
-4. (for USD/yUSD) Take the inverse of the result of step 3 (1/ yUSD/USD) to get the USD/yUSD price.
+3. Multiply the ALCX/ETH price by the ETH/USD price and round to 6 decimals to get the ALCX/USD price.
+4. (for USD/ALCX) Take the inverse of the result of step 3 (1/ ALCX/USD), before rounding, to get the USD/ALCX price, and round to 6 decimals.
 ```
 
 It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
@@ -608,8 +591,8 @@ Voters should query for the price of MKR/USD at the price request timestamp on C
 
 1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2. The median of these results should be taken.
-3. The median from step 2 should be rounded to six decimals to determine the MKRUSD price.
-4. (for USD/MKR) Take the inverse of the result of step 3 (1/ MKR/USD) to get the USD/MKR price.
+3. The median from step 2 should be rounded to 6 decimals to determine the MKRUSD price.
+4. (for USD/MKR) Take the inverse of the result of step 2 (1/ MKR/USD) to get the USD/MKR price, and round to 6 decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -709,8 +692,8 @@ Voters should query for the price of CRV/USD at the price request timestamp on B
 
 1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2. The median of these results should be taken.
-3. The median from step 2 should be rounded to six decimals to determine the CRVUSD price.
-4. (for USD/CRV) Take the inverse of the result of step 3 (1/ CRV/USD) to get the USD/CRV price.
+3. The median from step 2 should be rounded to 6 decimals to determine the CRVUSD price.
+4. (for USD/CRV) Take the inverse of the result of step 2 (1/ CRV/USD) to get the USD/CRV price, and round to 6 decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -811,7 +794,7 @@ Voters should query for the price of REN/USD at the price request timestamp on C
 1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2. The median of these results should be taken.
 3. The median from step 2 should be rounded to six decimals to determine the RENUSD price.
-4. (for USD/REN) Take the inverse of the result of step 3 (1/ REN/USD) to get the USD/REN price.
+4. (for USD/REN) Take the inverse of the result of step 2 (1/ REN/USD) to get the USD/REN price, and round to 6 decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -918,7 +901,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 1. Query RGT/ETH Price from SushiSwap using 15-minute TWAP.
 2. Query the ETH/USD Price as per UMIP-6.
 3. Multiply the RGT/ETH price by the ETH/USD price and round to 6 decimals to get the RGT/USD price.
-4. (for USD/RGT) Take the inverse of the result of step 3 (1/ RGT/USD) to get the USD/RGT price.
+4. (for USD/RGT) Take the inverse of the result of step 3 (1/ RGT/USD), before rounding, to get the USD/RGT price, then round to 6 decimals.
 ```
 
 It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
@@ -1030,7 +1013,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 1. Query NFTX/ETH Price from SushiSwap using 15-minute TWAP.
 2. Query the ETH/USD Price as per UMIP-6.
 3. Multiply the NFTX/ETH price by the ETH/USD price and round to 6 decimals to get the NFTX/USD price.
-4. (for USD/NFTX) Take the inverse of the result of step 3 (1/ NFTX/USD) to get the USD/NFTX price.
+4. (for USD/NFTX) Take the inverse of the result of step 3 (1/ NFTX/USD), before rounding, to get the USD/NFTX price, then round to 6 decimals.
 ```
 
 It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
