@@ -1,7 +1,7 @@
 ## HEADERS
 | UMIP-78     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add yUSDUSD, USDyUSD, RAIUSD, USDRAI, COMPUSD, USDCOMP, YFIUSD, USDYFI, ALCXUSD, USDALCX, ALPHAUSD, USDALPHA, MKRUSD, USDMKR, CRVUSD, USDCRV, RENUSD, USDREN, RGTUSD, USDRGT, NFTXUSD, and USDNFTX as price identifiers                                                                                                  |
+| UMIP Title | Add yUSDUSD, USDyUSD, RAIUSD, USDRAI, COMPUSD, USDCOMP, YFIUSD, USDYFI, ALCXUSD, USDALCX, MKRUSD, USDMKR, CRVUSD, USDCRV, RENUSD, USDREN, RGTUSD, USDRGT, NFTXUSD, and USDNFTX as price identifiers                                                                                                  |
 | Authors    | John Shutt (john@umaproject.org) |
 | Status     | Last Call                                                                                                                                 |
 | Created    | April 7, 2021
@@ -20,8 +20,6 @@ The DVM should support price requests for the below price indices:
 - USD/YFI
 - ALCX/USD
 - USD/ALCX
-- ALPHA/USD
-- USD/ALPHA
 - MKR/USD
 - USD/MKR
 - CRV/USD
@@ -33,7 +31,7 @@ The DVM should support price requests for the below price indices:
 - NFTX/USD
 - USD/NFTX
 
-The canonical identifiers should be `yUSDUSD`, `USDyUSD`, `RAIUSD`, `USDRAI`, `COMPUSD`, `USDCOMP`, `YFIUSD`, `USDYFI`, `ALCXUSD`, `USDALCX`, `ALPHAUSD`, `USDALPHA`, `MKRUSD`, `USDMKR`, `CRVUSD`, `USDCRV`, `RENUSD`, `USDREN`, `RGTUSD`, `USDRGT`, `NFTXUSD`, and `USDNFTX`
+The canonical identifiers should be `yUSDUSD`, `USDyUSD`, `RAIUSD`, `USDRAI`, `COMPUSD`, `USDCOMP`, `YFIUSD`, `USDYFI`, `ALCXUSD`, `USDALCX`, `MKRUSD`, `USDMKR`, `CRVUSD`, `USDCRV`, `RENUSD`, `USDREN`, `RGTUSD`, `USDRGT`, `NFTXUSD`, and `USDNFTX`
 
 # MOTIVATION
 
