@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add BAL as approved collateral currency              |
 | Authors    | Mhairi McAlpine (mhairi@umaproject.org |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Approved                                                                                                                                   |
 | Created    | March 30, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-bal-as-approved-collateral-currency/510)    |                                                                                                                     |
 

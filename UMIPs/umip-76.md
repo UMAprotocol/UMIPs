@@ -1,9 +1,9 @@
 ## HEADERS
-| UMIP-xyz     |                                                                                                                                  |
+| UMIP-76     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add bBadger/USD, [bwBTC/ETH SLP]/USD, bDiggUSD and USDbDigg as supported price identifiers                                                                                                   |
 | Authors    | Sean Brown (smb2796) 
-| Status     | Draft                                                                                                                           |
+| Status     | Last Call                                                                                                                           |
 | Created    | April 7th, 2021                                                                              
 | [Discourse](https://discourse.umaproject.org/t/add-bbadger-usd-bwbtc-eth-slp-usd-bdigg-usd-and-usd-bdigg-as-supported-price-identifiers/856) |   
 

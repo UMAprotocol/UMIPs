@@ -2,11 +2,11 @@
 
 
 ## HEADERS
-| UMIP [#]     |                                                                                                                                  |
+| UMIP-78     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | [Add yUSDUSD, USDyUSD, RAIUSD, USDRAI, COMPUSD, USDCOMP, YFIUSD, USDYFI, ALCXUSD, USDALCX, RUNEUSD, USDRUNE, ALPHAUSD, USDALPHA, MKRUSD, USDMKR, CRVUSD, USDCRV, RENUSD, USDREN, RGTUSD, USDRGT, NFTXUSD, and USDNFTX as price identifiers]                                                                                                  |
 | Authors    | John Shutt (john@umaproject.org) |
-| Status     | Draft                                                                                                                                  |
+| Status     | Last Call                                                                                                                                 |
 | Created    | April 7, 2021
 | Link to Discourse    | [Link](https://discourse.umaproject.org/t/add-yusdusd-usdyusd-compusd-usdcomp-yfiusd-usdyfi-alcxusd-usdalcx-runeusd-usdrune-alphausd-usdalpha-mkrusd-usdmkr-crvusd-usdcrv-renusd-usdren-rgtusd-usdrgt-nftxusd-usdnftx-rulerusd-and-usdruler-as-price-identifiers/714)
 
