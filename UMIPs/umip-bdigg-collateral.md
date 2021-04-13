@@ -1,11 +1,12 @@
 # Headers
 
-| UMIP - 35 |                                     |
+| UMIP-XYZ |                                     |
 | ---------- | ----------------------------------- |
 | UMIP Title | Add bDigg as a collateral collateral currency |
 | Authors    | Sean Brown (@smb2796)  |
 | Status     | Draft                               |
 | Created    | April 7, 2021                    |
+| [Discourse](https://discourse.umaproject.org/t/add-bdigg-as-a-collateral-currency/854)    |
 
 ## Summary
 
