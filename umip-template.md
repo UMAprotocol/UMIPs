@@ -11,6 +11,7 @@ The title should be 44 characters or less.
 - Author (name or username and email)
 - Status: <Draft, Last Call, Approved, Final, Abandoned, Rejected> 
 - Created: <date created on>
+- Discourse Link: <Link>
 
 ## Summary (2-5 sentences)
 "If you can't explain it simply, you don't understand it well enough." 

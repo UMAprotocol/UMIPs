@@ -30,6 +30,7 @@ The definition of this identifier should be:
 - Pricing Interval: 1 second
 - Dispute timestamp rounding: down
 - Output processing: None
+- Scaling Decimals: 18 (1e18)
 
 ## Rationale
 

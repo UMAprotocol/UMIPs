@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add DSDUSD, USDDSD as price identifiers              |
 | Authors    | John (dsdravage@gmail.com), Sean (sean@opendao.io) |
-| Status     | Final                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | January 14, 2021                                                                                                                           |
 
 ## Summary (2-5 sentences)
@@ -26,10 +26,10 @@ The definition of this identifier should be:
 - Intended collateral currency: USDC
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 6 decimals
-
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
+- Scaling Decimals: 18 (1e18)
 
 The definition of this identifier should be:
 - Identifier name: USDDSD
@@ -40,10 +40,10 @@ The definition of this identifier should be:
 - Result Processing: 1/DSDUSD.
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 18 decimals
-
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
+- Scaling Decimals: 18 (1e18)
 
 Note :- We are assuming that the price of 1 USDC is approximately equal to 1 USD.
 

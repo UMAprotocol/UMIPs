@@ -35,10 +35,11 @@ Result Processing: (100.00 - BTCDOM)
 
 Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus. Live data will be cached from CoinGecko on the (1-3 minute) interval in order to backlog 96 hours of historical data to allow for the successful deployment of liquidation and dispute bots.
 
-Price Steps: `00.01`  
-Rounding: Closest, 0.01 up  
-Pricing Interval: 1 minute  
-Dispute timestamp rounding: down (UTC)  
+- Price Steps: `00.01`  
+- Rounding: Round to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)  
+- Pricing Interval: 1 minute  
+- Dispute timestamp rounding: down (UTC)
+- Scaling Decimals: 18 (1e18)
 
 ## Rationale
 

@@ -4,7 +4,7 @@
 | ---------- | ----------------------------------- |
 | UMIP Title | Add bwBTC/ETH SLP and bBadger as collateral currencies |
 | Authors    | BitcoinPalmer, mitche50, J au Defi, Defi Frog  |
-| Status     | Final                               |
+| Status     | Approved                               |
 | Created    | January 7, 2021                    |
 
 ## Summary
@@ -24,7 +24,7 @@ Many of BadgerDAO's users would like to borrow against their BTC vault positions
 
 - **bwBTC/ETH SLP**
     - Sushiswap liquidity provider tokens for the wBTC/ETH pool that is staked in the Badger Sett Vault 'wBTC/ETH SLP' to mint bwBTC/ETH SLP token(s).
-    - View [here] (https://etherscan.io/token/0x758a43ee2bff8230eeb784879cdcff4828f2544d) for the associated token address
+    - View [here](https://etherscan.io/token/0x758a43ee2bff8230eeb784879cdcff4828f2544d) for the associated token address
 
 - **bBadger**
     - Badger token that is staked in the Badger Sett Vault to mint bBadger token(s)
