@@ -1,25 +1,25 @@
 ## HEADERS
 | UMIP-xyz     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add bBadger/USD, [bwBTC/ETH SLP]/USD, bDigg/USD and USD/bDigg as supported price identifiers                                                                                                   |
+| UMIP Title | Add bBadger/USD, [bwBTC/ETH SLP]/USD, bDiggUSD and USDbDigg as supported price identifiers                                                                                                   |
 | Authors    | Sean Brown (smb2796) 
-| Status     | Approved                                                                                                                           |
+| Status     | Draft                                                                                                                           |
 | Created    | April 7th, 2021                                                                              
-
+| [Discourse](https://discourse.umaproject.org/t/add-bbadger-usd-bwbtc-eth-slp-usd-bdigg-usd-and-usd-bdigg-as-supported-price-identifiers/856) |   
 
 # SUMMARY 
 
 The DVM should support price requests for the below price indexes:
 - bBadger/USD
 - [bwBTC/ETH SLP]/USD
-- bDigg/USD
-- USD/bDigg
+- bDiggUSD
+- USDbDigg
 
 # MOTIVATION
 
 The DVM currently does not support requests for these price identifiers.  
 
-Most of the motivation behind this proposal is the same as what was proposed in [UMIP-39](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-39.md). UMIP-39 only the USD/bBadger and USD-[bwBTC/ETH SLP] price identifiers were proposed. These were intended to be used to create Badger dollars, yield dollars that are backed by Badger vault tokens. The intention behind proposing USD/bDigg remains the same - this will provide an alternative collateralization option for Badger Dollars.
+Most of the motivation behind this proposal is the same as what was proposed in [UMIP-39](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-39.md). UMIP-39 only the USD/bBadger and USD-[bwBTC/ETH SLP] price identifiers were proposed. These were intended to be used to create Badger dollars, yield dollars that are backed by Badger vault tokens. The intention behind proposing USDbDigg remains the same - this will provide an alternative collateralization option for Badger Dollars.
 
 An additional use case that is being considered is creating call options on the value of Badger Vault tokens. For this reason, the USD denominated price identifiers for these vault tokens also need to be proposed. 
 
@@ -38,7 +38,7 @@ The price feeds for bBadger/USD and [bwBTC/ETH SLP]/USD will be exactly the same
 The bBadger/USD and USD/bBadger price feeds will be defined in a similar manner. As an example, the bBadger/USD price feed configuration will look something like:
 
 ```
-"bDigg/USD": {
+"bDiggUSD": {
     type: "expression",
     expression: `
       DIGGUSD * BDIGG_DIGG
@@ -83,9 +83,9 @@ The DIGGUSD price feed config is defined [here](https://github.com/UMAprotocol/p
 
 **5. Rounding** - Round to 18 decimal places
 
-## bDigg/USD
+## bDiggUSD
 
-**1. Price Identifier Name** - bDigg/USD
+**1. Price Identifier Name** - bDiggUSD
 
 **2. Base Currency** - bDigg
 
@@ -96,9 +96,9 @@ The DIGGUSD price feed config is defined [here](https://github.com/UMAprotocol/p
 **5. Rounding** - Round to 18 decimal places
 
 
-## USD/bDigg
+## USDbDigg
 
-**1. Price Identifier Name** - USD/bDigg
+**1. Price Identifier Name** - USDbDigg
 
 **2. Base Currency** - USD
 
@@ -112,7 +112,7 @@ The DIGGUSD price feed config is defined [here](https://github.com/UMAprotocol/p
 # RATIONALE
 
 Pricing rationale is detailed in UMIP-39 and UMIP-61.
- 
+
 # IMPLEMENTATION
 
 B wrapped tokens have 2 components to finding the underlying value of the tokens associated with them.  Each wrapped token has a pricePerFullShare, which is the amount of underlying tokens that 1 b token could be redeemed for through the withdraw function.  This underlying token can have different ways to determine its value depending on what type of token it is.
@@ -141,14 +141,14 @@ The bBadger/USD pricing implementation will follow the same method that is laid 
 
 The bBadger/USD pricing implementation will follow the same method that is laid out in [UMIP-39](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-39.md#usd-bwbtceth-slp-1) for USD-[bwBTC/ETH SLP]. The one difference will be to not take the inverse of step 8 [bwBTC/ETH SLP]/USD in step 10 and instead round the result of step 9 to 18 decimals to get the [bwBTC/ETH SLP]/USD price.
 
-## bDigg/USD & USD/bDigg
+## bDiggUSD & USDbDigg
 
-To get the price of bDigg/USD perform the following steps.
+To get the price of bDiggUSD perform the following steps.
 
 1. Query the getPricePerFullShare method on contract [0x7e7e112a68d8d2e221e11047a72ffc1065c38e1a](https://etherscan.io/address/0x7e7e112a68d8d2e221e11047a72ffc1065c38e1a). This information is on-chain and can be queried in any way that a voter wishes at the price request block.
 2. Gather the price of DIGGUSD by following the directions detailed in [UMIP-61](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-61.md).
-3. Multiply bDigg/Digg by Digg/USD and round to 18 decimals to get the bDigg/USD price.
-4. Take the inverse of the unrounded bDigg/USD result (1/(bDigg/USD)) to get the price of USD/bDigg. This price should then be rounded to 18 decimals.
+3. Multiply bDigg/Digg by Digg/USD and round to 18 decimals to get the bDiggUSD price.
+4. Take the inverse of the unrounded bDiggUSD result (1/(bDiggUSD)) to get the price of USDbDigg. This price should then be rounded to 18 decimals.
 
 # Security considerations
 
