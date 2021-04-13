@@ -1,14 +1,14 @@
 ## Headers
 | UMIP-77  |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add yUSD, RAI, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, and NFTX as approved collateral currencies              |
+| UMIP Title | Add yUSD, RAI, COMP, YFI, ALCX, ALPHA, MKR, CRV, REN, RGT, and NFTX as approved collateral currencies              |
 | Authors    | Deepanshu Hooda (deepanshuhooda2000@gmail.com), John Shutt (john@umaproject.org) |
 | Status     | Last Call                                                                                                                                    |
 | Created    | April 7, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-usdt-yusd-ust-susd-comp-yfi-alcx-rune-alpha-mkr-crv-ren-rgt-nftx-and-ruler-as-approved-collateral-currencies/712/2)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
-This UMIP will add yUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, and NFTX as approved collateral currencies. This will involve adding each of these tokens to the whitelist and adding flat final fees to charge per-request.
+This UMIP will add yUSD, COMP, YFI, ALCX, ALPHA, MKR, CRV, REN, RGT, and NFTX as approved collateral currencies. This will involve adding each of these tokens to the whitelist and adding flat final fees to charge per-request.
 
 # Motivation
 
