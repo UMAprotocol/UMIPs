@@ -3,7 +3,7 @@
 |------------|------------|
 | UMIP Title | Add BCHDOM, BNBDOM, BSVDOM, DOTDOM, ETHDOM, LINKDOM, LTCDOM, USDTDOM & XRPDOM as price identifiers |
 | Authors    | Domination Finance (Josh Bowden (<josh@ferrosync.io>), Michal Cymbalisty (<michal@domination.finance>), et. al.)
-| Status     | Last Call |
+| Status     | Approved |
 | Created    | March 16, 2021 |
 | Link to Discourse | https://discourse.umaproject.org/t/add-bchdom-bnbdom-bsvdom-dotdom-ethdom-linkdom-ltcdom-usdtdom-xrpdom-as-price-identifiers/346 |
 <br>

@@ -2,7 +2,7 @@
 - UMIP-70
 - UMIP title: Approve XIO As Collateral Type
 - Author: Anthony Scarpulla (anthony@blockzerolabs.io) and Krasimir Raykov (kraykov1994@gmail.com)
-- Status: Last Call
+- Status: Approved
 - Created: March 23, 2021
 - Discourse Link: <https://discourse.umaproject.org/t/umip-tbd-approve-xio-as-collateral-type/377>
 

@@ -4,7 +4,7 @@
 |---------|-|
 | UMIP Title | Add ethVIX & iethVIX as price identifiers |
 | Authors | dVIX Developers |
-| Status | Last Call |
+| Status | Approved |
 | Created | 03.31.2021 |
 | Discourse | [Link](https://discourse.umaproject.org/t/add-ethvix-and-iethvix-price-identifiers/680) |
 
