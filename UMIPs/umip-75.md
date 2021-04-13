@@ -2,7 +2,7 @@
 
 | UMIP-75 |                                     |
 | ---------- | ----------------------------------- |
-| UMIP Title | Add bDigg as a collateral collateral currency |
+| UMIP Title | Add bDigg as a collateral currency |
 | Authors    | Sean Brown (@smb2796)  |
 | Status     | Last Call                               |
 | Created    | April 7, 2021                    |

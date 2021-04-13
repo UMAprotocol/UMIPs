@@ -4,7 +4,7 @@ Last Call
 
 ## Summary
 
-This UPP will adjust the final fees for WETH, renBTC WBTC, PERL, DSD and OCEAN  to be around $400.
+This UPP will adjust the final fees for WETH, renBTC, WBTC, PERL, DSD and OCEAN  to be around $400.
 
 ## Rationale
 
