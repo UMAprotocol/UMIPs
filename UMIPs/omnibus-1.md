@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-tbd   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add yUSD, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, and NFTX as approved collateral currencies              |
+| UMIP Title | Add yUSD, RAI, COMP, YFI, ALCX, RUNE, ALPHA, MKR, CRV, REN, RGT, and NFTX as approved collateral currencies              |
 | Authors    | Deepanshu Hooda (deepanshuhooda2000@gmail.com), John Shutt (john@umaproject.org) |
 | Status     | Draft                                                                                                                                    |
 | Created    | April 7, 2021                                                                                                                           |
@@ -30,6 +30,18 @@ To accomplish this upgrade, two changes need to be made:
  * A final fee of 313 yUSD needs to be added for yUSD in the Store contract.
 
  [yUSD]: https://etherscan.io/token/0x5dbcf33d8c2e976c6b560249878e6f1491bca25c
+
+---
+
+## RAI (Rai Reflex Index)
+
+### Technical Specification
+To accomplish this upgrade, two changes for each currency need to be made:
+
+* The RAI address, 0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919 , needs to be added to the collateral currency whitelist introduced in UMIP-8.
+* A final fee of 160 needs to be added for RAI in the Store contract.
+
+[RAI]: https://etherscan.io/address/0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919
 
 ---
 
