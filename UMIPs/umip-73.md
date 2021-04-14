@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------| 
 | UMIP Title | Add BALUSD and USDBAL as supported price identifiers              |
 | Authors    | Mhairi McAlpine (mhairi@UMAproject.org)  |
-| Status     | Last Call                                                                                                                     
+| Status     | Approved                                                                                                                    
 | Created    | March 30, 2021   
 | [Discourse Link](https://discourse.umaproject.org/t/add-balusd-usdbal-as-supported-price-identifiers/512) |  
 
