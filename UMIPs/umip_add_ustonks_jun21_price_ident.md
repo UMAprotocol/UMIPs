@@ -5,7 +5,7 @@
 | Authors    | Ross (ross@yam.finance)  |
 | Status     | Draft                                                                                                                                   |
 | Created    | April 14, 2021   
-| Discourse Link | add link |  
+| Discourse Link | https://discourse.umaproject.org/t/add-ustonks-jun21-price-identifier/878 |  
 
 ## SUMMARY
 
