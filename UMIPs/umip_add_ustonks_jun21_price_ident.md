@@ -9,11 +9,13 @@
 
 ## SUMMARY
 
-The DVM should support price requests for a basket of stocks that represent the top ten tickers with the most comment volume on r/wallstreetbets. These ten stocks will be equally weighted to create an index named uSTONKS. 
+The DVM should support price requests for an updated basket of stocks that represent the top ten tickers with the most comment volume on r/wallstreetbets. These ten stocks will be equally weighted to create an index named uSTONKS. 
 
 ## MOTIVATION
 
-The DVM currently does not support a current price identifier for the creation of indices like uSTONKS.  Financial markets should be universally accessible — unrestrained by censorship, pre-existing financial and social capital, or nationality.  With the uSTONKS price identifier synthetic tokens can be created which will allow anybody to obtain exposure to the basket of stocks in a decentralized way.  This will allow unrestricted trading 24 hours a day, 7 days a week.
+Update the existing uStonks Price identifier (UMIP-47) used by he DMV to support a new basket of stocks based on the current sentiment on the r/wallstreetbets subreddit. 
+
+Financial markets should be universally accessible — unrestrained by censorship, pre-existing financial and social capital, or nationality.  With the uSTONKS price identifier synthetic tokens can be created which will allow anybody to obtain exposure to the basket of stocks in a decentralized way.  This will allow unrestricted trading 24 hours a day, 7 days a week.
 
 ## MARKETS & DATA SOURCES
 
@@ -96,7 +98,7 @@ Each stock also is assigned an index value base. The index is equally weighted, 
  
 To calculate the uSTONKS price, an UMA voter should:
 1. Query for the close price of one component on June 30, 2021. It is recommended that voters use the Google Sheets GOOGLEFINANCE function.
-2. Divide the June 31 price by the base price and multiply by the index value base (10) to get today’s index value. 
+2. Divide the June 30 price by the base price and multiply by the index value base (10) to get today’s index value. 
 3. Perform this function for each component in the index and sum all of the results together.
 4. Round the result of step three to six decimal places
 
