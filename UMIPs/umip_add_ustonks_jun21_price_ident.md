@@ -95,7 +95,7 @@ To create a baseline for the uSTONKS index, a base price for each stock was chos
 Each stock also is assigned an index value base. The index is equally weighted, so each stock is assigned a base of 10. This means that on 04/14/2021 at close, the uSTONKS index would have been worth 100 with every component making up 1/10th of that index.
  
 To calculate the uSTONKS price, an UMA voter should:
-1. Query for the close price of one component on June 31, 2021. It is recommended that voters use the Google Sheets GOOGLEFINANCE function.
+1. Query for the close price of one component on June 30, 2021. It is recommended that voters use the Google Sheets GOOGLEFINANCE function.
 2. Divide the June 31 price by the base price and multiply by the index value base (10) to get today’s index value. 
 3. Perform this function for each component in the index and sum all of the results together.
 4. Round the result of step three to six decimal places
