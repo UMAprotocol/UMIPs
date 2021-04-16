@@ -63,7 +63,7 @@ The liquidator and disputer bots should use the reference [Uniswap price feed](h
 
 **2. Base Currency** - uVTI_MAY21
 
-**3. Quote currency** - USDC // TODO: USD oracle or divide by USD/USDC price
+**3. Quote currency** - USDC
 
 **4. Intended Collateral Currency** - USDC
 
