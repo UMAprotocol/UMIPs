@@ -29,7 +29,7 @@ For future funding rates, it is likely that a more generalized funding rate iden
 
 - Markets:
 
-Uniswap: ETHBTC_PERP/USDC
+Uniswap: ETHBTC_PERP/DAI
 Coinbase Pro: ETH/BTC
 Binance: ETH/BTC
 Bitstamp: ETH/BTC
@@ -84,13 +84,15 @@ Once these items are taken care of, a [default price feed config](https://github
 ETHBTC_FR: {
     type: "expression",
     expression: `
-        ETHBTC_FV = ETH/BTC * CFRM;
-        max(-0.00001, min(0.00001, (ETHBTC_PERP - ETHBTC_FV) / (ETHBTC_FV) / 86400 * (-1)))
+        ETHBTC_FV = ETH\\/BTC * PERP_FRM;
+        max(-0.00001, min(0.00001, (ETHBTC_FV - ETHBTC_PERP) / ETHBTC_FV / 86400))
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
+    twapLength: 3600,
     customFeeds: {
       ETHBTC_PERP: { type: "uniswap", twapLength: 3600, address: "0xETHBTC_PERP_POOL" },
+      PERP_FRM: { type: "frm", perpetualAddress: "0x32f0405834c4b50be53199628c45603cea3a28aa" },
       "ETH/BTC": {
             type: "medianizer",
             pair: "ethbtc",
@@ -112,17 +114,17 @@ ETHBTC_FR: {
 - Quote currency: None. This is a percentage.
 - Scaling Decimals: 18
 - Rounding: Round to nearest 9 decimal places (10th decimal place digit >= 5 rounds up and < 5 rounds down)
-- Synthetic Name: To be added
-- Synthetic Address: To be added
-- AMM Pool Address: To be added
-- AMM Pair: ETHBTC_PERP/USDC
+- Synthetic Name: Perpetual ETH/BTC (DAI)
+- Synthetic Address: [0xa32321aF5BDAF3C6fEBA2dA7da1d80f33435b73D](https://etherscan.io/address/0xa32321af5bdaf3c6feba2da7da1d80f33435b73d)
+- Uniswap Pool Address: [0x899a45ee5a03D8CC57447157A17CE4Ea4745b199](https://etherscan.io/address/0x899a45ee5a03d8cc57447157a17ce4ea4745b199)
+- Uniswap Pair: ETHBTC_PERP/DAI
 
 ## RATIONALE
 
 To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate times the cumulative funding rate multiplier (CFRM). The funding rate will be determined with the following formula:
 - [ETHBTC-PERP - ETHBTC-FV] / ETHBTC-FV / 86400
 - `ETHBTC-FV` denotes the ETHBTC price gathered with the methodology shown in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md) multiplied by the CFRM.
-- `ETHBTC-PERP` denotes the one hour TWAP of the synthetic created with this funding rate identifier. This synth will be pooled with USDC. 
+- `ETHBTC-PERP` denotes the one hour TWAP of the synthetic created with this funding rate identifier. This synth will be pooled with DAI. 
 - 86400 is the number of seconds in a day. Assuming all other prices stay constant, this effectively gives the funding rate per second that would need to be applied to move a synthetic token's value back to fair value in one day.  
 
 A one hour TWAP is used for the ETHBTC-PERP and ETHBTC-FV rates. This calculation was modeled off of the [FTX Funding rate calculation](https://help.ftx.com/hc/en-us/articles/360027946571-Funding), which also uses a 1-hour TWAP.
@@ -138,9 +140,9 @@ To calculate the ETHBTC-FR, voters should use the following process:
 2. For each query time that was used in the ETHBTC 1-hour TWAP, query for the cumulative funding rate multiplier (CFRM) at the same timestamps.
 3. For each period within the 1-hour TWAP, the corresponding CFRM and ETHBTC rates should be multiplied to get the 1-hour TWAP of ETHBTC * CFRM - referred to in future steps as ETHBTC-FV.
 4. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USD.
-5. Subtract the result of step 3 from the result of step 4. [ETHBTC-PERP - ETHBTC-FV].
+5. Subtract the result of step 4 from the result of step 3. [ETHBTC-FV - ETHBTC-PERP].
 6. Divide the result of step 5 by the ETHBTC-FV rate from step 4. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
-7. Divide the result of step 6 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1.
+7. Divide the result of step 6 by 86400 (# of seconds in a day) to get the funding rate per second.
 8. Implement min and max bounds on this result with: max(-0.00001, min(0.00001, result)).
 9. Voters should then round this result to 9 decimal places.
 
@@ -170,6 +172,6 @@ Voters should use the `cumulativeMultipler` field.
 ## Security Considerations
 Adding this identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of funding rate proposers and disputers that can correctly manage the funding rate process.
 
-The self-referential nature of this identifier introduces additional security concerns. There is a possibility that ETHBTC-PERP price manipulation could be attempted to adjust the funding rate. Add more elaboration. 
+The self-referential nature of this identifier introduces additional security concerns. There is a possibility that ETHBTC-PERP price manipulation could be attempted to adjust the funding rate. 
 
 Additionally, this is the first UMA identifier of its kind. With novelty comes extra risk, as it is possible that this implementation is flawed. If any issues are identified after approval, UMA voters can always edit this implementation or delist this price identifier. 
