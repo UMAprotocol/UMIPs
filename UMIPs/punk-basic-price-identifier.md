@@ -7,7 +7,7 @@
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                  |
 | Created    | April 18, 2021
-| Link to Discourse    | [Link]()
+| Link to Discourse    | [Link](https://discourse.umaproject.org/t/add-punk-baiscusd-and-usdpunk-basic-as-price-identifiers/913)
 
 # SUMMARY
 The DVM should support price requests for the below price indices:
