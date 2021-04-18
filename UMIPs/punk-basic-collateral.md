@@ -7,7 +7,7 @@
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                    |
 | Created    | April 16, 2021                                                                                                                           |
-| [Discourse Link](TBD)    |       
+| [Discourse Link](https://discourse.umaproject.org/t/add-punk-basic-as-collateral/912)    |       
 # Summary (2-5 sentences)
 This UMIP will add PUNK-BASIC as approved collateral currency. This will involve adding PUNK-BASIC to the whitelist and adding flat final fees to charge per-request.
 # Motivation
