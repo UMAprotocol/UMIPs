@@ -5,7 +5,7 @@
 | Authors    | John Shutt (john@umaproject.org) , Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                    |
 | Created    | April 19, 2021                                                                                                                           |
-| [Discourse Link](TBD)    |                                                                                                                     |
+| [Discourse Link](https://discourse.umaproject.org/t/add-ohm-lon-bank-mask-vsp-sfi-frax-mir-orn-and-bond-as-approved-collateral-currencies/919)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
 This UMIP will add OHM, LON, BANK, MASK, VSP, SFI, FRAX, MIR, ORN and BOND as approved collateral currencies.
