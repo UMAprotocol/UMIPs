@@ -9,7 +9,7 @@ Key Performance Indicator (KPI) options are synthetic tokens that redeem to prot
 This UMIP enables the DVM to support price requests based on the TVL of SharedStake.
 A synthetic option is minted against a base collateral, in this case SGT, which expires at 00.00(UTC) December 31th 2021.
 Options are redeemed on the basis of TVL/10^9, with a floor of 0.1 and a ceiling of 2.
-The value locked is calculated by identifying the total values staked within the SGT pool, SGT/ETH LP liquidity mining pool, and vETH2 pool. The dollar value of each of the collateral types is then summed to provide the total value locked.
+The value staked is calculated by identifying the total values staked within the SGT pool, SGT/ETH LP liquidity mining pool, and vETH2 pool. The dollar value of each of the collateral types is then summed to provide the total value locked.
 Motivation
 The primary motivation for the development of KPI options is to allow protocols to incentivize Defi users to assist them to reach the protocol's identified goals. By leveraging their community resources, SharedStake can increase TVL, strengthen their governance token, and share value with their community members.
 Total Value Locked (TVL) is a frequently quoted key performance indicator and one which has a level of prominence in key Defi dashboards as an indicator of the health and growth of a protocol. 
@@ -36,7 +36,7 @@ Required questions
 i.	vETH2 - Should be prices 1 to 1 with ETH and can be found on Kraken, Binance and Coinbase (as per UMIP 6) https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
 ii.	Native ERC20 Token(SGT)
 We recommend using the Uniswap TWAP. 
-iii. Uniswap LP token for SGT/ETH
+iii. Uniswap LP token for SGT/ETH. The pairing address is 0x3d07f6e1627da96b8836190de64c1aed70e3fc55. 
 We recommend using the Uniswap TWAP. Reference UMIP 59. 
 
 Note - see rationale for further discussion
@@ -119,7 +119,7 @@ IMPLEMENTATION
 2.	Pricing interval
 o	This will vary for each value, however, the relevant UMIPs provide a guide to the pricing interval for each
 3.	Input processing
-o	From the list of ExpiringMultiPartyCreator (available at https://github.com/UMAprotocol/protocol/blob/master/packages/affiliates/payouts/devmining-status.json), query all EMP addresses from createExpiringMultiParty() and call pfc() on all of them, repeat same steps for PerpetualCreator and just check the createPerpetual() event, to identify the amount of each collateral type locked in UMA contracts.
+o	https://github.com/SharedStake/Contracts/blob/main/stakingPools.sol can be used to view the staking contracts deployed by SharedStake. 
 •	The dollar value of each contract should then be calculated using the details supplied in the Markets and Data section referencing the relevant UMIPs
 •	These should then be summed to obtain the total value locked (TVL) measured in dollars.
 4.	Result processing
