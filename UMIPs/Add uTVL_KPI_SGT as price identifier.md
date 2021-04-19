@@ -39,6 +39,8 @@ We recommend using the Uniswap TWAP.
 iii. Uniswap LP token for SGT/ETH. The pairing address is 0x3d07f6e1627da96b8836190de64c1aed70e3fc55. 
 We recommend using the Uniswap TWAP. Reference UMIP 59. 
 
+To calculate the USD value in each pool, I recommend finding the total value of tokens staked within https://www.sharedstake.org/earn this earn page and mulitply them by the prices found in the respective uniswap pools. 
+
 Note - see rationale for further discussion
 2.	Which specific pairs should be queried from each market?
 i.	ETH - see UMIP 6
