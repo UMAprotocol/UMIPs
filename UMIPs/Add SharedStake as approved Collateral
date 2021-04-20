@@ -6,7 +6,7 @@ Create: April 9th, 2021
 
 
 Summary
-This UMIP will add SGT as an approved collateral currency. This will involve adding the governance token to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 20 SGT per request.
+This UMIP will add SGT as an approved collateral currency. This will involve adding the governance token to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 30 SGT per request.
 The tokenomics of SGT are continuously evolving, with the DAO driving innovation. Reference https://docs.sharedstake.org/sgt/tokenomics to learn more about the tokenomics and distribution of SGT.
 
 Motivation
@@ -16,12 +16,12 @@ By adding SGT as collateral, Sharedstake will be able to create derivative contr
 
 Technical Specification
 •	The SGT address, 0x84810bcf08744d5862b8181f12d17bfd57d3b078, would need to be whitelisted to add it as collateral, as introduced in UMIP-8. 
-•	A final fee of 20 SGT needs to be added in the store contract.
+•	A final fee of 30 SGT needs to be added in the store contract.
 
 Rationale
 Whitelisting SGT provides another useful collateral option for UMA users interest in Ethereum 2.0 staking options and is a prerequisite for creating KPI option contracts. 
 
-20 SGT was chosen for the fee because this sits around $500, which we have seen other collateral tokens use in the past. 
+30 SGT was chosen for the fee because this sits around $500, which we have seen other collateral tokens use in the past. 
 
 Implementation
 This change has no implementation other than the two aforementioned governor transactions that will be proposed.
