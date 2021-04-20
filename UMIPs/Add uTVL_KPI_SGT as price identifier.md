@@ -9,7 +9,7 @@ Key Performance Indicator (KPI) options are synthetic tokens that redeem to prot
 This UMIP enables the DVM to support price requests based on the TVL of SharedStake.
 A synthetic option is minted against a base collateral, in this case SGT, which expires at 00.00(UTC) December 31th 2021.
 Options are redeemed on the basis of TVL/10^9, with a floor of 0.1 and a ceiling of 2.
-The value staked is calculated by identifying the total values staked within the SGT pool, SGT/ETH LP liquidity mining pool, and vETH2 pool. The dollar value of each of the collateral types is then summed to provide the total value locked.
+The value staked is calculated by identifying the total values staked within the SGT pool, SGT/ETH LP liquidity mining pool, vETH2 pool, and the newly added pools - SGT/vETH2 LP and SaddlevETH2. The dollar value of each of the collateral types is then summed to provide the total value locked.
 Motivation
 The primary motivation for the development of KPI options is to allow protocols to incentivize Defi users to assist them to reach the protocol's identified goals. By leveraging their community resources, SharedStake can increase TVL, strengthen their governance token, and share value with their community members.
 Total Value Locked (TVL) is a frequently quoted key performance indicator and one which has a level of prominence in key Defi dashboards as an indicator of the health and growth of a protocol. 
@@ -19,16 +19,20 @@ What are the financial positions enabled by creating this synthetic that do not 
 •	SharedStake may leverage its community and/or its reputation by minting TVL Options for its token which can be redeemed to a token amount as determined by the TVL of the protocol at the expiry point.
 •	A protocol community member, token holder, voter, or proximal Defi protocol participant may be gifted a TVL option by a protocol as an incentive to build the TVL of the protocol within the option timeframe and redeem at expiry.
 •	Any user may purchase a TVL Option for a protocol that they believe has the potential for growth in TVL prior to expiry.
-3.	The current TVL of SharedStake is approximately $49.4m as at 4:30(UTC) 10th April 2021.
+3.	The current TVL of SharedStake is approximately $37m as at 4:30(UTC) 19th April 2021.
 
 
 Markets and Data Sources
-There are three assets approved as Collateral within SharedStake’s staking contracts. These pools are single sided SGT, SGT/ETH LP, and vETH2 staking. To maintain consistency with existing price identifier UMIPs, it is suggested that TVL is calculated using the deepest Dex pools on Uniswap and Sushiswap.
+There are now five assets approved as Collateral within SharedStake’s staking contracts. These pools are single sided SGT, SGT/ETH LP, vETH2 staking, SGT/vETH2 Uniswap LP, and the Saddle vETH2 pool. To maintain consistency with existing price identifier UMIPs, it is suggested that TVL is calculated using the deepest Dex pools on Uniswap and Sushiswap.
 Additionally, there is a liquidity token that is accepted as collateral at Sharedstake.org, which the TVL can be calculated using the Uniswap liquidity / total circulating supply.
-The contract addresses for the three largest staking pools are as shown below:
+The contract addresses for the five staking pools are as shown below:
 1. SGT: 0xc637dB981e417869814B2Ea2F1bD115d2D993597
 2. SGT/ETH UNIv2 LP: 0x64A1DB33f68695df773924682D2EFb1161B329e8
 3. vETH2: 0xA919D7a5fb7ad4ab6F2aae82b6F39d181A027d35
+4. SGT/vETH2: 0x53dc9d5deb3b7f5cd9a3e4d19a2becda559d57aa
+5. vETH2 Saddle Pool: 0xCF91812631e37C01c443a4fa02DfB59ee2DDbA7c
+
+These pools consist of total tokens stake and the rewards that are to be distributed to stakers. This is easy to navigate with LP tokens by using Etherscan to understand the pools composition and split LPs from SGT rewards. 
 
 It is proposed that these are treated in the above groups for the purposes of determining markets and data sources. For discussion on this see #Rationale
 Required questions
@@ -38,8 +42,10 @@ ii.	Native ERC20 Token(SGT)
 We recommend using the Uniswap TWAP. 
 iii. Uniswap LP token for SGT/ETH. The pairing address is 0x3d07f6e1627da96b8836190de64c1aed70e3fc55. 
 We recommend using the Uniswap TWAP. Reference UMIP 59. 
+iv. Uniswap LP token for SGT/vETH2. The pairing address is 0xc794746df95c4b7043e8d6b521cfecab1b14c6ce. 
+We recommend using the Uniswap TWAP. Reference UMIP 59.
 
-To calculate the USD value in each pool, I recommend finding the total value of tokens staked within https://www.sharedstake.org/earn this earn page and mulitply them by the prices found in the respective uniswap pools. 
+To calculate the USD value in each pool, I recommend finding the total value of tokens staked within the earn page contracts and multiply them by the prices found in the respective uniswap pools. 
 
 Note - see rationale for further discussion
 2.	Which specific pairs should be queried from each market?
@@ -102,31 +108,28 @@ RATIONALE
 •	This synthetic is designed as an incentivization mechanism to leverage the SGT community, our partners and the wider DeFi userbase to grow our protocol as measured by our identified Key Performance Indicator of Total Value Locked.
 •	This price identifier offers a guarantee that these options will be of value, even if this key metric is poor through the floor price mechanism, however the nature of SGT is such that the amount of value that can be locked in the protocol is potentially limitless and consequently a ceiling price is required to limit provide a cap.
 •	The methods used to calculate the dollar value of each of the collateral currencies have been chosen to adhere to previous design decisions in such calculations through UMIPs that have already been approved through our governance procedure however note the following assumptions.
-1.	It is assumed for this purpose that 1vEth2 = 1Eth
-2.	A Liquidity Token (SGT/ETH Uni-V2) is approved to be staked within the SharedStake ecosystem. It is recommended that any additional proposal to add liquidity tokens as approved collateral currencies are evaluated against UMIP 59 and follow those market and data sources to calculate dollar value unless there is good reason for deviance. Note that the calculation of the dollar value of the liquidity token occurs in the penultimate step of the UMIP (Step 5).
-5.There are a variety of price identifiers for native ERC20 tokens. Calculation of the dollar value should follow the relevant UMIP where it exists, and where there is no Price Identifier UMIP, the three highest volume [ERC20]/USD* markets should be queried, and the median value used.
+
+1.  It is assumed that SGT is a native ERC20 token and can be priced through its deepest pool.(Uniswap TWAP)
+2.	It is assumed for this purpose that 1vEth2 = 1Eth
+3.	A Liquidity Token (SGT/ETH Uni-V2) is approved to be staked within the SharedStake ecosystem. 
+4.There are a variety of price identifiers for native ERC20 tokens. Calculation of the dollar value should follow the relevant UMIP where it exists, and where there is no Price Identifier UMIP, the three highest volume [ERC20]/USD* markets should be queried, and the median value used.
 •	There is no need for price processing. This is a snapshot based on a particular time; however, it may be useful for TVL Options holders to have oversight of the ongoing TVL and consequently the value of their options on an ongoing basis. There should be a dashboard developed to track the TVL of SharedStake, which will be proposed through their governance site.
-o	The use of dashboards was considered but rejected due to the potential for manipulation and the differences between their calculations of the values of the collateral assets and the value as determined by the relevant UMIPs in previous KPI calculations.
+o	The use of dashboards was considered and I think it may be valuable to use DeFiLlama if the SharedStake team stays up to date with their additional pools. DeFiLlama remains versatile and willing to make quick updates for accuracy.(https://defillama.com/protocol/sharedstake)
 
 
 IMPLEMENTATION
-•	The contracts to be tracked include
-•	The total value locked is the dollar value of all three pools on SharedStake.org
+•	The total value locked is the dollar value of all five pools on SharedStake.org
 •	The dollar value of each of the contracts should be calculated using the UMIPs and guidance in the Markets and Data section.
 •	These should then be summed to obtain the total value locked (TVL) measured in dollars.
-•	The TVL as measured in dollars should then be divided by 10^9
+
 1.	What prices should be queried for and from which markets?
 •	The dollar value of each of the contracts should be calculated using the UMIPs and guidance in the Markets and Data section.
 •	Where there is no price identifier UMIP, the price should be queried from the highest volume USD* market
-2.	Pricing interval
-o	This will vary for each value, however, the relevant UMIPs provide a guide to the pricing interval for each
-3.	Input processing
+
+2.	Input processing
 o	https://github.com/SharedStake/Contracts/blob/main/stakingPools.sol can be used to view the staking contracts deployed by SharedStake. 
 •	The dollar value of each contract should then be calculated using the details supplied in the Markets and Data section referencing the relevant UMIPs
 •	These should then be summed to obtain the total value locked (TVL) measured in dollars.
-4.	Result processing
-o	Divide TVL by 10^9 and apply the floor and ceiling price rounding.
-
 
 Security considerations
 1.	Where could manipulation occur?
