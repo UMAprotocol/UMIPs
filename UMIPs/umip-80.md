@@ -18,10 +18,6 @@ SharedStake is an initial custodial staking service that allows anyone to stake 
 
 By adding SGT as collateral, Sharedstake will be able to create derivative contracts such as KPI options that will be proposed shortly after. This is an opportunity to incentive growth of the SharedStake platform alongside the usage of KPI options. 
 
-Technical Specification
-- The SGT address, 0x84810bcf08744d5862b8181f12d17bfd57d3b078, would need to be whitelisted to add it as collateral, as introduced in UMIP-8. 
-- A final fee of 30 SGT needs to be added in the store contract.
-
 ## Technical Specification
 To accomplish this upgrade, two changes need to be made:
 - The SGT address, [0x84810bcf08744d5862b8181f12d17bfd57d3b078](https://etherscan.io/token/0x84810bcf08744d5862b8181f12d17bfd57d3b078),  needs to be added to the collateral currency whitelist introduced in UMIP-8. 
