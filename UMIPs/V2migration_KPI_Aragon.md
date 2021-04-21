@@ -63,8 +63,8 @@ This contract will only be called once at expiry, there will be no need to run b
 To request our data end-point for the Aragon KPI options value can you send a simple GET request to ``datafeed.aragon.org``. 
 
 1. **What prices should be queried for and from which markets?**
-    - **Note** - This should match the markets and pairs listed in the `Markets and Data Sources` section.
     - The value of an option is calculated based on all funds migrated from V1 DAOs to V2 DAOs and can get requested from our end-point at: [datafeed.aragon.org](https://datafeed.aragon.org)
+    - The value of those founds are calculated based on the prices provided by [https://www.coingecko.com/](https://www.coingecko.com/) 
 2. **Pricing interval**
     - The pricing interval can be done each day at 00:00.
 3. **Input processing**
