@@ -1,7 +1,7 @@
 # Headers
 | UMIP-79     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | V2migration_KPI_Aragon                                                                                      |
+| UMIP Title | Add V2migration_KPI_Aragon as a Price Identifier                                                                                      |
 | Authors    | Joel and Sam (sam@aragon.one) |
 | Status     | Draft                                                                                                                                    |
 | Created    | April 14, 2021                                                                                                                           |
