@@ -34,14 +34,14 @@ This price identifier will use the [ExpressionPriceFeed](https://github.com/UMAp
 - Rounding: No rounding is necessary. The value returned should always be exactly equal to the value passed in ancillary data, or equal to 1 if no ancillary data is used.
 
 
-When converted from bytes to UTF-8, accompanying ancillary data should follow this format:
+When converted from bytes to UTF-8, the ancillary data should be a dictionary containing a `constant` key like so:
 ```
 constant:2
 ```
 
-2 should be replaced with the constant value that the contract deployer wants to use.
+The `constant` key should return the value that voters should resolve for this identifier. In this example, voters should vote 2.
 
-When stored as bytes, the example above would be: 0x636f6e7374616e743a32.
+When the simple example ancillary data dictionary "constant:2" is stored as bytes, the result would be: 0x636f6e7374616e743a32.
 
 # RATIONALE
 No rationale is needed. The motivation for this price identifier is explained in `motivation` and there is no plausible alternative for how to return a constant value.
@@ -51,7 +51,7 @@ No rationale is needed. The motivation for this price identifier is explained in
 1. Look at the price request and get the ancillary data.
 2. Decode the ancillary data from bytes to UTF-8.
 3. If no ancillary data is provided, or there is ancillary data but it cannot be converted to the format in `Technical Specifications`, return 1. 
-4. If there is ancillary data that maps to the constant:value format, return the `constant` value.
+4. If the ancillary data in UTF-8 contains a `constant` key, return the `constant` value.
 
 # SECURITY CONSIDERATIONS
 
