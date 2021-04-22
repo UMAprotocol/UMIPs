@@ -104,7 +104,7 @@ The post-expiry price implementation can be found at [PENDING]()
 - Price identifier name: `uPUNK`
 - Base Currency: **ETH**
 - Quote Currency: **ETH**
-- Rounding: Round to 6 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
+- Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 - Estimated current value of price identifier: 25ish (as of 21 April 2021 19:34 UTC)
 
 
