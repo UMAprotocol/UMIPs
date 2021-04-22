@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-tbd   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add  OHM, LON, BANK, MASK, VSP, SFI, FRAX, MIR, ORN and BOND as approved collateral currencies              |
+| UMIP Title | Add  OHM, LON, BANK, MASK, VSP, SFI, FRAX, MIR, DEXTF, ORN and BOND as approved collateral currencies              |
 | Authors    | John Shutt (john@umaproject.org) , Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                    |
 | Created    | April 19, 2021                                                                                                                           |
@@ -106,6 +106,19 @@ To accomplish this upgrade, two changes need to be made:
    [FRAX]: https://etherscan.io/token/0x853d955acef822db058eb8505911ed77f175b99e 
      
   ---
+
+## DEXTF (DEXTF Protocol)
+
+### Technical Specification
+To accomplish this upgrade, two changes need to be made:
+
+ * The DEXTF address, [0x5F64Ab1544D28732F0A24F4713c2C8ec0dA089f0][DEXTF], needs to be added to the collateral currency whitelist introduced in UMIP-8.
+ * A final fee of 400 DEXTF needs to be added for DEXTF in the Store contract. 
+
+ [DEXTF]: https://etherscan.io/token/0x5F64Ab1544D28732F0A24F4713c2C8ec0dA089f0
+
+
+---	
 
 
 ## MIR (Mirror Protocol)
