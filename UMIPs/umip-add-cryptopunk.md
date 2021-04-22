@@ -2,21 +2,21 @@
 
 | UMIP [#]            |                                                                           |
 | ------------------- | ------------------------------------------------------------------------- |
-| UMIP Title          | [Add CRYPTOPUNKX-30d as DVM price identifier]                             |
-| Authors             | [Kevin Chan (kevin@umaproject.org), Chase Coleman (chase@umaproject.org)] |
-| Status              | [Draft]                                                                   |
-| Created             | [April 19, 2021]                                                          |
-| Discourse Link      | **Create a post in [UMA's Discourse](https://discourse.umaproject.org/c/umips/18) and link here**            |
+| UMIP Title          | Add uPUNK as DVM price identifier                                         |
+| Authors             | Kevin Chan (kevin@umaproject.org), Chase Coleman (chase@umaproject.org)   |
+| Status              | Draft                                                                     |
+| Created             | April 19, 2021                                                            |
+| Discourse Link      | Coming soon            |
 
 
 # Summary 
 
-This UMIP introduces a new price identifier for a token referred to as `CRYPTOPUNKX-30d`. The token is a synthetic index based on the recent trading prices of CryptoPunks.
+This UMIP introduces a new price identifier for a token referred to as `uPUNK`. The token is a synthetic index based on the recent trading prices of CryptoPunks.
 
-The `CRYPTOPUNKX-30d` token will be valued differently while trading and at expiry:
+The `uPUNK` token will be valued differently while trading and at expiry:
 
-- While `CRYPTOPUNKX-30d` is pre-expiry, the price will be based on the 2-hour TWAP from the highest volume Uniswap `WETH/CRYPTOPUNKX-30d` pool.
-- At expiry, the `CRYPTOPUNKX` will be valued based on the most recent 30 days of CryptoPunk purchases calculated using `PunkBought` events from the Ethereum blockchain. The price will be set using the 30 day median of the most recent purchase price of each CryptoPunk traded during the most recent 30 days.
+- While `uPUNK` is pre-expiry, the price will be based on the 2-hour TWAP from the highest volume Uniswap `WETH/uPUNK` pool.
+- At expiry, the `uPUNK` will be valued based on the most recent 30 days of CryptoPunk purchases calculated using `PunkBought` events from the Ethereum blockchain. The price will be set using the 30 day median of the most recent purchase price of each CryptoPunk traded during the most recent 30 days.
 
 This is similar to how `uGAS` and other self-referential assets have been priced
 
@@ -30,9 +30,9 @@ Creating a CryptoPunks index before branching into other NFTs makes sense becaus
 1. What are the financial positions enabled by creating this synthetic that do not already exist?
   - The DVM does not currently support any NFT based indexes. This token will be the first such index and provide a template for others to be created.
 2. Please provide an example of a person interacting with a contract that uses this price identifier.
-  - A collector wishing to hedge the risk of purchasing a CryptoPunk could mint `CRYPTOPUNKX-30d` which would provide protection against downward price movements in the value of CryptoPunks.
-  - An investor who believes that the median trade price of CryptoPunks will increase could purchase `CRYPTOPUNKX-30d` at its current trading price and then hold until the price appreciated.
-  - An investor who believes that the median trade price of CryptoPunks will decrease could mint `CRYPTOPUNKX-30d` and sell the minted tokens.
+  - A collector wishing to hedge the risk of purchasing a CryptoPunk could mint `uPUNK` which would provide protection against downward price movements in the value of CryptoPunks.
+  - An investor who believes that the median trade price of CryptoPunks will increase could purchase `uPUNK` at its current trading price and then hold until the price appreciated.
+  - An investor who believes that the median trade price of CryptoPunks will decrease could mint `uPUNK` and sell the minted tokens.
 
 
 # Data Specifications
@@ -43,8 +43,8 @@ All relevant price data is computed using information that can be found on the b
 * Post-expiry, the token is valued according to a function of the `PunkBought` events published by the CryptoPunks Market contract
 
 -----------------------------------------
-- Price identifier name: `CRYPTOPUNKX-30d`
-- Markets & Pairs: **Markets & Pairs** - Uniswap `CRYPTOPUNKX-30d/ETH`, CryptoPunk Market contract `PunkBought` events
+- Price identifier name: `uPUNK`
+- Markets & Pairs: **Markets & Pairs** - Uniswap `uPUNK/ETH`, CryptoPunk Market contract `PunkBought` events
 - Example price providers: **Provider to use** - Both Uniswap and `PunkBought` events should be retrieved from on-chain
 - Cost to use: [Infura](https://infura.io/) supports up to 100,000 requests per day for free. Information also available on [The Graph](https://thegraph.com/)
 - Real-time price update frequency: Updated every block
@@ -58,7 +58,7 @@ The pre-expiry price can be determined using the existing [Uniswap price feed](h
 An example configuration for the Uniswap feed is below
 
 ```
-"CRYPTOPUNKX-30d-JUNE21": {
+"uPUNK-JUNE21": {
   type: "uniswap",
   uniswapAddress: {TBD},
   twapLength: 7200
@@ -101,7 +101,7 @@ The post-expiry price implementation can be found at [PENDING]()
 # Technical Specifications
 
 -----------------------------------------
-- Price identifier name: `CRYPTOPUNKX-30d`
+- Price identifier name: `uPUNK`
 - Base Currency: **ETH**
 - Quote Currency: **ETH**
 - Rounding: Round to 6 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
@@ -124,7 +124,7 @@ The price identifier had a few decisions that we believe were important to the d
 
 When a price request is made prior to expiration, the following process should be followed:
 
-1. Identify the `CRYPTOPUNKX-30d/ETH` pool with the highest trade volume on Uniswap
+1. Identify the `uPUNK/ETH` pool with the highest trade volume on Uniswap
 2. Retrieve 2 hour TWAP from the given pool which can be done using the Uniswap Price Feed from UMA's financial templates library
 
 
