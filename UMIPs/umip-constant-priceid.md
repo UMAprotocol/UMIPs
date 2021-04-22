@@ -48,10 +48,10 @@ No rationale is needed. The motivation for this price identifier is explained in
 	
 # IMPLEMENTATION
 
-1. Look at the price request and get the ancillary data.
+1. Query for the `ancillaryData` value from the price request.
 2. Decode the ancillary data from bytes to UTF-8.
-3. If no ancillary data is provided, or there is ancillary data but it cannot be converted to the format in `Technical Specifications`, return 1. 
-4. If the ancillary data in UTF-8 contains a `constant` key, return the `constant` value.
+3. If no ancillary data is provided, or there is ancillary data but it cannot be converted to the format in `Technical Specifications`, return `1`. 
+4. If the ancillary data in UTF-8 contains a `constant` key, return the `constant` value. Voters should disregard any other key:value pairs included in the ancillary data.
 
 # SECURITY CONSIDERATIONS
 
