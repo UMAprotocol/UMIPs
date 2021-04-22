@@ -44,8 +44,8 @@ All relevant price data is computed using information that can be found on the b
 
 -----------------------------------------
 - Price identifier name: `uPUNK`
-- Markets & Pairs: **Markets & Pairs** - Uniswap `uPUNK/ETH`, CryptoPunk Market contract `PunkBought` events
-- Example price providers: **Provider to use** - Both Uniswap and `PunkBought` events should be retrieved from on-chain
+- Markets & Pairs: Uniswap `uPUNK/ETH`, CryptoPunk Market contract `PunkBought` events
+- Example price providers: Both Uniswap and `PunkBought` events should be retrieved from on-chain
 - Cost to use: [Infura](https://infura.io/) supports up to 100,000 requests per day for free. Information also available on [The Graph](https://thegraph.com/)
 - Real-time price update frequency: Updated every block
 - Historical price update frequency: Updated every block
@@ -102,8 +102,8 @@ The post-expiry price implementation can be found at [PENDING]()
 
 -----------------------------------------
 - Price identifier name: `uPUNK`
-- Base Currency: **ETH**
-- Quote Currency: **ETH**
+- Base Currency: median Cryptopunk trade
+- Quote Currency: ETH
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 - Estimated current value of price identifier: 25ish (as of 21 April 2021 19:34 UTC)
 
