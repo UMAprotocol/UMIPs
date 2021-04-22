@@ -134,7 +134,7 @@ When a price request is made post expiration, the following process should be fo
 
 1. Retrieve all CryptoPunk `PunkBought` events from the 30 days prior to expiration
 2. Identify the last price that each CryptoPunk was traded at using the event data
-3. Take the median of these pricese
+3. Take the median of these prices
 
 
 **Example**
