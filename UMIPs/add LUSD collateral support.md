@@ -5,7 +5,7 @@
 | Authors    | Ramy Melo (Ramysmelo@gmail.com) |
 | Status     | Draft                                                                                                                        |
 | Created    | April 22, 2021                                                                                                                           |
-
+| Discourse Link    | https://discourse.umaproject.org/t/add-lusd-collateral-support-to-dvm/929                                                                                                                           |
 ## Summary (2-5 sentences)
 This UMIP will add LUSD as approved collateral currencies. This will involve adding the currencies to the whitelist and adding a flat final fee to charge per-request. The proposed final fee is 400 LUSD per request.
 
