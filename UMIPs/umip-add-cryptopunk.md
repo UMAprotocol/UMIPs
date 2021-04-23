@@ -6,7 +6,7 @@
 | Authors             | Kevin Chan (kevin@umaproject.org), Chase Coleman (chase@umaproject.org)   |
 | Status              | Draft                                                                     |
 | Created             | April 19, 2021                                                            |
-| Discourse Link      | Coming soon                                                               |
+| Discourse Link      | https://discourse.umaproject.org/t/cryptopunks-index/933                  |
 
 
 # Summary 
