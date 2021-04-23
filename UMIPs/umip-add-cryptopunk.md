@@ -2,23 +2,18 @@
 
 | UMIP [#]            |                                                                           |
 | ------------------- | ------------------------------------------------------------------------- |
-| UMIP Title          | Add uPUNK as DVM price identifier                                         |
+| UMIP Title          | Add PUNKETH as DVM price identifier                                       |
 | Authors             | Kevin Chan (kevin@umaproject.org), Chase Coleman (chase@umaproject.org)   |
 | Status              | Draft                                                                     |
 | Created             | April 19, 2021                                                            |
-| Discourse Link      | Coming soon            |
+| Discourse Link      | Coming soon                                                               |
 
 
 # Summary 
 
 This UMIP introduces a new price identifier for a token referred to as `uPUNK`. The token is a synthetic index based on the recent trading prices of CryptoPunks.
 
-The `uPUNK` token will be valued differently while trading and at expiry:
-
-- While `uPUNK` is pre-expiry, the price will be based on the 2-hour TWAP from the highest volume Uniswap `WETH/uPUNK` pool.
-- At expiry, the `uPUNK` will be valued based on the most recent 30 days of CryptoPunk purchases calculated using `PunkBought` events from the Ethereum blockchain. The price will be set using the 30 day median of the most recent purchase price of each CryptoPunk traded during the most recent 30 days.
-
-This is similar to how `uGAS` and other self-referential assets have been priced
+This UMIP is required to support requests for a price that is able to resolve to either the median trade price, as proposed in [UMIP XYZ](./umip-add-cryptopunk-expiry.md), or the 2-hour time-weighted-average-price (TWAP). This price identifier will be used to resolve the expiry price of `uPUNK` by taking the median most recent purchase price (in ETH) of each unique CryptoPunk traded in the last 30 days.
 
 
 # Motivation
@@ -37,15 +32,12 @@ Creating a CryptoPunks index before branching into other NFTs makes sense becaus
 
 # Data Specifications
 
-All relevant price data is computed using information that can be found on the blockchain.
-
-* Pre-expiry, the token is valued according to the price that it trades at in the highest volume Uniswap pool.
-* Post-expiry, the token is valued according to a function of the `PunkBought` events published by the CryptoPunks Market contract
+All relevant price data is computed using information that can be found directly on the blockchain. The token is valued according to a function of the `PunkBought` events published by the CryptoPunks Market contract
 
 -----------------------------------------
-- Price identifier name: `uPUNK`
-- Markets & Pairs: Uniswap `uPUNK/ETH`, CryptoPunk Market contract `PunkBought` events
-- Example price providers: Both Uniswap and `PunkBought` events should be retrieved from on-chain
+- Price identifier name: `PUNKETH`
+- Markets & Pairs: CryptoPunk Market contract `PunkBought` events
+- Example price providers: Infura and The Graph include information on CryptoPunk contract events
 - Cost to use: [Infura](https://infura.io/) supports up to 100,000 requests per day for free. Information also available on [The Graph](https://thegraph.com/)
 - Real-time price update frequency: Updated every block
 - Historical price update frequency: Updated every block
@@ -53,19 +45,7 @@ All relevant price data is computed using information that can be found on the b
 
 # Price Feed Implementation
 
-The pre-expiry price can be determined using the existing [Uniswap price feed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js). The only required input would be determining which pool has the highest volume.
-
-An example configuration for the Uniswap feed is below
-
-```
-"uPUNK-JUNE21": {
-  type: "uniswap",
-  uniswapAddress: {TBD},
-  twapLength: 7200
-},
-```
-
-The post-expiry price would require the creation of a new price feed. The pseudo-code for such an identifier is below:
+This price would require the creation of a new price feed. The pseudo-code for such an identifier is below:
 
 ```
 # Get the PunkBought Events from the cryptopunk contract
@@ -101,11 +81,11 @@ The post-expiry price implementation can be found at [PENDING]()
 # Technical Specifications
 
 -----------------------------------------
-- Price identifier name: `uPUNK`
-- Base Currency: median Cryptopunk trade
+- Price identifier name: `PUNKETH`
+- Base Currency: CryptoPunk
 - Quote Currency: ETH
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 25ish (as of 21 April 2021 19:34 UTC)
+- Estimated current value of price identifier: 22.430000 (as of 21 April 2021 19:34 UTC)
 
 
 # Rationale
@@ -120,24 +100,20 @@ The price identifier had a few decisions that we believe were important to the d
 
 # Implementation
 
-**Pre-expiry**
-
-When a price request is made prior to expiration, the following process should be followed:
-
-1. Identify the `uPUNK/ETH` pool with the highest trade volume on Uniswap
-2. Retrieve 2 hour TWAP from the given pool which can be done using the Uniswap Price Feed from UMA's financial templates library
-
-
-**Post-expiry**
-
-When a price request is made post expiration, the following process should be followed:
+When a price request is made, the following process should be followed:
 
 1. Retrieve all CryptoPunk `PunkBought` events from the 30 days prior to expiration
-2. Identify the last price that each CryptoPunk was traded at using the event data
-3. Take the median of these prices
+2. Identify the last price that each CryptoPunk was traded at using the event data -- Only one price should be produced per CryptoPunk even if they had traded multiple times
+3. Take the median of these prices - If there is an even number of prices, take the mean of the two values closest to the median.
 
 
 **Example**
+
+If the timestamp requested was `1619222400` then:
+
+* We would need to identify all `PunkBought` events from `1619222400 - 30 days -> 1616630400` to `1619222400`
+* Imagine that we had 5 `PunkBought` events with (`ts`, `punk`, `eth`) pairs of `[(1616630450, 1000, 20), (1616631450, 5000, 30), (1616631550, 5000, 35), (1618631550, 6000, 22), (1618632550, 9999, 15)]` then the prices we would use to compute the median would be `[20, 35, 22, 15]`
+* There are an even number of values, so there's no "median value" in the data -- Thus we find the number between the two values closest to the median `[20, 22]` to get a price of `21`
 
 
 # Security Considerations
