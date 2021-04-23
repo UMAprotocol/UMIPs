@@ -2,7 +2,7 @@
 
 | UMIP [#]            |                                                                           |
 | ------------------- | ------------------------------------------------------------------------- |
-| UMIP Title          | Add PUNKETH as DVM price identifier                                       |
+| UMIP Title          | Add PUNKETH as a price identifier                                         |
 | Authors             | Kevin Chan (kevin@umaproject.org), Chase Coleman (chase@umaproject.org)   |
 | Status              | Draft                                                                     |
 | Created             | April 19, 2021                                                            |
@@ -36,7 +36,7 @@ All relevant price data is computed using information that can be found directly
 
 -----------------------------------------
 - Price identifier name: `PUNKETH`
-- Markets & Pairs: CryptoPunk Market contract `PunkBought` events
+- Markets & Pairs: CryptoPunk Market contract `PunkBought` events. The CryptoPunk contract address is `0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB` which you can see at https://etherscan.io/address/0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb
 - Example price providers: Infura and The Graph include information on CryptoPunk contract events
 - Cost to use: [Infura](https://infura.io/) supports up to 100,000 requests per day for free. Information also available on [The Graph](https://thegraph.com/)
 - Real-time price update frequency: Updated every block
@@ -65,7 +65,7 @@ cryptopunk_blockprice = {}
 for event in events:
     if event.cryptopunk not in cryptopunks:
         push(event.cryptopunk, cryptopunks)
-        cryptopunkprice[event.cryptopunk] = {"block": event.block, "value": event.value}
+        cryptopunk_blockprice[event.cryptopunk] = {"block": event.block, "value": event.value}
     else:
         if event.block > cryptopunk_blockprice[event.cryptopunk]["block"]:
             cryptopunk_blockprice[event.cryptopunk] = {"block": event.block, "value": event.value}

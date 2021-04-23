@@ -2,7 +2,7 @@
 
 | UMIP [#]            |                                                                           |
 | ------------------- | ------------------------------------------------------------------------- |
-| UMIP Title          | Add PUNKETH-TWAP as DVM price identifier                                  |
+| UMIP Title          | Add PUNKETH-TWAP as a price identifier                                    |
 | Authors             | Kevin Chan (kevin@umaproject.org), Chase Coleman (chase@umaproject.org)   |
 | Status              | Draft                                                                     |
 | Created             | April 19, 2021                                                            |
