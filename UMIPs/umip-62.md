@@ -151,7 +151,7 @@ As always, voters should determine whether the returned funding rate differs fro
 
 ### Cumulative Funding Rate Multiplier (CFRM) Calculation
 
-The contract specific CFRM is stored on-chain for each perpetual contract. Voters can query this on-chain data in any way that they wish. 
+The contract specific CFRM is stored on-chain for each perpetual contract. Voters can query this on-chain data at the funding rate proposal timestamp in any way that they wish. 
 
 1. Simulate an `applyFundingRate` transaction. An example of this be seen [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/FundingRateMultiplierPriceFeed.js#L86). 
 2. Call `fundingRate` on the ETHBTC-PERP.
