@@ -116,6 +116,7 @@ ETHBTC_FR: {
 - Rounding: Round to nearest 9 decimal places (10th decimal place digit >= 5 rounds up and < 5 rounds down)
 - Synthetic Name: Perpetual ETH/BTC (DAI)
 - Synthetic Address: [0xa32321aF5BDAF3C6fEBA2dA7da1d80f33435b73D](https://etherscan.io/address/0xa32321af5bdaf3c6feba2da7da1d80f33435b73d)
+- Perpetual Contract Address: [0x32F0405834C4b50be53199628C45603Cea3A28aA](https://etherscan.io/address/0x32F0405834C4b50be53199628C45603Cea3A28aA)
 - Uniswap Pool Address: [0x899a45ee5a03D8CC57447157A17CE4Ea4745b199](https://etherscan.io/address/0x899a45ee5a03d8cc57447157a17ce4ea4745b199)
 - Uniswap Pair: ETHBTC_PERP/DAI
 
@@ -136,12 +137,12 @@ Min and max bounds of -0.00001 and 0.00001 were chosen because these are the fun
 ## IMPLEMENTATION
 To calculate the ETHBTC-FR, voters should use the following process:
 
-1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the 1-hour ETHBTC TWAP, ending at the disputed funding rate proposal timestamp. This will consist of ~60 queries for the close price of each 60 second price period in that hour.
-2. For each query time that was used in the ETHBTC 1-hour TWAP, query for the cumulative funding rate multiplier (CFRM) at the same timestamps.
-3. For each period within the 1-hour TWAP, the corresponding CFRM and ETHBTC rates should be multiplied to get the 1-hour TWAP of ETHBTC * CFRM - referred to in future steps as ETHBTC-FV.
-4. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USD.
+1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the 1-hour ETHBTC TWAP, ending at the disputed funding rate proposal timestamp. This will consist of 60 queries for the close price of each 60 second ohlc period in that hour. Note that voters should calculate three separate 1-hour TWAPs, one for each exchange in UMIP-2, and then medianize these. 
+2. Query for the cumulative funding rate multiplier (CFRM) at the price request timestamp.
+3. The 1-hour ETHBTC TWAP and the CFRM should then be multiplied - this result is referred to in future steps as ETHBTC-FV.
+4. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in DAI. This rate should be left as is, with no conversion made between DAI and USD.
 5. Subtract the result of step 4 from the result of step 3. [ETHBTC-FV - ETHBTC-PERP].
-6. Divide the result of step 5 by the ETHBTC-FV rate from step 4. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
+6. Divide the result of step 5 by the ETHBTC-FV rate from step 4. [ETHBTC-FV - ETHBTC-PERP]/ETHBTC-FV.
 7. Divide the result of step 6 by 86400 (# of seconds in a day) to get the funding rate per second.
 8. Implement min and max bounds on this result with: max(-0.00001, min(0.00001, result)).
 9. Voters should then round this result to 9 decimal places.
@@ -150,9 +151,10 @@ As always, voters should determine whether the returned funding rate differs fro
 
 ### Cumulative Funding Rate Multiplier (CFRM) Calculation
 
-The contract specific CFRM is stored on-chain for each perpetual contract. Voters can query this on-chain data in any way that they wish, for the block that the funding rate request was made in. 
+The contract specific CFRM is stored on-chain for each perpetual contract. Voters can query this on-chain data in any way that they wish. 
 
-1. Call the `fundingRate` method on the ETHBTC-PERP.
+1. Simulate an `applyFundingRate` transaction. An example of this be seen [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/FundingRateMultiplierPriceFeed.js#L86). 
+2. Call `fundingRate` on the ETHBTC-PERP.
 
 The results will be in this format:
 
@@ -167,7 +169,7 @@ The results will be in this format:
 }
 ```
 
-Voters should use the `cumulativeMultipler` field.
+Voters should use the `cumulativeMultipler` value. 
 
 ## Security Considerations
 Adding this identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of funding rate proposers and disputers that can correctly manage the funding rate process.
