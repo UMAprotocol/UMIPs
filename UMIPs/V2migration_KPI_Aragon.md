@@ -31,7 +31,7 @@ As there is no requirement for ongoing monitoring through liquidation or dispute
 
 **1. Price Identifier Name** - V2migration_KPI_Aragon
 
-**2. Base Currency** - V2migration_Aragon
+**2. Base Currency** - V2migration_KPI_Aragon
 
 **3. Quote currency** - NA
 
