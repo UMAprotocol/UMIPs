@@ -12,7 +12,7 @@
 
 # Summary 
 
-The DVM should support price requests for **Price Identifier Name**. **Price Identifier name** reflects the **Summary of Price Identifier**.
+The DVM should support price requests for **Price Identifier Name**. **Price Identifier Name** reflects the **Summary of Price Identifier**.
 
 
 # Motivation
@@ -21,17 +21,17 @@ The DVM should support price requests for **Price Identifier Name**. **Price Ide
 
 # Data Specifications
 
-*How should voters access the data necessary to calculate the value of this price identifier? What specific markets should be referenced?*
+*How should voters access the data necessary to calculate the value of this price identifier? What specific markets or data sources should be referenced?*
 
-*If proposing multiple price identifiers, please add markets for each.*
+*If proposing multiple price identifiers, please add markets or other data sources for each.*
 
 -----------------------------------------
 - Price identifier name: **First Price ID Name** 
 - Markets & Pairs: **Markets & Pairs** - *Example: Binance ETH/USDT, Coinbase Pro ETH/USD. This might not apply to all price identifiers*
-- Example price providers: **Provider to use** - *Cryptowatch, TraderMade, Quandl, the Graph*
+- Example data providers: **Provider to use** - *Cryptowatch, TraderMade, Quandl, the Graph*
 - Cost to use: **Explanation or link to provider pricing plan**
-- Real-time price update frequency: **Frequency** - *60 seconds*
-- Historical price update frequency: **Frequency** - *5 minutes*
+- Real-time data update frequency: **Frequency** - *60 seconds*
+- Historical data update frequency: **Frequency** - *5 minutes*
 
 # Price Feed Implementation
 
@@ -76,7 +76,7 @@ Existing price feeds include: (*Please remove before submission*)
 # Security Considerations
 
 Some optional questions to consider: (*Please remove before submission*)
-- How could price manipulation occur?
+- How could pricing data manipulation occur?
 - How could this price ID be exploited?
 - Do the instructions for determining the price provide people with enough certainty?
 - What are current or future concern possibilities with the way the price identifier is defined?
