@@ -24,7 +24,7 @@ None. This price identifier is just a constant and does not refer to any market.
 
 # PRICE FEED IMPLEMENTATION
 
-This price identifier will use the [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js). To use ancillary data with this price identifier, a features will need to be added to the price feeds to allow for the decoding and use of ancillary data. Since this price identifier can be used without ancillary data, it should not be blocked by the lack of ancillary data functionality in the price feeds.
+This price identifier will use the [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js). To use ancillary data with this price identifier, a feature will need to be added to the price feeds to allow for the decoding and use of ancillary data. Since this price identifier can be used without ancillary data, it should not be blocked by the lack of ancillary data functionality in the price feeds.
 
 # TECHNICAL SPECIFICATIONS
 
@@ -39,7 +39,7 @@ When converted from bytes to UTF-8, the ancillary data should be a dictionary co
 constant:2
 ```
 
-The `constant` key should return the value that voters should resolve for this identifier. In this example, voters should vote 2.
+The `constant` key should return the value that voters should resolve for this identifier. In this example, voters should vote 2. This value should not be scaled and should be returned exactly as is.
 
 When the simple example ancillary data dictionary "constant:2" is stored as bytes, the result would be: 0x636f6e7374616e743a32.
 
