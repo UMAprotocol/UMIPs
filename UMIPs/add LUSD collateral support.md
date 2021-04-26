@@ -39,18 +39,18 @@ incentivized on-chain mechanism to maintain stability through a processed referr
 
 A redemption is the process of exchanging LUSD for ETH at face value, as if 1 LUSD is exactly worth $1. That is, for x
 LUSD you get x Dollars worth of ETH in return. Users can redeem their LUSD for ETH at any time without limitations.
-However, a redemption fee might be charged on the redeemed amount. 
+However, a redemption fee might be charged on the redeemed amount.
 
-For example, if the current redemption fee is 1%, the
-price of ETH is $500 and you redeem 100 LUSD, you would get 0.198 ETH (0.2 ETH minus a redemption fee of 0.002 ETH).
-Note that the redeemed amount is taken into account for calculating the base rate and might have an impact on the
-redemption fee, especially if the amount is large.
+For example, if the current redemption fee is 1%, the price of ETH is $500 and you redeem 100 LUSD, you would get 0.198
+ETH (0.2 ETH minus a redemption fee of 0.002 ETH). Note that the redeemed amount is taken into account for calculating
+the base rate and might have an impact on the redemption fee, especially if the amount is large.
 
 Redemption fees are based on the baseRate state variable in Liquity, which is dynamically updated. The baseRate
 increases with each redemption, and decays according to time passed since the last fee event - i.e. the last redemption
 or issuance of LUSD.
 
 Under normal operation, the redemption fee is given by the formula:
+
 ```
 redemption_fee = baseRate * ETHDrawn
 ```
@@ -63,7 +63,6 @@ approved stablecoins.
 |DAI  | [UMIP-8](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-8.md) | 400
 |rDAI  | [UMIP-17](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-17.md) | 400
 |USDC; USDT  | [UMIP-18](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-18.md) | 400
-
 
 ## Implementation
 
