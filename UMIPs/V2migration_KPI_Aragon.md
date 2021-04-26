@@ -2,7 +2,7 @@
 | UMIP-79     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add V2migration_KPI_Aragon as a Price Identifier                                                                                      |
-| Authors    | Joel and Sam (sam@aragon.one) |
+| Authors    | Ramon (ramon@aragon.org), Sam (sam@aragon.one) |
 | Status     | Draft                                                                                                                                    |
 | Created    | April 14, 2021                                                                                                                           |
 | Forum      | https://forum.aragon.org/t/kpi-options-using-uma-protocol/2633                                                                           |
@@ -15,7 +15,9 @@ The purpose of this UMIP is to add support for the KPI option price feed for the
 
 Nearly all DAOs created with Aragon are currently on Aragon v1. With the launch of Aragon v2, we would like to incentivise Aragon DAOs to transition from Aragon v1 to Aragon v2. To incentivise this upgrade, we’re proposing to use KPI options as a mechanism to accelerate the transition to Aragon v2.
 
-The options will be distributed to all Aragon v1 DAOs that go through the migration (the amount of options will be proportional to their assets). At the option expiry, DAOs that hold the option will be able to claim/exchange them for the ANT reward. The price for each option will be dependant on the total AUM on v2 DAOs (meaning that if more DAOs migrate, the more the options will be worth it), respecting a top threshold of 0,1 ANT per option. 
+The options will be distributed to Aragon v1 DAOs that go through the migration (the amount of options will be proportional to their assets). At the option expiry, DAOs that hold the option will be able to claim/exchange them for the ANT reward. The price for each option will be dependant on the total AUM on v2 DAOs (meaning that if more DAOs migrate, the more the options will be worth it), respecting a top threshold of 0,1 ANT per option. 
+
+**IMPORTANT**: Only DAOs created before the publish of the reward program are elligible to receive the options. The publish happened on Mar 30, 2021, 0:00 PM UTC, through this Snapshot proposal - https://snapshot.org/#/aragon/proposal/QmXDBG7ZdCfg4fSRDhSwNSsdXggjsLapP9q3ijArysS56C
 
 # **MARKETS & DATA SOURCES**
 
@@ -58,8 +60,7 @@ More informatino about the program can be found on these tow proposals on snapsh
 
 # **IMPLEMENTATION**
 
-- The value of an option can get determined be performing a GET request at the following endpoint provided by the Aragon Association: [datafeed.aragon.org](https://datafeed.aragon.org)
-- The total value locked is the Aragon AUM within the EMP contract of UMA.
+The value of an option can get determined be performing a GET request at the following endpoint provided by the Aragon Association: [datafeed.aragon.org](https://datafeed.aragon.org)
 
 To request our data end-point for the Aragon KPI options value can you send a simple GET request to ``datafeed.aragon.org``.
 This request will return you the following response body:
@@ -82,10 +83,15 @@ This request will return you the following response body:
     - The following calculation is done: Option price (in ANT) = 100k*(Total assets migrated by DAOs to v2 in USD/100MM USD) / 1MM 
     - 100k - amount of ANT collateral allocated to reward program
     - 1MM - amount of options that will be issued
-    - Amount of optinos that will be redeemable by each DAO = (Amount of assets the DAO migrated in USD)/100MM USD * 1MM 
+    - Upperbound for migrated assets (meaning, upperbound the reward program will pay for) - USD 100MM
+    - Amount of options that will be redeemable by each DAO = (Amount of assets the DAO migrated in USD)/100MM USD * 1MM 
+5. **Upperbound exceeded**
+    - Since there is an upperbound of migrated assets that are eligible for this program (100MM USD), if a DAO migrates anything above it, it will not receive the full amount of options. Example: 5 DAOs already migrated 90MM of assets, which means 900M options have already being distributed. The 6th DAO then migrates another 20MM in assets - In this scenario the 6th DAO will receive only 100M options, and not 200M, since we've reached the upperbound. This program works in a first come, first served way.
 
-For the migration of funds of a V1 DAO to a V2 DAO does the user create a proposal to vote about the migration. If the proposal for the migration got accepted will it: 
-1. Call GovernBaseFactory and create a Govern + Queue pair registered by a name in the GovernRegistry.
+6, **Migration mechanics**
+The migration of funds of a V1 DAO to a V2 DAO will be done in the following way:
+1. User create a proposal on v1 DAO to vote about the migration. If the proposal for the migration is accepted it will: 
+2. Call GovernBaseFactory and create a Govern + Queue pair registered by a name in the GovernRegistry.
 3. Optionally register the DAO governance token in the L2 voting system (Aragon Voice).
 4. Transfer the funds from the V1 Vault contract to the V2 Govern contract.
 
@@ -100,8 +106,6 @@ Involved contracts:
     - Voting (``0xfcc089230e47d9376fcbd7177164c095ce8e9f23``): https://github.com/aragon/aragon-apps/blob/master/apps/voting/contracts/Voting.sol 
 
 # **Security considerations**
-
-**Example questions**
 
 1. Where could manipulation occur?
     - There is little possibly of the DAO's manipulate the system since the metric is specifically for the migration from V1 to V2. Meaning the current state of the Aragon DAO system is finite
