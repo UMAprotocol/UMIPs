@@ -55,7 +55,7 @@ This synthetic is designed as an incentivisation mechanism to push the Aragon DA
 
 This contract will only be called once at expiry, there will be no need to run bots, thus this price feed is only applicable at the expiry timestamp.
 
-More informatino about the program can be found on these tow proposals on snapshot: [Proposal 1 - The reward program and ANT collateral](https://snapshot.org/#/aragon/proposal/QmXDBG7ZdCfg4fSRDhSwNSsdXggjsLapP9q3ijArysS56C) and [Proposal 2 - Upper AUM threshold for the program](https://snapshot.org/#/aragon/proposal/QmXq7KzLPQUeqxQ9cceoHwFR3oxoq7oTHHeNLfhrXNehJ9)
+More information about the program can be found on these two proposals on snapshot: [Proposal 1 - The reward program and ANT collateral](https://snapshot.org/#/aragon/proposal/QmXDBG7ZdCfg4fSRDhSwNSsdXggjsLapP9q3ijArysS56C) and [Proposal 2 - Upper AUM threshold for the program](https://snapshot.org/#/aragon/proposal/QmXq7KzLPQUeqxQ9cceoHwFR3oxoq7oTHHeNLfhrXNehJ9)
 
 
 # **IMPLEMENTATION**
