@@ -60,7 +60,14 @@ This contract will only be called once at expiry, there will be no need to run b
 - The value of an option can get determined simply requesting it at the following end-point provided by the Aragon Association: [datafeed.aragon.org](https://datafeed.aragon.org)
 - The total value locked is the Aragon AUM within the EMP contract of UMA.
 
-To request our data end-point for the Aragon KPI options value can you send a simple GET request to ``datafeed.aragon.org``. 
+To request our data end-point for the Aragon KPI options value can you send a simple GET request to ``datafeed.aragon.org``.
+This request will return you the following response body:
+```
+{
+    value: <Value of a option in ANT>
+    timestamp: <Timestamp to know the exact time of the calculation in our backend>
+} 
+```
 
 1. **What prices should be queried for and from which markets?**
     - The value of an option is calculated based on all funds migrated from V1 DAOs to V2 DAOs and can get requested from our end-point at: [datafeed.aragon.org](https://datafeed.aragon.org)
@@ -72,6 +79,21 @@ To request our data end-point for the Aragon KPI options value can you send a si
 4. **Result processing**
     - The result doesn't need any further processing because our end-point will directly provide the correctly calculated value of an option.
     - The following calculation is done: Option price (in ANT) = 100k*(total migrated asset/100MM) / 1MM 
+
+For the migration of funds of a V1 DAO to a V2 DAO does the user create a proposal to vote about the migration. If the proposal for the migration got accepted will it: 
+1. Call GovernBaseFactory and create a Govern + Queue pair registered by a name in the GovernRegistry.
+3. Optionally register the DAO governance token in the L2 voting system (Aragon Voice).
+4. Transfer the funds from the V1 Vault contract to the V2 Govern contract.
+
+Involved contracts:
+- V2:
+    - GovernBaseFactory (``0xc03710063b0e4435f997A0B1bbdf2680A2f07E13``): https://github.com/aragon/govern/blob/develop/packages/govern-create/contracts/GovernBaseFactory.sol
+    - GovernRegistry (``0x7714e0a2A2DA090C2bbba9199A54B903bB83A73d``): https://github.com/aragon/govern/blob/develop/packages/govern-core/contracts/GovernRegistry.sol 
+    - Govern: https://github.com/aragon/govern/blob/develop/packages/govern-core/contracts/Govern.sol 
+    - Queue: https://github.com/aragon/govern/blob/develop/packages/govern-core/contracts/pipelines/GovernQueue.sol 
+- V1:
+    - Vault (``0xfcc089230e47d9376fcbd7177164c095ce8e9f23``): https://github.com/aragon/aragon-apps/blob/master/apps/vault/contracts/Vault.sol
+    - Voting (``0xfcc089230e47d9376fcbd7177164c095ce8e9f23``): https://github.com/aragon/aragon-apps/blob/master/apps/voting/contracts/Voting.sol 
 
 # **Security considerations**
 
