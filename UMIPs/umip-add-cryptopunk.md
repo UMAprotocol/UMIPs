@@ -9,7 +9,7 @@
 | Discourse Link      | https://discourse.umaproject.org/t/cryptopunks-index/933                  |
 
 
-# Summary 
+# Summary
 
 This UMIP introduces two new price identifiers for a token referred to as `uPUNK`. The token is a synthetic index based on the recent trading prices of CryptoPunks.
 
@@ -132,7 +132,7 @@ An example configuration for the Uniswap feed is below
 The `PUNKETH` price identifier had a few decisions that we believe were important to the design:
 
 * _CryptoPunks_: As mentioned earlier in this document, we chose to build an index using CryptoPunks because they were the original NFT. This originality has lead to them being highly valued and having consistent enough trade volume.
-* _30 day average_: The 30 day average allows for the index to reflect common trading prices a cross many CryptoPunks rather than to respond to particular transactions
+* _30 day median_: The 30 day median allows for the index to reflect common trading prices across many CryptoPunks rather than to respond to particular transactions
 * _Unique CryptoPunks_: We only use the most recent trade price for each CryptoPunk. This is a security feature since if we used each transaction then a single person could trade one CryptoPunk amongst accounts they owned to manipulate the price.
 * _Median rather than the mean_: Calculating the mean incorporates the price of every single transaction which means that someone who owned a single CryptoPunk could have a small effect on the price. The median can still be manipulated but, given the uniqueness restriction above, it would require someone to own enough CryptoPunks to make up half of the monthly transactions.
 
@@ -157,7 +157,7 @@ When a price request is made, the following process should be followed:
 If the timestamp requested was `1619222400` then:
 
 * We would need to identify all `PunkBought` events from `1619222400 - 30 days -> 1616630400` to `1619222400`
-* Imagine that we had 5 `PunkBought` events with (`ts`, `punk`, `eth`) pairs of `[(1616630450, 1000, 20), (1616631450, 5000, 30), (1616631550, 5000, 35), (1618631550, 6000, 22), (1618632550, 9999, 15)]` then the prices we would use to compute the median would be `[20, 35, 22, 15]`
+* Imagine that we had 5 `PunkBought` events with (`ts`, `punk_id`, `eth`) pairs of `[(1616630450, 1000, 20), (1616631450, 5000, 30), (1616631550, 5000, 35), (1618631550, 6000, 22), (1618632550, 9999, 15)]` then the prices we would use to compute the median would be `[20, 35, 22, 15]`
 * There are an even number of values, so there's no "median value" in the data -- Thus we find the number between the two values closest to the median `[20, 22]` to get a price of `21`
 
 ### PUNKETH-TWAP
@@ -189,7 +189,7 @@ One of the main concerns is that someone with sufficient CryptoPunks chooses to 
 
 For example, there are accounts that own about 400 unique CryptoPunks and the unique number of CryptoPunks that traded in the last 30 days is about 600. An individual who owns 400 CryptoPunks and traded them amongst their own accounts at prices near zero could corrupt the price by driving it to zero after having minted and sold the tokens at a high price.
 
-One benefit to using an oracle with human intervention is that voters could recognize this type of price manipulation and there are other viable proxies for the expected price of a CryptoPunk. For example, if voters felt like there was price manipulation, they could choose to settle the contract at the current market price of `PUNKBASIC` or other 
+One benefit to using an oracle with human intervention is that voters could recognize this type of price manipulation and there are other viable proxies for the expected price of a CryptoPunk. For example, if voters felt like there was price manipulation, they could choose to settle the contract at the current market price of `PUNKBASIC` or other
 
 The other main concern is if there were just insufficient CryptoPunk trades being made. If there were only 1-2 trades happening every 30 days, this index becomes much less useful because there's less information contained in its price.
 
@@ -198,6 +198,6 @@ The other main concern is if there were just insufficient CryptoPunk trades bein
 The main concerns of the TWAP price are:
 
 1. **Token price manipulation**: If the Uniswap pool is not sufficiently liquid, then attackers could try to drive down the Uniswap price and withdraw more collateral than intended. Most DeFi attacks have been done using flash loans, but flash loans would be ineffective since the price is measured at the end of each block. Collateralizaton based on the TWAP price would make it more capital intensive (and thus risky) to target the token price in this way.
-2. **TWAP mismatch**: If the price of the token rises quickly then there would become a mismatch between the market price and the TWAP price. This might allow sponsers to mint tokens with less collateral than what they could seel them for on the market. Reasonable levels of collateralizaton requirements and the 2 hour "liveness period" help combat this concern.
+2. **TWAP mismatch**: If the price of the token rises quickly then there would become a mismatch between the market price and the TWAP price. This might allow sponsers to mint tokens with less collateral than what they could sell them for on the market. Reasonable levels of collateralizaton requirements and the 2 hour "liveness period" help combat this concern.
 
 Both of these concerns are originally discussed in [UMIP 22](./umip-22.md)
