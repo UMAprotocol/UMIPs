@@ -7,8 +7,6 @@
 | Created    | April 14, 2021                                                                                                                           |
 | Forum      | https://forum.aragon.org/t/kpi-options-using-uma-protocol/2633                                                                           |
 
-Note that an UMIP number will be assigned by an editor. When opening a pull request to submit your UMIP, please use an abbreviated title in the filename, umip-draft_title_abbrev.md. The title should be 44 characters or less.
-
 # **SUMMARY**
 
 The purpose of this UMIP is to add support for the KPI option price feed for the Aragon KPI option airdrop. The purpose of this UMIP is to support the KPI option price feed for the eventual payout of the options to the recipients of the airdrop.
