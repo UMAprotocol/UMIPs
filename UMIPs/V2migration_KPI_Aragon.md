@@ -88,8 +88,8 @@ This request will return you the following response body:
 5. **Upperbound exceeded**
     - Since there is an upperbound of migrated assets that are eligible for this program (100MM USD), if a DAO migrates anything above it, it will not receive the full amount of options. Example: 5 DAOs already migrated 90MM of assets, which means 900M options have already being distributed. The 6th DAO then migrates another 20MM in assets - In this scenario the 6th DAO will receive only 100M options, and not 200M, since we've reached the upperbound. This program works in a first come, first served way.
 
-6, **Migration mechanics**
-The migration of funds of a V1 DAO to a V2 DAO will be done in the following way:
+6. **Migration mechanics**
+- The migration of funds of a V1 DAO to a V2 DAO will be done in the following way:
 1. User create a proposal on v1 DAO to vote about the migration. If the proposal for the migration is accepted it will: 
 2. Call GovernBaseFactory and create a Govern + Queue pair registered by a name in the GovernRegistry.
 3. Optionally register the DAO governance token in the L2 voting system (Aragon Voice).
