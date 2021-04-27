@@ -1,14 +1,14 @@
 ## Headers
-| UMIP-tbd   |                                                                                                                                          |
+| UMIP-82   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add LON, BANK, MASK, VSP, SFI, FRAX, DEXTF, ORN and BOND as approved collateral currencies           |
+| UMIP Title | Add LON, BANK, MASK, VSP, SFI, FRAX, DEXTF, ORN, BOND and PUNK-BASIC as approved collateral currencies           |
 | Authors    | John Shutt (john@umaproject.org) , Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | April 19, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-ohm-lon-bank-mask-vsp-sfi-frax-mir-orn-and-bond-as-approved-collateral-currencies/919)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
-This UMIP will add  LON, BANK, MASK, VSP, SFI, FRAX, ORN and BOND as approved collateral currencies.
+This UMIP will add  LON, BANK, MASK, VSP, SFI, FRAX, ORN, BOND and PUNK-BASIC as approved collateral currencies.
 This will involve adding each of these tokens to the whitelist and adding flat final fees to charge per-request.
 
 # Motivation
@@ -107,19 +107,6 @@ To accomplish this upgrade, two changes need to be made:
 
 ---	
 
-
-    
-## BOND (BarnBridge)
-
-   ### Technical Specification
-   To accomplish this upgrade, two changes need to be made:
-
-   * The BOND address, [0x0391d2021f89dc339f60fff84546ea23e337750f][BOND], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-   * A final fee of 10 BOND needs to be added for BOND in the Store contract.
-
-   [BOND]: https://etherscan.io/token/0x0391d2021f89dc339f60fff84546ea23e337750f 
-     
-  ---
 ## ORN (Orion Protocol)
 
   ### Technical Specification
@@ -132,6 +119,30 @@ To accomplish this upgrade, two changes need to be made:
    
 
  ---
+    
+## BOND (BarnBridge)
+
+   ### Technical Specification
+   To accomplish this upgrade, two changes need to be made:
+
+   * The BOND address, [0x0391d2021f89dc339f60fff84546ea23e337750f][BOND], needs to be added to the collateral currency whitelist introduced in UMIP-8.
+   * A final fee of 10 BOND needs to be added for BOND in the Store contract.
+
+   [BOND]: https://etherscan.io/token/0x0391d2021f89dc339f60fff84546ea23e337750f 
+     
+  ---
+
+## PUNK-BASIC (Punk Basic)
+
+   ### Technical Specification
+   To accomplish this upgrade, two changes need to be made:
+
+   * The PUNK-BASIC address, [0x69bbe2fa02b4d90a944ff328663667dc32786385][PUNK-BASIC], needs to be added to the collateral currency whitelist introduced in UMIP-8.
+   * A final fee of 0.009 PUNK-BASIC needs to be added for PUNK-BASIC in the Store contract. 
+
+  [PUNK-BASIC]: https://etherscan.io/token/0x69bbe2fa02b4d90a944ff328663667dc32786385
+     
+  ---
 
 # Security considerations
 
