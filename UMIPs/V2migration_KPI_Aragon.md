@@ -66,8 +66,9 @@ To request our data end-point for the Aragon KPI options value can you send a si
 This request will return you the following response body:
 ```
 {
-    value: <Value of a option in ANT>
-    timestamp: <Timestamp to know the exact time of the calculation in our backend>
+    value: <Value of a option in ANT>,
+    migratedAssets: <Total USD value of migrated assets>,
+    timestamp: <Timestamp of the last DAO migration>
 } 
 ```
 
@@ -104,6 +105,21 @@ Involved contracts:
 - V1:
     - Vault (``0xfcc089230e47d9376fcbd7177164c095ce8e9f23``): https://github.com/aragon/aragon-apps/blob/master/apps/vault/contracts/Vault.sol
     - Voting (``0xfcc089230e47d9376fcbd7177164c095ce8e9f23``): https://github.com/aragon/aragon-apps/blob/master/apps/voting/contracts/Voting.sol 
+
+7. **Calculation rules**
+
+The calculation is done by Aragon backend (code available here [https://github.com/aragon/v2-datafeed](https://github.com/aragon/v2-datafeed))
+
+- v1 DAO creates a target v1 DAO
+- v1 DAO submits a voting proposal to migrate to the previously created v2 DAO
+- When the migration is approved and executed, v1 DAO's assets are transferred to the v2 DAO
+- Information about migrated assets are stored in a subgraph that will be tracking these migrations
+- A background service will be scrapping the subgraph to compute the price of the migrated value in USD using the Coingecko API
+- These prices are stored in our service and can be accessed through a REST API
+- Total migrated value is updated every time a new v2 DAO is detected by the service
+- DAO is entitled to receive - ((DAO migrated assets) USD/100M USD) * 1M options
+- Option price (in ANT) is calculated with formula - ((Total migrated assets) USD/100M USD) * (100k ANT / 1M options)
+- If upper threshold is reached, option price is then fixed at 0.1 ANT
 
 # **Security considerations**
 
