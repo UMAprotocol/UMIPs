@@ -17,7 +17,7 @@ The DVM should support price requests for the below price indexes:
 
 The DVM currently does not support the iFARM/USD and USD/iFARM price identifiers.  
 
-Harvest Finance tokenized is profit sharing pool for FARM as an interest bearing receipt iFARM. Users that tokenized FARM in our vaults receive a corresponding “i” denominated token in return that represents their vault position. These iFARM tokens compound interest while remaining in the users wallet to be held, exchanged for other assets or staked on other platforms.  Many of our users would like to borrow against their iFARM positions as collateral to borrow other cryptocurrencies. At the time of writing, Harvest Finance has $534 million in TVL with FARM/iFARM representing approximately $150M in TVL.
+Harvest Finance tokenized its profit sharing pool for FARM as an interest bearing receipt iFARM. Users that tokenized FARM in our vaults receive a corresponding “i” denominated token in return that represents their vault position. These iFARM tokens compound interest while remaining in the users wallet to be held, exchanged for other assets or staked on other platforms.  Many of our users would like to borrow against their iFARM positions as collateral to borrow other cryptocurrencies. At the time of writing, Harvest Finance has $534 million in TVL with FARM/iFARM representing approximately $150M in TVL.
 
 **FARM**
 -"A key innovation of the $FARM token is that it entitles holders to a performance fee (currently 30%) taken from Harvest's yield farming strategies." View[FARM tokenomics on Wiki](https://farm.chainwiki.dev/en/supply)
@@ -27,7 +27,7 @@ Harvest Finance tokenized is profit sharing pool for FARM as an interest bearing
 **iFARM**
 - Represents staked FARM in the profit sharing pool.  Is is an interest bearing receipt whose underlying value is based on FARM.  The relationship between FARM and iFARM is governed by the exchange rate in the iFARM contract which increases over time in relation to the amount of FARM distributed in the profit share vault.
 
-Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collateralization of iFARM to borrow against iFARM and use that associate credit to purchase other cryptocurrencies. It enables token stakers to leverage their vaulted positions in iFARM.  This would allow Alice to use 100 iFARM (worth $2860 at current FARM prices) to create 800 USD synth tokens (worth $800).  At expiry, Alice could redeem her 800 USD synthetic tokens for the USD amount of iFARM the USD synthetic tokens are worth.  Once this is complete, she could then withdrawal the rest of her collateral.
+Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collateralization of iFARM to borrow against iFARM and use that associated credit to purchase other cryptocurrencies. It enables token stakers to leverage their vaulted positions in iFARM.  This would allow Alice to use 10 iFARM (worth $2860 for example if FARM price is $286 and her iFARM has not yet appreciated) to create 800 USD synth tokens (worth $800).  At expiry, Alice could redeem her 800 USD synthetic tokens for the USD amount of iFARM the USD synthetic tokens are worth.  Once this is complete, she could then withdrawal the rest of her collateral.
 
 # MARKETS & DATA SOURCES
 
@@ -44,20 +44,20 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
         - This is a mathematical relationship governed by the contract and therefore does not need an independent feed. [***Question to Harvest: What about historical values?  What is the best way to query the contract for a value at a particular time?***]
     - Binance, Coinbase, Kraken for ETH/USD (follows the specifications in UMIP-6) to convert native FARM/ETH LP to USD.
 
-2. Provide recommended endpoints to query for real-time prices from each market listed. [**Note to Harvest: Best reference for real-time prices?**]
+2. Provide recommended endpoints to query for real-time prices from each market listed.
 
     - Sushiswap graph explorer
         - https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
     - Uniswap graph explorers
-        - https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2 [Need to add proper query for actual price]
+        - https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
 
 3. Provide recommended endpoints to query for historical prices from each market listed. 
 
 4. FARM/USDC: 
 
-	- https://cryptowat.ch/assets/farm [**Need to add proper link to historical prices**]
+	- https://cryptowat.ch/assets/farm
 
 5.  Do these sources allow for querying up to 74 hours of historical data? 
 
@@ -94,9 +94,9 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
 
 **1. Price Identifier Name** - iFARM-USD
 
-**2. Base Currency** - USD
+**2. Base Currency** - iFARM
 
-**3. Quote currency** - iFARM
+**3. Quote currency** - USD
 
 **4. Intended Collateral Currency** - iFARM
 
@@ -117,11 +117,11 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
 
 **1. Price Identifier Name** - USD-iFARM
 
-**2. Base Currency** - ??
+**2. Base Currency** - USD
 
-**3. Quote currency** - ??
+**3. Quote currency** - iFARM
 
-**4. Intended Collateral Currency** - USD
+**4. Intended Collateral Currency** - USDC
 
 - Does the value of this collateral currency match the standalone value of the listed quote currency? 
 
@@ -193,7 +193,7 @@ Query for the FARM/ETH price using the below [subgraph query](https://thegraph.c
             }
 ```
 
-3. The FARM/ETH price is determined by dividing `reserve0` by `reserve1`. This price should be queried using a 5-minute TWAP.
+3. The FARM/ETH price is determined by dividing `reserve1` by `reserve0`. This price should be queried using a 5-minute TWAP.
 4. Using the specifications in UMIP 6 query for the price of ETHUSD.
 5. Multiple the results of steps 1, 2 and 3 together to get the iFARM/USD price (specifically iFARM/USD = iFARM/FARM FARM/ETH ETH/USD)
 6. Take the inverse of step 4 to get USD/iFARM price
@@ -215,6 +215,6 @@ Although these are "wrapped" tokens, an objective value of the underlying collat
 
 The value of collateral can be objective in terms of price per full share * underlying asset value. 
 
-If the vault was hacked in a way that drained funds, there is also insurance from Nexus mutual to consider in terms of valuing the asset in the event of a covered vulnerability **NOTE: Is this true?  Need to check insurance markets**
+If the vault was hacked in a way that drained funds, there is also insurance from Nexus mutual to consider in terms of valuing the asset in the event of a covered vulnerability
 
 Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent. $UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified.
