@@ -1,9 +1,9 @@
 # Headers
-| UMIP-79     |                                                                                                                                          |
+| UMIP-81     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add V2migration_KPI_Aragon as a Price Identifier                                                                                      |
 | Authors    | Ramon (ramon@aragon.org), Sam (sam@aragon.one) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last Call                                                                                                                                    |
 | Created    | April 14, 2021                                                                                                                           |
 | Forum      | https://forum.aragon.org/t/kpi-options-using-uma-protocol/2633                                                                           |
 

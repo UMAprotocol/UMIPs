@@ -1,12 +1,12 @@
 # Headers
 
-| UMIP-XYZ | |
+| UMIP-83 | |
 |---------|-|
 | UMIP Title | Add CONSTANT as a price identifier |
 | Authors | Sean Brown (@smb2796) |
-| Status | Draft |
+| Status | Last Call |
 | Created | 04/21/21 |
-| Discourse | |
+| [Discourse](https://discourse.umaproject.org/t/add-constant-price-identifier/1018) | |
 
 # Summary
 
