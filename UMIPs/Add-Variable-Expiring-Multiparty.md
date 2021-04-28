@@ -25,41 +25,28 @@ From lines 644 to 656 we have the function:
 
   
 
-    function variableExpiration(uint256 settlementPrice) external override onlyPreExpiration() onlyOpenState() nonReentrant() {
-    	    
-    	    require(msg.sender == _getFinancialContractsAdminAddress() || msg.sender == externalVariableExpirationDAOAddress, 'Caller must be the authorized DAO or the UMA governor');
-    	    
-    	    contractState = ContractState.ExpiredPriceReceived;
-    	    
-    	    // Expiratory time now becomes the current time (variable shutdown time).
-    	    
-    	    // Price received at this time stamp. `settleExpired` can now withdraw at this timestamp.
-    	    
-    	    uint256 oldExpirationTimestamp = expirationTimestamp;
-    	    
-    	    expirationTimestamp = getCurrentTime();
-    	    
-    	    //instead of requesting the oracle price, we set the price as provided by the DAO vote.
-    	    
-    	    expiryPrice = FixedPoint.Unsigned(settlementPrice);
-    	    
-    	    emit VariableExpiration(msg.sender, oldExpirationTimestamp, expirationTimestamp);
+    function variableExpiration() external onlyPreExpiration() onlyOpenState() nonReentrant() {
+        require(msg.sender == _getFinancialContractsAdminAddress() || msg.sender == externalVariableExpirationDAOAddress, 'Caller must be the authorized DAO or the UMA governor');
+
+        contractState = ContractState.ExpiredPriceReceived;
+        // Expiratory time now becomes the current time (variable shutdown time).
+        // Price received at this time stamp. `settleExpired` can now withdraw at this timestamp.
+        uint256 oldExpirationTimestamp = expirationTimestamp;
+        expirationTimestamp = getCurrentTime();
+        _requestOraclePriceExpiration(expirationTimestamp);
+
+        emit VariableExpiration(msg.sender, oldExpirationTimestamp, expirationTimestamp);
     }
        
-This function is based on the `emergencyShutdown` function located directly below it. In addition to being accessible by the UMA governor, this function is also accessible by the predefined DAO governance contract. The `settlementPrice` parameter has a maximum of 18 decimals places, and value should be multiplied by 10^18 before being sent to the contract. We also add a new event, `VariableExpiration`, which is defined on line 119.
+This function is based on the `emergencyShutdown` function located directly below it. In addition to being accessible by the UMA governor, this function is also accessible by the predefined DAO governance contract. Expiring the contract calls the `_requestOraclePriceExpiration` as in the other expiration functions. We also add a new event, `VariableExpiration`, which is defined on line 119.
 
 For security purposes in case a vulnerability is discovered with the DAO contract, we include an emergency update function on lines 631 to 636:
 
-    function emergencyUpdateDAOAddress(address DAOAddress) external {
-    
-	    require(msg.sender == _getFinancialContractsAdminAddress() || msg.sender == externalVariableExpirationDAOAddress, 'Caller must be the authorized DAO or the UMA governor');
-	    
-	    updateTimestamp = getCurrentTime();
-	    
-	    EmergencyUpdateDAOAddress(externalVariableExpirationDAOAddress, DAOAddress, updateTimestamp)
-	    
-	    externalVariableExpirationDAOAddress = DAOAddress;
-	    
+    function emergencyUpdateDAOAddress(address DAOAddress) public {
+        require(msg.sender == _getFinancialContractsAdminAddress() || msg.sender == externalVariableExpirationDAOAddress, 'Caller must be the authorized DAO or the UMA governor');
+        updateTimestamp = getCurrentTime();
+        EmergencyUpdateDAOAddress(externalVariableExpirationDAOAddress, DAOAddress, updateTimestamp);
+        externalVariableExpirationDAOAddress = DAOAddress;
     }
 
 This function can be called by the UMA governor or the DAO contract if there is a vulnerability or technical problem discovered in the DAO contract. Calling this function successfully will emit the `EmergencyUpdateDAOAddress` event as defined on line 120.
