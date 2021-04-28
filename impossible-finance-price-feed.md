@@ -39,8 +39,8 @@ We'll be using the  [Uniswap](https://github.com/UMAprotocol/protocol/blob/maste
   twapLength: 7200
 }
 
-For IFUSD, we will allow redemption for 1 USD in our ecosystem until we have trading pools open for IFUSD/stablecoins.
-
+For IFUSD, we will allow redemption for 1 USD in our ecosystem until we have trading pools open for IFUSD/stablecoins. Thus the price identifier will use a constant 1 with format following what's specified by [this UMIP](https://github.com/UMAprotocol/UMIPs/pull/260/files).
+  
 # Technical Specifications
 
 Note that the STAX token is a 1:1 exchangeable token for IF tokens. We've deployed an IF contract and will be doing a migration soon. In the meantime, while trading pairs with IF are not open/have low liquidity, there'll be better security to rely on prices from the STAX trading pairs.
@@ -51,14 +51,11 @@ Note that the STAX token is a 1:1 exchangeable token for IF tokens. We've deploy
 - Rounding: Round to 2 decimal places
 - Estimated current value of price identifier: 2.54
 
-<!--  
-Do we need to include this? What formatting should we use?
-- Price identifier name: IFUSD/USD
+- Price identifier name: CONSTANT
 - Base Currency: IFUSD
 - Quote Currency - USD
 - Rounding: n/a
 - Estimated current value of price identifier: CONSTANT 1.00
--->
 
 # Rationale
 
