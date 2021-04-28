@@ -66,7 +66,7 @@ This function can be called by the UMA governor or the DAO contract if there is 
 
 In `Liquidatable.sol`, on line 70 we define:
 
-   address externalVariableExpirationDAOAddress;
+    address externalVariableExpirationDAOAddress;
     
 and in the constructor pass it on line 188:
 
