@@ -14,7 +14,7 @@ The DVM should support price requests for IF-USD. IF-USD reflects the price of t
 
 # Motivation
 
-This UMIP allows the DVM to support price requests for IF tokens. Along with the above UMIP, this would allow support of Impossible Finance tokens to be used as collateral.
+This UMIP allows the DVM to support price requests for IF tokens. Along with the above UMIP, this would allow support for Impossible Finance tokens to be used as collateral.
 
 # Data Specifications
 
