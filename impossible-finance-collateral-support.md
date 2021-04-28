@@ -10,19 +10,19 @@
 
 # Summary
 
-This UIMP will add Impossible Finance tokens as a collateral currency for UMA. This process involves adding our governance tokens to the whitelist an adding a flat
+This UMIP will add Impossible Finance tokens (IF) as a collateral currency for UMA. This process involves adding our governance token to the whitelist an adding a flat
 
 # Motivation
 
-Impossible Finance's next suite of products focuses on building products revolving around fundraising.
+Impossible Finance's IF token will be the core asset of the Impossible Swap and savings products within the multichain world. It acts as the fee accrual asset within the swap ecosystem. Adding onto this, Impossible Finance's next suite of products focuses on offering a fair fundraising and a decentralised incubator/launchpad ecosystem. We believe this will be a core feature to drive consistant volume in the future on our swap. 
 
-By approving this UMIP, Impossible Finance will be able to mint synthetic USD stablecoins tied to the IF ecosystem (IFUSD) backed by Impossible Finance tokens as collateral. This design will create a pool of stablecoins tied to our ecosystem (and the IF token) which allows us to manage risk and not be reliant on price movements of other stablecoins.
+By approving this UMIP, Impossible Finance will be able to mint synthetic ifUSD stablecoins tied to the IF ecosystem, backed by Impossible Finance (IF) tokens as collateral. This design will create a pool of stablecoins tied to our ecosystem (and the IF token) which allows us to manage risk and not be reliant on price movements of other stablecoins.
 
 # Technical Specifications
 
 1. The [IF address](https://etherscan.io/address/0xb0e1fc65c1a741b4662b813eb787d369b8614af1#code), 0xb0e1fc65c1a741b4662b813eb787d369b8614af1, will need to be whitelisted to add it as collateral. This whitelist was introduced in UMIP-8.
 
-We note that the current version of IF is a native [BSC asset](https://bscscan.com/address/0xb0e1fc65c1a741b4662b813eb787d369b8614af1#code) and we're working with anyswap.exchange and multichain.xyz bridges to bridge our governance token to ETH.
+We note that the current version of IF is a native [BSC asset](https://bscscan.com/address/0xb0e1fc65c1a741b4662b813eb787d369b8614af1#code) and we're working with anyswap.exchange and Andre's multichain.xyz bridges to bridge our governance token to ETH. It will be also the mechanism by which we migrate from the old STAX token to the new IF token across all the chains we want to participate in.
 
 2. A final fee of 200 IF needs to be enabled in the store contract.
 
@@ -30,7 +30,7 @@ We note that the current version of IF is a native [BSC asset](https://bscscan.c
 
 Whitelisting IF allows us to mint IFUSD synthetic tokens for use in our ecosystem. This design enables synthetic stablecoins tied to a defi ecosystem's health. This enables defi teams to create a treasury with better risk management long term.
 
-We chose 200 IF as the fee because this is around 450-500 USD which historically is close to what other collateral tokens have used.
+We chose 200 IF as the fee because this is around 450-500 USD which historically is close to what other collateral tokens have used. We are happy to adjust accordingly. We would like to confirm if the fee is a "one-time" fee per user, per minter, or per synthetic deployer?
 
 # Implementation
 
