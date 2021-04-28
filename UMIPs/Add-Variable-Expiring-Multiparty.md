@@ -65,15 +65,19 @@ For security purposes in case a vulnerability is discovered with the DAO contrac
 This function can be called by the UMA governor or the DAO contract if there is a vulnerability or technical problem discovered in the DAO contract. Calling this function successfully will emit the `EmergencyUpdateDAOAddress` event as defined on line 120.
 
 In `Liquidatable.sol`, on line 70 we define:
+
    address externalVariableExpirationDAOAddress;
     
 and in the constructor pass it on line 188:
+
     params.externalVariableExpirationDAOAddress
     
 Similarly, in `ExpiringMultiPartyCreator.sol`, on line 44 we define:
+
     address externalVariableExpirationDAOAddress;
 
 And on line 137 it is set:
+
     constructorParams.externalVariableExpirationDAOAddress = params.externalVariableExpirationDAOAddress;
 
 ## Rationale
