@@ -62,7 +62,7 @@ Default values if no ancillary data is provided in the price request:
 2. The value of the S&P 500 Index should be queried at `starttimestamp`. If this timestamp falls outside of market trading hours, the last available close price should be used. (`s&p_t1`)
 3. Steps 1 & 2 should be repeated substituting the price request timestamp for `starttimestamp`. (`asset_t2` and `s&p_t2`)
 4. Find the change between `asset_t2` and `asset_t1`.  (`asset_t2` - `asset_t1`)/`asset_t1` = `asset_performance`.
-5. Find the change between `s&p_t2` and `s&p_t1`.  (`s&s&p_t2` - `s&p_t1`)/`s&p_t1` = `s&p_performance`.
+5. Find the change between `s&p_t2` and `s&p_t1`.  (`s&p_t2` - `s&p_t1`)/`s&p_t1` = `s&p_performance`.
 6. If `asset_performance` > `s&p_performance`, voters should return 0.
 7. If `s&p_performance` >= `asset_performance`, voters should return 1.
 
