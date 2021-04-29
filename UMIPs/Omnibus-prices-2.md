@@ -1,7 +1,7 @@
 ## HEADERS
 | UMIP [#]     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | [Add LONUSD, USDLON, BANKUSD, USDBANK, MASKUSD, USDMASK, VSPUSD, USDVSP, SFIUSD, USDSFI, FRAXUSD, USDFRAX, DEXTFFUSD, USDDEXTF, ORNUSD, USDORN, BONDUSD, PUNK-BASICUSD and USDPUNK-BASIC as price identifiers]                                                                                                  |
+| UMIP Title | [Add LONUSD, USDLON, BANKUSD, USDBANK, MASKUSD, USDMASK, VSPUSD, USDVSP, SFIUSD, USDSFI, FRAXUSD, USDFRAX, DEXTFFUSD, USDDEXTF, ORNUSD, USDORN, BONDUSD, USDBOND, PUNK-BASICUSD and USDPUNK-BASIC as price identifiers]                                                                                                  |
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                  |
 | Created    | April 29, 2021
@@ -32,7 +32,7 @@ The DVM should support price requests for the below price indices:
 - PUNK-BASIC/USD
 - USD/PUNK-BASIC
 
-The canonical identifiers should be `LONUSD`, `USDLON`, `BANKUSD`, `USDBANK`, `MASKUSD`, `USDMASK`, `VSPUSD`, `USDVSP`, `SFIUSD`, `USDSFI`, `FRAXUSD`, `USDFRAX`, `DEXTFFUSD`, `USDDEXTF`, `ORNUSD`, `USDORN`, `BONDUSD`, `PUNK-BASICUSD` and `USDPUNK-BASIC`.
+The canonical identifiers should be `LONUSD`, `USDLON`, `BANKUSD`, `USDBANK`, `MASKUSD`, `USDMASK`, `VSPUSD`, `USDVSP`, `SFIUSD`, `USDSFI`, `FRAXUSD`, `USDFRAX`, `DEXTFFUSD`, `USDDEXTF`, `ORNUSD`, `USDORN`, `BONDUSD`, `USDBOND`, `PUNK-BASICUSD` and `USDPUNK-BASIC`.
 # MOTIVATION
 
 1. What are the financial positions enabled by adding these price identifiers that do not already exist?
@@ -87,7 +87,7 @@ Is there a cost associated with usage?
 
 If there is a free tier available, how many queries does it allow for?
 
-   - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying all three exchanges will cost 0.015 API credits).
+   - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits.
    - Therefore, querying exchange can be performed 2000 times per day.
    - In other words, exchange can be queried at most every 43 seconds.
 
@@ -619,14 +619,460 @@ It should be noted that this identifier is potentially prone to attempted manipu
 
 
 
+# FRAX
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+Market: Uniswap
+
+Uniswap: [FRAX/USDC](https://info.uniswap.org/pair/0x97c4adc5d28a86f9470c70dd91dc6cc2f20d2d4d)
+
+Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
+
+How often is the provided price updated?
+
+    - On every Ethereum block (i.e. every ~15 seconds)
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+    - Historical data can be fetched from the subgraph:
+```
+{
+  pair(id:"0x97c4adc5d28a86f9470c70dd91dc6cc2f20d2d4d") {
+    token1Price
+  }
+}
+```
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+    - Yes.
+
+How often is the provided price updated?
+
+    - On each Ethereum block (i.e. every ~15 seconds)
+
+Is an API key required to query these sources?
+
+    - No.
+
+Is there a cost associated with usage?
+
+    - No.
+
+If there is a free tier available, how many queries does it allow for?
+
+    - No limits at the moment.
+
+What would be the cost of sending 15,000 queries?
+
+     - $0
+
+## PRICE FEED IMPLEMENTATION
+
+These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+
+## TECHNICAL SPECIFICATIONS
+
+### FRAX/USD
+
+**Price Identifier Name:** FRAXUSD
+
+**Base Currency:** FRAX
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/VSP
+
+**Price Identifier Name:** USDFRAX
+
+**Base Currency:** USD
+
+**Quote currency:** FRAX
+
+**Intended Collateral Currency:** FRAX
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
+## IMPLEMENTATION
+
+```
+1. Query FRAX/USDC Price from Uniswap using 2-hour TWAP and round to 6 decimals to get the FRAX/USD price.
+2. (for USD/FRAX) Take the inverse of the result of step 1 (1/ FRAX/USD), before rounding, to get the USD/FRAX price. Then, round to 6 decimals.
+```
+
+It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
+
+**What prices should be queried for and from which markets?**
+- Prices are queried from Uniswap and listed in the `Technical Specifications` section.
+
+**Pricing interval**
+- Every block
+
+**Input processing**
+- None.
+
+**Result processing**
+- See rounding rules in `Technical Specification`.
 
 
 
 
+# DEXTF
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+Market: Uniswap
+
+Uniswap: [DEXTF/ETH](https://info.uniswap.org/pair/0xa1444ac5b8ac4f20f748558fe4e848087f528e00)
+
+Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
+
+How often is the provided price updated?
+
+    - On every Ethereum block (i.e. every ~15 seconds)
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+    - Historical data can be fetched from the subgraph:
+```
+{
+  token(
+      id:"TOKEN_ADDRESS",
+      block: {number: BLOCK_NUMBER}
+  )
+  {
+      derivedETH
+  }
+}
+```
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+    - Yes.
+
+How often is the provided price updated?
+
+    - On each Ethereum block (i.e. every ~15 seconds)
+
+Is an API key required to query these sources?
+
+    - No.
+
+Is there a cost associated with usage?
+
+    - No.
+
+If there is a free tier available, how many queries does it allow for?
+
+    - No limits at the moment.
+
+What would be the cost of sending 15,000 queries?
+
+     - $0
+
+## PRICE FEED IMPLEMENTATION
+
+These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+
+## TECHNICAL SPECIFICATIONS
+
+### DEXTF/USD
+
+**Price Identifier Name:** DEXTFUSD
+
+**Base Currency:** DEXTF
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/DEXTF
+
+**Price Identifier Name:** USDDEXTF
+
+**Base Currency:** USD
+
+**Quote currency:** DEXTF
+
+**Intended Collateral Currency:** DEXTF
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
+## IMPLEMENTATION
+
+```
+1. Query DEXTF/ETH Price from Uniswap using 15-minute TWAP.
+2. Query the ETH/USD Price as per UMIP-6.
+3. Multiply the DEXTF/ETH price by the ETH/USD price and round to 6 decimals to get the DEXTF/USD price.
+4. (for USD/DEXTF) Take the inverse of the result of step 3 (1/ DEXTF/USD), before rounding, to get the USD/DEXTF price. Then, round to 6 decimals.
+```
+
+It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
+
+**What prices should be queried for and from which markets?**
+- Prices are queried from Uniswap and listed in the `Technical Specifications` section.
+
+**Pricing interval**
+- Every block
+
+**Input processing**
+- None.
+
+**Result processing**
+- See rounding rules in `Technical Specification`.
 
 
 
 
+# ORN
+
+## MARKETS & DATA SOURCES
+
+**Required questions**
+
+Market: Binance
+
+* Binance ORN/USDT: https://api.cryptowat.ch/markets/binance/ornusdt/price
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency is a minute.
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+* Binance: https://api.cryptowat.ch/markets/binance/ornusdt/ohlc?after=1617848822&before=1617848822&periods=60
+
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+   - Yes.
+
+How often is the provided price updated?
+
+   - The lower bound on the price update frequency is a minute.
+
+Is an API key required to query these sources?
+
+   - No.
+
+Is there a cost associated with usage?
+
+   - Yes.
+
+If there is a free tier available, how many queries does it allow for?
+
+   - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits.
+   - Therefore, querying the exchange can be performed 2000 times per day.
+   - In other words, exchange can be queried at most every 43 seconds.
+
+What would be the cost of sending 15,000 queries?
+
+    - Approximately $5
+
+## PRICE FEED IMPLEMENTATION
+
+These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js).
+
+## TECHNICAL SPECIFICATIONS
+
+### ORN/USD
+
+**Price Identifier Name:** ORNUSD
+
+**Base Currency:** ORN
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/ORN
+
+**Price Identifier Name:** USDORN
+
+**Base Currency:** USD
+
+**Quote currency:** ORN
+
+**Intended Collateral Currency:** ORN
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
+## IMPLEMENTATION
+
+Voters should query for the price of ORN/USD at the price request timestamp on Binance. Recommended endpoints are provided in the markets and data sources section.
+
+1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
+2. The result should be rounded to six decimals to determine the ORNUSD price.
+3. (for USD/ORN) Take the inverse of the result of step 2 (1/ ORN/USD) to get the USD/ORN price, and round to 6 decimals.
+
+
+For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+
+
+
+# BOND
+
+## MARKETS & DATA SOURCES
+
+ **Required questions**
+
+Market: Uniswap
+
+Uniswap: [BOND/USDC](https://info.uniswap.org/pair/0x6591c4bcd6d7a1eb4e537da8b78676c1576ba244)
+
+Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
+
+How often is the provided price updated?
+
+    - On every Ethereum block (i.e. every ~15 seconds)
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+    - Historical data can be fetched from the subgraph:
+```
+{
+  pair(id:"0x6591c4bcd6d7a1eb4e537da8b78676c1576ba244") {
+    token1Price
+  }
+}
+```
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+    - Yes.
+
+How often is the provided price updated?
+
+    - On each Ethereum block (i.e. every ~15 seconds)
+
+Is an API key required to query these sources?
+
+    - No.
+
+Is there a cost associated with usage?
+
+    - No.
+
+If there is a free tier available, how many queries does it allow for?
+
+    - No limits at the moment.
+
+What would be the cost of sending 15,000 queries?
+
+     - $0
+
+## PRICE FEED IMPLEMENTATION
+
+These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+
+## TECHNICAL SPECIFICATIONS
+
+### BOND/USD
+
+**Price Identifier Name:** BONDUSD
+
+**Base Currency:** BOND
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/BOND
+
+**Price Identifier Name:** USDBOND
+
+**Base Currency:** USD
+
+**Quote currency:** BOND
+
+**Intended Collateral Currency:** BOND
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
+## IMPLEMENTATION
+
+```
+1. Query BOND/USDC Price from Uniswap using 1-hour TWAP and round to 6 decimals to get the BOND/USD price.
+2. (for USD/BOND) Take the inverse of the result of step 1 (1/ BOND/USD), before rounding, to get the USD/BOND price. Then, round to 6 decimals.
+```
+
+It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
+
+**What prices should be queried for and from which markets?**
+- Prices are queried from Uniswap and listed in the `Technical Specifications` section.
+
+**Pricing interval**
+- Every block
+
+**Input processing**
+- None.
+
+**Result processing**
+- See rounding rules in `Technical Specification`.
 
 
 
