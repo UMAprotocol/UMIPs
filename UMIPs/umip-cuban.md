@@ -10,7 +10,7 @@
 
 # Summary 
 
-The DVM should support price requests for `CRYPTO_vs_SP500` price identifier. `CRYPTO_vs_SP500` is binary identifier where the payout is determined by the performance of a cryptocurrency against the performance of the S&P500.
+The DVM should support price requests for `CRYPTO_vs_SP500` price identifier. `CRYPTO_vs_SP500` is binary identifier where the payout is determined by the comparative price performance of a one asset against the performance of the S&P 500.
 
 # Motivation
 
@@ -18,7 +18,7 @@ The DVM should support price requests for `CRYPTO_vs_SP500` price identifier. `C
 
 -----------------------------------------
 - Price identifier name: CRYPTO_vs_SP500 
-- Markets & Pairs: Determined by ancillary data. If no ancillary data is provided, ETHUSD should be used for `CRYPTO` and follow the methdology described in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md). The index value of the S&P500 will also need to be used. The value of the S&P500 can be queried from any reputable data provider. One example might be Google Finance. 
+- Markets & Pairs: Determined by ancillary data. If no ancillary data is provided, ETHUSD should be used for `CRYPTO` and follow the methdology described in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md). The index value of the S&P 500 will also need to be used. The value of the S&P 500 Index can be queried from any reputable data provider. One example might be Google Finance. 
 - Example data providers: NA
 - Cost to use: NA
 - Real-time data update frequency: NA
