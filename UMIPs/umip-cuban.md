@@ -17,8 +17,8 @@ The DVM should support price requests for `CRYPTO_vs_SP500` price identifier. `C
 # Data Specifications
 
 -----------------------------------------
-- Price identifier name: CRYPTO_vs_SP500 
-- Markets & Pairs: Determined by ancillary data. If no ancillary data is provided, ETHUSD should be used for `CRYPTO` and follow the methdology described in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md). The index value of the S&P 500 will also need to be used. The value of the S&P 500 Index can be queried from any reputable data provider. One example might be Google Finance. 
+- Price identifier name: CRYPTO_vs_SPY 
+- Markets & Pairs: Determined by ancillary data. If no ancillary data is provided, ETHUSD should be used for `CRYPTO` and follow the methodology described in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md). The index value of the S&P 500 will also need to be used. The value of the S&P 500 Index can be queried from any reputable data provider. One example might be Google Finance. 
 - Example data providers: NA
 - Cost to use: NA
 - Real-time data update frequency: NA
@@ -26,7 +26,7 @@ The DVM should support price requests for `CRYPTO_vs_SP500` price identifier. `C
 
 # Price Feed Implementation
 
-This identifier is intended to be used in a non-liquidatable EMP, so it does not need a real-time price feed. At expiry, voters should follow the methdology described in the `Implementation` section to determine the correct price.
+This identifier is intended to be used in a non-liquidatable EMP, so it does not need a real-time price feed. At expiry, voters should follow the methodology described in the `Implementation` section to determine the correct price.
 
 # Technical Specifications
 
@@ -58,7 +58,7 @@ Default values if no ancillary data is provided in the price request:
 - `asset`: ETHUSD
 - `starttimestamp`: 1619707080
 
-1. The value of `asset` should be queried at `starttimestamp` following the methdology described in that price identifier's UMIP. If no ancillary data is provided, voters should calculate the value of ETHUSD at `starttimestamp`. (`asset_t1`)
+1. The value of `asset` should be queried at `starttimestamp` following the methodology described in that price identifier's UMIP. If no ancillary data is provided, voters should calculate the value of ETHUSD at `starttimestamp`. (`asset_t1`)
 2. The value of the S&P 500 Index should be queried at `starttimestamp`. If this timestamp falls outside of market trading hours, the last available close price should be used. (`s&p_t1`)
 3. Steps 1 & 2 should be repeated substituting the price request timestamp for `starttimestamp`. (`asset_t2` and `s&p_t2`)
 4. Find the relative change between `asset_t2` and `asset_t1`.  (`asset_t2` - `asset_t1`)/`asset_t1` = `asset_performance`.
