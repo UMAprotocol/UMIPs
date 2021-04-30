@@ -5,7 +5,7 @@
 | Authors             | Jon (BadgerDAO)                                               |
 | Status              | Draft                                                         |
 | Created             | 4/27/2021                                                     |
-| Discourse Link      | **Create a post in [UMA's Discourse](https://discourse.umaproject.org/c/umips/18) and link here**            |
+| Discourse Link      | https://discourse.umaproject.org/t/umip-81-add-digg-positive-rebases-price-identifier/1026           |
 
 # Summary 
 
@@ -22,7 +22,7 @@ https://medium.com/badgerdao/badgerdao-x-uma-introducing-rebase-mining-3c663a5ab
 -----------------------------------------
 - Price identifier name: **DIGG_Positive_Rebases** 
 - Markets & Pairs: **N/A**
-- Example data providers: **Available on-chain** 
+- Example data providers: **Total supply of https://etherscan.io/token/0x798d1be841a82a273720ce31c822c61a67a601c3** 
 - Cost to use: **None**
 - Real-time data update frequency: **Daily** 
 - Historical data update frequency: **Daily** 
@@ -57,6 +57,15 @@ I think comparing total supply one day to the other is the easiest but am open t
 3. If D2_Supply > D1_Supply  (if supply is equal do not iterate), increment DIGG_Positive_Rebases by 1. If D2_Supply <= D1_Supply, the DIGG_Positive_Rebases value should remain constant.
 4. Steps 2 and 3 should be repeated until the D1_Supply timestamp is earlier than the block timestamp that the contract using this price identifier was launched in OR the days since the deployment = to 30.
 5. Voters should return the value of DIGG_Positive_Rebases once one of the conditions of step 4 is met. This value should be returned as is with no rounding.
+
+This forumla can be used to determine the percentage of the redemption pool options will be eligible to redeem (redemption pool size to be determined through badger governance)
+r = total rebases (using iterative calculation above)
+5 = minmum rebases
+30 = max rebases
+min(if(r<5,0,((r-5)/(30-5))^1.5),1)
+https://docs.google.com/spreadsheets/d/1Kb58KUiaCFClfL9hkf0OCXJzXHC-9lDwnrxQ3eEobg4/edit?usp=sharing
+
+
 
 # Rationale
 
