@@ -23,7 +23,7 @@ The definition of these identifiers should be:
 - Base Currency: CNY
 - Quote Currency: USD
 - Result Processing: None
-- Price Steps: 0.000001 (6 decimals in more general trading format)
+- Price Steps: 0.00001 (5 decimals in more general trading format)
 - Date Source: TraderMade
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Rounding: Closest, 0.5 up
@@ -72,7 +72,7 @@ The response is:
   "request_time": "Tue, 29 Dec 2020 09:02:04 GMT"
 }
 ```
-Voters should use the `open` price and round to 6 decimals to get the CNYUSD result.
+Voters should use the `open` price and round to 5 decimals to get the CNYUSD result.
 
 It should be noted that requests that do not fall on the 10 minute interval do not return data. Voters should round time up to the closest 10 minute interval if they request the price which doesn't fall on the 10 minute interval.
 
