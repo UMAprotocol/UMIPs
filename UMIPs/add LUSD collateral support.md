@@ -82,6 +82,3 @@ for the feed to change to Tellor(ETH:USD). The conditions for the fallback are a
 - Chainlink price has not been updated for more than 4 hours
 - Chainlink response call reverts, returns an invalid price, or an invalid timestamp
 - The price change between two consecutive Chainlink price updates is >50%.
-
-New price identifiers, that are intended to be used with these collateral currencies, will need to be specified to 18
-decimals of precision.
