@@ -244,7 +244,6 @@ For price requests made before the cutoff, use this 10-hour TWAP calculation imp
 5. As the values from subgraph are integers, so it should be left as returned without any scaling transformation.
 6. The final price should be submitted with 18 decimals but rounded to 2 decimal places. For example, if the value is
    1.384827478767976545678765456, then we round to 2 decimal places and convert 1-to-1 to RAI for 1.38 RAI.
-   However, RAI on Ethereum uses 18 decimal places so voters must submit 1.380000000000000000 RAI.
 
 **For Example:-**
 If price request timestamp is T1, then calculate end TWAP timestamp (T2) by simply subtracting 10-hours.
@@ -268,7 +267,6 @@ For price requests made after the cutoff, use this 30-day Geometric Mean calcula
 6. The GM is the (value from step3) ^ 1/(value from step4).
 7. The final price should be submitted with 18 decimals but rounded to 2 decimal places. For example, if the value is
    1.384827478767976545678765456, then we round to 2 decimal places and convert 1-to-1 to RAI for 1.38 RAI.
-   However, RAI on Ethereum uses 18 decimal places so voters must submit 1.380000000000000000 RAI.
 
 **For Example:-**
 If price request timestamp is T1, then calculate end GM timestamp (T2) by simply subtracting 30-days.
