@@ -127,7 +127,7 @@ however, converting this data to either 10-hr TWAP or 30-day GM APR is still req
 For the creation of the R3 token, it is desired that the DVM return either the 30 day geometric mean or a 10-hour TWAP.
 The type of price that the DVM will return is dependent on the timestamp the price request is made at.
 
-[Here](https://github.com/ashutoshvarma/protocol/blob/rai-price-feed/packages/financial-templates-lib/src/price-feed/RAIRedemptionRate.js)
+[Here](https://github.com/UMAprotocol/protocol/pull/2929)
 is a reference implementation for an off-chain price feed that can both 10-hr TWAP and 30-day GM of redemption rate coefficient .
 
 <br>
