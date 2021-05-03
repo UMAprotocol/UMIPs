@@ -16,7 +16,7 @@ This token will be referred to as 'R3' (Rai Redemption Rate) and will represent 
 The DVM should support price requests for the R3_10H_TWAP and R3_30D_GM price indices.
 
 The DVM should support requests for a price that resolves to either the 30 day geometric mean (R3_30D_GM) or
-a 10-hour Time-Weighted Average Price (R3_10H_TWAP) of RAI redemption rate coefficient APR
+a 10-hour Time-Weighted Average Price (R3_10H_TWAP) of RAI redemption rate coefficient APR.
 
 The price resolution method to use will depend on the timestamp the price request was made at.
 
