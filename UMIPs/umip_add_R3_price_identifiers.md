@@ -185,7 +185,7 @@ is a reference implementation for an off-chain price feed that can both 10-hr TW
 ### R3_10H_TWAP (Pre-cutoff)
 
 Due to the lack of ambiguity on calculating the TWAP, UMA token holders should all converge on the same price.
-However, to be consistent with post-cutoff rounding, we will round pre-cutoff to 2 decimal places.
+However, to be consistent with post-cutoff rounding, pre-cutoff is also rounded to 2 decimal places.
 
 A 10-hour TWAP was chosen to mitigate any risk of attempted price manipulation attempts on the value of redemption rate.
 To meaningfully manipulate the price that token sponsors’ collateralization is calculated with, an attacker would have to manipulate
@@ -196,17 +196,17 @@ updated every 4 hours
 
 ### R3_30D_GM (Post-cutoff)
 
-We're using a rolling 30 day period to increase the cost of manipulating the APR price.
+A rolling 30 day period is used to increase the cost of manipulating the APR price.
 
-We use geometric mean, as opposed to arithmetic mean, to include the effect of rate compounding.
+The geometric mean is used, as opposed to arithmetic mean, to include the effect of rate compounding.
 
-We use an annual percentage rate, as opposed to a 24hr percentage rate or per-second rate, to increase usability.
+The annual percentage rate is used, as opposed to a 24hr percentage rate or per-second rate, to increase usability.
 
 The ground truth data for this is in the RAI OracleRelayer smart contract on the Ethereum blockchain.
 Any differences in UMA governor results for this price identifier should be due to rounding errors that propagate through the calculation (numerical instability)
 as opposed to multiple data sources being the truth (as is the case with looking at the price of bitcoin on different exchanges).
 
-We mitigate the effects of numerical instability by rounding to the nearest two decimal places.
+The effects of numerical instability is mitigated by rounding to the nearest two decimal places.
 Different algorithms for calculating the geometric mean result in tiny differences in the result.
 Rounding to 2 decimal places hides small differences in geometric mean calculations. For example,
 if person A calculates the price request result as 1.53453 $RAI and person B calculates the price request result as 1.53489 $RAI, both will agree on 1.53 $RAI.
@@ -243,7 +243,7 @@ For price requests made before the cutoff, use this 10-hour TWAP calculation imp
    Each price in this average will get equal weight.
 5. As the values from subgraph are integers, so it should be left as returned without any scaling transformation.
 6. The final price should be submitted with 18 decimals but rounded to 2 decimal places. For example, if the value is
-   1.384827478767976545678765456, then we round to 2 decimal places and convert 1-to-1 to RAI for 1.38 RAI.
+   1.384827478767976545678765456, then round to 2 decimal places and convert 1-to-1 to RAI for 1.38 RAI.
 
 **For Example:-**
 If price request timestamp is T1, then calculate end TWAP timestamp (T2) by simply subtracting 10-hours.
@@ -266,7 +266,7 @@ For price requests made after the cutoff, use this 30-day Geometric Mean calcula
 5. Calculate the total number of rates.
 6. The GM is the (value from step3) ^ 1/(value from step4).
 7. The final price should be submitted with 18 decimals but rounded to 2 decimal places. For example, if the value is
-   1.384827478767976545678765456, then we round to 2 decimal places and convert 1-to-1 to RAI for 1.38 RAI.
+   1.384827478767976545678765456, then round to 2 decimal places and convert 1-to-1 to RAI for 1.38 RAI.
 
 **For Example:-**
 If price request timestamp is T1, then calculate end GM timestamp (T2) by simply subtracting 30-days.
