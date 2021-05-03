@@ -37,7 +37,8 @@ Punk-Basic has all the liquidity on Sushiswap in Punk-Basic/ETH pair. It is best
 
 Markets: SushiSwap
 
-SushiSwap: [PUNK-BASIC/NFTX](https://analytics.sushi.com/pairs/0x90825add1ad30d7dcefea12c6704a192be6ee94e)
+SushiSwap: [PUNK-BASIC/NFTX](https://analytics.sushi.com/pairs/0x90825add1ad30d7dcefea12c6704a192be6ee94e) , 
+[NFTX/ETH](https://analytics.sushi.com/pairs/0x31d64f9403e82243e71c2af9d8f56c7dbe10c178)
 
 Data: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
@@ -132,8 +133,8 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 1. Query PUNK-BASIC/NFTX Price from SushiSwap using 15-minute TWAP.
 2. Query NFTX/ETH Price from SushiSwap using 15-minute TWAP.
 3. Query the ETH/USD Price as per UMIP-6.
-4. Multiply the PUNK-BASIC/NFTX with NFTX/ETH price and then multiply the result by the ETH/USD price and round to 6 decimals to get the PUNK-BASIC/USD price.
-5. (for USD/PUNK-BASIC) Take the inverse of the result of step 3 (1/ PUNK-BASIC/USD), before rounding, to get the USD/PUNK-BASIC price. Then, round to 6 decimals.
+4. Multiply the PUNK-BASIC/NFTX with NFTX/ETH price and then multiply the result by the ETH/USD price and round to 8 decimals to get the PUNK-BASIC/USD price.
+5. (for USD/PUNK-BASIC) Take the inverse of the result of step 3 (1/ PUNK-BASIC/USD), before rounding, to get the USD/PUNK-BASIC price. Then, round to 8 decimals.
 ```
 
 It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
