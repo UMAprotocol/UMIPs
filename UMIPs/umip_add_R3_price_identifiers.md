@@ -2,7 +2,7 @@
 
 | UMIP 232          |                                                                                                 |
 | ----------------- | ----------------------------------------------------------------------------------------------- |
-| UMIP Title        | Add R3-10H-TWAP and R3-30D-GM as supported price identifiers                                    |
+| UMIP Title        | Add R3_10H_TWAP and R3_30D_GM as supported price identifiers                                    |
 | Authors           | Ashutosh Varma (ashutoshvarma11@live.com)                                                       |
 | Status            | Draft                                                                                           |
 | Created           | April 1, 2021                                                                                   |
@@ -13,17 +13,17 @@
 This UMIP will reference a synthetic token to be created with this price identifier.
 This token will be referred to as 'R3' (Rai Redemption Rate) and will represent the token that tracks these identifiers.
 
-The DVM should support price requests for the R3-10H-TWAP and R3-30D-GM price indices.
+The DVM should support price requests for the R3_10H_TWAP and R3_30D_GM price indices.
 
-The DVM should support requests for a price that resolves to either the 30 day geometric mean (R3-30D-GM) or
-a 10-hour Time-Weighted Average Price (R3-10H-TWAP) of RAI redemption rate coefficient APR
+The DVM should support requests for a price that resolves to either the 30 day geometric mean (R3_30D_GM) or
+a 10-hour Time-Weighted Average Price (R3_10H_TWAP) of RAI redemption rate coefficient APR
 
 The price resolution method to use will depend on the timestamp the price request was made at.
 
-For a price request made at or after the expiry timestamp, the price will be resolved with the R3-30D-GM,
+For a price request made at or after the expiry timestamp, the price will be resolved with the R3_30D_GM,
 30 day geometric mean of redemption rate coefficient APR calculation defined as per R3 token Technical Specification.
 
-For a price request made before the expiry timestamp, the price will be resolved to R3-10H-TWAP, a 10-hour TWAP of
+For a price request made before the expiry timestamp, the price will be resolved to R3_10H_TWAP, a 10-hour TWAP of
 redemption rate coefficient APR.
 
 # MOTIVATION
@@ -41,7 +41,7 @@ The DVM currently does not support reporting 30 day geometric mean or 10-hr TWAP
 
      Providing a price feed for the settlement of a financial contract is a prerequisite
 
-   - Supporting the R3-10H-TWAP and R3-30D-GM price identifiers would also enable the creation of similar
+   - Supporting the R3_10H_TWAP and R3_30D_GM price identifiers would also enable the creation of similar
      products like call options on redemption rate that use RAI as collateral.
 
 2. Please provide an example of a person interacting with a contract that uses this price identifier.
@@ -134,9 +134,9 @@ is a reference implementation for an off-chain price feed that can both 10-hr TW
 
 # TECHNICAL SPECIFICATIONS
 
-## R3-10H-TWAP
+## R3_10H_TWAP
 
-**1. Price Identifier Name** - R3-10H-TWAP
+**1. Price Identifier Name** - R3_10H_TWAP
 
 **2. Base Currency** - R3
 
@@ -156,9 +156,9 @@ is a reference implementation for an off-chain price feed that can both 10-hr TW
 
 **6. Rounding** - Round to nearest 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
 
-## R3-30D-GM
+## R3_30D_GM
 
-**1. Price Identifier Name** - R3-30D-GM
+**1. Price Identifier Name** - R3_30D_GM
 
 **2. Base Currency** - R3
 
@@ -171,7 +171,8 @@ is a reference implementation for an off-chain price feed that can both 10-hr TW
   - YES
 
 - Is your collateral currency already approved to be used by UMA financial contracts? If no, submit a UMIP to have the desired collateral currency approved for use.
-  - NO, but there is a separate pending UMIP for approving RAI as collateral currency
+
+  - YES
 
 **5. Collateral Decimals** - 18
 
@@ -181,7 +182,7 @@ is a reference implementation for an off-chain price feed that can both 10-hr TW
 
 # RATIONALE
 
-### R3-10H-TWAP (Pre-cutoff)
+### R3_10H_TWAP (Pre-cutoff)
 
 Due to the lack of ambiguity on calculating the TWAP, UMA token holders should all converge on the same price.
 However, to be consistent with post-cutoff rounding, we will round pre-cutoff to 2 decimal places.
@@ -193,7 +194,7 @@ the redemption rate for an extended amount of time. This is described further in
 Also a 10-hour TWAPs ensures that atleast 2 data points are used to calculate TWAP since redemption rate is
 updated every 4 hours
 
-### R3-30D-GM (Post-cutoff)
+### R3_30D_GM (Post-cutoff)
 
 We're using a rolling 30 day period to increase the cost of manipulating the APR price.
 
@@ -230,7 +231,7 @@ MARKET & DATA SOURCES
 }
 ```
 
-### R3-10H-TWAP (Pre-cutoff)
+### R3_10H_TWAP (Pre-cutoff)
 
 For price requests made before the cutoff, use this 10-hour TWAP calculation implementation.
 
