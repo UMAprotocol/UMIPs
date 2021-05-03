@@ -5,7 +5,7 @@
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                  |
 | Created    | April 29, 2021
-| Link to Discourse    | [Link]()
+| Link to Discourse    | [Link](https://discourse.umaproject.org/t/add-lonusd-usdlon-bankusd-usdbank-maskusd-usdmask-vspusd-usdvsp-sfiusd-usdsfi-fraxusd-usdfrax-dextffusd-usddextf-ornusd-usdorn-bondusd-usdbond-punk-basicusd-and-usdpunk-basic-as-price-identifiers/1036)
 
 
 # SUMMARY
