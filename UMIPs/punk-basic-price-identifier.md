@@ -29,7 +29,7 @@ The canonical form should be `PUNK-BASICUSD` and `USDPUNK-BASIC`
 
 # RATIONALE
 
-Punk-Basic has all the liquidity on Sushiswap in Punk-Basic/ETH pair. It is best to take TWAP so that irregular price action or attempted manipulation can be invalidated on DEX.
+Punk-Basic has most of its liquidity in PUNK-BASIC/NFTX pair on sushiswap. It is best to take TWAP so that irregular price action or attempted manipulation can be invalidated on DEX.
 # PUNK-BASIC
 
 ## MARKETS & DATA SOURCES
