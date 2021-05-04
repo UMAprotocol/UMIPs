@@ -1,6 +1,6 @@
 ## HEADERS
 
-| UMIP 232          |                                                                                                 |
+| UMIP-85          |                                                                                                 |
 | ----------------- | ----------------------------------------------------------------------------------------------- |
 | UMIP Title        | Add R3_10H_TWAP and R3_30D_GM as supported price identifiers                                    |
 | Authors           | Ashutosh Varma (ashutoshvarma11@live.com)                                                       |
@@ -67,7 +67,7 @@ It is recommended to index the raw data from an Ethereum archive node. Alternati
 As of writing this UMIP, the RAI Subgraph is free and will remain so.
 
 Governor should deploy their own subgraphs for indexing the data from `redemptionRate()`, source code for RAI's
-official subgraph can be found [here](https://github.com/reflexer-labs/geb-subgraph).
+official subgraph can be found [here](https://github.com/reflexer-labs/geb-subgraph). The canonical subgraph implementation that should be used is from the Rai subgraph at commit [41baab4f76b16a77729bad503d468e78e4eba79c](https://github.com/reflexer-labs/geb-subgraph/tree/41baab4f76b16a77729bad503d468e78e4eba79c).
 
 The redemption rate coefficient is stored as a RAY decimal (27 decimals) so value from `redemptionRate()`
 needs to be divided by 10^27 to convert it to normal decimal. Subgraphs does this conversion already before
@@ -128,8 +128,7 @@ For the creation of the R3 token, it is desired that the DVM return either the 3
 The type of price that the DVM will return is dependent on the timestamp the price request is made at.
 
 [Here](https://github.com/UMAprotocol/protocol/pull/2929)
-is a reference implementation for an off-chain price feed that can both 10-hr TWAP and 30-day GM of redemption rate coefficient .
-
+is a reference implementation for an off-chain price feed that can both 10-hr TWAP and 30-day GM of redemption rate coefficient.
 <br>
 
 # TECHNICAL SPECIFICATIONS

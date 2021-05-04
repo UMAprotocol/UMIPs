@@ -1,10 +1,10 @@
 # Headers
 
-| UMIP-TBD    |                                                                                                                                          |
+| UMIP-86    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add LUSD as whitelisted collateral currencies              |
 | Authors    | Ramy Melo (Ramysmelo@gmail.com) |
-| Status     | Draft                                                                                                                        |
+| Status     | Last Call                                                                                                                        |
 | Created    | April 22, 2021                                                                                                                           |
 | Discourse Link    | https://discourse.umaproject.org/t/add-lusd-collateral-support-to-dvm/929                                                                                                                           |
 
