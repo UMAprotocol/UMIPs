@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add LON, BANK, MASK, VSP, SFI, FRAX, DEXTF, ORN, BOND and PUNK-BASIC as approved collateral currencies           |
 | Authors    | John Shutt (john@umaproject.org) , Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | April 19, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-ohm-lon-bank-mask-vsp-sfi-frax-mir-orn-and-bond-as-approved-collateral-currencies/919)    |                                                                                                                     |
 

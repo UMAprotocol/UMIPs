@@ -4,7 +4,7 @@
 | ----------------- | ----------------------------------------------------------------------------------------------- |
 | UMIP Title        | Add R3_10H_TWAP and R3_30D_GM as supported price identifiers                                    |
 | Authors           | Ashutosh Varma (ashutoshvarma11@live.com)                                                       |
-| Status            | Draft                                                                                           |
+| Status            | Last Call                                                                                           |
 | Created           | April 1, 2021                                                                                   |
 | Link to Discourse | [LINK](https://discourse.umaproject.org/t/add-rai-redemption-rate-apr-as-price-identifiers/624) |
 

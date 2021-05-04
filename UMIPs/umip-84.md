@@ -4,7 +4,7 @@
 | ------------------- | ------------------------------------------------------------------------- |
 | UMIP Title          | Add PUNKETH and PUNKETH_TWAP as price identifiers                       |
 | Authors             | Kevin Chan (kevin@umaproject.org), Chase Coleman (chase@umaproject.org)   |
-| Status              | Last Call                                                                     |
+| Status              | Approved                                                                     |
 | Created             | April 19, 2021                                                            |
 | Discourse Link      | https://discourse.umaproject.org/t/cryptopunks-index/933                  |
 
