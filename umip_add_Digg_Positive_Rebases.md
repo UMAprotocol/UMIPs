@@ -65,7 +65,7 @@ I think comparing total supply one day to the other is the easiest but am open t
 
 This forumla can be used to determine the percentage of the redemption pool options will be eligible to redeem (redemption pool size to be determined through badger governance)
 r = total rebases (using iterative calculation above)
-5 = minmum rebases
+5 = minimum rebases
 30 = max rebases
 min(if(r<5,0,((r-5)/(30-5))^1.5),1)
 https://docs.google.com/spreadsheets/d/1Kb58KUiaCFClfL9hkf0OCXJzXHC-9lDwnrxQ3eEobg4/edit?usp=sharing
