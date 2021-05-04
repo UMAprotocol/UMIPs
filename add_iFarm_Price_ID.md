@@ -85,7 +85,7 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
 
 # PRICE FEED IMPLEMENTATION 
 
-Pricing this identifier requires the use of a combination of price feeds. The price feed configuration is shown [here](https://github.com/UMAprotocol/protocol/pull/2576), and uses the both []Alchemy](https://dashboard.alchemyapi.io) API's and [Etherscan](https://etherscan.io/) API's.  The GitHub repository referenced []here](https://github.com/gruadus/uniswap-trade-parser/tree/uma) provides reference code to pull reference prices by block for iFarm.  While it is functional users are encouraged to create their own implementations. 
+Pricing this identifier requires the use of a combination of price feeds. The price feed configuration is shown [here](https://github.com/UMAprotocol/protocol/pull/2576), and uses the both []Alchemy](https://dashboard.alchemyapi.io) API's and [Etherscan](https://etherscan.io/) API's.  The GitHub repository referenced [here](https://github.com/gruadus/uniswap-trade-parser/tree/uma) provides reference code to pull reference prices by block for iFarm.  While it is functional users are encouraged to create their own implementations. 
 
 # TECHNICAL SPECIFICATIONS
 
