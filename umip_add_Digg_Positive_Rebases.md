@@ -29,9 +29,9 @@ https://medium.com/badgerdao/badgerdao-x-uma-introducing-rebase-mining-3c663a5ab
 
 # Price Feed Implementation
 
-At 12:00 UTC every day compare the total supply of DIGG (https://etherscan.io/token/0x798d1be841a82a273720ce31c822c61a67a601c3) to its supply from the previous day.  If it is greater than the previous day then the price feed should iterate by 1.  The exact amount of DIGG in the redemption pool has not been settled yet.  the below formula and accompanying spreadsheet illustrates how to calculate the percentage of the redemption pool that each option will be redeemable for.  Once the size of the pool is known (in bDIGG) then the formula can be updated by multiplying by the total redemption pool size.
+At 12:00 UTC every day compare the total supply of DIGG (https://etherscan.io/token/0x798d1be841a82a273720ce31c822c61a67a601c3) to its supply from the previous day.  If it is greater than the previous day then Positive_rebases should iterate by 1.  The exact amount of DIGG in the redemption pool has not been settled yet but there will be 1000 options tokens minted for every 1 bDIGG in the pool, the maximum value for this implementation is .001.  the below formula and accompanying spreadsheet illustrates how to calculate the percentage of the redemption pool that each option will be redeemable for.  
 
-r = total rebases (using iterative calculation above)
+r = Positive_Rebases (using iterative calculation above)
 5 = minmum rebases
 30 = max rebases
 min(if(r<5,0,((r-5)/(30-5))^1.5),1)
@@ -50,18 +50,17 @@ Positive Rebases  % of the Pool
 Price identifier name: DIGG_Positive_Rebases
 Base Currency: NA
 Quote Currency: NA
-Rounding: Round to 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)
+Rounding: Round to 4 decimal places (fourth decimal place digit >= 5 rounds up and < 5 rounds down)
 Estimated current value of price identifier: 0
 
 # Implementation
 
-There will be a redemption pool that holds some amount of bDIGG.  Based on the number of positive rebases during the life of the options some portion of that pool will be available for options settlement.  The percentage of the pool that is available for settlement can be calculated using the below formula.  The exact amount of bDIGG int he pool is being determined through badger governance right now. 
+There will be a redemption pool that holds some amount of bDIGG.  Based on the number of positive rebases during the life of the options some portion of that pool will be available for options settlement.  The percentage of the pool that is available for settlement can be calculated using the below formula and then multiplied by the ratio of options tokens to bDIGG in the pool which will be .001.  The exact amount of bDIGG int he pool is being determined through badger governance right now.
 
-This forumla can be used to determine the percentage of the redemption pool options will be eligible to redeem (redemption pool size to be determined through badger governance)
 r = Positive_Rebases (using iterative calculation above)
 5 = minimum rebases
 30 = max rebases
-min(if(r<5,0,((r-5)/(30-5))^1.5),1)
+Digg_Positive_Rebases = min(if(r<5,0,((r-5)/(30-5))^1.5),1) * .001
 https://docs.google.com/spreadsheets/d/1Kb58KUiaCFClfL9hkf0OCXJzXHC-9lDwnrxQ3eEobg4/edit?usp=sharing
 
 The main input needed is the number for Positive_Rebases that has occured during the life of the options (30 days)
@@ -72,7 +71,7 @@ I think comparing total supply one day to the other is the easiest but am open t
 3. If D2_Supply > D1_Supply  (if supply is equal do not iterate), increment Positive_Rebases by 1. If D2_Supply <= D1_Supply, the Positive_Rebases value should remain constant.
 4. Steps 2 and 3 should be repeated until the D1_Supply timestamp is earlier than the block timestamp that the contract using this price identifier was launched in OR the days since the deployment = to 30.
 
-Voters should return the value of DIGG_Positive_Rebases (using Positive_Rebases as an input in the above formula) once one of the conditions of step 4 is met. This value should be returned as is with rounding precision of 18 decimals.
+Voters should return the value of DIGG_Positive_Rebases (using Positive_Rebases as an input in the above formula) once one of the conditions of step 4 is met.
 
 
 # Rationale
