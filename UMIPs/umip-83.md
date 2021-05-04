@@ -4,7 +4,7 @@
 |---------|-|
 | UMIP Title | Add CONSTANT as a price identifier |
 | Authors | Sean Brown (@smb2796) |
-| Status | Last Call |
+| Status | Approved |
 | Created | 04/21/21 |
 | [Discourse](https://discourse.umaproject.org/t/add-constant-price-identifier/1018) | |
 

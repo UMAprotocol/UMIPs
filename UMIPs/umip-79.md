@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add uSTONKS_JUN21 as a price identifier              |
 | Authors    | Ross (ross@yam.finance)  |
-| Status     | Last Call                                                                                                                                   |
+| Status     | Approved                                                                                                                                  |
 | Created    | April 14, 2021   
 | Discourse Link | https://discourse.umaproject.org/t/add-ustonks-jun21-price-identifier/878 |  
 
