@@ -66,7 +66,7 @@ The definition of this identifiers should be:
 - Result Processing: None
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
 - Price Steps: 0.00001 (5 decimals in more general trading format)
-- Rounding: Closest, 0.5 up (> .000005 rounds up, < .000005 rounds down)
+- Rounding: Closest, 0.5 up (>= .000005 rounds up, < .000005 rounds down)
 - Scaling Decimals: 18 (1e18)
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
@@ -75,7 +75,7 @@ The definition of this identifiers should be:
 Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like JPYUSD, so any price feed could be used; however, for convenience, we recommend using the one of TraderMade.
 
 ## Implementation
-Historical PHPUSD, CADUSD, ZARUSD, KRWUSD and JPYUSD prices from TraderMade are available on minute increments. Historical NGNUSD price from TraderMade are not accessible before April, 30th 2021 (not issue). Price requests should use the minute price that is nearest and earlier than the price request timestamp. To do this, voters should use the open price of the OHLC period that the price request timestamp falls in. TraderMade endpoints are queried based on the OHLC period's close time.
+Historical PHPUSD, CADUSD, ZARUSD, KRWUSD and JPYUSD prices from TraderMade are available on minute increments. Historical NGNUSD price from TraderMade are not accessible before April, 30th 2021 (not issue). Price requests should use the minute price that is nearest and later than the price request timestamp. To do this, voters should use the open price of the OHLC period that the price request timestamp falls in. TraderMade endpoints are queried based on the OHLC period's close time.
 
 As an example, a request for a CADUSD price at 2020-11-11-01:52:16 should use query for the period ending at 2020-11-11-01:53:00 and use the open price. 
 
