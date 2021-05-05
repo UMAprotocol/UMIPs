@@ -88,7 +88,7 @@ Pricing this identifier requires the use of a combination of price feeds. The pr
 
 ## iFARM/USD
 
-**1. Price Identifier Name** - iFARM-USD
+**1. Price Identifier Name** - iFARM/USD
 
 **2. Base Currency** - iFARM
 
@@ -111,7 +111,7 @@ Pricing this identifier requires the use of a combination of price feeds. The pr
 
 ## USD/iFARM
 
-**1. Price Identifier Name** - USD-iFARM
+**1. Price Identifier Name** - USD/iFARM
 
 **2. Base Currency** - USD
 
@@ -173,7 +173,7 @@ To obtain the iFARM/USD price, follow this process. The price request timestamp 
 1. Determine the iFARM/FARM from getPricePerFullShare property of the iFARM token contract.
 2. Query for FARM/ETH prices on  Uniswap
 - Voters can obtain this information in any way that they wish. A python script that pulls a subgraph query is provided as a reference implementation.  See GitHub repo code referenced above as an example.
-3. The FARM/ETH price is determined by dividing `reserve1` by `reserve0`. This price should be queried using a 15-minute TWAP.
+3. The FARM/ETH price is determined by dividing `reserve1` by `reserve0`. This price should be queried using a 15-minute TWAP.  All blocks within the 15 minnutes just prior to the block that occurs at or during the the timestamp of price request would be queried.
 4. Using the specifications in UMIP 6 query for the price of ETHUSD.
 5. Multiple the results of steps 1, 2 and 3 together to get the iFARM/USD price (specifically iFARM/USD = iFARM/FARM FARM/ETH ETH/USD)
 6. Take the inverse of step 4 to get USD/iFARM price
