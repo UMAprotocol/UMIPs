@@ -1,11 +1,11 @@
 ## HEADERS
-| UMIP-XX    |                                                                                                                                  	|
+| UMIP-88    |                                                                                                                                  	|
 |------------|-------------|
 | UMIP Title | Add iFARM as Collateral|
 | Authors    |EAsports and gruad|
-| Status     | DRAFT|
+| Status     | Last Call|
 | Created    | 4/17/2021|  
-| Discourse Link:	| To be added |
+| Discourse Link:	| https://discourse.umaproject.org/t/adding-ifarm-as-collateral/922 |
 
 # SUMMARY 
 
