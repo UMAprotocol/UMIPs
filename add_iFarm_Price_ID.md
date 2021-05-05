@@ -37,7 +37,7 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
 
     - FARM
         - Uniswap for FARM/ETH LP which is the officially supported LP by Harvest and currently has the largest liquidity
-        - FARM/USDC on cryptowatch View [here](https://cryptowat.ch/assets/farm)
+        - FARM/USDC and FATM/ETH on Cryptowatch View [here](https://cryptowat.ch/assets/farm) can be used as a backup reference.
         - Binance, Coinbase, Kraken for ETH/USD (follows the specifications in UMIP-6) to convert native FARM/ETH LP to USD
     - iFARM
         - [Contract Address](https://etherscan.io/address/0x1571eD0bed4D987fe2b498DdBaE7DFA19519F651) which details in getPricePerFullShare the exchange rate between FARM and iFARM accounting for the "decimals" property (18)
@@ -53,27 +53,24 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
         - https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
 
-3. Provide recommended endpoints to query for historical prices from each market listed. 
+3. Provide recommended endpoints to query for historical prices from each market listed.
+	- Same as real-time prices
 
-4. FARM/USDC: 
-
-	- https://cryptowat.ch/assets/farm
-
-5.  Do these sources allow for querying up to 72 hours of historical data? 
+4.  Do these sources allow for querying up to 72 hours of historical data? 
 
     - Yes
 
-6.  How often is the provided price updated?
+65  How often is the provided price updated?
 
-    - ???
+    - Each Block is queried
 
 7. Is an API key required to query these sources? 
 
-    - No
+    - Yes, for our reference implentation
 
 8. Is there a cost associated with usage? 
 
-    - No (this could change when The Graph turns into a marketplace). Note, the price feed does not use The Graph. Using the graph is a secondary reference implementation. 
+    - Not currently. 
 
 9.  If there is a free tier available, how many queries does it allow for?
 
@@ -85,7 +82,7 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
 
 # PRICE FEED IMPLEMENTATION 
 
-Pricing this identifier requires the use of a combination of price feeds. The price feed configuration is shown [here](https://github.com/UMAprotocol/protocol/pull/2576), and uses the both []Alchemy](https://dashboard.alchemyapi.io) API's and [Etherscan](https://etherscan.io/) API's.  The GitHub repository referenced []here](https://github.com/gruadus/uniswap-trade-parser/tree/uma) provides reference code to pull reference prices by block for iFarm.  While it is functional users are encouraged to create their own implementations. 
+Pricing this identifier requires the use of a combination of price feeds. The price feed configuration is currently implemented as a python script that provides a data.csv file with all relevant data by block as well as calculated prices for each block.  This reference implementation uses both the [Alchemy](https://dashboard.alchemyapi.io) API's and [Etherscan](https://etherscan.io/) API's.  The GitHub repository referenced [here](https://github.com/gruadus/uniswap-trade-parser/tree/uma) provides reference code to pull reference prices by block for iFarm.  While it is functional users are encouraged to create their own implementations. 
 
 # TECHNICAL SPECIFICATIONS
 
@@ -159,15 +156,7 @@ iFARM is an interest bearing receipt representing a compounding amount of FARM d
 
 The price per full share can be found by querying the contract of the token with `getPricePerFullShare` as seen in method 9 on this [contract](https://etherscan.io/address/0x1571eD0bed4D987fe2b498DdBaE7DFA19519F651#readProxyContract).
 
-getPricePerFullShare is a pure view logic function in which no one has any authority to manipulate:
-
-``` 
-if (totalSupply() == 0) 
-{ 
-    return 1e18;
-}
-return balance().mul(1e18).div(totalSupply());
-```
+getPricePerFullShare is a pure view logic function in which no one has any authority to manipulate.  The reference code cited above returns this value in in a data.csv file by block.
 
 This returns the value of the balance of the vault divided by the number of shares to give the user the value of 1 share of the vault token. balance() represents the total balance of the underlying token in the vault. For example, if a user has 1 iFARM, this could be worth 1.06 FARM (which would be the ratio of balance / totalSupply).
 
@@ -190,7 +179,7 @@ To obtain the iFARM/USD price, follow this process. The price request timestamp 
 6. Take the inverse of step 4 to get USD/iFARM price
 
 **Pricing interval**
-    - 60 seconds
+    - Every block
 
 **Input processing**
     - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
