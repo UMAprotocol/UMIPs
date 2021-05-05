@@ -37,7 +37,6 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
 
     - FARM
         - Uniswap for FARM/ETH LP which is the officially supported LP by Harvest and currently has the largest liquidity
-        - FARM/USDC and FATM/ETH on Cryptowatch View [here](https://cryptowat.ch/assets/farm) can be used as a backup reference.
         - Binance, Coinbase, Kraken for ETH/USD (follows the specifications in UMIP-6) to convert native FARM/ETH LP to USD
     - iFARM
         - [Contract Address](https://etherscan.io/address/0x1571eD0bed4D987fe2b498DdBaE7DFA19519F651) which details in getPricePerFullShare the exchange rate between FARM and iFARM accounting for the "decimals" property (18)
@@ -46,12 +45,8 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
 
 2. Provide recommended endpoints to query for real-time prices from each market listed.
 
-    - Sushiswap graph explorer
-        - https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
-
     - Uniswap graph explorers
         - https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-
 
 3. Provide recommended endpoints to query for historical prices from each market listed.
 	- Same as real-time prices
@@ -60,23 +55,23 @@ Supporting the iFARM/USD and USD/iFARM price identifiers would enable the collat
 
     - Yes
 
-65  How often is the provided price updated?
+5.  How often is the provided price updated?
 
     - Each Block is queried
 
-7. Is an API key required to query these sources? 
+6. Is an API key required to query these sources? 
 
     - Yes, for our reference implentation
 
-8. Is there a cost associated with usage? 
+7. Is there a cost associated with usage? 
 
     - Not currently. 
 
-9.  If there is a free tier available, how many queries does it allow for?
+8.  If there is a free tier available, how many queries does it allow for?
 
     - No limit currently
 
-10.   What would be the cost of sending 15,000 queries?
+9.   What would be the cost of sending 15,000 queries?
 
      - $0
 
