@@ -1,8 +1,8 @@
 ## HEADERS
 | UMIP-88    |                                                                                                                                  	|
 |------------|-------------|
-| UMIP Title | Add iFARM as Collateral|
-| Authors    |EAsports and gruad|
+| UMIP Title | Add iFARM as a supported collateral currency |
+| Authors    | EAsports and gruad |
 | Status     | Last Call|
 | Created    | 4/17/2021|  
 | Discourse Link:	| https://discourse.umaproject.org/t/adding-ifarm-as-collateral/922 |

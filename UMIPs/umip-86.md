@@ -2,7 +2,7 @@
 
 | UMIP-86    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add LUSD as whitelisted collateral currencies              |
+| UMIP Title | Add LUSD as a supported collateral currency             |
 | Authors    | Ramy Melo (Ramysmelo@gmail.com) |
 | Status     | Last Call                                                                                                                        |
 | Created    | April 22, 2021                                                                                                                           |
