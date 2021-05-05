@@ -4,7 +4,7 @@
 - Author: Prelaunch Team, dev@prelaunch.finance
 - Status: Draft
 - Created: April 14, 2021
-- Discourse Link: TBA (Pending)
+- Discourse Link: https://discourse.umaproject.org/t/add-variable-expiring-multiparty-financial-contract-template/883
 
 ## Summary (2-5 sentences)
 Due to necessity and after discussing with the UMA team, their ExpiringMultiParty contract was modified to support variable expiration from an application specific authorized DAO address. Other projects such as Synthereum have needed a custom solution for this use case in the past. This financial contract template will be available for any projects on UMA to use. The contract that was modified is `PricelessPositionManager.sol`.
