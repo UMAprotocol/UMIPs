@@ -1,5 +1,5 @@
 ## Headers
-| UMIP-86   |                                                          |
+| UMIP-90   |                                                          |
 |------------|----------------------------------------------------------|
 | UMIP Title | Add NGNUSD, PHPUSD, CADUSD, ZARUSD, KRWUSD and JPYUSD as price identifiers                           |
 | Authors    | Vsevolod Potorocha (vsevolod@jarvis.network)                 |
