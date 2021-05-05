@@ -5,6 +5,7 @@
 | Authors    |EAsports and gruad 														        |
 | Status     | Last Call                                                                                                                                    |
 | Created    | 4/17/2021                                                                              						|
+| Discourse Link    | https://discourse.umaproject.org/t/adding-ifarm-as-collateral/922                                                                              						|
 
 
 # SUMMARY 
