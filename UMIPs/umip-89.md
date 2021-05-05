@@ -195,7 +195,7 @@ For iFARM you could use the same getPricePerFullShare method (described above) f
 
 For both implementions, a block number will need to be used. The block number should be the block that is closest to and before the timestamp that the price request timestamp.
 
-## Determining the iFARMUSD price
+## Determining the iFARMUSD and USDiFARM prices
 
 **A. How should tokenholders arrive at the price in the case of a DVM price request?** 
 
