@@ -5,7 +5,7 @@
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda  (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                    |
 | Created    | May 2, 2021                                                                                                                           |
-| [Discourse Link](TBD)    |                                                                                                                     |
+| [Discourse Link](https://discourse.umaproject.org/t/add-band-sdt-kp3r-cream-lpool-chain-sand-ern-and-pols-as-approved-collateral-currencies/1054)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
 This UMIP will add BAND, SDT, KP3R, CREAM, LPOOL, CHAIN, SAND, ERN and POLS as approved collateral currencies. This will involve adding these to the whitelist and adding flat final fees to charge per-request.
