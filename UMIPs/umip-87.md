@@ -50,7 +50,7 @@ Positive Rebases  % of the Pool
 Price identifier name: DIGG_Positive_Rebases
 Base Currency: NA
 Quote Currency: NA
-Rounding: Round to 4 decimal places (fourth decimal place digit >= 5 rounds up and < 5 rounds down)
+Rounding: Round to 8 decimal places (9th decimal place digit >= 5 rounds up and < 5 rounds down)
 Estimated current value of price identifier: 0
 
 # Implementation
@@ -64,14 +64,13 @@ Digg_Positive_Rebases = min(if(r<5,0,((r-5)/(30-5))^1.5),1) * .001
 https://docs.google.com/spreadsheets/d/1Kb58KUiaCFClfL9hkf0OCXJzXHC-9lDwnrxQ3eEobg4/edit?usp=sharing
 
 The main input needed is the number for Positive_Rebases that has occured during the life of the options (30 days)
-I think comparing total supply one day to the other is the easiest but am open to other ways to implement this.
 
 1. Using the timestamp that falls on 12:00 UTC but is closest and earlier than the price request timestamp (D2), read totalSupply from the DIGG token contract (D2_Supply).
 2. Query for totalSupply at 12:00 UTC on the day preceeding the day's (D1_Supply).
 3. If D2_Supply > D1_Supply  (if supply is equal do not iterate), increment Positive_Rebases by 1. If D2_Supply <= D1_Supply, the Positive_Rebases value should remain constant.
 4. Steps 2 and 3 should be repeated until the D1_Supply timestamp is earlier than the block timestamp that the contract using this price identifier was launched in OR the days since the deployment = to 30.
 
-Voters should return the value of DIGG_Positive_Rebases (using Positive_Rebases as an input in the above formula) once one of the conditions of step 4 is met.
+Voters should return the value of DIGG_Positive_Rebases (using Positive_Rebases as an input in the above formula) once one of the conditions of step 4 is met. This value should be rounded to 8 decimal places.
 
 
 # Rationale
