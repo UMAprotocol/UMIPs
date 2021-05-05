@@ -7,13 +7,13 @@
 - Discourse Link: https://discourse.umaproject.org/t/add-variable-expiring-multiparty-financial-contract-template/883
 
 ## Summary (2-5 sentences)
-Due to necessity and after discussing with the UMA team, their ExpiringMultiParty contract was modified to support variable expiration from an application specific authorized DAO address. Other projects such as Synthereum have needed a custom solution for this use case in the past. This financial contract template will be available for any projects on UMA to use. The contract that was modified is `PricelessPositionManager.sol`.
+Due to necessity and after discussing with the UMA team, their ExpiringMultiParty contract was modified to support variable expiration from an application specific authorized DAO address. Other projects such as Synthereum have needed a custom solution for this use case in the past. This financial contract template will be available for any projects on UMA to use. The main contract that was modified is PricelessPositionManager.sol.
 
 ## Motivation
 The current implementation of the ExpiringMultiParty (EMP) contract accepts a fixed expiration at the time of creation, which cannot be modified. In our use case, we needed the Prelaunch DAO to be able to expire the contract at a specific unknown future time in response to unpredictable events and factors. With the Variable EMP contract proposed, the Prelaunch DAO will be able to expire the contract at a final price after a vote of token holders votes favorably. As a backup, the contract will still expire at the expiration time set at creation. 
 
 ## Technical Specification
-The main contract that was modified is `PricelessPositionManager.sol`.
+The main contract that was modified is PricelessPositionManager.sol.
 
 First, on line 92, we add a new variable:
 
@@ -28,7 +28,7 @@ From lines 644 to 656 we have the function:
     function variableExpiration() external onlyPreExpiration() onlyOpenState() nonReentrant() {
         require(msg.sender == _getFinancialContractsAdminAddress() || msg.sender == externalVariableExpirationDAOAddress, 'Caller must be the authorized DAO or the UMA governor');
 
-        contractState = ContractState.ExpiredPriceReceived;
+        contractState = ContractState.ExpiredPriceRequested;
         // Expiratory time now becomes the current time (variable shutdown time).
         // Price received at this time stamp. `settleExpired` can now withdraw at this timestamp.
         uint256 oldExpirationTimestamp = expirationTimestamp;
@@ -38,7 +38,7 @@ From lines 644 to 656 we have the function:
         emit VariableExpiration(msg.sender, oldExpirationTimestamp, expirationTimestamp);
     }
        
-This function is based on the `emergencyShutdown` function located directly below it. In addition to being accessible by the UMA governor, this function is also accessible by the predefined DAO governance contract. Expiring the contract calls the `_requestOraclePriceExpiration` as in the other expiration functions. We also add a new event, `VariableExpiration`, which is defined on line 119.
+This function is based on the emergencyShutdown function located directly below it. In addition to being accessible by the UMA governor, this function is also accessible by the predefined DAO governance contract. Expiring the contract calls the _requestOraclePriceExpiration as in the other expiration functions. We also add a new event, VariableExpiration, which is defined on line 119.
 
 For security purposes in case a vulnerability is discovered with the DAO contract, we include an emergency update function on lines 631 to 636:
 
@@ -49,9 +49,9 @@ For security purposes in case a vulnerability is discovered with the DAO contrac
         externalVariableExpirationDAOAddress = DAOAddress;
     }
 
-This function can be called by the UMA governor or the DAO contract if there is a vulnerability or technical problem discovered in the DAO contract. Calling this function successfully will emit the `EmergencyUpdateDAOAddress` event as defined on line 120.
+This function can be called by the UMA governor or the DAO contract if there is a vulnerability or technical problem discovered in the DAO contract. Calling this function successfully will emit the EmergencyUpdateDAOAddress event as defined on line 120.
 
-In `Liquidatable.sol`, on line 70 we define:
+In Liquidatable.sol, on line 70 we define:
 
     address externalVariableExpirationDAOAddress;
     
@@ -59,7 +59,7 @@ and in the constructor pass it on line 188:
 
     params.externalVariableExpirationDAOAddress
     
-Similarly, in `ExpiringMultiPartyCreator.sol`, on line 44 we define:
+Similarly, in ExpiringMultiPartyCreator.sol, on line 44 we define:
 
     address externalVariableExpirationDAOAddress;
 
@@ -80,4 +80,4 @@ Less than 50 lines of code were added. Therefore the potential surface area for 
 
 Per feedback from the UMA team we decided to use the Optimistic Oracle for the final price determination, so that the third party DAO address only has the authority to expire the contract but not determine the expiry price.
 
-We included the `emergencyUpdateDAOAddress` to minimize potential issues with the application specific external DAO contract. However, the security of that contract is paramount as a maximum potential exploit could result in loss of funds for users of the particular application. 
+We included the emergencyUpdateDAOAddress to minimize potential issues with the application specific external DAO contract. However, the security of that contract is paramount as a maximum potential exploit could result in loss of funds for users of the particular application. 
