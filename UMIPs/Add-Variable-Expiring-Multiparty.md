@@ -13,7 +13,7 @@ Due to necessity and after discussing with the UMA team, their ExpiringMultiPart
 The current implementation of the ExpiringMultiParty (EMP) contract accepts a fixed expiration at the time of creation, which cannot be modified. In our use case, we needed the Prelaunch DAO to be able to expire the contract at a specific unknown future time in response to unpredictable events and factors. With the Variable EMP contract proposed, the Prelaunch DAO will be able to expire the contract at a final price after a vote of token holders votes favorably. As a backup, the contract will still expire at the expiration time set at creation. 
 
 ## Technical Specification
-The main contract that was modified is PricelessPositionManager.sol.
+The main contract that was modified is PricelessPositionManager.sol (Available here: https://github.com/PrelaunchFinance/VEMP/blob/main/contracts/PricelessPositionManager.sol).
 
 First, on line 92, we add a new variable:
 
