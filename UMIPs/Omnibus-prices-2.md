@@ -55,9 +55,11 @@ All of these base currencies have deep liquidity on Uniswap, SushiSwap, or both,
 
 **Required questions**
 
-Market: OKEx
+Market: OKEx, Uniswap, SushiSwap
 
 * OKEx LON/USDT: https://api.cryptowat.ch/markets/okex/lonusdt/price
+* SUSHISWAP LON/USDT: https://analytics.sushi.com/pairs/0x55d31f68975e446a40a2d02ffa4b0e1bfb233c2f
+* UNISWAP LON/ETH: https://v2.info.uniswap.org/pair/0x7924a818013f39cf800f5589ff1f1f0def54f31f
 
 
 How often is the provided price updated?
@@ -75,15 +77,15 @@ Do these sources allow for querying up to 74 hours of historical data?
 
 How often is the provided price updated?
 
-   - The lower bound on the price update frequency is a minute.
+   - Every 60 seconds for CW. Every block for Uniswap and Sushiswap.
 
 Is an API key required to query these sources?
 
-   - No.
+   - CW has a free tier, but requires an API key beyond that.
 
 Is there a cost associated with usage?
 
-   - Yes.
+   - Yes. Cryptowatch requires a purchase of credits beyond their free tier.
 
 If there is a free tier available, how many queries does it allow for?
 
@@ -98,6 +100,42 @@ What would be the cost of sending 15,000 queries?
 ## PRICE FEED IMPLEMENTATION
 
 These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js).
+[ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+```js
+LONUSD: {
+    type: "expression",
+    expression: 
+	SPOT_UNISWAP_USDT = UNISWAP_ETH * ETHUSD;
+        median( SPOT_UNISWAP_USDT, SPOT_OKEX_USDT,SPOT_SUSHISWAP_USDT);
+    ,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      SPOT_OKEX_USDT: { type: "cryptowatch", exchange: "okex", pair: "lonusdt" },
+      SPOT_SUSHISWAP_USDT: {
+        type: "uniswap",
+        uniswapAddress: "0x55d31f68975e446a40a2d02ffa4b0e1bfb233c2f",
+        twapLength: 2
+      },
+      UNISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0x7924a818013f39cf800f5589ff1f1f0def54f31f",
+            twapLength: 2
+          },
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+      },
+    }
+  }
+
+```
+
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -141,9 +179,13 @@ These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMApro
 
 Voters should query for the price of LON/USD at the price request timestamp on OKEx. Recommended endpoints are provided in the markets and data sources section.
 
-1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
-2. The result should be rounded to six decimals to determine the LONUSD price.
-3. (for USD/LON) Take the inverse of the result of step 2 (1/ LON/USD) to get the USD/LON price, and round to 6 decimals.
+1. For the price request timestamp, query for the LON/USDT price on Okex. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
+2. Query the ETHUSD price by following the guidelines of UMIP-6.
+3. Query LON/USDT Price from Sushiswap using 2 hour TWAP.
+4. Query LON/ETH Price from Uniswap using 2 hour TWAP.
+5. Take the median of the price from step 1 , step 3 and result of the multiplication of step 4 * step 2.
+6. The result should be rounded to six decimals to determine the LONUSD price.
+7. (for USD/LON) Take the inverse of the result of step 5 (1/ LON/USD), before rounding, to get the USD/LON price, and round to 6 decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -158,7 +200,7 @@ Market: SushiSwap
 
 SushiSwap: [BANK/ETH](https://analytics.sushi.com/pairs/0x938625591adb4e865b882377e2c965f9f9b85e34)
 
-Data: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+Data: https://thegraph.com/explorer/subgraph/sushiswap/exchange
 
 How often is the provided price updated?
 
@@ -280,6 +322,7 @@ Markets: Huobi and OKEx
 
 * Huobi MASK/USDT: https://api.cryptowat.ch/markets/huobi/maskusdt/price
 * OKEx MASK/USDT: https://api.cryptowat.ch/markets/okex/maskusdt/price
+* Uniswap MASK/ETH : https://v2.info.uniswap.org/pair/0x4d5f135691f13f7f5949ab3343ac7dc6bd7df80b
 
 How often is the provided price updated?
 
@@ -297,15 +340,15 @@ Do these sources allow for querying up to 74 hours of historical data?
 
 How often is the provided price updated?
 
-   - The lower bound on the price update frequency is a minute.
+   - Every 60 seconds for CW. Every block for Uniswap.
 
 Is an API key required to query these sources?
 
-   - No.
+   - CW has a free tier, but requires an API key beyond that.
 
 Is there a cost associated with usage?
 
-   - Yes.
+   - Yes. Cryptowatch requires a purchase of credits beyond their free tier.
 
 If there is a free tier available, how many queries does it allow for?
 
@@ -319,7 +362,38 @@ What would be the cost of sending 15,000 queries?
 
 ## PRICE FEED IMPLEMENTATION
 
-These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js).
+These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js) and [Expression](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+
+
+```js
+MASKUSD: {
+    type: "expression",
+    expression: 
+	SPOT_UNISWAP_USDT = UNISWAP_ETH * ETHUSD;
+        median( SPOT_UNISWAP_USDT, SPOT_OKEX_USDT,SPOT_HUOBI_USDT);
+    ,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      SPOT_OKEX_USDT: { type: "cryptowatch", exchange: "okex", pair: "maskusdt" },
+      SPOT_HUOBI_USDT: { type: "cryptowatch", exchange: "huobi", pair: "maskusdt" },
+      UNISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0x4d5f135691f13f7f5949ab3343ac7dc6bd7df80b",
+            twapLength: 2
+          },
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+      },
+    }
+  }
+```
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -361,12 +435,12 @@ These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMApro
 
 ## IMPLEMENTATION
 
-Voters should query for the price of MASK/USD at the price request timestamp on Coinbase Pro, Binance & OKEx. Recommended endpoints are provided in the markets and data sources section.
+Voters should query for the price of MASK/USD at the price request timestamp on Huobi and OKEx. Recommended endpoints are provided in the markets and data sources section.
 
-1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
+1. For the price request timestamp, query for the MASK/USDT prices on Huobi and OKEx and and the ETHUSD price by following the guidelines of UMIP-6. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
 2. The median of these results should be taken
 3. The median from step 2 should be rounded to six decimals to determine the MASKUSD price.
-4. (for USD/MASK) Take the inverse of the result of step 2 (1/ MASK/USD) to get the USD/MASK price, and round to 6 decimals.
+4. (for USD/MASK) Take the inverse of the result of step 2 (1/ MASK/USD), before rounding, to get the USD/MASK price, and round to 6 decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -378,11 +452,13 @@ For both implementations, voters should determine whether the returned price dif
 
  **Required questions**
 
-Market: Uniswap
+Market: Uniswap, SushiSwap
 
-Uniswap: [SFI/ETH](https://info.uniswap.org/pair/0xc76225124f3caab07f609b1d147a31de43926cd6)
+Uniswap: [SFI/ETH](https://v2.info.uniswap.org/pair/0xc76225124f3caab07f609b1d147a31de43926cd6)
 
-Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
+Sushiswap : [SFI/ETH](https://analytics.sushi.com/pairs/0x23a9292830fc80db7f563edb28d2fe6fb47f8624)
+
+Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2 , https://thegraph.com/explorer/subgraph/sushiswap/exchange
 
 How often is the provided price updated?
 
@@ -472,10 +548,11 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 ## IMPLEMENTATION
 
 ```
-1. Query SFI/ETH Price from Uniswap using 15-minute TWAP.
-2. Query the ETH/USD Price as per UMIP-6.
-3. Multiply the SFI/ETH price by the ETH/USD price and round to 6 decimals to get the SFI/USD price.
-4. (for USD/SFI) Take the inverse of the result of step 3 (1/ SFI/USD), before rounding, to get the USD/SFI price. Then, round to 6 decimals.
+1. Query SFI/ETH Price from Uniswap and SushiSwap using 15-minute TWAP.
+2. Take the median of the two prices.
+3. Query the ETH/USD Price as per UMIP-6.
+4. Multiply the SFI/ETH price by the ETH/USD price and round to 6 decimals to get the SFI/USD price.
+5. (for USD/SFI) Take the inverse of the result of step 4 (1/ SFI/USD), before rounding, to get the USD/SFI price. Then, round to 6 decimals.
 ```
 
 It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
@@ -500,11 +577,13 @@ It should be noted that this identifier is potentially prone to attempted manipu
 
  **Required questions**
 
-Market: Uniswap
+Market: Uniswap, SushiSwap
 
-Uniswap: [VSP/ETH](https://info.uniswap.org/pair/0xc76225124f3caab07f609b1d147a31de43926cd6)
+Uniswap: [VSP/ETH](https://v2.info.uniswap.org/pair/0x6d7b6dad6abed1dfa5eba37a6667ba9dcfd49077)
 
-Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
+Sushiswap: [VSP/ETH](https://analytics.sushi.com/pairs/0x132eeb05d5cb6829bd34f552cde0b6b708ef5014)
+
+Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2 , https://thegraph.com/explorer/subgraph/sushiswap/exchange
 
 How often is the provided price updated?
 
@@ -594,10 +673,11 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 ## IMPLEMENTATION
 
 ```
-1. Query VSP/ETH Price from Uniswap using 15-minute TWAP.
-2. Query the ETH/USD Price as per UMIP-6.
-3. Multiply the VSP/ETH price by the ETH/USD price and round to 6 decimals to get the VSP/USD price.
-4. (for USD/VSP) Take the inverse of the result of step 3 (1/ VSP/USD), before rounding, to get the USD/VSP price. Then, round to 6 decimals.
+1. Query VSP/ETH Price from Uniswap and Sushiswap using 15-minute TWAP.
+2. Take the median of two values.
+3. Query the ETH/USD Price as per UMIP-6.
+4. Multiply the VSP/ETH price by the ETH/USD price and round to 6 decimals to get the VSP/USD price.
+5. (for USD/VSP) Take the inverse of the result of step 4 (1/ VSP/USD), before rounding, to get the USD/VSP price. Then, round to 6 decimals.
 ```
 
 It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
@@ -627,7 +707,7 @@ It should be noted that this identifier is potentially prone to attempted manipu
 
 Market: Uniswap
 
-Uniswap: [FRAX/USDC](https://info.uniswap.org/pair/0x97c4adc5d28a86f9470c70dd91dc6cc2f20d2d4d)
+Uniswap: [FRAX/USDC](https://v2.info.uniswap.org/pair/0x97c4adc5d28a86f9470c70dd91dc6cc2f20d2d4d)
 
 Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
@@ -694,7 +774,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 **Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
 
-### USD/VSP
+### USD/FRAX
 
 **Price Identifier Name:** USDFRAX
 
@@ -744,7 +824,7 @@ It should be noted that this identifier is potentially prone to attempted manipu
 
 Market: Uniswap
 
-Uniswap: [DEXTF/ETH](https://info.uniswap.org/pair/0xa1444ac5b8ac4f20f748558fe4e848087f528e00)
+Uniswap: [DEXTF/ETH](https://v2.info.uniswap.org/pair/0xa1444ac5b8ac4f20f748558fe4e848087f528e00)
 
 Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
@@ -868,15 +948,31 @@ It should be noted that this identifier is potentially prone to attempted manipu
 Market: Binance
 
 * Binance ORN/USDT: https://api.cryptowat.ch/markets/binance/ornusdt/price
+* Binance ORN/BTC : https://api.cryptowat.ch/markets/binance/ornbtc/price
+* Uniswap ORN/ETH : https://v2.info.uniswap.org/pair/0x6c8b0dee9e90ea9f790da5daf6f5b20d23b39689
+
+Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
 How often is the provided price updated?
 
-   - The lower bound on the price update frequency is a minute.
+   - Every second for CW. Every block for Uniswap.
 
 Provide recommended endpoints to query for historical prices from each market listed.
 
-* Binance: https://api.cryptowat.ch/markets/binance/ornusdt/ohlc?after=1617848822&before=1617848822&periods=60
-
+* Binance[ORN/USDT]: https://api.cryptowat.ch/markets/binance/ornusdt/ohlc?after=1617848822&before=1617848822&periods=60
+* Binance[ORN/BTC] : https://api.cryptowat.ch/markets/binance/ornbtc/ohlc?after=1617848822&before=1617848822&periods=60
+* Uniswap [ORN/ETH] - Historical data can be fetched from the subgraph:
+```
+{
+  token(
+      id:"TOKEN_ADDRESS",
+      block: {number: BLOCK_NUMBER}
+  )
+  {
+      derivedETH
+  }
+}
+```
 
 Do these sources allow for querying up to 74 hours of historical data?
 
@@ -884,15 +980,15 @@ Do these sources allow for querying up to 74 hours of historical data?
 
 How often is the provided price updated?
 
-   - The lower bound on the price update frequency is a minute.
+   - Every 60 seconds for CW. Every block for Uniswap.
 
 Is an API key required to query these sources?
 
-   - No.
+   -CW has a free tier, but requires an API key beyond that.
 
 Is there a cost associated with usage?
 
-   - Yes.
+   - Yes. Cryptowatch requires a purchase of credits beyond their free tier.
 
 If there is a free tier available, how many queries does it allow for?
 
@@ -907,6 +1003,48 @@ What would be the cost of sending 15,000 queries?
 ## PRICE FEED IMPLEMENTATION
 
 These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js).
+and [Expression](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js)
+
+
+```js
+ORNUSD: {
+    type: "expression",
+    expression: 
+	SPOT_UNISWAP_USDT = UNISWAP_ETH * ETHUSD;
+	SPOT_BINANCE_ORNBTC_USDT = SPOT_BINANCE_USDT * BTCUSD
+        median( SPOT_UNISWAP_USDT, SPOT_BINANCE_ORNBTC_USDT,SPOT_BINANCE_USDT);
+    ,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      SPOT_BINANCE_USDT: { type: "cryptowatch", exchange: "binance", pair: "ornusdt" },
+      SPOT_BINANCE_BTC: { type: "cryptowatch", exchange: "binance", pair: "ornbtc" },
+      UNISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0x6c8b0dee9e90ea9f790da5daf6f5b20d23b39689",
+            twapLength: 2
+          },
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+      },
+      BTCUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "btcusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "btcusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "btcusd" }
+        ]
+      },
+    }
+  }
+```
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -950,9 +1088,13 @@ These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMApro
 
 Voters should query for the price of ORN/USD at the price request timestamp on Binance. Recommended endpoints are provided in the markets and data sources section.
 
-1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
-2. The result should be rounded to six decimals to determine the ORNUSD price.
-3. (for USD/ORN) Take the inverse of the result of step 2 (1/ ORN/USD) to get the USD/ORN price, and round to 6 decimals.
+1. For the price request timestamp, query for the ORN/USDT and ORN/BTC prices on Binance and get BTCUSD price according to Expression feed to get ORNUSD price and the ETHUSD price by following the guidelines of UMIP-6. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
+2. For the block of the price request timestamp, query for the ORNETH price from Uniswap.
+3. Multiply the gathered ETHUSD price by ORNETH to get the Uniswap ORNUSD price.
+4. Take the median of these.
+5. Round to 6 decimals to get the ORNUSD price.
+6. To get the USDORN price, voters should just take the inverse of the result of Step 4 (unrounded ORNUSD price) then round to 6 decimal places.
+
 
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
@@ -968,7 +1110,7 @@ For both implementations, voters should determine whether the returned price dif
 
 Market: Uniswap
 
-Uniswap: [BOND/USDC](https://info.uniswap.org/pair/0x6591c4bcd6d7a1eb4e537da8b78676c1576ba244)
+Uniswap: [BOND/USDC](https://v2.info.uniswap.org/pair/0x6591c4bcd6d7a1eb4e537da8b78676c1576ba244)
 
 Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
@@ -1075,6 +1217,125 @@ It should be noted that this identifier is potentially prone to attempted manipu
 - See rounding rules in `Technical Specification`.
 
 
+# PUNK-BASIC
 
+## MARKETS & DATA SOURCES
+**Required questions**
+
+Markets: SushiSwap
+
+SushiSwap: [PUNK-BASIC/NFTX](https://analytics.sushi.com/pairs/0x90825add1ad30d7dcefea12c6704a192be6ee94e) , 
+[NFTX/ETH](https://analytics.sushi.com/pairs/0x31d64f9403e82243e71c2af9d8f56c7dbe10c178)
+
+Data: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+
+How often is the provided price updated?
+
+    - On every Ethereum block (i.e. every ~15 seconds)
+
+Provide recommended endpoints to query for historical prices from each market listed.
+
+    - Historical data can be fetched from the subgraph:
+```
+{
+  token(
+      id:"TOKEN_ADDRESS",
+      block: {number: BLOCK_NUMBER}
+  )
+  {
+      derivedETH
+  }
+}
+```
+
+Do these sources allow for querying up to 74 hours of historical data?
+
+    - Yes.
+
+How often is the provided price updated?
+
+    - On each Ethereum block (i.e. every ~15 seconds)
+
+Is an API key required to query these sources?
+
+    - No.
+
+Is there a cost associated with usage?
+
+    - No.
+
+If there is a free tier available, how many queries does it allow for?
+
+    - No limits at the moment.
+
+What would be the cost of sending 15,000 queries?
+
+     - $0
+
+## PRICE FEED IMPLEMENTATION
+
+These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+
+## TECHNICAL SPECIFICATIONS
+
+### PUNK-BASIC/USD
+
+**Price Identifier Name:** PUNK-BASICUSD
+
+**Base Currency:** PUNK-BASIC
+
+**Quote currency:** USD
+
+**Intended Collateral Currency:** USDC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 8 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
+
+### USD/PUNK-BASIC
+
+**Price Identifier Name:** USDPUNK-BASIC
+
+**Base Currency:** USD
+
+**Quote currency:** PUNK-BASIC
+
+**Intended Collateral Currency:** PUNK-BASIC
+
+**Scaling Decimals:** 18 (1e18)
+
+**Rounding:** Round to nearest 8 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
+
+**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
+
+## IMPLEMENTATION
+
+```
+1. Query PUNK-BASIC/NFTX Price from SushiSwap using 15-minute TWAP.
+2. Query NFTX/ETH Price from SushiSwap using 15-minute TWAP.
+3. Query the ETH/USD Price as per UMIP-6.
+4. Multiply the PUNK-BASIC/NFTX with NFTX/ETH price and then multiply the result by the ETH/USD price and round to 8 decimals to get the PUNK-BASIC/USD price.
+5. (for USD/PUNK-BASIC) Take the inverse of the result of step 3 (1/ PUNK-BASIC/USD), before rounding, to get the USD/PUNK-BASIC price. Then, round to 8 decimals.
+```
+
+It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
+
+**What prices should be queried for and from which markets?**
+- Prices are queried from SushiSwap and listed in the `Technical Specifications` section.
+
+**Pricing interval**
+- Every block
+
+**Input processing**
+- None.
+
+**Result processing**
+- See rounding rules in `Technical Specification`.
 
 
