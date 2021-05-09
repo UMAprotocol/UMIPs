@@ -4,7 +4,7 @@
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
 | Status     | Draft                                                 |
 | Created    | 09/05/2021   
-| Discourse link    |                                    |
+| Discourse link    | https://discourse.umaproject.org/t/add-yvusdc-as-approved-collateral/1060                                   |
 
 ## Summary
 
