@@ -4,7 +4,7 @@
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
 | Status     | Draft                                                 |
 | Created    | 09/05/2021   
-| Discourse link    |                                    |
+| Discourse link    | https://discourse.umaproject.org/t/add-ust-as-approved-collateral/1059                                   |
 
 ## Summary
 
