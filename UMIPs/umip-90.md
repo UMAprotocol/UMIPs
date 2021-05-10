@@ -5,6 +5,7 @@
 | Authors    | Vsevolod Potorocha (vsevolod@jarvis.network)                 |
 | Status     | Draft                                                 |
 | Created    | 30/04/2021                                   |
+| Discourse link    | https://discourse.umaproject.org/t/umip-90-ngn-php-cad-zar-krw-and-jpy-vs-usd/1033    
 
 ## Summary
 The DVM should support price requests for the NGNUSD, PHPUSD, CADUSD, ZARUSD, KRWUSD and JPYUSD price index.
