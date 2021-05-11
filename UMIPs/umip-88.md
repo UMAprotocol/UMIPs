@@ -3,7 +3,7 @@
 |------------|-------------|
 | UMIP Title | Add iFARM as a supported collateral currency |
 | Authors    | EAsports and gruad |
-| Status     | Last Call|
+| Status     | Approved|
 | Created    | 4/17/2021|  
 | Discourse Link:	| https://discourse.umaproject.org/t/adding-ifarm-as-collateral/922 |
 

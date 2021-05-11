@@ -3,7 +3,7 @@
 |------------|----------------------------------------------------------|
 | UMIP Title | Add NGNUSD, PHPUSD, CADUSD, ZARUSD, KRWUSD and JPYUSD as price identifiers                           |
 | Authors    | Vsevolod Potorocha (vsevolod@jarvis.network)                 |
-| Status     | Draft                                                 |
+| Status     | Last Call                                                 |
 | Created    | 30/04/2021                                   |
 | Discourse link    | https://discourse.umaproject.org/t/umip-90-ngn-php-cad-zar-krw-and-jpy-vs-usd/1033    
 

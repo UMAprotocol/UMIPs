@@ -4,7 +4,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add LUSD as a supported collateral currency             |
 | Authors    | Ramy Melo (Ramysmelo@gmail.com) |
-| Status     | Last Call                                                                                                                        |
+| Status     | Approved                                                                                                                        |
 | Created    | April 22, 2021                                                                                                                           |
 | Discourse Link    | https://discourse.umaproject.org/t/add-lusd-collateral-support-to-dvm/929                                                                                                                           |
 
