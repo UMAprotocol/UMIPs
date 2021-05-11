@@ -1,7 +1,7 @@
 ## HEADERS
 | UMIP [#]     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | [Add LONUSD, USDLON, BANKUSD, USDBANK, MASKUSD, USDMASK, VSPUSD, USDVSP, SFIUSD, USDSFI, FRAXUSD, USDFRAX, DEXTFFUSD, USDDEXTF, ORNUSD, USDORN, BONDUSD, USDBOND, PUNK-BASICUSD and USDPUNK-BASIC as price identifiers]                                                                                                  |
+| UMIP Title | [Add LONUSD, USDLON, BANKUSD, USDBANK, MASKUSD, USDMASK, VSPUSD, USDVSP, SFIUSD, USDSFI, FRAXUSD, USDFRAX, DEXTFUSD, USDDEXTF, ORNUSD, USDORN, BONDUSD, USDBOND, PUNK-BASICUSD and USDPUNK-BASIC as price identifiers]                                                                                                  |
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                  |
 | Created    | April 29, 2021
@@ -32,7 +32,7 @@ The DVM should support price requests for the below price indices:
 - PUNK-BASIC/USD
 - USD/PUNK-BASIC
 
-The canonical identifiers should be `LONUSD`, `USDLON`, `BANKUSD`, `USDBANK`, `MASKUSD`, `USDMASK`, `VSPUSD`, `USDVSP`, `SFIUSD`, `USDSFI`, `FRAXUSD`, `USDFRAX`, `DEXTFFUSD`, `USDDEXTF`, `ORNUSD`, `USDORN`, `BONDUSD`, `USDBOND`, `PUNK-BASICUSD` and `USDPUNK-BASIC`.
+The canonical identifiers should be `LONUSD`, `USDLON`, `BANKUSD`, `USDBANK`, `MASKUSD`, `USDMASK`, `VSPUSD`, `USDVSP`, `SFIUSD`, `USDSFI`, `FRAXUSD`, `USDFRAX`, `DEXTFUSD`, `USDDEXTF`, `ORNUSD`, `USDORN`, `BONDUSD`, `USDBOND`, `PUNK-BASICUSD` and `USDPUNK-BASIC`.
 # MOTIVATION
 
 1. What are the financial positions enabled by adding these price identifiers that do not already exist?
@@ -115,12 +115,12 @@ LONUSD: {
       SPOT_SUSHISWAP_USDT: {
         type: "uniswap",
         uniswapAddress: "0x55d31f68975e446a40a2d02ffa4b0e1bfb233c2f",
-        twapLength: 2
+        twapLength: 900
       },
       UNISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x7924a818013f39cf800f5589ff1f1f0def54f31f",
-            twapLength: 2
+            twapLength: 900
           },
       ETHUSD: {
         type: "medianizer",
@@ -248,6 +248,33 @@ What would be the cost of sending 15,000 queries?
 ## PRICE FEED IMPLEMENTATION
 
 These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+
+```js
+BANKUSD: {
+    type: "expression",
+    expression: 
+	SPOT_SUSHISWAP_USDT = SUSHISWAP_ETH * ETHUSD; ,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      SUSHISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0x938625591adb4e865b882377e2c965f9f9b85e34",
+            twapLength: 900
+          },
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+      },
+    }
+  }
+
+```
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -380,7 +407,7 @@ MASKUSD: {
       UNISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x4d5f135691f13f7f5949ab3343ac7dc6bd7df80b",
-            twapLength: 2
+            twapLength: 900
           },
       ETHUSD: {
         type: "medianizer",
@@ -507,6 +534,42 @@ What would be the cost of sending 15,000 queries?
 
 These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
+```js
+SFIUSD: {
+    type: "expression",
+    expression: 
+	SPOT_SUSHISWAP_USDT = SUSHISWAP_ETH * ETHUSD;
+	SPOT_UNISWAP_USDT = UNISWAP_ETH * ETHUSD;
+	median( SPOT_UNISWAP_USDT,SPOT_SUSHISWAP_USDT);
+	 ,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      SUSHISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0x23a9292830fc80db7f563edb28d2fe6fb47f8624",
+            twapLength: 900
+          },
+      UNISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0xc76225124f3caab07f609b1d147a31de43926cd6",
+            twapLength: 900
+          },
+	
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+      },
+    }
+  }
+
+```
+
 ## TECHNICAL SPECIFICATIONS
 
 ### SFI/USD
@@ -632,6 +695,42 @@ What would be the cost of sending 15,000 queries?
 
 These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
+```js
+VSPUSD: {
+    type: "expression",
+    expression: 
+	SPOT_SUSHISWAP_USDT = SUSHISWAP_ETH * ETHUSD;
+	SPOT_UNISWAP_USDT = UNISWAP_ETH * ETHUSD;
+	median( SPOT_UNISWAP_USDT,SPOT_SUSHISWAP_USDT);
+	 ,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      SUSHISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0x132eeb05d5cb6829bd34f552cde0b6b708ef5014",
+            twapLength: 900
+          },
+      UNISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0x6d7b6dad6abed1dfa5eba37a6667ba9dcfd49077",
+            twapLength: 900
+          },
+	
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+      },
+    }
+  }
+
+```
+
 ## TECHNICAL SPECIFICATIONS
 
 ### VSP/USD
@@ -693,10 +792,6 @@ It should be noted that this identifier is potentially prone to attempted manipu
 
 **Result processing**
 - See rounding rules in `Technical Specification`.
-
-
-
-
 
 
 # FRAX
@@ -874,6 +969,35 @@ What would be the cost of sending 15,000 queries?
 ## PRICE FEED IMPLEMENTATION
 
 These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+
+```js
+DEXTFUSD: {
+    type: "expression",
+    expression: 
+	SPOT_UNISWAP_USDT = UNISWAP_ETH * ETHUSD;
+	 ,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      UNISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0xa1444ac5b8ac4f20f748558fe4e848087f528e00",
+            twapLength: 900
+          },
+	
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+      },
+    }
+  }
+
+```
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -1275,6 +1399,39 @@ What would be the cost of sending 15,000 queries?
 ## PRICE FEED IMPLEMENTATION
 
 These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
+
+```js
+PUNK-BASICUSD: {
+    type: "expression",
+    expression: 
+	SPOT_SUSHISWAP_USDT =SUSHISWAP_PUNK_BASIC * SUSHISWAP_ETH * ETHUSD;
+    ,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      SUSHISWAP_PUNK_BASIC: {
+        type: "uniswap",
+        uniswapAddress: "0x90825add1ad30d7dcefea12c6704a192be6ee94e",
+        twapLength: 900
+      },
+      SUSHISWAP_ETH: {
+            type: "uniswap",
+            uniswapAddress: "0x31d64f9403e82243e71c2af9d8f56c7dbe10c178",
+            twapLength: 900
+          },
+      ETHUSD: {
+        type: "medianizer",
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+        ]
+      },
+    }
+  }
+
+```
 
 ## TECHNICAL SPECIFICATIONS
 
