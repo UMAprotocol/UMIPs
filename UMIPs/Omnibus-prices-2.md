@@ -1146,7 +1146,7 @@ ORNUSD: {
       UNISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x6c8b0dee9e90ea9f790da5daf6f5b20d23b39689",
-            twapLength: 2
+            twapLength: 900
           },
       ETHUSD: {
         type: "medianizer",
