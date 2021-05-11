@@ -3,7 +3,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add DIGG_Positive_Rebases as a supported price identifier|
 | Authors             | Jon (BadgerDAO)                                               |
-| Status              | Last Call                                                         |
+| Status              | Approved                                                         |
 | Created             | 4/27/2021                                                     |
 | Discourse Link      | https://discourse.umaproject.org/t/umip-81-add-digg-positive-rebases-price-identifier/1026           |
 

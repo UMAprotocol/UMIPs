@@ -1,9 +1,9 @@
 ## HEADERS
-| UMIP [#]     |                                                                                                                                  |
+| UMIP-91     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | [Add LONUSD, USDLON, BANKUSD, USDBANK, MASKUSD, USDMASK, VSPUSD, USDVSP, SFIUSD, USDSFI, FRAXUSD, USDFRAX, DEXTFUSD, USDDEXTF, ORNUSD, USDORN, BONDUSD, USDBOND, PUNK-BASICUSD and USDPUNK-BASIC as price identifiers]                                                                                                  |
+| UMIP Title | [Add LONUSD, USDLON, BANKUSD, USDBANK, MASKUSD, USDMASK, VSPUSD, USDVSP, SFIUSD, USDSFI, DEXTFUSD, USDDEXTF, ORNUSD, USDORN, BONDUSD, USDBOND, PUNK-BASICUSD and USDPUNK-BASIC as price identifiers]                                                                                                  |
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
-| Status     | Draft                                                                                                                                  |
+| Status     | Last Call                                                                                                                                 |
 | Created    | April 29, 2021
 | Link to Discourse    | [Link](https://discourse.umaproject.org/t/add-lonusd-usdlon-bankusd-usdbank-maskusd-usdmask-vspusd-usdvsp-sfiusd-usdsfi-fraxusd-usdfrax-dextffusd-usddextf-ornusd-usdorn-bondusd-usdbond-punk-basicusd-and-usdpunk-basic-as-price-identifiers/1036)
 
@@ -21,8 +21,6 @@ The DVM should support price requests for the below price indices:
 - USD/VSP
 - SFI/USD
 - USD/SFI
-- FRAX/USD
-- USD/FRAX
 - DEXTF/USD
 - USD/DEXTF
 - ORN/USD
@@ -32,7 +30,7 @@ The DVM should support price requests for the below price indices:
 - PUNK-BASIC/USD
 - USD/PUNK-BASIC
 
-The canonical identifiers should be `LONUSD`, `USDLON`, `BANKUSD`, `USDBANK`, `MASKUSD`, `USDMASK`, `VSPUSD`, `USDVSP`, `SFIUSD`, `USDSFI`, `FRAXUSD`, `USDFRAX`, `DEXTFUSD`, `USDDEXTF`, `ORNUSD`, `USDORN`, `BONDUSD`, `USDBOND`, `PUNK-BASICUSD` and `USDPUNK-BASIC`.
+The canonical identifiers should be `LONUSD`, `USDLON`, `BANKUSD`, `USDBANK`, `MASKUSD`, `USDMASK`, `VSPUSD`, `USDVSP`, `SFIUSD`, `USDSFI`,  `DEXTFUSD`, `USDDEXTF`, `ORNUSD`, `USDORN`, `BONDUSD`, `USDBOND`, `PUNK-BASICUSD` and `USDPUNK-BASIC`.
 # MOTIVATION
 
 1. What are the financial positions enabled by adding these price identifiers that do not already exist?
@@ -115,12 +113,12 @@ LONUSD: {
       SPOT_SUSHISWAP_USDT: {
         type: "uniswap",
         uniswapAddress: "0x55d31f68975e446a40a2d02ffa4b0e1bfb233c2f",
-        twapLength: 900
+        twapLength: 300
       },
       UNISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x7924a818013f39cf800f5589ff1f1f0def54f31f",
-            twapLength: 900
+            twapLength: 300
           },
       ETHUSD: {
         type: "medianizer",
@@ -260,7 +258,7 @@ BANKUSD: {
       SUSHISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x938625591adb4e865b882377e2c965f9f9b85e34",
-            twapLength: 900
+            twapLength: 300
           },
       ETHUSD: {
         type: "medianizer",
@@ -317,7 +315,7 @@ BANKUSD: {
 ## IMPLEMENTATION
 
 ```
-1. Query BANK/ETH Price from SushiSwap using 15-minute TWAP.
+1. Query BANK/ETH Price from SushiSwap using 5-minute TWAP.
 2. Query the ETH/USD Price as per UMIP-6.
 3. Multiply the BANK/ETH price by the ETH/USD price and round to 6 decimals to get the BANK/USD price.
 4. (for USD/BANK) Take the inverse of the result of step 3 (1/ BANK/USD), before rounding, to get the USD/BANK price. Then, round to 6 decimals.
@@ -407,7 +405,7 @@ MASKUSD: {
       UNISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x4d5f135691f13f7f5949ab3343ac7dc6bd7df80b",
-            twapLength: 900
+            twapLength: 300
           },
       ETHUSD: {
         type: "medianizer",
@@ -548,12 +546,12 @@ SFIUSD: {
       SUSHISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x23a9292830fc80db7f563edb28d2fe6fb47f8624",
-            twapLength: 900
+            twapLength: 300
           },
       UNISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0xc76225124f3caab07f609b1d147a31de43926cd6",
-            twapLength: 900
+            twapLength: 300
           },
 	
       ETHUSD: {
@@ -611,7 +609,7 @@ SFIUSD: {
 ## IMPLEMENTATION
 
 ```
-1. Query SFI/ETH Price from Uniswap and SushiSwap using 15-minute TWAP.
+1. Query SFI/ETH Price from Uniswap and SushiSwap using 5-minute TWAP.
 2. Take the median of the two prices.
 3. Query the ETH/USD Price as per UMIP-6.
 4. Multiply the SFI/ETH price by the ETH/USD price and round to 6 decimals to get the SFI/USD price.
@@ -709,12 +707,12 @@ VSPUSD: {
       SUSHISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x132eeb05d5cb6829bd34f552cde0b6b708ef5014",
-            twapLength: 900
+            twapLength: 300
           },
       UNISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x6d7b6dad6abed1dfa5eba37a6667ba9dcfd49077",
-            twapLength: 900
+            twapLength: 300
           },
 	
       ETHUSD: {
@@ -772,7 +770,7 @@ VSPUSD: {
 ## IMPLEMENTATION
 
 ```
-1. Query VSP/ETH Price from Uniswap and Sushiswap using 15-minute TWAP.
+1. Query VSP/ETH Price from Uniswap and Sushiswap using 5.
 2. Take the median of two values.
 3. Query the ETH/USD Price as per UMIP-6.
 4. Multiply the VSP/ETH price by the ETH/USD price and round to 6 decimals to get the VSP/USD price.
@@ -792,124 +790,6 @@ It should be noted that this identifier is potentially prone to attempted manipu
 
 **Result processing**
 - See rounding rules in `Technical Specification`.
-
-
-# FRAX
-
-## MARKETS & DATA SOURCES
-
- **Required questions**
-
-Market: Uniswap
-
-Uniswap: [FRAX/USDC](https://v2.info.uniswap.org/pair/0x97c4adc5d28a86f9470c70dd91dc6cc2f20d2d4d)
-
-Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-
-How often is the provided price updated?
-
-    - On every Ethereum block (i.e. every ~15 seconds)
-
-Provide recommended endpoints to query for historical prices from each market listed.
-
-    - Historical data can be fetched from the subgraph:
-```
-{
-  pair(id:"0x97c4adc5d28a86f9470c70dd91dc6cc2f20d2d4d") {
-    token1Price
-  }
-}
-```
-
-Do these sources allow for querying up to 74 hours of historical data?
-
-    - Yes.
-
-How often is the provided price updated?
-
-    - On each Ethereum block (i.e. every ~15 seconds)
-
-Is an API key required to query these sources?
-
-    - No.
-
-Is there a cost associated with usage?
-
-    - No.
-
-If there is a free tier available, how many queries does it allow for?
-
-    - No limits at the moment.
-
-What would be the cost of sending 15,000 queries?
-
-     - $0
-
-## PRICE FEED IMPLEMENTATION
-
-These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
-
-## TECHNICAL SPECIFICATIONS
-
-### FRAX/USD
-
-**Price Identifier Name:** FRAXUSD
-
-**Base Currency:** FRAX
-
-**Quote currency:** USD
-
-**Intended Collateral Currency:** USDC
-
-**Scaling Decimals:** 18 (1e18)
-
-**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-
-**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
-
-**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
-
-### USD/FRAX
-
-**Price Identifier Name:** USDFRAX
-
-**Base Currency:** USD
-
-**Quote currency:** FRAX
-
-**Intended Collateral Currency:** FRAX
-
-**Scaling Decimals:** 18 (1e18)
-
-**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-
-**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
-
-**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
-
-## IMPLEMENTATION
-
-```
-1. Query FRAX/USDC Price from Uniswap using 2-hour TWAP and round to 6 decimals to get the FRAX/USD price.
-2. (for USD/FRAX) Take the inverse of the result of step 1 (1/ FRAX/USD), before rounding, to get the USD/FRAX price. Then, round to 6 decimals.
-```
-
-It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
-
-**What prices should be queried for and from which markets?**
-- Prices are queried from Uniswap and listed in the `Technical Specifications` section.
-
-**Pricing interval**
-- Every block
-
-**Input processing**
-- None.
-
-**Result processing**
-- See rounding rules in `Technical Specification`.
-
-
-
 
 # DEXTF
 
@@ -982,7 +862,7 @@ DEXTFUSD: {
       UNISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0xa1444ac5b8ac4f20f748558fe4e848087f528e00",
-            twapLength: 900
+            twapLength: 300
           },
 	
       ETHUSD: {
@@ -1040,7 +920,7 @@ DEXTFUSD: {
 ## IMPLEMENTATION
 
 ```
-1. Query DEXTF/ETH Price from Uniswap using 15-minute TWAP.
+1. Query DEXTF/ETH Price from Uniswap using 5 minute TWAP.
 2. Query the ETH/USD Price as per UMIP-6.
 3. Multiply the DEXTF/ETH price by the ETH/USD price and round to 6 decimals to get the DEXTF/USD price.
 4. (for USD/DEXTF) Take the inverse of the result of step 3 (1/ DEXTF/USD), before rounding, to get the USD/DEXTF price. Then, round to 6 decimals.
@@ -1146,7 +1026,7 @@ ORNUSD: {
       UNISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x6c8b0dee9e90ea9f790da5daf6f5b20d23b39689",
-            twapLength: 900
+            twapLength: 300
           },
       ETHUSD: {
         type: "medianizer",
@@ -1322,7 +1202,7 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 ## IMPLEMENTATION
 
 ```
-1. Query BOND/USDC Price from Uniswap using 1-hour TWAP and round to 6 decimals to get the BOND/USD price.
+1. Query BOND/USDC Price from Uniswap using 5-minute TWAP and round to 6 decimals to get the BOND/USD price.
 2. (for USD/BOND) Take the inverse of the result of step 1 (1/ BOND/USD), before rounding, to get the USD/BOND price. Then, round to 6 decimals.
 ```
 
@@ -1412,12 +1292,12 @@ PUNK-BASICUSD: {
       SUSHISWAP_PUNK_BASIC: {
         type: "uniswap",
         uniswapAddress: "0x90825add1ad30d7dcefea12c6704a192be6ee94e",
-        twapLength: 900
+        twapLength: 300
       },
       SUSHISWAP_ETH: {
             type: "uniswap",
             uniswapAddress: "0x31d64f9403e82243e71c2af9d8f56c7dbe10c178",
-            twapLength: 900
+            twapLength: 300
           },
       ETHUSD: {
         type: "medianizer",
@@ -1474,8 +1354,8 @@ PUNK-BASICUSD: {
 ## IMPLEMENTATION
 
 ```
-1. Query PUNK-BASIC/NFTX Price from SushiSwap using 15-minute TWAP.
-2. Query NFTX/ETH Price from SushiSwap using 15-minute TWAP.
+1. Query PUNK-BASIC/NFTX Price from SushiSwap using 5-minute TWAP.
+2. Query NFTX/ETH Price from SushiSwap using 5-minute TWAP.
 3. Query the ETH/USD Price as per UMIP-6.
 4. Multiply the PUNK-BASIC/NFTX with NFTX/ETH price and then multiply the result by the ETH/USD price and round to 8 decimals to get the PUNK-BASIC/USD price.
 5. (for USD/PUNK-BASIC) Take the inverse of the result of step 3 (1/ PUNK-BASIC/USD), before rounding, to get the USD/PUNK-BASIC price. Then, round to 8 decimals.
