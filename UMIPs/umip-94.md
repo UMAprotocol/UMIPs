@@ -66,7 +66,8 @@ No change for the liquidation.
 
 1. `SelfMintingPerpetualMultiParty.sol` is a derived contract that inherit from `SelfMintingPerpetualLiquidatableMultiParty.sol`.
 2. `SelfMintingPerpetualLiquidatableMultiParty.sol` is derived contract that inherit from `SelfMintingPerpetualPositionManagerMultiParty.sol`.
-3. `SelfMintingController.sol` contract is used to track and update the CapDepositLimit, CapMintLimit and Fee for the self-minting derivatives.
+3. `SelfMintingPositionManagerMultiParty.sol` is derived contract that inherit from `FeePayerParty.sol`
+4. `SelfMintingController.sol` contract is used to track and update the CapDepositLimit, CapMintLimit and Fee for the self-minting derivatives.
 
 Each one of those contract has its own library for gas optimization:
 1. `SelfMintingPerpetutalMultiPartyCreator.sol` uses `SelfMintingPerpetualMultiPartyLib.sol` for gas optimization.
