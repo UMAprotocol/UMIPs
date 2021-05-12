@@ -20,7 +20,7 @@ Now we are about to launch our “bank contract” which allows anyone to be a T
 
 The goal of this UMIP is to integrate `SelfMintingDerivativeFactory` in the DVM.
 
-Once `SelfMintingDerivativeFactory.sol` receives the `Creator` role it will register every `SelfMintingPerpetualMultiParty.sol` that is deployed through it with `SelfMintingRegistry.sol` so they can request prices from the DVM.
+Once `SelfMintingDerivativeFactory.sol` receives the `Creator` role it will register every `SelfMintingPerpetualMultiParty.sol` that is deployed through it with the UMA Registry so they can request prices from the DVM.
 
 # Motivation
 
@@ -37,7 +37,7 @@ Giving `Creator` role to `SelfMintingDerivativeFactory.sol` would allow more sca
 ### Here is a breakdown on the whole deployment process of a new derivative:
 
 1. Our DAO address (which is currently a team address until the DAO is set up) calls `deployOnlySelfMintingDerivative()` of `Deployer.sol`.
-2. `Deployer.sol` calls `createPerpetual()` function of `SelfMintingDerivativeFactory.sol` and this function will use the `createPerpetual()` function of the contract `SelfMintingPerpetutalMultiPartyCreator.sol` that will call `SelfMintingPerpetualMultiPartyLib.sol` which willdeploy a new `SelfMintingPerpetualMultiParty.sol` contract.
+2. `Deployer.sol` calls `createPerpetual()` function of `SelfMintingDerivativeFactory.sol` and this function will use the `createPerpetual()` function of the contract `SelfMintingPerpetutalMultiPartyCreator.sol` that will call `SelfMintingPerpetualMultiPartyLib.sol` which will deploy a new `SelfMintingPerpetualMultiParty.sol` contract.
 3. In the process of deployment `SelfMintingDerivativeFactory.sol` uses the internal function of `SelfMintingPerpetutalMultiPartyCreator.sol` called `_setControllerValues()` to set the CapMintLimit, CapDepositRatio and Fee for the new `SelfMintingPerpetualMultiParty.sol` in the `SelfMintingController.sol`.
 
 
@@ -47,23 +47,26 @@ Giving `Creator` role to `SelfMintingDerivativeFactory.sol` would allow more sca
 
 2. Deposit collateral ratio (DCR) is capped : this is the ratio between the deposited collateral and number of tokens minted. It comes in addition to the GCR: the latter sets a collateral ratio limit below which it is not possible to mint; the DCR sets a limit above which it is not possible to mint; this is done in order to prevent someone to manipulate the GCR. Like the GCR, the DCR is used in the mint, deposit and repay function.
 
-3. Minting is capped : it limits the number of tokens that the derivatives can mint so we can scale according to the demand, liquidity and security. Caps will be increased as security audits are being completed, and as liquidity on our Broker contracts (PerpetualPoolParty) deepen. Also the `CapMintLimit` parameter allows us to avoid a situation in which arbitrage opportunities could potentially be blocked thus affecting the peg of our synthetic tokens across various DEXes. By setting the cap below the currently minted synthetic assets on our broker contract. Under certain conditions, limiting the cap has a downside: if there is not enough synthetic asset on the secondary market to buy them to liquidate a position, it is possible that the limit prevents minting enough synthetic to do so.
+3. Minting is capped : it limits the number of tokens that the derivatives can mint so we can scale according to the demand, liquidity and security. Caps will be increased as security audits are being completed, and as liquidity on our Broker contracts (PerpetualPoolParty) deepen. Also the `CapMintLimit` parameter allows us to avoid a situation in which arbitrage opportunities could potentially be blocked thus affecting the peg of our synthetic tokens across various DEXes. By setting the cap below the currently minted synthetic assets on our broker contract we ensure that an attacker can not self-mint a synthetic asset and redeem an amount equal to the total amount of assets minted from our broker contract, which would block users from redeeming USDC from the broker contract until new tokens are minted and this could lead to impossibility to perform arbitrage and keep the peg with secondary markets.
+Under certain conditions, limiting the cap has a downside: if there is not enough synthetic asset on the secondary market to buy them to liquidate a position, it is possible that the limit prevents minting enough synthetic to do so.
 
-4. Make the contract permissionless : the PerpertualPoolParty contract was permissioned (only whitelisted contract can be a Sponsor). We changed this so anyone can become a Sponsor, like it is now in any UMA derivatives of course.
+4. Make the contract permissionless : the PerpertualPoolParty contract was permissioned (only whitelisted pools can be a Sponsor). We changed this so anyone can become a Sponsor, like it is now in any UMA derivatives of course.
 
 5. Remove the liquidity pool logic : the current PerpetualPoolParty contract works with liquidity pools.
 
-6. The derivatives parameters (CapDepositLimit, CapMintLimit and Fee) are now stored in a controller contract (`SelfMintingController.sol`): this allows us to change those parameters while keeping the same derivatives. In the factory smart contract, we can only link the derivative contract to an existing synthetic asset, which have been previously deployed.
+6. The derivatives parameters (CapDepositLimit, CapMintLimit and Fee) are now stored in a controller contract (`SelfMintingController.sol`): this allows us to change those parameters while keeping the same derivatives. 
 
-7. Fees, deposit limit, mint limit are upgradable through the `SelfMintingController.sol` contract.
+7. In the factory smart contract, we can only link the derivative contract to an existing synthetic asset, which have been previously deployed.
+
+8. Fees, deposit limit, mint limit are upgradable through the `SelfMintingController.sol` contract.
 
 No change for the liquidation. 
 
 ### Nesting of the contracts:
 
-1. `Perpetual.sol`, now called `SelfMintingPerpetualMultiParty.sol` is a derived contract that inherit from `PerpetualLiquidatable.sol`, now called `SelfMintingPerpetualLiquidatableMultiParty.sol`.
-2. `PerpetualLiquidatable.sol`, now called `SelfMintingPerpetualLiquidatableMultiParty.sol` is derived contract that inherit from `PerpetualPositionManager.sol`, now called `SelfMintingPerpetualPositionManagerMultiParty.sol`.
-3. `SelfMintingController.sol` contract is used to track and update the CapDepositLimit, CapMintLimit and Fee for the derivatives.
+1. `SelfMintingPerpetualMultiParty.sol` is a derived contract that inherit from `SelfMintingPerpetualLiquidatableMultiParty.sol`.
+2. `SelfMintingPerpetualLiquidatableMultiParty.sol` is derived contract that inherit from `SelfMintingPerpetualPositionManagerMultiParty.sol`.
+3. `SelfMintingController.sol` contract is used to track and update the CapDepositLimit, CapMintLimit and Fee for the self-minting derivatives.
 
 Each one of those contract has its own library for gas optimization:
 1. `SelfMintingPerpetutalMultiPartyCreator.sol` uses `SelfMintingPerpetualMultiPartyLib.sol` for gas optimization.
@@ -80,3 +83,5 @@ The `SelfMintingDerivativeFactory.sol` and all adjacent contracts can be found h
 The `SelfMintingController.sol`, `SelfMintingRegistry.sol` and `Deployer.sol` contracts can be found and are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/selfish-minting/libs/contracts/contracts/contracts/core).
 
 # Security considerations
+
+This contract is a fork of the broker contract with all its corresponding contracts, which were audited. However this contract has not yet been audited.
