@@ -20,7 +20,7 @@ Now we are about to launch our “bank contract” which allows anyone to be a T
 
 The goal of this UMIP is to integrate `SelfMintingDerivativeFactory` in the DVM.
 
-Once `SelfMintingDerivativeFactory.sol` receives the `Creator` role it will register every `PerpetualPoolParty.sol` that is deployed through it with `SelfMintingRegistry.sol` so they can request prices from the DVM.
+Once `SelfMintingDerivativeFactory.sol` receives the `Creator` role it will register every `SelfMintingPerpetualMultiParty.sol` that is deployed through it with `SelfMintingRegistry.sol` so they can request prices from the DVM.
 
 # Motivation
 
@@ -30,7 +30,7 @@ The "bank contract" will allow us to scale as it will allow anyone to self-mint 
 
 The "bank contract" charges a fee, paid in the collateral deposited, when the user mints, deposits, repays and redeems. The fees are then transferred to the Jarvis protocol's treasury. 
 
-Giving `Creator` role to `SelfMintingDerivativeFactory.sol` would allow more scalable and liquid synthetic assets to be backed by the UMA liquidation/dispute system, since every newly deployed derivative (`PerpetualPoolParty.sol`) is registered with the DVM.
+Giving `Creator` role to `SelfMintingDerivativeFactory.sol` would allow more scalable and liquid synthetic assets to be backed by the UMA liquidation/dispute system, since every newly deployed derivative (`SelfMintingPerpetualMultiParty.sol`) is registered with the DVM.
 
 # Technical Specification
 
