@@ -20,7 +20,7 @@ Unlike other algorithmic stablecoin, UST has been incredibly stable.
 
 It is listed agasint USDT on Bittrex and Kucoin, and in the UST Curve meta-pool (UST+3pool).
 
-Adding UST as collateral will allow the creation of new synthetic assets backed by this stablecoin. For example, it will allow us, at Jarvis, to launch new liquidity pools based on UST (see [UMIP-34](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-34.md and [UMIP-90](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-90.md))).
+Adding UST as collateral will allow the creation of new synthetic assets backed by this stablecoin. For example, it will allow us, at Jarvis, to launch new liquidity pools based on UST (see [UMIP-34](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-34.md)).
 
 
 
