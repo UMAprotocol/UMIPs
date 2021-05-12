@@ -5,7 +5,7 @@
 | UMIP Title | Add `SelfMintingDerivativeFactory` as `Creator` in DVM registry                                                                                                |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
 | Status     | Draft                                                 |
-| Created    | 05/08/2021   
+| Created    | 12/05/2021   
 | Discourse link    |                                    |
 
 # Summary
