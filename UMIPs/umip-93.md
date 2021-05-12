@@ -16,12 +16,12 @@ The DVM currently does not support these Forex price index to allow minting synt
 ### Cost: 
 To construct these price feeds, there are two options: get the price of UMA agaisnt one of these currencies, or get the price of UMA agaisnt USD and combine it with the price of USD against one of these currencies.
 
-Coingecko provides a free API for the price of UMA agaisnt one of these currencies, but it would mean to use a single source of data. Cryptowatch provides a free tier API for the price of UMA agaisnt USD.
+Coingecko provides a free API for the price of UMA agaisnt one of these currencies, but it would mean to use a single source of data. [Cryptowatch](https://cryptowat.ch/) provides a free tier API for the price of UMA agaisnt USD.
 
-While Forex data are free through open centralized exchange, brokers, and other sources APIs, the most reliable are paid. We propose to use TraderMade's APIs whose pricing is accessible on their website. TraderMade has also a Free Tier which can be used by the voters and would be sufficient to provide the price of a certain asset.
+While Forex data are free through open centralized exchange, brokers, and other sources APIs, the most reliable are paid. We propose to use TraderMade's APIs whose pricing is accessible on their website. [TraderMade](https://tradermade.com/market-data/forex-api#pricing) has also a Free Tier which can be used by the voters and would be sufficient to provide the price of a certain asset. The non-free tier is also affordable, and starts at 30 pounds per month.
 
 ### Opportunity: 
-Synthetic tokens that track fiat currencies such as EUR could be used both for speculations and hedging, but we see a bigger opportunity for using them as building blocks for helping other DeFi protocols and dApp addressing the global market.
+Synthetic tokens that track fiat currencies such as EUR could be used both for speculations and hedging, but we see a bigger opportunity for using them as building blocks for helping other DeFi protocols and dApps addressing the global market.
 
 
 ## Technical Specification
@@ -91,38 +91,157 @@ The definition of this identifiers should be:
 - Rounding: Closest, 0.5 up (>= .000005 rounds up, < .000005 rounds down)
 - Scaling Decimals: 18 (1e18)
 - Pricing Interval: 60 seconds
-- Dispute timestamp rounding: down
+- Dispute timestamp rounding: down (we round to the earliest minute).
 
 ## Rationale
 Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like JPYUSD, so any price feed could be used; however, for convenience, we recommend using the one of TraderMade.
 
 ## Implementation
-As there is a single UMA/EUR market (Coinbase), it is more secure to combine two price feeds: UMA/USD and EURUSD.
-•	To get UMA/EUR: we divide UMA/USD by EUR/USD, or multiply it by USD/EUR.
-•	To het EUR/UMA: we devide UMA/USD by USD/EUR, or multiply it by EUR/USD.
+To construct UMA/XXX price feed, we need to combine two price feeds: UMA/USD and and USD/XXX: 
+•	To get UMA/XXX: we divide UMA/USD by XXX/USD, or multiply it by USD/XXX.
+•	To get XXX/UMA: we devide UMA/USD by USD/XXX, or multiply it by XXX/USD.
 
-To construct both the live and historical price for UMA/USD, we will calculate the median price between the three data sources used in the UMIP 57: Coinbase (USD), Okex (USDT) and Binance (USDT).
-We recommend using Cryptowatch. The free tier allows 665 queries per day; the price update frequency is 60 seconds.
-Recommended endpoints to query live prices: 
-•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMA/USD/price
-•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMA/USDt/price
-•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMA/USDt/price
-Recommended endpoints to query historical prices:
-•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMA/USD/ohlc?after=1613450520&before=1613450520&periods=60
-•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMA/USDt/ohlc?after=1613450520&before=1613450520&periods=60
-•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMA/USDt/ohlc?after=1613450520&before=1613450520&periods=60
+To construct the UMA/USD price feed, we will calculate the median price between the three data sources used in the UMIP 57: Coinbase (USD), Okex (USDT) and Binance (USDT). We recommend using Cryptowatch. The free tier allows 665 queries per day; the price update frequency is 60 seconds.
 
-To construct both live and historical price for EUR/USD, we will use TraderMade. TraderMade’s price feed is an aggregated feed from multiple Tier One and Two Banks, Market-Makers and Data Providers. The free tier allows 1,000 queries per month; the price update frequency is below 1 second for the live price, and 60 seconds for the historical price.
+To get the USD/XXX prices, we will use TraderMade’s price feeds. The free tier allows 1,000 queries per month; the price update frequency is below 1 second for the live price, and 60 seconds for the historical price. Forex pair price should then be rounded to 5 decimals.
+
+Cryptowatch and TraderMade use a different input format for  retrieving historical data: you need to use Unix timestamp for Cryptowatch, and YYYY-MM-DD-HH:MM for TraderMade. Price requests should use the minute price that is nearest and earliest than the price request timestamp. Voters should use the close price of the OHLC period prior to the price request timestamp. Cryptowatch and TraderMade endpoints are queried based on the OHLC period's close time. For example, a request for a Forex pair price at 2021-05-10-21:10:16 should use query for the period ending at 2021-05-10-21:10:00 (Unix: 1620756600) and use the close price.
+
+
+### UMAEUR
+To construct both live and historical price for UMA/EUR we will multiply UMA/USD by USD/EUR.
+
 Recommended endpoints to query live prices:
-•	JPY/USD: https://marketdata.tradermade.com/api/v1/live?currency=EURGBP,GBPJPY&api_key=api_key
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/price
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/price
+•	USD/EUR: https://marketdata.tradermade.com/api/v1/live?currency=USDEUR&api_key=api_key
 
+Recommended endpoints to query historical prices for the 10th of May 2021 at 6:03pm:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	USD/EUR: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDEUR&date_time=2021-05-10-18:03&api_key=apikey
 
-Recommended endpoints to query historical prices for CAD/USD:
-•	CAD/USD: https://marketdata.tradermade.com/api/v1/minute_historical?currency=CADUSD&date_time=YYYYY-MM-DD-HH:MM&api_key=apikey 
-Historical NGNUSD price from TraderMade are not accessible before April, 30th 2021 (not issue).
-Price requests should use the minute price that is nearest and later than the price request timestamp. Voters should use the open price of the OHLC period that the price request timestamp falls in. TraderMade endpoints are queried based on the OHLC period's close time.
-For example, a request for a Forex pair price at 2020-11-11-01:52:16 should use query for the period ending at 2020-11-11-01:53:00 and use the open price.
-Forex pair price should then be rounded to 5 decimals.
+### UMAGBP
+To construct both live and historical price for UMA/GBP we will multiply UMA/USD by USD/GBP.
+
+Recommended endpoints to query live prices:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/price
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/price
+•	USD/GBP: https://marketdata.tradermade.com/api/v1/live?currency=USDGBP&api_key=api_key
+
+Recommended endpoints to query historical prices for the 10th of May 2021 at 6:03pm:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	USD/GBP: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDGBP&date_time=2021-05-10-18:03&api_key=apikey
+
+### UMACHF
+To construct both live and historical price for UMA/CHF we will multiply UMA/USD by USD/CHF.
+
+Recommended endpoints to query live prices:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/price
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/price
+•	USD/CHF: https://marketdata.tradermade.com/api/v1/live?currency=USDCHF&api_key=api_key
+
+Recommended endpoints to query historical prices for the 10th of May 2021 at 6:03pm:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	USD/CHF: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDCHF&date_time=2021-05-10-18:03&api_key=apikey
+
+### UMACAD
+To construct both live and historical price for UMA/CAD we will multiply UMA/USD by USD/CAD.
+
+Recommended endpoints to query live prices:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/price
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/price
+•	USD/CAD: https://marketdata.tradermade.com/api/v1/live?currency=USDCAD&api_key=api_key
+
+Recommended endpoints to query historical prices for the 10th of May 2021 at 6:03pm:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	USD/CAD: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDCAD&date_time=2021-05-10-18:03&api_key=apikey
+
+### UMAJPY
+To construct both live and historical price for UMA/JPY we will multiply UMA/USD by USD/JPY.
+
+Recommended endpoints to query live prices:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/price
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/price
+•	USD/JPY: https://marketdata.tradermade.com/api/v1/live?currency=USDJPY&api_key=api_key
+
+Recommended endpoints to query historical prices for the 10th of May 2021 at 6:03pm:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	USD/JPY: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDJPY&date_time=2021-05-10-18:03&api_key=apikey
+
+### UMAZAR
+To construct both live and historical price for UMA/ZAR we will multiply UMA/USD by USD/ZAR.
+
+Recommended endpoints to query live prices:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/price
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/price
+•	USD/ZAR: https://marketdata.tradermade.com/api/v1/live?currency=USDZAR&api_key=api_key
+
+Recommended endpoints to query historical prices for the 10th of May 2021 at 6:03pm:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	USD/ZAR: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDZAR&date_time=2021-05-10-18:03&api_key=apikey
+
+### UMAKRW
+To construct both live and historical price for UMA/KRW we will multiply UMA/USD by USD/KRW.
+
+Recommended endpoints to query live prices:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/price
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/price
+•	USD/KRW: https://marketdata.tradermade.com/api/v1/live?currency=USDKRW&api_key=api_key
+
+Recommended endpoints to query historical prices for the 10th of May 2021 at 6:03pm:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	USD/KRW: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDKRW&date_time=2021-05-10-18:03&api_key=apikey
+
+### UMANGN
+To construct both live and historical price for UMA/NGN we will multiply UMA/USD by USD/NGN.
+
+Recommended endpoints to query live prices:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/price
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/price
+•	USD/NGN: https://marketdata.tradermade.com/api/v1/live?currency=USDNGN&api_key=api_key
+
+Recommended endpoints to query historical prices for the 10th of May 2021 at 6:03pm:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	USD/NGN: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDNGN&date_time=2021-05-10-18:03&api_key=apikey
+
+### UMAPHP
+To construct both live and historical price for UMA/PHP we will multiply UMA/USD by USD/PHP.
+
+Recommended endpoints to query live prices:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/price
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/price
+•	USD/PHP: https://marketdata.tradermade.com/api/v1/live?currency=USDPHP&api_key=api_key
+
+Recommended endpoints to query historical prices for the 10th of May 2021 at 6:03pm:
+•	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
+•	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	OKEx UMA/USDT: https://api.cryptowat.ch/markets/okex/UMAUSDt/ohlc?after=1620669780&before=1620669780&periods=60
+•	USD/PHP: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDPHP&date_time=2021-05-10-18:03&api_key=apikey
 
 
 ### Weekend timestamp
@@ -142,6 +261,11 @@ Forex markets are usually open throughout business days from 10:00 PM UTC time o
 ### Price feed - liquidations and disputes
 
 Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found [here](https://marketdata.tradermade.com/documentation). A reference TraderMade implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/TraderMadePriceFeed.js).
+
+Our team has adjusted the original Liquidation and Dispute bots in order to fit the interfaces of our protocol. You can find our versions of the Liquidator and Dispute bots on the following GitLab links:
+
+- [Liquidator Bot]
+- [Dispute Bot]
 
 TraderMade is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.
 
