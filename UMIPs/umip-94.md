@@ -85,3 +85,5 @@ The `SelfMintingController.sol`, `SelfMintingRegistry.sol` and `Deployer.sol` co
 # Security considerations
 
 This contract is a fork of the broker contract with all its corresponding contracts, which were audited. However this contract has not yet been audited.
+
+As of now any position opened through the bank contract (`SelfMintingPerpetualMiltiParty.sol`) could become undercapitalized, meaning that the CR could drop below 100%, thus making the position not profitable to be liquidated. This possible threat is magnified by the high volatility of possible collateralTokens used for the self-minting derivatives. However by running liquidation bots the possible undercapitalization situation can be avoided. Another solution which can be implemented to avoid this situation is to have a reserve fund which will automatically deposit additional collateral in the self-minting derivative if the position becomes undercapitalized.
