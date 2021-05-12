@@ -468,7 +468,7 @@ Voters should query for the price of MASK/USD at the price request timestamp on 
 4. Multiply the results of step 2 and step 3 to get a MASK/USD Uniswap price.
 5. The median of the results from Uniswap, Huobi and OKEx should be taken.
 6. The median from step 5 should be rounded to six decimals to determine the MASKUSD price.
-7. (for USD/MASK) Take the inverse of the result of step 2 (1/ MASK/USD), before rounding, to get the USD/MASK price, and round to 6 decimals.
+7. (for USD/MASK) Take the inverse of the result of step 5 (1/ MASK/USD), before rounding, to get the USD/MASK price, and round to 6 decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
