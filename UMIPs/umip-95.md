@@ -36,11 +36,8 @@ Giving `Creator` role to `DerivativeFactory.sol` would allow more scalable and l
 
 ### Here is a breakdown on the whole deployment process of a new derivative:
 
-1. Our DAO address (which is currently a team address until the DAO is set up) calls `deployPoolAndDerivative` of `Deployer.sol`.
+1. Our DAO address (which is currently a team address until the DAO is set up) calls `deployPoolAndDerivative` or `deployOnlyDerivative` of `Deployer.sol`.
 2. `Deployer.sol` calls `createPerpetual` function of `DerivativeFactory.sol` and this function will call `createPerpetual` function of the base contract `PerpetualPoolPartyCreator.sol` that will deploy the new `PerpetualPoolParty.sol`.
-3. `Deployer.sol` calls `createPool` function of `PoolOnChainPriceFeedFactory.sol` and this function will call `createPool` function of the base contract `PoolOnChainPriceFeedCreator.sol` that will deploy the new `PoolOnChainPriceFeed.sol`.
-4. `Deployer.sol` links the newly deployed `PoolOnChainPriceFeed.sol` to the newly deployed `PerpetualPoolParty.sol`.
-5. Role assignment like `Maintainer` and `Admin` is done by the `Manager.sol` contract.
 
 ### Modifications done: 
 
@@ -50,9 +47,9 @@ Giving `Creator` role to `DerivativeFactory.sol` would allow more scalable and l
 
 ### Nesting of the contracts:
 
-1. `Perpetual.sol`, now called `PerpetualPoolParty.sol` is a derived contract that inherit from `PerpetualLiquidatable.sol`, now called `PerpetualLiquidatablePoolParty.sol`.
-2. `PerpetualLiquidatable.sol`, now called `PerpetualLiquidatablePoolParty.sol` is derived contract that inherit from `PerpetualPositionManager.sol`, now called `PerpetualPositionManagerPoolParty.sol`.
-3. `PerpetualPositionManager.sol`, now called `PerpetualPositionManagerPoolParty.sol` is derived contract that inherit from `FeePayer.sol`, now called `FeePayerParty.sol`.
+1. `PerpetualPoolParty.sol` is a derived contract that inherit from `PerpetualLiquidatablePoolParty.sol`.
+2. `PerpetualLiquidatablePoolParty.sol` is derived contract that inherit from `PerpetualPositionManagerPoolParty.sol`.
+3. `PerpetualPositionManagerPoolParty.sol` is derived contract that inherit from `FeePayerParty.sol`.
 
 Each one of those contracts have its own library for gas optimization:
 1. `PerpetualPoolPartyCreator.sol` uses `PerpetualPoolPartyLib.sol` for gas optimization.
@@ -62,25 +59,10 @@ Each one of those contracts have its own library for gas optimization:
 
 # List of deployed contracts:
 
-- [Finder](https://etherscan.io/address/0xD451dE78E297b496ee8a4f06dCF991C17580B452) 
-- [Deployer](https://etherscan.io/address/0x592108F92F6e570f1A47f32c459a03c90aCe05a7)
-- [PoolRegistry](https://etherscan.io/address/0xefb040204CC94e49433FDD472e49D4f3538D5346)
-- [FactoryVersioning](https://etherscan.io/address/0x1fBb59a3Fff02989342FD0761AE62f01334b5244)
-- [SyntheticTokenFactory](https://etherscan.io/address/0xAb6EEDb096376a493E0e888D2738a6a0A493cC3e)
-- [FeePayerPoolPartyLib](https://etherscan.io/address/0xB0d0A057060c266b76B110C762471C91a80eD292) 
-- [PerpetualPositionManagerPoolPartyLib](https://etherscan.io/address/0xf953f99F6E3907D14658f906988EacDc08387AAd)
-- [PerpetualLiquidatablePoolPartyLib](https://etherscan.io/address/0xA758F41c32dB16BF9354ca230a9eC73edd0AD4c0)
-- [PerpetualPoolPartyLib](https://etherscan.io/address/0xd8C00bD1BD98D0880e0eA70af81a65348aE73Ef2) 
-- [DerivativeFactory](https://etherscan.io/address/0x98c1f29A478fb4e5da14c2BcA0380e67ac2A964a#code) 
-- [PoolLib](https://etherscan.io/address/0xDB026D6c3450F5F28f3a035E158E1B68AfCE8f9F) 
-- [PoolFactory](https://etherscan.io/address/0x2097E7f338eB44C69a48c3f9eBea7dEeeb88f63F)
-- [Manager]()
 
 # Implementation and code base
 
 The `DerivativeFactory.sol` contract as well as all supporting contracts for the `PerpetualPoolParty.sol` contract (including `PerpetualPoolParty.sol` contract) can be found here are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/derivative-v2/libs/contracts/contracts/contracts/derivative/v2).
-
-The `PoolOnChainPriceFeed.sol` contract as well as all supporting contracts can be found and are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/derivative-v2/libs/contracts/contracts/contracts/synthereum-pool/v3).
 
 The core contracts of the protocol like `Manager.sol` and `Deployer.sol` can be found and reviewed by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/derivative-v2/libs/contracts/contracts/contracts/core).
 
@@ -93,6 +75,6 @@ Two security audits have been conducted by Halborn:
 
 We have published an answer to the audits [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/blob/dev/docs/security-audits/halborn/02-response-to-jarvis-v3-smart-contracts-report-v1.md).
 
-Another team (Ubik) is currently auditing our contracts as well. 
+Another team (Ubik) is currently auditing our contracts as well. Based on their preliminary report we'll adjust any found vulnerabilities. The preliminary report will be shared here.
 
-Currently there is no economical incentive for liquidating undercapitalized positions (positions where the CR drops below 100%). Although, Forex pairs are not very volatile and rarely move by more than 10% a year, and we have set liquidation at 120% so it is quite unlikely to experience this situation.
+As of now any position opened through the broker derivative contract (`PerpetualPoolParty.sol`) could become undercapitalized, meaning that the CR could drop below 100%, thus making the position not profitable to be liquidated.Although, Forex pairs are not very volatile and rarely move by more than 10% a year, and we have set liquidation at 120% so it is quite unlikely to experience this situation. However by running liquidation bots the possible undercapitalization situation can be avoided. Another solution which can be implemented to avoid this situation is to have a reserve fund which will automatically deposit additional collateral in the derivative if the position becomes undercapitalized.
