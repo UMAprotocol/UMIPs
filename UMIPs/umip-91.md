@@ -1,7 +1,7 @@
 ## HEADERS
 | UMIP-91     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | [Add LONUSD, USDLON, BANKUSD, USDBANK, MASKUSD, USDMASK, VSPUSD, USDVSP, SFIUSD, USDSFI, DEXTFUSD, USDDEXTF, ORNUSD, USDORN, BONDUSD, USDBOND, PUNK-BASICUSD and USDPUNK-BASIC as price identifiers]                                                                                                  |
+| UMIP Title | Add LONUSD, USDLON, BANKUSD, USDBANK, MASKUSD, USDMASK, VSPUSD, USDVSP, SFIUSD, USDSFI, DEXTFUSD, USDDEXTF, ORNUSD, USDORN, BONDUSD, USDBOND, PUNK-BASICUSD and USDPUNK-BASIC as price identifiers                                                                                                  |
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
 | Status     | Last Call                                                                                                                                 |
 | Created    | April 29, 2021
@@ -179,8 +179,8 @@ Voters should query for the price of LON/USD at the price request timestamp on O
 
 1. For the price request timestamp, query for the LON/USDT price on Okex. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
 2. Query the ETHUSD price by following the guidelines of UMIP-6.
-3. Query LON/USDT Price from Sushiswap using 2 hour TWAP.
-4. Query LON/ETH Price from Uniswap using 2 hour TWAP.
+3. Query LON/USDT Price from Sushiswap using 5 minute TWAP.
+4. Query LON/ETH Price from Uniswap using 5 minute TWAP.
 5. Take the median of the price from step 1 , step 3 and result of the multiplication of step 4 * step 2.
 6. The result should be rounded to six decimals to determine the LONUSD price.
 7. (for USD/LON) Take the inverse of the result of step 5 (1/ LON/USD), before rounding, to get the USD/LON price, and round to 6 decimals.
@@ -394,7 +394,7 @@ These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMApro
 MASKUSD: {
     type: "expression",
     expression: 
-	SPOT_UNISWAP_USDT = UNISWAP_ETH * ETHUSD;
+	      SPOT_UNISWAP_USDT = UNISWAP_ETH * ETHUSD;
         median( SPOT_UNISWAP_USDT, SPOT_OKEX_USDT,SPOT_HUOBI_USDT);
     ,
     lookback: 7200,
@@ -463,9 +463,12 @@ MASKUSD: {
 Voters should query for the price of MASK/USD at the price request timestamp on Huobi and OKEx. Recommended endpoints are provided in the markets and data sources section.
 
 1. For the price request timestamp, query for the MASK/USDT prices on Huobi and OKEx and and the ETHUSD price by following the guidelines of UMIP-6. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
-2. The median of these results should be taken
-3. The median from step 2 should be rounded to six decimals to determine the MASKUSD price.
-4. (for USD/MASK) Take the inverse of the result of step 2 (1/ MASK/USD), before rounding, to get the USD/MASK price, and round to 6 decimals.
+2. Query for the MASK/ETH price from Uniswap using a 5-minute TWAP.
+3. Using the implementation defined in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the ETHUSD price at the price request timestamp.
+4. Multiply the results of step 2 and step 3 to get a MASK/USD Uniswap price.
+5. The median of the results from Uniswap, Huobi and OKEx should be taken.
+6. The median from step 5 should be rounded to six decimals to determine the MASKUSD price.
+7. (for USD/MASK) Take the inverse of the result of step 2 (1/ MASK/USD), before rounding, to get the USD/MASK price, and round to 6 decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
@@ -1015,7 +1018,7 @@ ORNUSD: {
     type: "expression",
     expression: 
 	SPOT_UNISWAP_USDT = UNISWAP_ETH * ETHUSD;
-	SPOT_BINANCE_ORNBTC_USDT = SPOT_BINANCE_USDT * BTCUSD
+	SPOT_BINANCE_ORNBTC_USDT = SPOT_BINANCE_BTC * BTCUSD
         median( SPOT_UNISWAP_USDT, SPOT_BINANCE_ORNBTC_USDT,SPOT_BINANCE_USDT);
     ,
     lookback: 7200,
@@ -1090,14 +1093,18 @@ ORNUSD: {
 
 ## IMPLEMENTATION
 
-Voters should query for the price of ORN/USD at the price request timestamp on Binance. Recommended endpoints are provided in the markets and data sources section.
+Voters should query for the price of ORN/USD at the price request timestamp. Recommended endpoints are provided in the markets and data sources section.
 
-1. For the price request timestamp, query for the ORN/USDT and ORN/BTC prices on Binance and get BTCUSD price according to Expression feed to get ORNUSD price and the ETHUSD price by following the guidelines of UMIP-6. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
-2. For the block of the price request timestamp, query for the ORNETH price from Uniswap.
-3. Multiply the gathered ETHUSD price by ORNETH to get the Uniswap ORNUSD price.
-4. Take the median of these.
-5. Round to 6 decimals to get the ORNUSD price.
-6. To get the USDORN price, voters should just take the inverse of the result of Step 4 (unrounded ORNUSD price) then round to 6 decimal places.
+1. Query for the ORN/USDT price from Binance. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
+2. Query for the ORN/BTC price from Binance.
+3. Following the guidelines in [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md), query for the BTC/USD price.
+4. Multiply the results of steps 2 and 3 to get an ORN/USD Binance price.
+5. For the block of the price request timestamp, query for the ORNETH price from Uniswap using a 5-minute TWAP.
+6. Following the guidelines in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md), query for the ETH/USD price.
+7. Multiply the gathered ETHUSD price by ORNETH to get the Uniswap ORNUSD price.
+8. Take the median of the results from steps 1, 4 and 7. 
+9. Round to 6 decimals to get the ORNUSD price.
+10. To get the USDORN price, voters should just take the inverse of the result of Step 8 (unrounded ORNUSD price) then round to 6 decimal places.
 
 
 
