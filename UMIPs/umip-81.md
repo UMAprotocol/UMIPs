@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add V2migration_KPI_Aragon as a Price Identifier                                                                                      |
 | Authors    | Ramon (ramon@aragon.org), Sam (sam@aragon.one) |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Approved                                                                                                                                   |
 | Created    | April 14, 2021                                                                                                                           |
 | Forum      | https://forum.aragon.org/t/kpi-options-using-uma-protocol/2633                                                                           |
 

@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add SharedStake(SGT) as Collateral               |
 | Authors    | Warren Muffett (wmuffet@yahoo.com) and Chimera |
-| Status     | Last Call                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | April 9th, 2021                                                                                                                          |
 | Discourse Link    | https://discourse.umaproject.org/t/add-sgt-as-an-approved-collateral/813                                                                                                                          |
 
