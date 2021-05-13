@@ -68,7 +68,7 @@ The main input needed is the number for Positive_Rebases that has occured during
 1. Using the timestamp that falls on 12:00 UTC but is closest and earlier than the price request timestamp (D2), read totalSupply from the DIGG token contract (D2_Supply).
 2. Query for totalSupply at 12:00 UTC on the day preceeding the day's (D1_Supply).
 3. If D2_Supply > D1_Supply  (if supply is equal do not iterate), increment Positive_Rebases by 1. If D2_Supply <= D1_Supply, the Positive_Rebases value should remain constant.
-4. Steps 2 and 3 should be repeated until the D1_Supply timestamp is earlier than the block timestamp that the contract using this price identifier was launched in OR the days since the deployment = to 30.
+4. Steps 2 and 3 should be repeated for the 30 days preceeding the expiry timestamp.
 
 Voters should return the value of DIGG_Positive_Rebases (using Positive_Rebases as an input in the above formula) once one of the conditions of step 4 is met. This value should be rounded to 8 decimal places.
 
