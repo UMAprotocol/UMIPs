@@ -1,4 +1,4 @@
-| UMIP-92    |                                                                                                                                          |
+| UMIP-XX    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add yvUSDC as whitelisted collateral currency              |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
