@@ -116,14 +116,14 @@ An example configuration for the Uniswap feed is below
 - Base Currency: CryptoPunk
 - Quote Currency: ETH
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 22.430000 (as of 21 April 2021 19:34 UTC)
+- Estimated current value of price identifier: 0.022430 (as of 21 April 2021 19:34 UTC)
 
 -----------------------------------------
 - Price identifier name: `PUNKETH_TWAP`
 - Base Currency: CryptoPunk
 - Quote Currency: ETH
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 22.430000 (as of 21 April 2021 19:34 UTC)
+- Estimated current value of price identifier: 0.022430 (as of 21 April 2021 19:34 UTC)
 
 
 
