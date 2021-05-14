@@ -1,7 +1,7 @@
 ## HEADERS
 | UMIP [#]     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | [Add BANDUSD, USDBAND, SDTUSD, USDSDT, KP3RUSD, USDKP3R, CREAMUSD, USDCREAM, LPOOLUSD, USDLPOOL, CHAINUSD, USDCHAIN, SANDUSD, USDSAND, ERNUSD, USDERN, POLSUSD and USDPOLS as price identifiers]                                                                                                  |
+| UMIP Title | [Add BANDUSD, USDBAND, SDTUSD, USDSDT, KP3RUSD, USDKP3R, CREAMUSD, USDCREAM, LPOOLUSD, USDLPOOL, CHAINUSD, USDCHAIN, SANDUSD and USDSAND as price identifiers]                                                                                                  |
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                  |
 | Created    | May 2, 2021
@@ -25,12 +25,9 @@ The DVM should support price requests for the below price indices:
 - USD/CHAIN
 - SAND/USD
 - USD/SAND
-- ERN/USD
-- USD/ERN
-- POLS/USD
-- USD/POLS  
 
-The canonical identifiers should be `BANDUSD`, `USDBAND`, `SDTUSD`, `USDSDT`, `KP3RUSD`, `USDKP3R`, `CREAMUSD`, `USDCREAM`, `LPOOLUSD`, `USDLPOOL`, `CHAINUSD`, `USDCHAIN`, `SANDUSD`, `USDSAND`, `ERNUSD`, `USDERN`, `POLSUSD` and `USDPOLS`.
+
+The canonical identifiers should be `BANDUSD`, `USDBAND`, `SDTUSD`, `USDSDT`, `KP3RUSD`, `USDKP3R`, `CREAMUSD`, `USDCREAM`, `LPOOLUSD`, `USDLPOOL`, `CHAINUSD`, `USDCHAIN`, `SANDUSD` and `USDSAND`.
 # MOTIVATION
 
 1. What are the financial positions enabled by adding these price identifiers that do not already exist?
@@ -816,128 +813,6 @@ Voters should query for the price of SAND/USD at the price request timestamp on 
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
-
-
-
-# ERN
-
-## MARKETS & DATA SOURCES
-
- **Required questions**
-
-Market: Uniswap
-
-Uniswap: [ERN/ETH](https://info.uniswap.org/pair/0x570febdf89c07f256c75686caca215289bb11cfc)
-
-Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-
-How often is the provided price updated?
-
-    - On every Ethereum block (i.e. every ~15 seconds)
-
-Provide recommended endpoints to query for historical prices from each market listed.
-
-    - Historical data can be fetched from the subgraph:
-```
-{
-  token(
-      id:"TOKEN_ADDRESS",
-      block: {number: BLOCK_NUMBER}
-  )
-  {
-      derivedETH
-  }
-}
-```
-
-Do these sources allow for querying up to 74 hours of historical data?
-
-    - Yes.
-
-How often is the provided price updated?
-
-    - On each Ethereum block (i.e. every ~15 seconds)
-
-Is an API key required to query these sources?
-
-    - No.
-
-Is there a cost associated with usage?
-
-    - No.
-
-If there is a free tier available, how many queries does it allow for?
-
-    - No limits at the moment.
-
-What would be the cost of sending 15,000 queries?
-
-     - $0
-
-## PRICE FEED IMPLEMENTATION
-
-These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
-
-## TECHNICAL SPECIFICATIONS
-
-### ERN/USD
-
-**Price Identifier Name:** ERNUSD
-
-**Base Currency:** ERN
-
-**Quote currency:** USD
-
-**Intended Collateral Currency:** USDC
-
-**Scaling Decimals:** 18 (1e18)
-
-**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-
-**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
-
-**Is your collateral currency already approved to be used by UMA financial contracts?:** Yes.
-
-### USD/ERN
-
-**Price Identifier Name:** USDERN
-
-**Base Currency:** USD
-
-**Quote currency:** ERN
-
-**Intended Collateral Currency:** ERN
-
-**Scaling Decimals:** 18 (1e18)
-
-**Rounding:** Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-
-**Does the value of this collateral currency match the standalone value of the listed quote currency?:** Yes.
-
-**Is your collateral currency already approved to be used by UMA financial contracts?:** In progress.
-
-## IMPLEMENTATION
-
-```
-1. Query ERN/ETH Price from Uniswap using 15-minute TWAP.
-2. Query the ETH/USD Price as per UMIP-6.
-3. Multiply the ERN/ETH price by the ETH/USD price and round to 6 decimals to get the ERN/USD price.
-4. (for USD/ERN) Take the inverse of the result of step 3 (1/ ERN/USD), before rounding, to get the USD/ERN price. Then, round to 6 decimals.
-```
-
-It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
-
-**What prices should be queried for and from which markets?**
-- Prices are queried from Uniswap and listed in the `Technical Specifications` section.
-
-**Pricing interval**
-- Every block
-
-**Input processing**
-- None.
-
-**Result processing**
-- See rounding rules in `Technical Specification`.
 
 
 
