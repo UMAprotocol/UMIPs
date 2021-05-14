@@ -137,7 +137,7 @@ The `PUNKETH_TWAP` price can be determined using the existing [Uniswap price fee
 An example configuration for the Uniswap feed is below
 
 ```
-"uPUNK-0921": {
+"PUNKETH_TWAP": {
   type: "uniswap",
   uniswapAddress: "0x6E01DB46b183593374A49c0025e42c4bB7Ee3ffA",
   twapLength: 7200
