@@ -132,7 +132,7 @@ median([cryptopunk_blockprice[cryptopunk]["value"] for cryptopunk in cryptopunks
 
 The `PUNKETH` price implementation can be found here in the [uPUNK price feed](https://github.com/UMAprotocol/protocol/pull/2917)
 
-The `PUNKETH_TWAP` price can be determined using the existing [Sushiswap price feed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js). The only required input would be determining which pool has the highest volume.
+The `PUNKETH_TWAP` price can be determined using the existing [Uniswap price feed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js). The only required input would be determining which pool has the highest volume.
 
 An example configuration for the Uniswap feed is below
 
