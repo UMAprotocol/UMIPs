@@ -123,7 +123,7 @@ Step 2: calculate the median price between the 3 prices
 Step 3: query prices for USD/EUR
 •	USD/EUR: https://marketdata.tradermade.com/api/v1/live?currency=USDEUR&api_key=api_key
 
-Step 4: multiply the median price of UMAUSD by USD/EUR to get UMA/EUR or divide 1 by UMA/EUR to get EUR/UMA.f
+Step 4: multiply the median price of UMAUSD by USD/EUR to get UMA/EUR or divide 1 by UMA/EUR to get EUR/UMA.
 
 #### Steps to construct historical prices:
 Step 1: query historical prices for UMAUSD for the 10th of May 2021 at 6:03pm: 
