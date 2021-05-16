@@ -64,7 +64,7 @@ The liquidator and disputer bots should use the reference [Uniswap price feed](h
 
 **5. Collateral Decimals** - 6
 
-**6. Rounding** - Down
+**6. Rounding** - The price shall be rounded to 6 decimal places using [round half down](https://en.wikipedia.org/wiki/Rounding#Round_half_down).
 
 <br>
 
