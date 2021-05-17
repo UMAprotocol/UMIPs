@@ -42,7 +42,13 @@ This query can be done without API keys and at no cost to the user. Although que
 
 ## Before expiry
 
-Before expiry, the price will be determined by the on-chain secondary market. At any time, the price will be the 2h Time-Weighted Average Price (TWAP) of the Uniswap uCRSPTMT_SEP21/USDC pool with the largest volume.
+Before expiry, the price will be determined by the on-chain secondary market. At any time, the price will be the 2h Time-Weighted Average Price (TWAP) of the Uniswap uCRSPTMT_SEP21/USDC pool with the largest liquidity.
+
+Voters should follow this protocol to determine the price:
+
+1. Find the uCRSPTMT_SEP21/USDC Uniswap pool with the largest liquidity.
+2. Determine the price of uCRSPTMT_SEP21 in USD returned by the pool for every timestamp between the request timestamp minus 2 hours and the request timestamp, inclusive.
+3. The price to return is the arithmetic mean of all the prices at each timestamp, rounded to 6 decimals as explained below.
 
 <br>
 
