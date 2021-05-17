@@ -12,11 +12,11 @@
 
 Due to necessity and after discussing with the UMA team, their perpetual contract system was modified to fit the needs of our protocol. 
 
-Reminder:  is a protocol to issue multi-collateralized synthetic fiat assets against liquidity pools. Liquidity pools hold USD-stablecoin such as USDC and are the sole Token Sponsor: a mint is a transaction where the liquidity pool self-mints a synthetic fiat with a collateral in USDC, and sell this synthetic fiat for USDC to the end-user, at the Chainlink price.
+Reminder: Synthereum is a protocol to issue multi-collateralized synthetic fiat assets against liquidity pools. Liquidity pools hold USD-stablecoin such as USDC and are the sole Token Sponsor: a mint is a transaction where the liquidity pool self-mints a synthetic fiat with a collateral in USDC, and sell this synthetic fiat for USDC to the end-user, at the Chainlink price.
 
-The [UMIP-34](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-34.md) have been approved by the governance, allowing us to launch our synthetic assets collateralized by USDC on the mainnet ($1M TVL, $700k of synthetic assets minted; we have capped the amout of synthetic assets that can be minted until more audits are conducted; the protocol has received one full audit from Halborn, and a second one is undergoing with Ubik).
+The [UMIP-34](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-34.md) has been approved by the governance, allowing us to launch our synthetic assets collateralized by USDC on the mainnet ($1M TVL, $700k of synthetic assets minted; we have capped the amout of synthetic assets that can be minted until more audits are conducted; the protocol has received one full audit from Halborn, and a second one is undergoing with Ubik).
 
-In order to increase the liquidity, security and scalability of our synthetic assets we have decided to deploy a new `DerivativeFactory.sol` contract and re-deploy our existing Derivatives/Pools (jEUR/USDC, jGBP/USDC, jCHF/USDC) in order to lower some of the required parameters like starting GCR and Liquidation treshold. 
+In order to increase the liquidity, security and scalability of our synthetic assets we have decided to deploy a new `DerivativeFactory.sol` contract and re-deploy our existing Derivatives/Pools (jEUR/USDC, jGBP/USDC, jCHF/USDC) in order to lower some of the required parameters like starting GCR and Liquidation threshold. 
 
 Earlier last year we have deployed a `Manager.sol` contract, which handles the assignment of Roles, instead of each pool having this functionality embeded. Also the `Manager.sol` contract is the only entry point for the `emergencyShutdown` functionality which can be called by Jarvis DAO and UMA DAO.
 
@@ -26,7 +26,7 @@ Once `DerivativeFactory.sol` receives the `Creator` role it will register every 
 
 # Motivation
 
-The changes in the collateral ratio and liquidation treshold for USDC-backed synthetic assets allow us to scale more without adding additional risks. Due to the redeployment of new `PerpetualPoolParty.sol` contracts and `PoolOnChainPriceFeed.sol` contracts in order to lower the initial GCR and liquidation tresholds for our current synthetic assets we've decide to clean up some of the unnecessary code and improve the security of our protocol with the modifications explained in this document.
+The changes in the collateral ratio and liquidation threshold for USDC-backed synthetic assets allow us to scale more without adding additional risks. Due to the redeployment of new `PerpetualPoolParty.sol` contracts and `PoolOnChainPriceFeed.sol` contracts in order to lower the initial GCR and liquidation thresholds for our current synthetic assets we've decide to clean up some of the unnecessary code and improve the security of our protocol with the modifications explained in this document.
 
 By redeploying the `DerivativeFactory.sol` we'll be able to move forward with a more clean, secure and scalable infrastructure.
 
@@ -78,3 +78,5 @@ We have published an answer to the audits [here](https://gitlab.com/jarvis-netwo
 Another team (Ubik) is currently auditing our contracts as well. Based on their preliminary report we'll adjust any found vulnerabilities. The preliminary report will be shared here.
 
 As of now any position opened through the broker derivative contract (`PerpetualPoolParty.sol`) could become undercapitalized, meaning that the CR could drop below 100%, thus making the position not profitable to be liquidated.Although, Forex pairs are not very volatile and rarely move by more than 10% a year, and we have set liquidation at 120% so it is quite unlikely to experience this situation. However by running liquidation bots the possible undercapitalization situation can be avoided. Another solution which can be implemented to avoid this situation is to have a reserve fund which will automatically deposit additional collateral in the derivative if the position becomes undercapitalized.
+
+A vulnerability in the Synthereum protocol (as example a faulty PerpetualPoolParty derivative) can not affect in any negative way the DVM as the derivatives deployed by the DerivativeFactory are siloed and has not direct integration with the DVM apart from the dispute system.
