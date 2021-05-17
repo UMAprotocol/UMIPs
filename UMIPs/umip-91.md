@@ -18,6 +18,10 @@ UST has been launched in September 2020, following the success of TerraKRW (KRT)
 
 Unlike other algorithmic stablecoin, UST has been incredibly stable. 
 
+Terra USD(UST) uses an elastic supply to maintain its peg to the USD. As example when there is a high demand for UST and the stable coin is traded above 1 USD, the supply of UST will be increase by minting new UST, thus bringing back down the price to a dollar. Vice versa if there is a shortage in demand for UST, the protocol will buy back UST and will burn in, thus reducing the supply and pushing the price back up to be equal to 1 USD. Also arbitrage opportunities are an incentivization to keep the price at 1 USD.
+
+The above algorithmic approach is achieved by using LUNA token as collateral for UST. In order to mint a new supply of UST, the protocol will have to burn LUNA tokens. Vice versa if the supply of UST have to be reduced, the protocol will burn UST tokens and mint LUNA tokens.
+
 It is listed agasint USDT on Bittrex and Kucoin, and in the UST Curve meta-pool (UST+3pool).
 
 Adding UST as collateral will allow the creation of new synthetic assets backed by this stablecoin. For example, it will allow us, at Jarvis, to launch new liquidity pools based on UST (see [UMIP-34](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-34.md)).
@@ -50,4 +54,4 @@ Adding UST as a collateral does not present any major foreseeable risks to the p
 
 Since UST is a decentralized and algorithmic stablecoin, it bears technical risks of losing its peg, but with a proven track record with KRT, and the level of integration of UST, the risk is limited.
 
-Using UST as collateral for contract deployers and users should be done with not considering 1 UST = 1 USD, but rather the median price between Kucoin's, Bittrex's and Curve's UST/USD markets.
+Using UST as collateral for contract deployers and users should be done with not considering the current market price, but rather the median price between Kucoin's, Bittrex's and Curve's UST/USD markets.
