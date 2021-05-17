@@ -16,7 +16,9 @@ The UMA’s governance approved this fork earlier this year, allowing us to laun
 
 The PerpetualPoolParty was a “broker contract” allowing the end-users to trade against a smart contract (the broker's liquidity pool) which is the sole Token Sponsor: when a user wants to buy a synthetic asset, it triggers a mint transaction where the liquidity pool self-mints a synthetic fiat with a collateral in USDC deposited by liquidity providers, and sell this synthetic fiat for USDC to the end-user, at the Chainlink price, within the same transaction.
 
-Now we are about to launch our “bank contract” which allows anyone to be a Token Sponsor, pretty much like the EMP. Yet, we could not use the EMP due to some specification of our protocols (multi-collateral synthetic assets, perpetual, set minting limits, etc.). So we forked PerpetualPoolParty.
+Now we are about to launch our “bank contract” which allows anyone to be a Token Sponsor, pretty much like the EMP. Yet, we could not use the EMP due to some specification of our protocols (multi-collateral synthetic assets, perpetual, set minting limits, etc.). So we forked PerpetualPoolParty. 
+
+More information regarding the broker and bank protocols can be found [here](http://bit.ly/Synthereum_Manifesto).
 
 The goal of this UMIP is to integrate `SelfMintingDerivativeFactory` in the DVM.
 
