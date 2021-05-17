@@ -36,7 +36,6 @@ The rationale behind this change is giving deployers more useful collateral curr
 approved stablecoins.
 
 
-
 ## Implementation
 
 This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
@@ -47,3 +46,5 @@ yvUSDC bear the centralized risks of USDC and the technical risks of Yearn: year
 Although, Yearn's team has quite a conservative risk management and assessment matrix, so the risk is limited.
 
 Using yvUSDC as collateral for contract deployers and users should be done without considering 1 yvUSDC = 1 USD; yvUSDC is an interest-bearing stablecoin which constantly grows in value. Contract deployers would need to use the yvUSDC/USDC exchange rate.
+
+A potential added risk for liquidators is that the yvUSDC token can be obtained only by depositing USDC in Yearn V2 Vault system (currently there is not a secondary market for the token). In that case liquidators are exposed to a possible high gas costs, which might dissolve some of the profits from the liquidation itself. One way to mitigate this is to hold a reserve of yvUSDC, which allows generating yield while a liquidation opportunity arrises. 
