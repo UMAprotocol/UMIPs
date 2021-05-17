@@ -117,6 +117,9 @@ To construct UMA/XXX or XXX/UMA price feed, we need to combine two price feeds:
 - To construct the price of EUR/UMA we will divide 1 by UMA/EUR. 
 
 #### Steps to construct the live prices:
+
+As a reference you can look at [UMIP-57](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-57.md) as the below described approach has the same implementation.
+
 Step 1: query prices for UMAUSD:
 •	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/price
 •	Binance UMA/USDT: https://api.cryptowat.ch/markets/binance/UMAUSDT/price
