@@ -8,7 +8,7 @@
 | Discourse link    | https://discourse.umaproject.org/t/add-eur-gbp-chf-cad-jpy-etc-vs-uma-price-identifiers/1062 |
 
 ## Summary
-The DVM should support price requests for the EUR/UMA, GBP/UMA, CHF/UMA, CAD/UMA, JPY/UMA, ZAR/UMA, KRW/UMA, NGN/UMA and PHP/UMA price index and their inverse.
+The DVM should support price requests for the EUR/UMA, GBP/UMA, CHF/UMA, CAD/UMA, JPY/UMA, ZAR/UMA, KRW/UMA, NGN/UMA and PHP/UMA price indexes.
 
 ## Motivation
 The DVM currently does not support these Forex price index to allow minting synthetic EUR, GBP, CHF, CAD, JPY, ZAR, KRW, NGN and PHP with a $UMA collateral. This would allow us to scale our synthetic asset offering and the use of $UMA as collateral for more sytnhetic fiat.
@@ -22,7 +22,7 @@ USD/XXX: TraderMade's APIs provides a free tier API to the price of USD agasint 
 
 #### Specification on historical prices:
 - Cryptowatch and TraderMade use a different input format for querying historical data: you need to use Unix timestamp for Cryptowatch, and YYYY-MM-DD-HH:MM for TraderMade.
-- Price requests should use the minute price that is nearest and earliest than the price request timestamp. Voters should use the close price of the OHLC period prior to the price request timestamp. Cryptowatch and TraderMade endpoints are queried based on the OHLC period's close time. For example, a request for a Forex pair price at 2021-05-10-21:10:16 should use query for the period ending at 2021-05-10-21:10:00 (Unix: 1620756600) and use the close price.
+- Price requests should use the minute price that is nearest and earliest than the price request timestamp. Voters should use the open price of the OHLC period prior or undergoing based on the price request timestamp. Cryptowatch and TraderMade endpoints are queried based on the OHLC period's open time. For example, a request for a Forex pair price at 2021-05-10-21:10:16 should use query for the same period and use the open price as a reference.
 
 #### Weekend timestamp
 Over the weekend or some official holidays the REST API for Forex pair prices does not return any price, but we can request the price of a certain moment before the market close (as ex: the closing price of Friday).
@@ -103,6 +103,10 @@ The definition of this identifiers should be:
 ## Rationale
 Apart from the weekend, there is little to no difference in prices on liquid major Forex pairs like JPYUSD. 
 
+TraderMade’s price feed is an aggregated feed from multiple Tier One and Two Banks, Market-Makers and Data Providers. They are popular with Quantitative Traders, Fintech companies and Institutional customers who require a high quality and trusted feed. Although other price feeds can be used for forex pairs, we'd reccommend using TraderMade price feed.
+
+For collateral tokens price feed we'd reccommend using CryptoWatch, as it is the most widely used price feed currently on the market. CryptoWatch allows polling for price feeds from various exchanges, which allows getting a price feed even in the case where a certain exchange is in maintance or down due to technical reasons. Also the availability of multiple price feeds from various exchanges gives the opportunity to get a computed median price of a certain collateral token by comparing prices from various exchanges which mitigates the risk of a corrupted price feed.
+
 ## Implementation
 To construct UMA/XXX or XXX/UMA price feed, we need to combine two price feeds: 
 •	To get UMA/XXX: we divide UMA/USD by XXX/USD, or multiply it by USD/XXX.
@@ -125,6 +129,8 @@ Step 3: query prices for USD/EUR
 
 Step 4: multiply the median price of UMAUSD by USD/EUR to get UMA/EUR or divide 1 by UMA/EUR to get EUR/UMA.
 
+Step 5: Round the price based on the rounding defined in `Technical specifications` section.
+
 #### Steps to construct historical prices:
 Step 1: query historical prices for UMAUSD for the 10th of May 2021 at 6:03pm: 
 •	Coinbase Pro UMA/USD: https://api.cryptowat.ch/markets/coinbase-pro/UMAUSD/ohlc?after=1620669780&before=1620669780&periods=60
@@ -137,6 +143,8 @@ Step 3: query historical prices for USDEUR for the 10th of May 2021 at 6:03pm:
 •	USD/JPY: https://marketdata.tradermade.com/api/v1/minute_historical?currency=USDEUR&date_time=2021-05-10-18:03&api_key=apikey
 
 Step 4: multiply the median price of UMAUSD by USD/EUR to get UMA/EUR or divide 1 by UMA/EUR to get EUR/UMA.
+
+Step 5: Round the price based on the rounding defined in `Technical specifications` section.
 
 
 To build UMAGBP prices, you just need to repeat these steps by changing USD/EUR by USD/GBP, etc.
@@ -172,10 +180,11 @@ Example requests:
 
 Note: you can query EUR/UMA, GBP/UMA, CHF/UMA, CAD/UMA, JPY/UMA, ZAR/UMA, KRW/UMA, NGN/UMA and PHP/UMA prices  (https://api.coingecko.com/api/v3/simple/price?ids=UMA&vs_currencies=EUR) for live price, but not for historical price.
 
-Historical prices can be query for any currency as well, but it only returns one update per day.
+Coingecko computes prices using a volume-weighted approach.
 
-Therefore, using Coingecko for historical price would not be possible until they increase it.
+Historical prices can be query for any currency as well, but it only returns one update per day,therefore, using Coingecko for historical price would not be possible until they increase it.
 
+We do not reccommend using Coingecko price feed during voting disputes due to the lack of more granual historical data.
 
 
 ### FXMarketAPI
