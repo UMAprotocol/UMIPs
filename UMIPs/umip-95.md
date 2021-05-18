@@ -41,6 +41,8 @@ Giving `Creator` role to `DerivativeFactory.sol` would allow more scalable and l
 
 ### Modifications done: 
 
+The modifications described below correspond to V4 (Version 4) of the Synthereum protocol.  
+
 - Removal of role management from the `PoolOnChainPriceFeed.sol` and `PerpetualPoolParty.sol`. This is an unnecessary feature since the role management is handled by the `Manager.sol` contract. 
 - Removal of `emergencyShutdown` functionality from the `PoolOnChainPriceFeed.sol` contract. Initially the `emergencyShutdown` can be called by each `PoolOnChainPriceFeed.sol`. In order to improve security of the protocol we have moved the `emergencyShutdown` functionality to be called only from the `Manager.sol` contract and only by authorized addresses - in our case the UMA DAO and Jarvis DAO.
 
