@@ -83,7 +83,9 @@ Each one of those contract has its own library for gas optimization:
 
 The `SelfMintingDerivativeFactory.sol` and all adjacent contracts can be found here are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/selfish-minting/libs/contracts/contracts/contracts/derivative/self-minting/v1).
 
-The `SelfMintingController.sol`, `SelfMintingRegistry.sol` and `Deployer.sol` contracts can be found and are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/selfish-minting/libs/contracts/contracts/contracts/core).
+The `SelfMintingRegistry.sol` and `Deployer.sol` contracts can be found and are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/selfish-minting/libs/contracts/contracts/contracts/core).
+
+The `SelfMintingController.sol` contract can be found and is available for review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/generic-improvements/libs/contracts/contracts/contracts/derivative/self-minting/common).
 
 # Security considerations
 
