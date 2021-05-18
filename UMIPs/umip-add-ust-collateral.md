@@ -54,4 +54,4 @@ Adding UST as a collateral does not present any major foreseeable risks to the p
 
 Since UST is a decentralized and algorithmic stablecoin, it bears technical risks of losing its peg, but with a proven track record with KRT, and the level of integration of UST, the risk is limited.
 
-Using UST as collateral for contract deployers and users should be done with not considering the current market price, but rather the median price between Kucoin's, Bittrex's and Curve's UST/USD markets.
+Using UST as collateral for contract deployers and users should account for the potential fluctuations away from the peg.
