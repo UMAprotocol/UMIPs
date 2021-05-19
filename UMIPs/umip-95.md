@@ -112,6 +112,8 @@ To construct UMA/XXX or XXX/UMA price feed, we need to combine two price feeds:
 •	To get UMA/XXX: we divide UMA/USD by XXX/USD, or multiply it by USD/XXX.
 •	To get XXX/UMA: we divide 1 by UMA/XXX.
 
+Note that the FX rate price feeds have already been implemented in UMIPs [29](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-29.md) and [90](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-90.md). The UMAUSD price identifier has already been implemented in [UMIP-57](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-57.md#price-feed-implementation-3). This UMIP simply combines price identifiers from those three UMIPS to arrive at the XX/UMA price identifiers.
+
 ### Example: EURUMA and UMAEUR
 - To construct the price for UMA/EUR we will multiply UMA/USD by USD/EUR.
 - To construct the price of EUR/UMA we will divide 1 by UMA/EUR. 
