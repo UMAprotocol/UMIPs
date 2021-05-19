@@ -10,13 +10,13 @@
 
 # Summary 
 
-The DVM should support price requests for SPACEXLAUNCH. The purpose of the SPACEXLAUNCH price identifier is to be a generalized way to evaluate success rate of the rocket launches made by SpaceX till date considering provided ancillary data
+The DVM should support price requests for SPACEXLAUNCH. The purpose of the SPACEXLAUNCH price identifier is to be a generalized way to evaluate the success rate of the rocket launches made by SpaceX till date considering provided ancillary data
 
 Ancillary data in the request will specify the parameters that should be considered during the oracle result determination process.
 
 # Motivation
 
-Provision of the way to evaluate the success rate of SpaceX launches would open wide range of possible synthetics based on it (e.g. insurances)
+Provision of the way to evaluate the success rate of SpaceX launches would open a wide range of possible synthetics based on it (e.g. insurances)
 
 # Data Specification
 
@@ -29,7 +29,7 @@ Provision of the way to evaluate the success rate of SpaceX launches would open 
 
 # Price Feed Implementation
 
-TBD
+Price Feed Implementation is unnecessary for this price identifier, as it will not have liquidation bots that need to programmatically get this price.
 
 # Technical Specifications
 
@@ -46,16 +46,16 @@ Ancillary data would consist of the list of launches, where each launch is descr
 - Launch id - Name of the SpaceX mission
 - Weight (`Wi`) - Weight of the launch in the overall success rate calculation
 
-Each launch in the list should be evaluated and it’s status (`Si`) should be determined according to these conditions
+Each launch in the list should be evaluated and its status (`Si`) should be determined according to these conditions
 - If launch did not happen till date or the rocket was not successfully lifted off, then `Si=0`
 - If the rocket successfully lifted off, but never landed, or the landing was not successful then `Si=0.5`
 - If the rocket successfully lifted off, and landed, then `Si=1`
 
-Liftoff is considered successful if the rocket reached expected altitude without any significant damage and performed the required part of the mission on this altitude.
+Liftoff is considered successful if the rocket reached expected altitude without any significant damage and performed the required part of the mission at this altitude.
 
 Landing is considered successful if the rocket landed on Earth without any significant damage till date.
 
-Success rate then can be calculated by
+Success rate than can be calculated by
 ```
 Success Rate =  SUM(Si * Wi) / SUM(Wi)
 ```
@@ -115,4 +115,4 @@ No rationale is needed. The motivation for this price identifier is explained in
 
 # Security Considerations
 
-TBD
+The possibility for non-deterministic success rate calculations, since this calculation is more left up to the possibility of evaluators finding different sources of information.
