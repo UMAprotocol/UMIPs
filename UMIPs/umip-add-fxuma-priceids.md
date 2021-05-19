@@ -171,6 +171,8 @@ TraderMade is provided as an accessible source to query for this data, but ultim
 
 In the case of a TraderMade outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 
+Additional information can be found through this [Merge request](https://gitlab.com/jarvis-network/apps/exchange/UMAprotocol/-/merge_requests/9/diffs#684c32f0fb1f86910a940cd6a4384ac1020404a7).
+
 ## Additional price feed providers
 
 ### Coingecko.com
