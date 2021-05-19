@@ -1,39 +1,39 @@
-*An UMIP number will be assigned by an editor. When opening a pull request to submit your UMIP, please use an abbreviated title in the filename. The file name should follow this format - "umip_add_priceidentifiername.md". Please remove this and all italicized instructions before submitting your pr. All bolded fields should be filled in before submission.*
 
 ## Headers
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add **Price Identifier Name** as a supported price identifier |
-| Authors             | **Name**                                                      |
+| UMIP Title          | Add BNT, vBNT as supported price identifiers|
+| Authors             |**StevenFox**         |
 | Status              | Draft                                                         |
-| Created             | **Today's Date**                                              |
-| Discourse Link      | **Create a post in [UMA's Discourse](https://discourse.umaproject.org/c/umips/18) and link here**            |
+| Created             | **19 May 2021**                                              |
+| Discourse Link      |       |
 
 # Summary 
 
-The DVM should support price requests for **Price Identifier Name**. **Price Identifier Name** reflects the **Summary of Price Identifier**.
+USDC/BNT 0x23d1b2755d6C243DFa9Dd06624f1686b9c9E13EB
+vBNT/BNT 0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8
 
 
 # Motivation
 
-*Please explain why you want to add this price identifier. What types of synthetics are you intending to create with this?*
+The DVM currently does not yet support these price identifiers. vBNT (the Bancor Governance Token) is being proposed as a supported collateral type along with the BNT token.  The inclusion of the two pools above as price oracle, support this. The initial use case for these price identifiers is to create a call options
+
 
 # Data Specifications
 
-*How should voters access the data necessary to calculate the value of this price identifier? What specific markets or data sources should be referenced?*
-
-*If proposing multiple price identifiers, please add markets or other data sources for each.*
-
------------------------------------------
-- Price identifier name: **First Price ID Name** 
-- Markets & Pairs: **Markets & Pairs** - *Example: Binance ETH/USDT, Coinbase Pro ETH/USD. This might not apply to all price identifiers*
-- Example data providers: **Provider to use** - *Cryptowatch, TraderMade, Quandl, the Graph*
-- Cost to use: **Explanation or link to provider pricing plan**
-- Real-time data update frequency: **Frequency** - *60 seconds*
-- Historical data update frequency: **Frequency** - *5 minutes*
+Contract Addresses for Bancor Pools:
+USDC/BNT 0x23d1b2755d6C243DFa9Dd06624f1686b9c9E13EB
+vBNT/BNT 0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8
+ 
+Binance: BNT/USDT Coinbase-Pro: BNT/USD 
+Live Price Endpoints: 
+Binance: https://api.cryptowat.ch/markets/binance/bntusdt/price
+Coinbase-pro:https://api.cryptowat.ch/markets/coinbase-pro/bntusd/price
 
 # Price Feed Implementation
+
+(still to do)
 
 *To allow for the creation of bots that can programmatically calculate prices off-chain to liquidate and dispute transactions, you must create a price feed following the UMA Protocol format (outlined below). This price feed is also necessary to calculate developer mining rewards.*
 
@@ -56,28 +56,40 @@ Existing price feeds include: (*Please remove before submission*)
 
 # Technical Specifications
 
-*If proposing multiple price identifiers, please add technical specifications for each.*
+Price Identifier Name: BNTUSD
 
------------------------------------------
-- Price identifier name: **First Price ID Name** - *ETHUSD*
-- Base Currency: **BASE** - *ETH - May not apply if this is not a typical Base/Quote price*
-- Quote Currency: **QUOTE** - *USD - May not apply if this is not a typical Base/Quote price*
-- Rounding: *Round to 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)*
-- Estimated current value of price identifier: *15.03*
+Base Currency: BNT
+
+Quote currency: USD
+
+Scaling Decimals: 18 (1e18)
+
+Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
+Price Identifier Name: vBNTBNT
+
+Base Currency: BNT
+
+Quote currency: vBNT
+
+Scaling Decimals: 18 (1e18)
+
+Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+
 
 # Rationale
 
-*The section should describe why price identifier design decisions were made, as well as any alternative designs that were considered.*
+The price for vBNT can be taken using the USDC/BNT liquidity pool for the BNT price and the BNT/vBNT to derive the vBNT price.
+Our pool contacts maintain an SMA (slowly-moving average) price, which offers protections from flash loans.
+The choice in using Bancors own pools is due to it being the highest liquidity pools for the tokens themselves
 
 # Implementation
 
-*Describe how UMA tokenholders should arrive at the price in the case of a DVM price request. Document each step a voter should take to query for and return a price at a specific timestamp. This should include an example calculation where you pick a specific timestamp and calculate the price at that timestamp.*
+Get the SMA price of BNT/USDC from the BNT/USDC pool
+Get the SMA price of BNT/vBNT from the BNT/vBNT pool
 
 # Security Considerations
 
-Some optional questions to consider: (*Please remove before submission*)
-- How could pricing data manipulation occur?
-- How could this price ID be exploited?
-- Do the instructions for determining the price provide people with enough certainty?
-- What are current or future concern possibilities with the way the price identifier is defined?
-- Are there any concerns around if the price identifier implementation is deterministic?
+Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
+
+$UMA-holders should evaluate the ongoing cost and benefit of supporting price requests for this identifier and also contemplate de-registering this identifier if security holes are identified. As noted above, $UMA-holders should also consider re-defining this identifier as liquidity in the underlying asset changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
