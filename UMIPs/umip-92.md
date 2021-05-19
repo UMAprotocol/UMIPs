@@ -1,9 +1,9 @@
 ## HEADERS
-| UMIP [#]     |                                                                                                                                  |
+| UMIP-92     |                                                                                                                                  |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add uCRSPTMT_SEP21 as a price identifier                                                                                                  |
 | Authors    | Javier Prieto, [@javipus](github.com/javipus)
-| Status      | Draft                                                                                                                             |
+| Status      | Last Call                                                                                                                             |
 | Created    | Mar 23, 2021
 | [Link to Discourse](https://discourse.umaproject.org/t/add-vti-may21-price-identifier/895)    |                                                                              
 
