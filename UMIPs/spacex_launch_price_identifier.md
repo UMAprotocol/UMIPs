@@ -6,7 +6,7 @@
 | Authors             | Sean Brown (@smb2796), Andrey Belyakov (andrey@opium.team), Ali Nuraldin (ali@opium.team) |
 | Status              | Draft                                                         |
 | Created             | May 19, 2021                                              |
-| Discourse Link      | TBA            |
+| Discourse Link      | [Link](https://discourse.umaproject.org/t/add-spacexlaunch-as-a-supported-price-identifier/1105)            |
 
 # Summary 
 
