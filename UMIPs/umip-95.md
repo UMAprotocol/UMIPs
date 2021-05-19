@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-XX   |                                                          |
+| UMIP-95   |                                                          |
 |------------|----------------------------------------------------------|
 | UMIP Title | Add EURUMA, GBPUMA, CHFUMA, CADUMA, JPYUMA, ZARUMA, KRWUMA, NGNUMA and PHPUMA as price identifiers                           |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
-| Status     | Draft                                                 |
+| Status     | Last Call                                                 |
 | Created    | 09/05/2021   
 | Discourse link    | https://discourse.umaproject.org/t/add-eur-gbp-chf-cad-jpy-etc-vs-uma-price-identifiers/1062 |
 

@@ -1,8 +1,8 @@
-| UMIP-XX    |                                                                                                                                          |
+| UMIP-93   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add yvUSDC as whitelisted collateral currency              |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
-| Status     | Draft                                                 |
+| Status     | Last Call                                                 |
 | Created    | 09/05/2021   
 | Discourse link    | https://discourse.umaproject.org/t/add-yvusdc-as-approved-collateral/1060                                   |
 
