@@ -157,10 +157,15 @@ To build UMAGBP prices, you just need to repeat these steps by changing USD/EUR 
 
 Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found [here](https://marketdata.tradermade.com/documentation). A reference TraderMade implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/TraderMadePriceFeed.js).
 
+For the self minting derivative version of dispute and liquidator bots we are using both TraderMade to get the price for any synth token against USD (as ex. EUR/USD) and the config file presented by UMA for constructing a jSynth/collateralToken price feed.
+
+[UMA config file](https://gitlab.com/jarvis-network/apps/exchange/UMAprotocol/-/blob/jarvis-dev/liquidator-and-dispute-bots/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js#L5).
+[Jarvis config file already merged in the one above](https://gitlab.com/jarvis-network/apps/exchange/UMAprotocol/-/blob/jarvis-dev/liquidator-and-dispute-bots/packages/financial-templates-lib/src/price-feed/JarvisPriceFeed.js).
+
 Our team has adjusted the original Liquidation and Dispute bots in order to fit the interfaces of our protocol. You can find our versions of the Liquidator and Dispute bots on the following GitLab links:
 
-- [Liquidator Bot]
-- [Dispute Bot]
+- [Liquidator Bot](https://gitlab.com/jarvis-network/apps/exchange/UMAprotocol/-/tree/jarvis-dev/liquidator-and-dispute-bots/packages/liquidator/src)
+- [Dispute Bot](https://gitlab.com/jarvis-network/apps/exchange/UMAprotocol/-/tree/jarvis-dev/liquidator-and-dispute-bots/packages/disputer/src)
 
 TraderMade is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.
 
