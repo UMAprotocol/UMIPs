@@ -23,38 +23,29 @@ The [Center for Research in Security Prices](http://www.crsp.org/products/docume
 
 <br>
 
-# MARKETS & DATA SOURCES
+# Data Specifications
 
-The contract will expire at 16:00 EST on 2021/09/21. The corresponding POSIX timestamp is `1632240000`. To determine the price, the DVM will choose between the two protocols described below depending on the timestamp of the oracle request, `request_timestamp`.
+- Price identifier name: uCRSPTMT_SEP21
+- Markets & Pairs: uCRSPTMT_SEP21/USDC on Uniswap v2. CRSPTMT Index
+- Example data providers: Provider to use - Uniswap, Google Finance
+- Cost to use: Free
+- Real-time data update frequency: Every block for Uniswap. Approx ~15 minutes for Google Finance, but this is irrelevant as this source is only used at settlement.
+- Historical data update frequency: Every block for Uniswap. Approx ~15 minutes for Google Finance, but this is irrelevant as this source is only used at settlement.
 
-- If `request_timestamp > 1632240000`, use the "After expiry" protocol.
-- Otherwise, use the "Before expiry" protocol.
-
-## After expiry
-
-After expiry, the contract should be settled according to the close price of the index on 2021/09/21. This price will be obtained by calling the `GOOGLEFINANCE` function on Google Sheets with the following parameters:
-
-```
-=GOOGLEFINANCE("CRSPTMT", "close", DATE(2021, 5, 21))
-```
-
-This query can be done without API keys and at no cost to the user. Although querying the price via Google Sheets is preferred, it can also be accessed using web interface provided by [Google Search](https://www.google.com/search?hl=en&q=CRSPTMT).
-
-## Before expiry
-
-Before expiry, the price will be determined by the on-chain secondary market. At any time, the price will be the 2h Time-Weighted Average Price (TWAP) of the Uniswap uCRSPTMT_SEP21/USDC pool with the largest liquidity.
-
-Voters should follow this protocol to determine the price:
-
-1. Find the uCRSPTMT_SEP21/USDC Uniswap pool with the largest liquidity.
-2. Determine the price of uCRSPTMT_SEP21 in USD returned by the pool for every timestamp between the request timestamp minus 2 hours and the request timestamp, inclusive.
-3. The price to return is the arithmetic mean of all the prices at each timestamp, rounded to 6 decimals as explained below.
-
-<br>
 
 # PRICE FEED IMPLEMENTATION
 
 The liquidator and disputer bots should use the reference [Uniswap price feed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) implementation.
+
+An example Uniswap price feed config is as follows. Note that the actual pool address cannot be used until the synthetic and liquidity pool are created. 
+
+```
+uCRSPTMT_SEP21: {
+    type: "uniswap",
+    uniswapAddress: "0xsynthetic_usdc",
+    twapLength: 7200,
+  }
+```
 
 <br>
 
@@ -84,22 +75,30 @@ Short-lived price manipulation of an AMM is relatively cheap, but it becomes exp
 
 # IMPLEMENTATION
 
-1. **What prices should be queried for and from which markets?**
+The contract will expire at 16:00 EST on 2021/09/21. The corresponding POSIX timestamp is `1632254400`. To determine the price, the DVM will choose between the two protocols described below depending on the timestamp of the oracle request, `request_timestamp`.
 
-  - After expiry: CRSPTMT close price on 2021/09/21 from Google Finance
-  - Before expiry: Uniswap 2h TWAP
+- If `request_timestamp >= 1632254400`, use the "After expiry" protocol.
+- Otherwise, use the "Before expiry" protocol.
 
-2. **Pricing interval**
+## After expiry
 
-  - After expiry: NA
-  - Before expiry: Every block (~15 seconds)
+After expiry, the contract should be settled according to the close price of the index on 2021/09/21. This price will be obtained by calling the `GOOGLEFINANCE` function on Google Sheets with the following parameters:
 
-3. **Processing**
-  
-  - After expiry: Google Finance CRSPTMT price
-  - Before expiry: NA
+```
+=GOOGLEFINANCE("CRSPTMT", "close", DATE(2021, 5, 21))
+```
 
-<br>
+This query can be done without API keys and at no cost to the user. Although querying the price via Google Sheets is preferred, it can also be accessed using web interface provided by [Google Search](https://www.google.com/search?hl=en&q=CRSPTMT).
+
+## Before expiry
+
+Before expiry, the price will be determined by the on-chain secondary market. At any time, the price will be the 2h Time-Weighted Average Price (TWAP) of the Uniswap uCRSPTMT_SEP21/USDC pool with the largest liquidity.
+
+Voters should follow this protocol to determine the price:
+
+1. Find the uCRSPTMT_SEP21/USDC Uniswap pool with the largest liquidity.
+2. Determine the price of uCRSPTMT_SEP21 in USD returned by the pool for every timestamp between the request timestamp minus 2 hours and the request timestamp, inclusive.
+3. The price to return is the arithmetic mean of all the prices at each timestamp, rounded to 6 decimals as explained below.
 
 # Security considerations
 

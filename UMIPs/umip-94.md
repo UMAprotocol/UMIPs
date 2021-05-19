@@ -1,6 +1,6 @@
 | UMIP-94   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add UST as whitelisted collateral currencies              |
+| UMIP Title | Add UST as a whitelisted collateral currency             |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
 | Status     | Last Call                                                 |
 | Created    | 09/05/2021   
