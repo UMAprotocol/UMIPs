@@ -38,7 +38,7 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
  * The SDT address, [0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f][SDT], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 80 SDT needs to be added for SDT in the Store contract.
+ * A final fee of 135 SDT needs to be added for SDT in the Store contract.
 
   [SDT]: https://etherscan.io/token/0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f 
   
