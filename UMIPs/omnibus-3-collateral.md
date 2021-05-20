@@ -62,7 +62,7 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
 * The CREAM address, [0x2ba592f78db6436527729929aaf6c908497cb200][CREAM], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 2.7 CREAM needs to be added for CREAM in the Store contract.
+* A final fee of 3.35 CREAM needs to be added for CREAM in the Store contract.
 
 [CREAM]: https://etherscan.io/token/0x2ba592f78db6436527729929aaf6c908497cb200 
 
