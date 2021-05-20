@@ -26,7 +26,7 @@ Note : The final fee for all ERC20 tokens will be ~$400 at time of writing
 To accomplish this upgrade, two changes need to be made:
 
 * The BAND address, [0xba11d00c5f74255f56a5e366f4f77f5a186d7f55][BAND], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 21 BAND needs to be added for BAND in the Store contract.
+* A final fee of 35 BAND needs to be added for BAND in the Store contract.
 
  [BAND]: https://etherscan.io/token/0xba11d00c5f74255f56a5e366f4f77f5a186d7f55 
  
