@@ -114,6 +114,22 @@ To accomplish this upgrade, two changes need to be made:
 
 This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
 
+### Rationale
+
+The CHAIN token is the primary medium of exchange used for all entry fees and contest payouts on the Chain Games network, which combines original blockchain games with prize-based e-sports competitions.
+
+Adding CHAIN as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to an emerging blockchain gaming community.
+
+### Security Considerations
+
+CHAIN has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+
+The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
+
+They should recognize that, relative to most fiat currencies, CHAIN is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+
+CHAIN has a circulating supply of 290 Million CHAIN coins and a max supply of 500 Million. Its top market is Uniswap v2.
+
 ---
 ## ERN (Ethernity Chain)
 
@@ -129,15 +145,18 @@ To accomplish this upgrade, two changes need to be made:
 
 This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
 
----
+### Rationale
 
-# Security considerations
+Ethernity Chain is a community-oriented platform that produces limited edition authenticated NFTs and trading cards created by your favorite artists and endorsed by notable figures. Built on the Ethereum Network, it aims to build the biggest A-NFT library, reward its creators and raise funds for charitable causes forever. Its unique DEFI applications allow ERN token holders to farm rare A-NFTs and vote on proposals that will amend the Ethernity Chain ecosystem.
 
-These ERC20 tokens have shown to be persistently valuable given their liquidity and market capitalization, so including them as collateral currencies should impose no
-additional risk to the protocol.
-The only security implication is for contract deployers and users who are considering using EMP contracts with these tokens as the collateral currency. 
-They should recognize that, relative to most fiat currencies, these assets are much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
-     
-     
+Adding ERN as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to an emerging NFT community.
 
- 
+### Security Considerations
+
+CHAIN has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+
+The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
+
+They should recognize that, relative to most fiat currencies, CHAIN is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+
+ERN has a circulating supply of 11 Million ERN coins and a max supply of 30 Million. Its top markets are Uniswap v2 and Uniswap v3.
