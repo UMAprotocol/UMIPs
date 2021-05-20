@@ -86,7 +86,7 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
 * The CHAIN address, [0xc4c2614e694cf534d407ee49f8e44d125e4681c4][CHAIN], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 1333 CHAIN needs to be added for CHAIN in the Store contract.
+* A final fee of 2000 CHAIN needs to be added for CHAIN in the Store contract.
 
 [CHAIN]: https://etherscan.io/token/0xc4c2614e694cf534d407ee49f8e44d125e4681c4 
 
