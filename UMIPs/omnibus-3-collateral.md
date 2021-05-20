@@ -28,8 +28,12 @@ To accomplish this upgrade, two changes need to be made:
 * The BAND address, [0xba11d00c5f74255f56a5e366f4f77f5a186d7f55][BAND], needs to be added to the collateral currency whitelist introduced in UMIP-8.
 * A final fee of 35 BAND needs to be added for BAND in the Store contract.
 
- [BAND]: https://etherscan.io/token/0xba11d00c5f74255f56a5e366f4f77f5a186d7f55 
- 
+[BAND]: https://etherscan.io/token/0xba11d00c5f74255f56a5e366f4f77f5a186d7f55 
+
+### Implementation
+
+This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
+
 ---
 
 ## SDT (Stake DAO)
@@ -40,8 +44,12 @@ To accomplish this upgrade, two changes need to be made:
  * The SDT address, [0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f][SDT], needs to be added to the collateral currency whitelist introduced in UMIP-8.
  * A final fee of 135 SDT needs to be added for SDT in the Store contract.
 
-  [SDT]: https://etherscan.io/token/0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f 
-  
+[SDT]: https://etherscan.io/token/0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f 
+
+### Implementation
+
+This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
+
 ---
 
 ## KP3R (Keep3rV1)
@@ -53,6 +61,10 @@ To accomplish this upgrade, two changes need to be made:
 * A final fee of 1.65 KP3R needs to be added for KP3R in the Store contract.
 
 [KP3R]: https://etherscan.io/token/0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44 
+
+### Implementation
+
+This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
 
 ---
    
@@ -66,6 +78,10 @@ To accomplish this upgrade, two changes need to be made:
 
 [CREAM]: https://etherscan.io/token/0x2ba592f78db6436527729929aaf6c908497cb200 
 
+### Implementation
+
+This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
+
 ---
 
 ## LPOOL (Launchpool)
@@ -77,6 +93,10 @@ To accomplish this upgrade, two changes need to be made:
 * A final fee of 50 LPOOL needs to be added for LPOOL in the Store contract.
 
 [LPOOL]: https://etherscan.io/token/0x6149c26cd2f7b5ccdb32029af817123f6e37df5b 
+
+### Implementation
+
+This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
 
 ---
 
@@ -90,6 +110,10 @@ To accomplish this upgrade, two changes need to be made:
 
 [CHAIN]: https://etherscan.io/token/0xc4c2614e694cf534d407ee49f8e44d125e4681c4 
 
+### Implementation
+
+This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
+
 ---
 ## ERN (Ethernity Chain)
 
@@ -101,8 +125,11 @@ To accomplish this upgrade, two changes need to be made:
 
 [ERN]: https://etherscan.io/token/0xbbc2ae13b23d715c30720f079fcd9b4a74093505 
 
----
+### Implementation
 
+This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
+
+---
 
 # Security considerations
 
