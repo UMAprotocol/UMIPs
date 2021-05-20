@@ -50,7 +50,7 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
 * The KP3R address, [0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44][KP3R], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 1.4 KP3R needs to be added for KP3R in the Store contract.
+* A final fee of 1.65 KP3R needs to be added for KP3R in the Store contract.
 
 [KP3R]: https://etherscan.io/token/0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44 
 
