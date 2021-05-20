@@ -74,7 +74,7 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
 * The LPOOL address, [0x6149c26cd2f7b5ccdb32029af817123f6e37df5b][LPOOL], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 36.4 LPOOL needs to be added for LPOOL in the Store contract.
+* A final fee of 50 LPOOL needs to be added for LPOOL in the Store contract.
 
 [LPOOL]: https://etherscan.io/token/0x6149c26cd2f7b5ccdb32029af817123f6e37df5b 
 
