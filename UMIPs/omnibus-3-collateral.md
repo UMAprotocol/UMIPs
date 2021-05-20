@@ -153,10 +153,10 @@ Adding ERN as an UMA collateral type will open up additional use cases, includin
 
 ### Security Considerations
 
-CHAIN has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+ERN has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
 
 The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
 
-They should recognize that, relative to most fiat currencies, CHAIN is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+They should recognize that, relative to most fiat currencies, ERN is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
 
 ERN has a circulating supply of 11 Million ERN coins and a max supply of 30 Million. Its top markets are Uniswap v2 and Uniswap v3.
