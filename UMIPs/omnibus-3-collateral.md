@@ -97,7 +97,7 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
 * The SAND address, [0x3845badade8e6dff049820680d1f14bd3903a5d0][SAND], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 660 SAND needs to be added for SAND in the Store contract.
+* A final fee of 1100 SAND needs to be added for SAND in the Store contract.
 
 [SAND]: https://etherscan.io/token/0x3845badade8e6dff049820680d1f14bd3903a5d0 
 
