@@ -1,14 +1,14 @@
 ## Headers
 | UMIP-tbd   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add BAND, SDT, KP3R, CREAM, LPOOL, CHAIN, and ERN as approved collateral currencies              |
+| UMIP Title | Add BAND, SDT, KP3R, CREAM, CHAIN, and ERN as approved collateral currencies              |
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda  (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                    |
 | Created    | May 2, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-band-sdt-kp3r-cream-lpool-chain-sand-ern-and-pols-as-approved-collateral-currencies/1054)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
-This UMIP will add BAND, SDT, KP3R, CREAM, LPOOL, CHAIN, and ERN as approved collateral currencies. This will involve adding these to the whitelist and adding flat final fees to charge per-request.
+This UMIP will add BAND, SDT, KP3R, CREAM, CHAIN, and ERN as approved collateral currencies. This will involve adding these to the whitelist and adding flat final fees to charge per-request.
 
 # Motivation
 
@@ -77,22 +77,6 @@ To accomplish this upgrade, two changes need to be made:
 * A final fee of 3.35 CREAM needs to be added for CREAM in the Store contract.
 
 [CREAM]: https://etherscan.io/token/0x2ba592f78db6436527729929aaf6c908497cb200 
-
-### Implementation
-
-This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
-
----
-
-## LPOOL (Launchpool)
-
-### Technical Specification
-To accomplish this upgrade, two changes need to be made:
-
-* The LPOOL address, [0x6149c26cd2f7b5ccdb32029af817123f6e37df5b][LPOOL], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 50 LPOOL needs to be added for LPOOL in the Store contract.
-
-[LPOOL]: https://etherscan.io/token/0x6149c26cd2f7b5ccdb32029af817123f6e37df5b 
 
 ### Implementation
 
