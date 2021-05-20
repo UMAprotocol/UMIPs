@@ -108,7 +108,7 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
 * The ERN address, [0xbbc2ae13b23d715c30720f079fcd9b4a74093505][ERN], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 17.4 ERN needs to be added for ERN in the Store contract.
+* A final fee of 35 ERN needs to be added for ERN in the Store contract.
 
 [ERN]: https://etherscan.io/token/0xbbc2ae13b23d715c30720f079fcd9b4a74093505 
 
