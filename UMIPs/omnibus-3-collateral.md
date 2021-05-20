@@ -119,7 +119,7 @@ To accomplish this upgrade, two changes need to be made:
 To accomplish this upgrade, two changes need to be made:
 
 * The POLS address, [0x83e6f1e41cdd28eaceb20cb649155049fac3d5aa][POLS], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 115 POLS needs to be added for POLS in the Store contract.
+* A final fee of 145 POLS needs to be added for POLS in the Store contract.
 
 [POLS]: https://etherscan.io/token/0x83e6f1e41cdd28eaceb20cb649155049fac3d5aa 
 
