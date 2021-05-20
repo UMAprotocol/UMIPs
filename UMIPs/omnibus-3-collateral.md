@@ -1,14 +1,14 @@
 ## Headers
 | UMIP-tbd   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add BAND, SDT, KP3R, CREAM, LPOOL, CHAIN, SAND, ERN and POLS as approved collateral currencies              |
+| UMIP Title | Add BAND, SDT, KP3R, CREAM, LPOOL, CHAIN, and ERN as approved collateral currencies              |
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda  (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                    |
 | Created    | May 2, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-band-sdt-kp3r-cream-lpool-chain-sand-ern-and-pols-as-approved-collateral-currencies/1054)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
-This UMIP will add BAND, SDT, KP3R, CREAM, LPOOL, CHAIN, SAND, ERN and POLS as approved collateral currencies. This will involve adding these to the whitelist and adding flat final fees to charge per-request.
+This UMIP will add BAND, SDT, KP3R, CREAM, LPOOL, CHAIN, and ERN as approved collateral currencies. This will involve adding these to the whitelist and adding flat final fees to charge per-request.
 
 # Motivation
 
@@ -91,17 +91,6 @@ To accomplish this upgrade, two changes need to be made:
 [CHAIN]: https://etherscan.io/token/0xc4c2614e694cf534d407ee49f8e44d125e4681c4 
 
 ---
-## SAND (The Sandbox)
-
-### Technical Specification
-To accomplish this upgrade, two changes need to be made:
-
-* The SAND address, [0x3845badade8e6dff049820680d1f14bd3903a5d0][SAND], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 1100 SAND needs to be added for SAND in the Store contract.
-
-[SAND]: https://etherscan.io/token/0x3845badade8e6dff049820680d1f14bd3903a5d0 
-
----
 ## ERN (Ethernity Chain)
 
 ### Technical Specification
@@ -111,17 +100,6 @@ To accomplish this upgrade, two changes need to be made:
 * A final fee of 35 ERN needs to be added for ERN in the Store contract.
 
 [ERN]: https://etherscan.io/token/0xbbc2ae13b23d715c30720f079fcd9b4a74093505 
-
----
-## POLS (Polkastarter)
-
-### Technical Specification
-To accomplish this upgrade, two changes need to be made:
-
-* The POLS address, [0x83e6f1e41cdd28eaceb20cb649155049fac3d5aa][POLS], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 145 POLS needs to be added for POLS in the Store contract.
-
-[POLS]: https://etherscan.io/token/0x83e6f1e41cdd28eaceb20cb649155049fac3d5aa 
 
 ---
 
