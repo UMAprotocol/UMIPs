@@ -82,6 +82,20 @@ To accomplish this upgrade, two changes need to be made:
 
 This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
 
+### Rationale
+
+Adding CREAM as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to the community of a large and popular decentralized lending protocol, which spans Ethereum and Binance Smart Chain and is part of the YFI ecosystem.
+
+### Security Considerations
+
+CREAM has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+
+The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
+
+They should recognize that, relative to most fiat currencies, CREAM is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+
+CREAM has a circulating supply of 720,000 CREAM coins and a max supply of 9 Million. Gate.io is the current most active market trading it and it has over $1 million in liquidity on SushiSwap.
+
 ---
 
 ## CHAIN (Chain Games)
