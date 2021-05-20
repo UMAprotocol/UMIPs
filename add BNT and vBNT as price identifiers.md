@@ -182,7 +182,8 @@ The script is designed to give a price at a given time instead of a constant pri
 # Implementation
 
 1. Get the SMA price of USDC/BNT from the USDC/BNT pool and BNT/vBNT from the BNT/vBNT pool, which can be done via the script above.
-2. Divide the BNT/USDC price by the BNT/vBNT to get the USDC/vBNT price
+2. Divide the BNT/USDC price by the BNT/vBNT to get the USDC/vBNT price.
+3. Round to 6 decimals 
 
 # Security Considerations
 
