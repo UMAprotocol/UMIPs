@@ -34,6 +34,22 @@ To accomplish this upgrade, two changes need to be made:
 
 This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
 
+### Rationale
+
+Adding BAND as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to a large commumity interested in DeFi oracles, which may lead to more integrations with new products that would be well served by UMA's oracle design.
+
+### Security Considerations
+
+BAND has persistently strong liquidity on multiple exchanges, so including it as a collateral currency should impose no additional risk to the protocol.
+
+The main security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
+
+They should recognize that, relative to most fiat currencies, BAND is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+
+An additional consideration is that on-chain liquidity for BAND is not particularly strong, with only $250,000 in liquidity in a Uniswap v2 pool and a nearly empty Uniswap v3 pool. If large amounts of BAND are used as collateral in liquidatable contracts, more on-chain liquidity would be desirable to make it easier to liquidate undercollateralized positions. This is a moot point if BAND is used for non-liquidatable contracts.
+
+BAND has a circulating supply of 35 Million BAND coins and a max supply of 100 Million. Binance is the current most active market trading it.
+
 ---
 
 ## SDT (Stake DAO)
@@ -50,6 +66,20 @@ To accomplish this upgrade, two changes need to be made:
 
 This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
 
+### Rationale
+
+Adding SDT as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to an emerging DAO community leveraging DeFi to find staking and automated investment opportunities, who may be interested in integrating products from the UMA ecosystem.
+
+### Security Considerations
+
+SDT has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+
+The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
+
+They should recognize that, relative to most fiat currencies, SDT is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+
+SDT has a circulating supply of 9.9 Million SDT coins and a max supply of 45.6 Million. Uniswap (v2) is most active trading market.
+
 ---
 
 ## KP3R (Keep3rV1)
@@ -65,6 +95,20 @@ To accomplish this upgrade, two changes need to be made:
 ### Implementation
 
 This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
+
+### Rationale
+
+Adding KP3R as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to a broad community of smart contract "keepers" who perform important transactions that need to be externally triggered. This may improve the robustness of UMA liquidation, dispute, and price proposal bot ecosystem.
+
+### Security Considerations
+
+KP3R has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+
+The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
+
+They should recognize that, relative to most fiat currencies, KP3R is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+
+KP3R has a circulating supply of 230,000 KP3R coins and a max supply of 232,000. Sushiswap is the most active trading market.
 
 ---
    
@@ -94,7 +138,7 @@ The only security implication is for contract deployers and users who are consid
 
 They should recognize that, relative to most fiat currencies, CREAM is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
 
-CREAM has a circulating supply of 720,000 CREAM coins and a max supply of 9 Million. Gate.io is the current most active market trading it and it has over $1 million in liquidity on SushiSwap.
+CREAM has a circulating supply of 720,000 CREAM coins and a max supply of 9 Million. Gate.io is the current most active market trading it and it has over $1 million in liquidity on Sushiswap.
 
 ---
 
