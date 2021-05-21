@@ -38,17 +38,17 @@ This change has no implementation other than proposing the two aforementioned go
 
 Adding BAND as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to a large commumity interested in DeFi oracles, which may lead to more integrations with new products that would be well served by UMA's oracle design.
 
+### Token Summary
+
+Band protocol is a cross chain data oracle platform, that is able to take on real world data and supply it to on-chain applications, while also connecting to smart contracts to facilitate the exchange of information between on-chain and off-chain data sources. It was an Ethereum-native project but switched to Cosmos network in June 2020 and currently spans Ethereum, Cosmos, Binance, Polygon, and other ecosystems.
+
 ### Security Considerations
 
-BAND has persistently strong liquidity on multiple exchanges, so including it as a collateral currency should impose no additional risk to the protocol.
-
-The main security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
-
-They should recognize that, relative to most fiat currencies, BAND is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+$UMA holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. UMA holders should take note of the collaterals changes, or if added to robustness(Eg. via TWAPs) are necessary to prevent market manipulation.
 
 An additional consideration is that on-chain liquidity for BAND is not particularly strong, with only $250,000 in liquidity in a Uniswap v2 pool and a nearly empty Uniswap v3 pool. If large amounts of BAND are used as collateral in liquidatable contracts, more on-chain liquidity would be desirable to make it easier to liquidate undercollateralized positions. This is a moot point if BAND is used for non-liquidatable contracts.
 
-BAND has a circulating supply of 35 Million BAND coins and a max supply of 100 Million. Binance is the current most active market trading it.
+BAND has a circulating supply of 20.494 Million BAND coins and a max supply of 100 Million. Binance is the current most active market trading it.
 
 ---
 
@@ -72,11 +72,7 @@ Adding SDT as an UMA collateral type will open up additional use cases, includin
 
 ### Security Considerations
 
-SDT has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
-
-The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
-
-They should recognize that, relative to most fiat currencies, SDT is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
 
 SDT has a circulating supply of 9.9 Million SDT coins and a max supply of 45.6 Million. Uniswap (v2) is most active trading market.
 
@@ -100,15 +96,15 @@ This change has no implementation other than proposing the two aforementioned go
 
 Adding KP3R as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to a broad community of smart contract "keepers" who perform important transactions that need to be externally triggered. This may improve the robustness of UMA liquidation, dispute, and price proposal bot ecosystem.
 
+### Token Summary
+
+Keep3r Network is a decentralized keeper network for projects that need external devops and for external teams to find keeper jobs. Teams can make use of Keep3r to automate certain tasks such as maintaining price oracles, harvesting/re-investing yields, or anything else that requires external execution. Keep3r exists to incentivize Keepers to perform these jobs.
+
 ### Security Considerations
 
-KP3R has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
 
-The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
-
-They should recognize that, relative to most fiat currencies, KP3R is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
-
-KP3R has a circulating supply of 230,000 KP3R coins and a max supply of 232,000. Sushiswap is the most active trading market.
+KP3R has a circulating supply of 231,573 KP3R coins and a max supply of 231,573. Sushiswap is the most active trading market.
 
 ---
    
@@ -130,15 +126,25 @@ This change has no implementation other than proposing the two aforementioned go
 
 Adding CREAM as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to the community of a large and popular decentralized lending protocol, which spans Ethereum and Binance Smart Chain and is part of the YFI ecosystem.
 
+## Token Summary
+
+C.R.E.A.M. Finance is a decentralized lending protocol for individuals and protocols to access financial services. The protocol is permissionless, transparent, and non-custodial.
+
+Currently, C.R.E.A.M. is live on Ethereum, Binance Smart Chain, and Fantom.
+
+C.R.E.A.M. Finance’s smart contract money markets are focused on longtail assets – with the goal of increasing capital efficiency for all assets in crypto markets.
+
+Users are able to lend any supported assets on our markets, and use the provided capital as collateral to borrow another supported asset.
+
+C.R.E.A.M. offers a wide range of tokens on their money markets, including: stablecoins (USDT, USDC, BUSD); interest-bearing stablecoins (yCRV, yyCRV); defi tokens (YFI, SUSHI, CREAM, CREAM); LP-tokens (USDC-ETH SLP, WBTC-ETH SLP); and other cryptocurrencies (ETH, LINK). This list is not exhaustive.
+
 ### Security Considerations
 
-CREAM has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+Cream has been audited by Trail of Bits as of 28 Jan 2021. A link to the audit report can be found here.
 
-The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
 
-They should recognize that, relative to most fiat currencies, CREAM is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
-
-CREAM has a circulating supply of 720,000 CREAM coins and a max supply of 9 Million. Gate.io is the current most active market trading it and it has over $1 million in liquidity on Sushiswap.
+CREAM has a circulating supply of 721,640 CREAM coins and a max supply of 9,000,000. Gate.io is the current most active market trading it and it has over $1 million in liquidity on Sushiswap.
 
 ---
 
@@ -162,15 +168,21 @@ The CHAIN token is the primary medium of exchange used for all entry fees and co
 
 Adding CHAIN as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to an emerging blockchain gaming community.
 
+### Token Summary
+
+CHAIN is the native token for Chain Games, a blockchain gaming platform that combines smart contract-based wagering with state-of-the-art gameplay. The CHAIN token is the primary medium of exchange on the platform and can also be used for staking and governance of the protocol. Additionally, CHAIN uses a deflationary feature, where 1% of CHAIN used as transaction fees will be burned.
+
+It is a relatively new currency, but is currently available on multiple exchanges, including Uniswap, Bilaxy, Gate.io, and PancakeSwap. Chain Games has a well-defined roadmap and community acceptance indicates that CHAIN will be able to hold value over time. They intend to pursue cross-chain compatibility, but is not available at this tim
+
 ### Security Considerations
 
-CHAIN has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+Chain Games smart contracts were audited by HackenProof before deploying on main net, but the audit does not appear to be publicly available. The Chain Games operates on a Non-Custodial model, reducing exposure to users. The white paper can be found Here for additional details. As mentioned above, CHAIN has a deflationary measure built in, which should serve to stabilize the value of this token in the future.
 
-The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
+Relative to most fiat currencies, CHAIN is much more volatile and is very nascent in the Ethereum ecosystem. Contract developers should exercise caution when parameterizing EMP contracts using CHAIN as a collateral currency.
 
-They should recognize that, relative to most fiat currencies, CHAIN is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
 
-CHAIN has a circulating supply of 290 Million CHAIN coins and a max supply of 500 Million. Its top market is Uniswap v2.
+CHAIN has a circulating supply of 293,097,683.00 CHAIN coins and a max supply of 500 Million. Its top market is Uniswap v2.
 
 ---
 ## ERN (Ethernity Chain)
@@ -193,12 +205,18 @@ Ethernity Chain is a community-oriented platform that produces limited edition a
 
 Adding ERN as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to an emerging NFT community.
 
+### Token Summary
+
+ERN is the native token for Ethernity Chain, a decentralized application platform that allows artists to create and sell artwork that is inspired and backed by celebrities for charity. ERN tokens are used to purchase these authenticated NFTs, as well as for farming, staking, and voting within the Ethernity Chain ecosystem.
+
+This relatively new, PoS based, ERC20 token has quickly gained traction in the greater community as interest in NFTs increases exponentially. It is available on multiple exchanges, including Uniswap, Gate.io, 1inch, and Hoo.
+
 ### Security Considerations
 
-ERN has persistently strong liquidity, so including it as a collateral currency should impose no additional risk to the protocol.
+Ethernity Chain smart contract has been audited by Immune Bytes, which you can view Here. One low severity-risk regarding the ERN token was identified and addressed in the final version of the whitepaper.
 
-The only security implication is for contract deployers and users who are considering using EMP contracts with this token as the collateral currency. 
+Relative to most fiat currencies, ERN is much more volatile and is very nascent in the Ethereum ecosystem. Contract developers should exercise caution when parameterizing EMP contracts using ERN as a collateral currency.
 
-They should recognize that, relative to most fiat currencies, ERN is much more volatile. This volatility should be taken into account when parameterizing or using these EMP contracts.
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
 
-ERN has a circulating supply of 11 Million ERN coins and a max supply of 30 Million. Its top markets are Uniswap v2 and Uniswap v3.
+ERN has a circulating supply of 9,684,684 ERN coins and a max supply of 30 Million. Its top markets are Uniswap v2 and Uniswap v3.
