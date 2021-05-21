@@ -104,7 +104,7 @@ Voters should query for the price of OCEAN/USDT at the price request timestamp o
 1) When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
 2) The median of these results should be taken
 3) The median from step 2 should be rounded to six decimals to determine the OCEANUSD price.
-4) The value of USDOCEAN will follow the exact same process but undergo one additional step: it will be the result of dividing 1/OCEANUSD wiht OCEANUSD being the unrounded result from step 3.
+4) The value of USDOCEAN will follow the exact same process but undergo one additional step: it will be the result of dividing 1/OCEANUSD with OCEANUSD being the unrounded result from step 3.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
