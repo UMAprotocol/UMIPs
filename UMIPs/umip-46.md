@@ -23,18 +23,18 @@ More information on the Ocean Protocol can be found on the website: https://ocea
 
 ## Markets and Data Sources
 
-Binance, Bittrex, and BitZ should be used to construct the price.These 3 exchanges comprise a significant amount of OCEAN trade volume and have available pricefeeds on Cryptowatch. 
+Binance, Kraken, and BitZ should be used to construct the price.These 3 exchanges comprise a significant amount of OCEAN trade volume and have available pricefeeds on Cryptowatch. 
 
 
 Which specific pairs should be queried from each market?
 - Binance: OCEAN/USDT
-- Bittrex: OCEAN/USDT
+- Kraken: OCEAN/USD
 - BitZ: OCEAN/USDT
 
 
 Provide recommended endpoints to query for real-time prices from each market listed.
 - Binance OCEAN/USDT: https://api.cryptowat.ch/markets/binance/oceanusdt/price
-- Bittrex OCEAN/USDT: https://api.cryptowat.ch/markets/bittrex/oceanusdt/price
+- Kraken OCEAN/USD: https://api.cryptowat.ch/markets/kraken/oceanusd/price
 - BitZ OCEAN/USDT: https://api.cryptowat.ch/markets/bitz/oceanusdt/price
 
 How often is the provided price updated?
@@ -42,15 +42,14 @@ How often is the provided price updated?
 
 Provide recommended endpoints to query for historical prices from each market listed.
 - Binance: https://api.cryptowat.ch/markets/binance/oceanusdt/ohlc?after=1612880040&before=1612880040&periods=60
-- Bittrex: https://api.cryptowat.ch/markets/bittrex/oceanusdt/ohlc?after=1612880460&before=1612880460&periods=60
+- Kraken: https://api.cryptowat.ch/markets/kraken/oceanusd/ohlc?after=1612880460&before=1612880460&periods=60
 - BitZ: https://api.cryptowat.ch/markets/bitz/oceanusdt/ohlc?after=1612880040&before=1612880040&periods=60
 
 Do these sources allow for querying up to 74 hours of historical data?
 - Yes
 
 How often is the provided price updated?
-- The lower bound on the price update frequency is a minute for Binance and BitZ
-- Bittrex update frequency is 4 minutes
+- The lower bound on the price update frequency is a minute for Binance, BitZ and Kraken
 
 Is an API key required to query these sources?
 - No
@@ -69,7 +68,6 @@ What would be the cost of sending 15,000 queries?
 Associated OCEAN price feeds are available via Cryptowatch.  No other further feeds required.
 
 
-
 ## Technical Specifications
 - Price Identifier Name: OCEAN/USD
 - Base Currency: OCEAN
@@ -85,7 +83,7 @@ Associated OCEAN price feeds are available via Cryptowatch.  No other further fe
 - Quote Currency: OCEAN
 - Intended Collateral Currency: OCEAN
 - Scaling Decimals: 18 (1e18)
-- Rounding: Round to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 - Does the value of this collateral currency match the standalone value of the listed quote currency?: YES
 - Is your collateral currency already approved to be used by UMA financial contracts?: YES
 
@@ -101,12 +99,12 @@ In the current setting, there will need to be a significant event that erodes co
 
 ## Implementation
 
-Voters should query for the price of OCEAN/USDT at the price request timestamp on Binance, Bittrex and BitZ. Recommended endpoints are provided in the markets and data sources  section.
+Voters should query for the price of OCEAN/USDT at the price request timestamp on Binance, Kraken and BitZ. Recommended endpoints are provided in the markets and data sources  section.
 
 1) When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
 2) The median of these results should be taken
 3) The median from step 2 should be rounded to six decimals to determine the OCEANUSD price.
-4) The value of USDOCEAN will follow the exact same process but undergo one additional step: it will be the result of dividing 1/OCEANUSD.
+4) The value of USDOCEAN will follow the exact same process but undergo one additional step: it will be the result of dividing 1/OCEANUSD wiht OCEANUSD being the unrounded result from step 3.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
