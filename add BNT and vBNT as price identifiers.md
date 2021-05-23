@@ -3,17 +3,19 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add USDBNT, BNTvBNT as supported price identifiers|
+| UMIP Title          | Add USDBNT BNTvBNT as supported price identifiers|
 | Authors             |**StevenFox**         |
 | Status              | Draft                                                         |
 | Created             | **19 May 2021**                                              |
 | Discourse Link      |[Link](https://discourse.umaproject.org/t/bnt-and-vbnt-price-identifiers/1127)   |
 
 # Summary
-The DVM should support the addition of vBNT and BNT as supported price IDs. The use of these price identifiers will primarily be used for call options. This UMIP will outline the specific details for a standard USDBNT price feed for and future project. This UMIP will also outline how to calculate the price of vBNT using a custom script that will be used for the call option price calculation.
+The DVM should support the addition of vBNT and BNT as supported price IDs. The use of these price identifiers will primarily be used for call options. This UMIP will outline the specific details for a standard USDBNT price feed. This UMIP will also outline how to calculate the price of vBNT using a custom script that will be used for the call option price calculation.
+
+This UMIP can also be extended to creating a price feed for vBNT and amend the markets and data sources once we can use Bancor pools as a data source
 
 # Motivation
-The DVM currently does not yet support price identifiers. vBNT (the Bancor Governance Token) is being proposed as a supported collateral type along with the BNT token in a separate proposal.
+The DVM currently does not yet support price identifiers. vBNT (the Bancor Governance Token) and BNT is being proposed as a supported collateral type along with the BNT token in a separate proposal.
 
 The primary focus of this UMIP is to arrive at an expiry price for the vBNT call options. However, the inclusion of a useable USDBNT price feed can be used by other projects. Below, we will outline how to calculate the price of the options.
 
@@ -26,7 +28,7 @@ vBNT/BNT 0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8
 *This will be the data specification for the USDBNT price feed*
 Price identifier name: USDBNT 
 Markets & Pairs: 
- - [CoinbasPro: BNT/USD](https://api.cryptowat.ch/markets/coinbase-pro/bntusd/ohlc?after=1612880040&periods=60)
+ - [Coinbas-Pro: BNT/USD](https://api.cryptowat.ch/markets/coinbase-pro/bntusd/ohlc?after=1612880040&periods=60)
  - [Binance: BNT/USDT](https://api.cryptowat.ch/markets/binance/bntusdt/ohlc?after=1612880040&periods=60)
  - [Okex: BNT/USDT](https://api.cryptowat.ch/markets/okex/bntusdt/ohlc?after=1612880040&periods=60)
 
@@ -36,7 +38,7 @@ Historical data update frequency: Every 60 seconds
  
 # Price Feed Implementation
 
-This second will firstly outline the price feed implementation for USDBNT and secondly showcase the script needed to calculate the end price for the call options. 
+This section will firstly outline the price feed implementation for USDBNT and secondly showcase the script needed to calculate the end price for the call options. 
 
 Using the above markets the price feed can be used as follows
 
@@ -203,19 +205,20 @@ Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 ro
 
 # Rationale
 
-The price for vBNT can be taken using the USDC/BNT liquidity pool for the BNT price and the BNT/vBNT to derive the vBNT price.
+The price for vBNT can be taken using the USDC/BNT liquidity pool for the BNT price and the BNT/vBNT to derive the USD/vBNT price.
 Our pool contracts maintain an SMA (slowly-moving average) price, which offers protections from flash loans.
-The choice in using Bancor's own pools is due to them being the highest liquidity pools for both tokens
+The choice in using Bancor's own pools is due to them being the highest liquidity pools for both tokens and the need
 
 The script is designed to give a price at a given time instead of a constant price feed. This is due to call options only requiring a price at the time of settlement. This choice is due to the vBNT token not being widely traded.
 
 # Implementation
 
 1. For the price request timestamp, query for the USDBNT prices by following the guidelines of UMIP-6. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
+2. 
 
 At the time of expiry for the call options. The price of BNT and vBNT can be calculated as follows. 
-1. Get the SMA price of USDC/BNT from the USDC/BNT pool and BNT/vBNT from the BNT/vBNT pool, which can be done via the script above.
-2. 
+1. Get the SMA price of USDC/BNT from the USDC/BNT pool and BNT/vBNT from the BNT/vBNT pool, which can be done via the script above. The script will output 2 prices USDC/BNT average rate and vBNT/BNT average rate. 
+2. You can use the above rates to obtain the USDvBNT rate.
 
 
 # Security Considerations
