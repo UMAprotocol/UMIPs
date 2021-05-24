@@ -3,19 +3,19 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add USDBNT BNTvBNT as supported price identifiers|
+| UMIP Title          | Add BNTvBNT as supported price identifiers|
 | Authors             |**StevenFox**         |
 | Status              | Draft                                                         |
 | Created             | **19 May 2021**                                              |
 | Discourse Link      |[Link](https://discourse.umaproject.org/t/bnt-and-vbnt-price-identifiers/1127)   |
 
 # Summary
-The DVM should support the addition of BNTvBNT and USDBNT as supported price IDs. The use of these price identifiers will primarily be used for call options. This UMIP will outline the specific details for a standard USDBNT price feed. This UMIP will also outline how to calculate the price of vBNT using a custom script that will be used for the call option price calculation.
+The DVM should support the addition of BNTvBNT as supported price IDs. The use of these price identifiers will primarily be used for call options. This UMIP will also outline how to calculate the price of vBNT using a custom script that will be used for the call option price calculation.
 
 This UMIP can also be extended to creating a price feed for vBNT and amend the markets and data sources once we can use Bancor pools as a data source
 
 # Motivation
-The DVM currently does not yet support the required price identifiers. vBNT (the Bancor Governance Token) and BNT is being proposed as a supported collateral type along with the BNT token in a separate proposal.
+The DVM currently does not yet support the required price identifiers. vBNT (the Bancor Governance Token) is being proposed as a supported collateral type along with the BNT token in a separate proposal.
 
 The primary focus of this UMIP is to arrive at an expiry price for the vBNT call options. However, the inclusion of a useable USDBNT price feed can be used by other projects. Below, we will outline how to calculate the price of the options along with creating a standard price feed. It should be noted that the method to calculate the options price will be separate to the using the price feed. 
 
@@ -24,42 +24,10 @@ The primary focus of this UMIP is to arrive at an expiry price for the vBNT call
 Contract Addresses for Bancor Pools:
 USDC/BNT [0x23d1b2755d6C243DFa9Dd06624f1686b9c9E13EB](https://etherscan.io/address/0x23d1b2755d6C243DFa9Dd06624f1686b9c9E13EB)
 vBNT/BNT [0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8](https://etherscan.io/address/0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8)
-
-*This will be the data specification for the USDBNT price feed*
-Price identifier name: USDBNT 
-Markets & Pairs: 
- - [Coinbas-Pro: BNT/USD](https://api.cryptowat.ch/markets/coinbase-pro/bntusd/ohlc?after=1612880040&periods=60)
- - [Binance: BNT/USDT](https://api.cryptowat.ch/markets/binance/bntusdt/ohlc?after=1612880040&periods=60)
- - [Okex: BNT/USDT](https://api.cryptowat.ch/markets/okex/bntusdt/ohlc?after=1612880040&periods=60)
-
-Cost to use: This price feed will use the Cryptowatch API. This API is free to use but does require a fee for heavier use.
-Real-time data update frequency: Every 60 seconds
-Historical data update frequency: Every 60 seconds
  
 # Price Feed Implementation
 
-This section will firstly outline the price feed implementation for USDBNT and secondly showcase the script needed to calculate the end price for the call options. 
-
-Using the above markets the price feed can be used as follows
-
-```
-USDBNT: {
-    type: "expression",
-    expression: `
-        median(SPOT_BINANCE, SPOT_COINBASE-PRO, SPOT_OKEX)
-    `,
-    lookback: 7200,
-    minTimeBetweenUpdates: 60,
-    customFeeds: {
-      SPOT_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "bntusdt" },
-      SPOT_COINBASE-PRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "bntusd" },
-      SPOT_OKEX: { type: "cryptowatch", exchange: "coinbase-pro" pair: "bntusd"},
-    }
-}
-```
-
-## Call options price feed
-To get the price of of both USDC/BNT and vBNT/BNT, the following script can be used. The script has 2 dependencies along with requiring an archive node URL.
+To get the price of of both and vBNT/BNT, the following script can be used. The script has 2 dependencies along with requiring an archive node URL.
 
 Install the dependencies by running ` npm install web3` and `npm install decimal.js`.  
 
@@ -72,9 +40,10 @@ const Decimal = require("decimal.js");
 Decimal.set({precision: 100000, rounding: Decimal.ROUND_DOWN});
 
 const DECIMAL_PLACES = process.argv.length > 2 ? Number(process.argv[6]) : 6;
-
-const NODE_ADDRESS = "https://mainnet.infura.io/v3/a01b95e313c9401a81ed53461959fc88";
-const DATE_AND_TIME = "April-15-2021 10:00:00 AM";
+//add your archive node here
+const NODE_ADDRESS = "YOUR ARCHIVE NODE";
+//add your timestamp here
+const DATE_AND_TIME = "YOUR TIMESTAMP";
 
 const BNT_TOKEN = {address: "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C", decimals: "18"};
 
@@ -181,18 +150,7 @@ run();
 
 # Technical Specifications
 
-**BNT**
-Price Identifier Name: USDBNT
-
-Base Currency: USD
-
-Quote currency: BNT
-
-Scaling Decimals: 18 (1e18)
-
-Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-
-**vBNT**
+**BNTvBNT**
 Price Identifier Name: BNTvBNT
 
 Base Currency: BNT
@@ -205,7 +163,6 @@ Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 ro
 
 # Rationale
 
-The price for vBNT can be taken using the USDC/BNT liquidity pool for the BNT price and the BNT/vBNT to derive the USD/vBNT price.
 Our pool contracts maintain an SMA (slowly-moving average) price, which offers protections from flash loans.
 The choice in using Bancor's own pools is due to them being the highest liquidity pools for both tokens. 
 
@@ -224,7 +181,7 @@ At the time of expiry for the call options. The price of BNT and vBNT can be cal
 
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders. 
 
-Added to this, there will be no need to run liquidation bots since this price feed will be used for the the call options. If another team would like to use this price identifier, the option of USDBNT is available however, work will need to be done to get this UMIP useable for a USDvBNT ot BNTvBNT price feed. 
+Added to this, there will be no need to run liquidation bots since this price feed will be used for the the call options. 
 
 This UMIP should be updated when the ability to create a price feed from Bancor pools is available. Currently, the USDBNT price feed does not point to the most liquid markets, which as it stands, are the Bancor pools. Once these feeds are available, the UMIP can be updated.
 
