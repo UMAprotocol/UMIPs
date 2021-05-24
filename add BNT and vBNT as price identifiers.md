@@ -22,8 +22,8 @@ The primary focus of this UMIP is to arrive at an expiry price for the vBNT call
 # Markets and Data sources
 
 Contract Addresses for Bancor Pools:
-USDC/BNT 0x23d1b2755d6C243DFa9Dd06624f1686b9c9E13EB
-vBNT/BNT 0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8
+USDC/BNT [0x23d1b2755d6C243DFa9Dd06624f1686b9c9E13EB](https://etherscan.io/address/0x23d1b2755d6C243DFa9Dd06624f1686b9c9E13EB)
+vBNT/BNT [0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8](https://etherscan.io/address/0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8)
 
 *This will be the data specification for the USDBNT price feed*
 Price identifier name: USDBNT 
