@@ -63,7 +63,7 @@ To accomplish this upgrade, two changes need to be made:
 * The vBNT address, [0x48fb253446873234f2febbf9bdeaa72d9d387f94][vBNT], needs to be added to the collateral currency whitelist introduced in UMIP-8.
 * A final fee of 270 vBNT needs to be added for vBNT in the Store contract.
 
-[BNT]: https://etherscan.io/token/0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c
+[vBNT]: https://etherscan.io/token/0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c
 
 ### Implementation
 
