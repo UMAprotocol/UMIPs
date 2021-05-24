@@ -71,7 +71,7 @@ const Decimal = require("decimal.js");
 
 Decimal.set({precision: 100000, rounding: Decimal.ROUND_DOWN});
 
-const DECIMAL_PLACES = process.argv.length > 2 ? Number(process.argv[2]) : 2;
+const DECIMAL_PLACES = process.argv.length > 2 ? Number(process.argv[6]) : 6;
 
 const NODE_ADDRESS = "https://mainnet.infura.io/v3/a01b95e313c9401a81ed53461959fc88";
 const DATE_AND_TIME = "April-15-2021 10:00:00 AM";
