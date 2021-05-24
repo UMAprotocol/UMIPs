@@ -1,14 +1,14 @@
 ## Headers
 | UMIP-tbd   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add BAND, SDT, KP3R, CREAM, CHAIN, and ERN as approved collateral currencies              |
+| UMIP Title | Add BNT, vBNT, BAND, SDT, KP3R, CREAM, CHAIN, and ERN as approved collateral currencies              |
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda  (deepanshuhooda2000@gmail.com) |
 | Status     | Draft                                                                                                                                    |
 | Created    | May 2, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-band-sdt-kp3r-cream-lpool-chain-sand-ern-and-pols-as-approved-collateral-currencies/1054)    |                                                                                                                     |
 
 # Summary (2-5 sentences)
-This UMIP will add BAND, SDT, KP3R, CREAM, CHAIN, and ERN as approved collateral currencies. This will involve adding these to the whitelist and adding flat final fees to charge per-request.
+This UMIP will add BNT, vBNT, BAND, SDT, KP3R, CREAM, CHAIN, and ERN as approved collateral currencies. This will involve adding these to the whitelist and adding flat final fees to charge per-request.
 
 # Motivation
 
@@ -19,6 +19,33 @@ Proactively approving these collateral types and price feeds will make it easier
 # Proposed Collateral Currencies
 Note : The final fee for all ERC20 tokens will be ~$400 at time of writing
 
+## BNT (Bancor Network Token)
+
+### Technical Specification
+To accomplish this upgrade, two changes need to be made:
+
+* The BNT address, [0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c][BNT], needs to be added to the collateral currency whitelist introduced in UMIP-8.
+* A final fee of 35 BAND needs to be added for BAND in the Store contract.
+
+[BNT]: https://etherscan.io/token/0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c
+
+### Implementation
+
+This change has no implementation other than proposing the two aforementioned governor transactions that will be proposed.
+
+### Rationale
+
+Adding BNT as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. The Bancor community has a particularly strong interest in call options and is pursuing VNT and vBNT price identifiers in a related UMIP.
+
+### Token Summary
+
+### Security Considerations
+
+$UMA holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. UMA holders should take note of the collaterals changes, or if added to robustness (e.g. via TWAPs) are necessary to prevent market manipulation.
+
+BNT has a circulating supply of 194,685,628 BNT and a max supply of 194,685,628. Bancor pools are the most active trading markets for BNT, which is also available on Coinbase and other CEXs.
+
+---
 
 ## BAND (Band Protocol)
 
