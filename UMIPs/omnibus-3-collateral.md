@@ -39,6 +39,14 @@ Adding BNT as an UMA collateral type will open up additional use cases, includin
 
 ### Token Summary
 
+The Bancor network is an automated market maker, and Bancor's native reserve currency token, BNT, is the default reserve currency for all smart tokens created on the Bancor network. One of the promises of BNT's ICO was that investors in the coin would gain interest on the transaction fees as other crypto coins are converted into and out of BNT.
+
+Bancor's protocol converts between different ERC-20 compatible tokens. Each smart token is linked to smart contracts that hold reserves of other ERC-20 tokens. The tokens are converted internally based on these reserves and depending upon the volume of user requests.
+
+Essentially, smart tokens can be thought of as coins that hold the monetary value of other compatible virtual coins. It is the same in principle to a central bank that holds foreign currency reserves and converts between them as required.
+
+The Bancor protocol supports all virtual currency tokens that are compatible with the ERC-20 format. Any smart token created on the Bancor network is also ERC-20 compatible, and therefore compatible with other tokens on the network.
+
 ### Security Considerations
 
 $UMA holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. UMA holders should take note of the collaterals changes, or if added to robustness (e.g. via TWAPs) are necessary to prevent market manipulation.
