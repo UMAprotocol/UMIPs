@@ -3,16 +3,16 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add BNTvBNT as supported price identifiers|
+| UMIP Title          | Add vBNTBNT as supported price identifiers|
 | Authors             |**StevenFox**         |
 | Status              | Draft                                                         |
 | Created             | **19 May 2021**                                              |
 | Discourse Link      |[Link](https://discourse.umaproject.org/t/bnt-and-vbnt-price-identifiers/1127)   |
 
 # Summary
-The DVM should support the addition of BNTvBNT as supported price IDs. The use of these price identifiers will primarily be used for call options. This UMIP will also outline how to calculate the price of vBNT using a custom script that will be used for the call option price calculation.
+The DVM should support the addition of vBNTBNT as supported price IDs. The use of these price identifiers will primarily be used for call options. This UMIP will also outline how to calculate the price of vBNT using a custom script that will be used for the call option price calculation.
 
-This UMIP can also be extended to creating a price feed for vBNT and amend the markets and data sources once we can use Bancor pools as a data source
+This UMIP can also be extended to creating a price feed for vBNTBNT and amend the markets and data sources once we can use Bancor pools as a data source
 
 # Motivation
 The DVM currently does not yet support the required price identifiers. vBNT (the Bancor Governance Token) is being proposed as a supported collateral type along with the BNT token in a separate proposal.
@@ -38,7 +38,7 @@ const Decimal = require("decimal.js");
 
 Decimal.set({precision: 100, rounding: Decimal.ROUND_DOWN});
 
-const DECIMAL_PLACES = process.argv.length > 2 ? Number(process.argv[2]) : 2;
+const DECIMAL_PLACES = process.argv.length > 2 ? Number(process.argv[6]) : 6;
 
 const NODE_ADDRESS = "YourArchiveNodeAddress";
 //UNIX Timestamp
@@ -148,12 +148,12 @@ run();
 
 # Technical Specifications
 
-**BNTvBNT**
-Price Identifier Name: BNTvBNT
+**vBNTBNT**
+Price Identifier Name: vBNTBNT
 
-Base Currency: BNT
+Base Currency: vBNT
 
-Quote currency: vBNT
+Quote currency: BNT
 
 Scaling Decimals: 18 (1e18)
 
@@ -164,15 +164,19 @@ Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 ro
 Our pool contracts maintain an SMA (slowly-moving average) price, which offers protections from flash loans.
 The choice in using Bancor's own pools is due to them being the highest liquidity pools for both tokens. 
 
+SMA (slowly-moving average) Rate:
+Updated upon every conversion, to reflect the average rate between the two reserve tokens of the pool during the last 10 minutes. If no conversion has occurred for over 10 minutes, then the SMA will look at the 10 minute interval that had the last transaction. If the there is a new conversion, the SMA is updated.
+
+Rate = the value of 1 A in units of B, where A is the pool's 1st reserve token, and B is the pool's 2nd reserve token
+
 The script is designed to give a price at a given time instead of a constant price feed. This is due to call options only requiring a price at the time of settlement. This choice is due to the vBNT token not being widely traded.
 
 # Implementation
 
-1. For the price request timestamp, query for the USDBNT prices by following the guidelines of UMIP-6. The open price of the 60-second OHLC period that this price request timestamp falls in should be used.
-
-At the time of expiry for the call options. The price of BNT and vBNT can be calculated as follows. 
-1. Get the SMA price of USDC/BNT from the USDC/BNT pool and BNT/vBNT from the BNT/vBNT pool, which can be done via the script above. The script will output 2 prices USDC/BNT average rate and vBNT/BNT average rate. 
-2. You can use the above rates to obtain the USDvBNT rate.
+At a given time. The price of vBNTBNT can be calculated as follows. 
+1. Get the SMA price of vBNTBNT from the vBNTBNT pool by running the script above. Be sure to follow the details and ensure the timestamp is correct.
+2. The script will output a USDC/BNT price and a vBNT/BNT price. In this case, we only need the vBNTBNT. 
+3. 
 
 
 # Security Considerations
@@ -181,5 +185,4 @@ Adding this new identifier by itself poses little security risk to the DVM or pr
 
 Added to this, there will be no need to run liquidation bots since this price feed will be used for the the call options. 
 
-This UMIP should be updated when the ability to create a price feed from Bancor pools is available. Currently, the USDBNT price feed does not point to the most liquid markets, which as it stands, are the Bancor pools. Once these feeds are available, the UMIP can be updated.
-
+This UMIP should be updated when the ability to create a price feed from Bancor pools is available.
