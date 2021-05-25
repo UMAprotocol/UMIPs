@@ -1,10 +1,10 @@
 ## Headers
 
-| UMIP-XX                |                                                               |
+| UMIP-97                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add SPACEXLAUNCH as a supported price identifier |
 | Authors             | Sean Brown (@smb2796), Andrey Belyakov (andrey@opium.team), Ali Nuraldin (ali@opium.team) |
-| Status              | Draft                                                         |
+| Status              | Last Call                                                         |
 | Created             | May 19, 2021                                              |
 | Discourse Link      | [Link](https://discourse.umaproject.org/t/add-spacexlaunch-as-a-supported-price-identifier/1105)            |
 

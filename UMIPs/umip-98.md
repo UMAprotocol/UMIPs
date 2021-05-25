@@ -1,11 +1,11 @@
 
 ## Headers
 
-| UMIP                |                                                               |
+| UMIP-98             |                                                               |
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add vBNTBNT as a supported price identifier|
 | Authors             | StevenFox        |
-| Status              | Draft                                                         |
+| Status              | Last Call                                                         |
 | Created             | 19 May 2021                                              |
 | Discourse Link      |[Link](https://discourse.umaproject.org/t/bnt-and-vbnt-price-identifiers/1127)   |
 
