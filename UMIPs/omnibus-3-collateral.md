@@ -25,7 +25,7 @@ Note : The final fee for all ERC20 tokens will be ~$400 at time of writing
 To accomplish this upgrade, two changes need to be made:
 
 * The BNT address, [0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c][BNT], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 90 BNT needs to be added for BNT in the Store contract.
+* A final fee of 100 BNT needs to be added for BNT in the Store contract.
 
 [BNT]: https://etherscan.io/token/0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c
 
@@ -91,7 +91,7 @@ The BNT/vBNT Bancor pool is the only active trading market, with strong liquidit
 To accomplish this upgrade, two changes need to be made:
 
 * The BAND address, [0xba11d00c5f74255f56a5e366f4f77f5a186d7f55][BAND], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 35 BAND needs to be added for BAND in the Store contract.
+* A final fee of 50 BAND needs to be added for BAND in the Store contract.
 
 [BAND]: https://etherscan.io/token/0xba11d00c5f74255f56a5e366f4f77f5a186d7f55 
 
@@ -101,7 +101,7 @@ This change has no implementation other than proposing the two aforementioned go
 
 ### Rationale
 
-Adding BAND as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to a large commumity interested in DeFi oracles, which may lead to more integrations with new products that would be well served by UMA's oracle design.
+Adding BAND as an UMA collateral type will open up additional use cases, including yield dollars and KPI options. It will also introduce UMA to a large community interested in DeFi oracles, which may lead to more integrations with new products that would be well served by UMA's oracle design.
 
 ### Token Summary
 
@@ -123,7 +123,7 @@ BAND has a circulating supply of 20.494 Million BAND coins and a max supply of 1
 To accomplish this upgrade, two changes need to be made:
 
  * The SDT address, [0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f][SDT], needs to be added to the collateral currency whitelist introduced in UMIP-8.
- * A final fee of 135 SDT needs to be added for SDT in the Store contract.
+ * A final fee of 185 SDT needs to be added for SDT in the Store contract.
 
 [SDT]: https://etherscan.io/token/0x73968b9a57c6e53d41345fd57a6e6ae27d6cdb2f 
 
@@ -149,7 +149,7 @@ SDT has a circulating supply of 9.9 Million SDT coins and a max supply of 45.6 M
 To accomplish this upgrade, two changes need to be made:
 
 * The KP3R address, [0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44][KP3R], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 1.65 KP3R needs to be added for KP3R in the Store contract.
+* A final fee of 3 KP3R needs to be added for KP3R in the Store contract.
 
 [KP3R]: https://etherscan.io/token/0x1ceb5cb57c4d4e2b2433641b95dd330a33185a44 
 
@@ -179,7 +179,7 @@ KP3R has a circulating supply of 231,573 KP3R coins and a max supply of 231,573.
 To accomplish this upgrade, two changes need to be made:
 
 * The CREAM address, [0x2ba592f78db6436527729929aaf6c908497cb200][CREAM], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 3.35 CREAM needs to be added for CREAM in the Store contract.
+* A final fee of 4 CREAM needs to be added for CREAM in the Store contract.
 
 [CREAM]: https://etherscan.io/token/0x2ba592f78db6436527729929aaf6c908497cb200 
 
@@ -219,7 +219,7 @@ CREAM has a circulating supply of 721,640 CREAM coins and a max supply of 9,000,
 To accomplish this upgrade, two changes need to be made:
 
 * The CHAIN address, [0xc4c2614e694cf534d407ee49f8e44d125e4681c4][CHAIN], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 2000 CHAIN needs to be added for CHAIN in the Store contract.
+* A final fee of 3000 CHAIN needs to be added for CHAIN in the Store contract.
 
 [CHAIN]: https://etherscan.io/token/0xc4c2614e694cf534d407ee49f8e44d125e4681c4 
 
@@ -256,7 +256,7 @@ CHAIN has a circulating supply of 293,097,683.00 CHAIN coins and a max supply of
 To accomplish this upgrade, two changes need to be made:
 
 * The ERN address, [0xbbc2ae13b23d715c30720f079fcd9b4a74093505][ERN], needs to be added to the collateral currency whitelist introduced in UMIP-8.
-* A final fee of 35 ERN needs to be added for ERN in the Store contract.
+* A final fee of 70 ERN needs to be added for ERN in the Store contract.
 
 [ERN]: https://etherscan.io/token/0xbbc2ae13b23d715c30720f079fcd9b4a74093505 
 
