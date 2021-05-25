@@ -45,11 +45,11 @@ Price requester should consider additional time buffers for potential launch del
 # Data Specification
 
 - Price identifier name: **SPACEXLAUNCH** 
-- Markets & Pairs: **N/A**
+- Markets & Pairs: N/A
 - Example data providers: https://www.rocketlaunch.live/?filter=spacex , https://en.wikipedia.org/wiki/List_of_Falcon_9_and_Falcon_Heavy_launches , https://docs.spacexdata.com/
-- Cost to use: **None**
-- Real-time data update frequency: **Daily**
-- Historical data update frequency: **Daily**
+- Cost to use: None
+- Real-time data update frequency: N/A
+- Historical data update frequency: N/A
 
 # Price Feed Implementation
 
@@ -62,7 +62,16 @@ Price Feed Implementation is unnecessary for this price identifier, as it will n
 - Quote Currency: **N/A**
 - Estimated current value of price identifier: **N/A**
 
----
+# Rationale
+
+Most of the motivation and rationale for this price identifier is explained in motivation. The weights passed in with requests for this price identifier are somewhat arbitrary. This is to allow flexibility for different types of insurance products to be created, simply by adjusting the weights associated with each launch tracked. Adjusted or incorrect weights has no impact on the UMA ecosystem, but users of contracts that use this price identifier should be aware of how these are chosen.
+
+# Implementation
+
+1. Query for the `ancillaryData` value from the price request
+2. Decode the ancillary data from bytes to UTF-8
+3. Parse JSON from the encoded data
+4. Evaluate success rate based on the method described in `Technical Specifications`
 
 ## Description
 
@@ -71,9 +80,9 @@ Ancillary data are provided by price requesters and would consist of the list of
 - Weight (`Wi`) - Mathematical `weight` of the launch in the overall success rate calculation. Specified wight might be any positive number that is used to define the importance of this particular launch in the overall success rate respectively to other launches provided in ancillary data.
 
 Each launch in the list should be evaluated and its status (`Si`) should be determined according to these conditions
-- If launch did not happen before request date or the rocket did not successfully lift off, then `Si=0`
-- If the rocket successfully lifted off, but never landed, or the landing was not successful then `Si=0.5`
-- If the rocket successfully lifted off, and landed, then `Si=1`
+- If launch did not happen before the price request timestamp or the rocket did not successfully lift off, then `Si=0`
+- If the rocket successfully lifted off, but did not land before the price request timestamp, or the landing was not successful then `Si=0.5`
+- If the rocket successfully lifted off, and landed before the price request timestamp, then `Si=1`
 
 Liftoff is considered successful if the rocket reached expected altitude without any significant damage and performed the required part of the mission at this altitude.
 
@@ -97,9 +106,9 @@ This formula will return weighted average success rate on all specified launches
 - - Launch 1: `{ "id": "Starlink-18", "w": 1 }`
 - - Launch 2: `{ "id": "Starlink-19", "w": 1 }`
 
-Launch 1 happened before request date, successfully lifted off, and landed: `S1=1`
+Launch 1 happened, successfully lifted off, and landed before the request timestamp: `S1=1`
 
-Launch 2 happened before request date, successfully lifted off, but did not land: `S2=0.5`
+Launch 2 happened before request date, successfully lifted off, but did not land (or did not land before the request timestamp): `S2=0.5`
 
 Calculating the success rate:
 ```
@@ -111,7 +120,7 @@ Success Rate = (1 * 1 + 1 * 0.5) / (1 + 1) = 0.75
 - List of launches:
 - -  Launch 1: `{ "id": "Transporter-1", "w": 1 }`
 
-Launch 1 happened before request date, successfully lifted off, and landed: `S1=1`
+Launch 1 happened before request timestamp, successfully lifted off, and landed before the request timestamp: `S1=1`
 
 Calculating the success rate:
 ```
@@ -130,18 +139,7 @@ Ancillary data in the request will be passed as a JSON  in the following format
 
 If voters cannot correctly match a specific ID to an individual launch, `Si` should equal 0 for that launch.
 
-If voters cannot correctly decode the ancillary data into the format defined below, voters should return 0.
-
-# Rationale
-
-No rationale is needed. The motivation for this price identifier is explained in motivation.
-
-# Implementation
-
-1. Query for the `ancillaryData` value from the price request
-2. Decode the ancillary data from bytes to UTF-8
-3. Parse JSON from the encoded data
-4. Evaluate success rate based on the method described in `Technical Specifications`
+If voters cannot correctly decode the ancillary data into the format defined below, or ancillary data is not passed in with the price request, voters should return 0.
 
 ## Parsing example
 ```
