@@ -51,7 +51,7 @@ const TIMESTAMP = 1621846582;
 const BNT_TOKEN = {address: "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C", decimals: "18"};
 
 const POOL_TOKENS = [
-    {address: "0x3D9E2dA44Af9386484d0D35C29eB62122e4F4742", symbol: "BNT/vBNT"},
+    {address: "0x3D9E2dA44Af9386484d0D35C29eB62122e4F4742", symbol: "vBNT/BNT"},
 ];
 
 const ERC20_ABI = [
@@ -178,9 +178,8 @@ The script is designed to give a price at a given time instead of a constant pri
 
 At a given time. The price of vBNTBNT can be calculated as follows. 
 1. Get the 10 minute SMA price of vBNTBNT from the vBNTBNT pool by running the script above. Be sure to follow the details and ensure the timestamp matches the price request timestamp.
-2. The script will output the BNT/vBNT price.
-3. The inverse of the results of the script should be taken to get the vBNT/BNT price.
-4. Round the vBNTBNT result to 6 decimal places. 
+2. The script will output the vBNT/BNT price.
+3. Round the vBNTBNT result to 6 decimal places. 
 
 
 # Security Considerations
