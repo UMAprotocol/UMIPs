@@ -205,7 +205,7 @@ C.R.E.A.M. offers a wide range of tokens on their money markets, including: stab
 
 ### Security Considerations
 
-Cream has been audited by Trail of Bits as of 28 Jan 2021. A link to the audit report can be found here.
+Cream has been audited by Trail of Bits as of 28 Jan 2021. A link to the audit report can be found [here](https://github.com/trailofbits/publications/blob/master/reviews/CREAMSummary.pdf).
 
 $UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
 
@@ -241,7 +241,7 @@ It is a relatively new currency, but is currently available on multiple exchange
 
 ### Security Considerations
 
-Chain Games smart contracts were audited by HackenProof before deploying on main net, but the audit does not appear to be publicly available. The Chain Games operates on a Non-Custodial model, reducing exposure to users. The white paper can be found Here for additional details. As mentioned above, CHAIN has a deflationary measure built in, which should serve to stabilize the value of this token in the future.
+Chain Games smart contracts were audited by HackenProof before deploying on main net, but the audit does not appear to be publicly available. The Chain Games operates on a Non-Custodial model, reducing exposure to users. The whitepaper can be found [here](https://chaingames.io/wp-content/uploads/2020/10/WP_CHAINGAME_26_Sep_2020.pdf) for additional details. As mentioned above, CHAIN has a deflationary measure built in, which should serve to stabilize the value of this token in the future.
 
 Relative to most fiat currencies, CHAIN is much more volatile and is very nascent in the Ethereum ecosystem. Contract developers should exercise caution when parameterizing EMP contracts using CHAIN as a collateral currency.
 
