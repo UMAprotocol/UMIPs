@@ -17,12 +17,11 @@ This UMIP can also be extended to creating a price feed for vBNT and amend the m
 # Motivation
 The DVM currently does not yet support the required price identifiers. vBNT (the Bancor Governance Token) is being proposed as a supported collateral type along with the BNT token in a separate proposal.
 
-The primary focus of this UMIP is to arrive at an expiry price for the vBNT call options. However, the inclusion of a useable USDBNT price feed can be used by other projects. Below, we will outline how to calculate the price of the options along with creating a standard price feed. It should be noted that the method to calculate the options price will be separate to the using the price feed. 
+The primary focus of this UMIP is to arrive at an expiry price for the vBNT call options. Below, we will outline how to calculate the price of the options. It should be noted that the method to calculate the price is specifically a price a t a given time.
 
 # Markets and Data sources
 
 Contract Addresses for Bancor Pools:
-USDC/BNT [0x23d1b2755d6C243DFa9Dd06624f1686b9c9E13EB](https://etherscan.io/address/0x23d1b2755d6C243DFa9Dd06624f1686b9c9E13EB)
 vBNT/BNT [0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8](https://etherscan.io/address/0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8)
  
 # Price Feed Implementation
@@ -37,13 +36,13 @@ Once you have done this place your archive node URL in the `NODE_ADDRESS` field 
 const Web3 = require("web3");
 const Decimal = require("decimal.js");
 
-Decimal.set({precision: 100000, rounding: Decimal.ROUND_DOWN});
+Decimal.set({precision: 100, rounding: Decimal.ROUND_DOWN});
 
-const DECIMAL_PLACES = process.argv.length > 2 ? Number(process.argv[6]) : 6;
-//add your archive node here
-const NODE_ADDRESS = "YOUR ARCHIVE NODE";
-//add your timestamp here
-const DATE_AND_TIME = "YOUR TIMESTAMP";
+const DECIMAL_PLACES = process.argv.length > 2 ? Number(process.argv[2]) : 2;
+
+const NODE_ADDRESS = "YourArchiveNodeAddress";
+//UNIX Timestamp
+const TIMESTAMP = 1621846582;
 
 const BNT_TOKEN = {address: "0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C", decimals: "18"};
 
@@ -126,8 +125,7 @@ async function call(method, blockNumber) {
 
 async function run() {
     const web3 = new Web3(NODE_ADDRESS);
-    const timestamp = new Date(DATE_AND_TIME).valueOf() / 1000;
-    const blockNumber = await timestampToBlockNumber(web3, timestamp);
+    const blockNumber = await timestampToBlockNumber(web3, TIMESTAMP);
     const tokens = POOL_TOKENS.map(token => new web3.eth.Contract(TOKEN_ABI, token.address));
     const owners = await Promise.all(tokens.map(token => call(token.methods.owner())));
     const converters = owners.map(owner => new web3.eth.Contract(CONVERTER_ABI, owner));
