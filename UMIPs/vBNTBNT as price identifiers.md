@@ -3,26 +3,30 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add vBNTBNT as supported price identifiers|
-| Authors             |**StevenFox**         |
+| UMIP Title          | Add vBNTBNT as a supported price identifier|
+| Authors             | StevenFox        |
 | Status              | Draft                                                         |
-| Created             | **19 May 2021**                                              |
+| Created             | 19 May 2021                                              |
 | Discourse Link      |[Link](https://discourse.umaproject.org/t/bnt-and-vbnt-price-identifiers/1127)   |
 
 # Summary
-The DVM should support the addition of vBNTBNT as supported price IDs. The use of these price identifiers will primarily be used for call options. This UMIP will also outline how to calculate the price of vBNT using a custom script that will be used for the call option price calculation.
+The DVM should support the addition of vBNTBNT as a supported price ID. The use of this price identifier will primarily be for call options. This UMIP will also outline how to calculate the price of vBNT in BNT using a custom script that will be used for the call option price calculation.
 
-This UMIP can also be extended to creating a price feed for vBNTBNT and amend the markets and data sources once we can use Bancor pools as a data source
+This UMIP can also be extended to creating a price feed for vBNTBNT.
 
 # Motivation
 The DVM currently does not yet support the required price identifiers. vBNT (the Bancor Governance Token) is being proposed as a supported collateral type along with the BNT token in a separate proposal.
 
-The primary focus of this UMIP is to arrive at an expiry price for the vBNT call options. Below, we will outline how to calculate the price of the options. It should be noted that the method to calculate the price is specifically a price a t a given time.
+The primary focus of this UMIP is to arrive at an expiry price for the vBNT call options. Below, we will outline how to calculate the price of the options. It should be noted that the method to calculate the price is specifically a price at a given time.
 
 # Markets and Data sources
 
-Contract Addresses for Bancor Pools:
-vBNT/BNT [0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8](https://etherscan.io/address/0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8)
+- Price identifier name: vBNTBNT
+- Markets & Pairs: vBNT/BNT from Bancor. This is the vBNT/BNT pool address: [0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8](https://etherscan.io/address/0x8d06AFd8E322d39Ebaba6DD98f17a0ae81C875b8).
+- Example data providers: Provider to use: On-chain information
+- Cost to use: NA
+- Real-time data update frequency: Every block
+- Historical data update frequency: Every block
  
 # Price Feed Implementation
 
