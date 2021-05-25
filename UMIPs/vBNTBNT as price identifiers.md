@@ -178,9 +178,9 @@ The script is designed to give a price at a given time instead of a constant pri
 # Implementation
 
 At a given time. The price of vBNTBNT can be calculated as follows. 
-1. Get the SMA price of vBNTBNT from the vBNTBNT pool by running the script above. Be sure to follow the details and ensure the timestamp is correct.
+1. Get the 10 minute SMA price of vBNTBNT from the vBNTBNT pool by running the script above. Be sure to follow the details and ensure the timestamp matches the price request timestamp.
 2. The script will output a USDC/BNT price and a vBNT/BNT price. In this case, we only need the vBNTBNT. 
-3. Do the needed rounding. 
+3. Round the vBNTBNT result to 6 decimal places. 
 
 
 # Security Considerations
