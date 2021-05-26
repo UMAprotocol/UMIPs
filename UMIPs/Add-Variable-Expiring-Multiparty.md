@@ -16,7 +16,9 @@ The current implementation of the ExpiringMultiParty (EMP) contract accepts a fi
 The main contract that was modified is PricelessPositionManager.sol, Available here: https://github.com/PrelaunchFinance/VEMP/blob/main/contracts/PricelessPositionManager.sol
 
 The diff files showing the modifications of all files compared to the EMP contract can be found here: https://github.com/PrelaunchFinance/VEMP/tree/main/diffs
-      
+
+Below is an overview of the significant changes made in PricelessPositionManager.sol.
+
 Here we add an update timestanp to represent when the DAO address was last changed.
 
     @@ -71,6 +72,8 @@ contract PricelessPositionManager is FeePayer {
