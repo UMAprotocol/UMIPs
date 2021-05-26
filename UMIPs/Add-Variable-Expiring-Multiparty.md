@@ -132,7 +132,7 @@ An alternative design where the expiration would be set via UMA vote was conside
 The code is available here: https://github.com/PrelaunchFinance/VEMP/tree/main/contracts
 
 ## Security considerations
-Less than 50 lines of code were added. Therefore the potential surface area for an exploit is low, particularly as we receive feedback from the community and UMA team. However, we may pursue an audit in the future.
+Few lines of code were added. Therefore the potential surface area for an exploit is low, particularly as we receive feedback from the community and UMA team. However, we may pursue an audit in the future.
 
 Per feedback from the UMA team we decided to use the Optimistic Oracle for the final price determination, so that the third party DAO address only has the authority to expire the contract but not determine the expiry price.
 
