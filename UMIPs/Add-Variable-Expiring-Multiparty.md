@@ -1,6 +1,6 @@
 ## Headers
 - UMIP <#> 
-- UMIP title: Add Variable Expiring Multiparty financial contract template
+- UMIP title: Add Variable Expiring MultiParty (VEMP) financial contract template
 - Author: Prelaunch Team, dev@prelaunch.finance
 - Status: Draft
 - Created: April 14, 2021
@@ -136,4 +136,4 @@ Few lines of code were added. Therefore the potential surface area for an exploi
 
 Per feedback from the UMA team we decided to use the Optimistic Oracle for the final price determination, so that the third party DAO address only has the authority to expire the contract but not determine the expiry price.
 
-We included the emergencyUpdateDAOAddress to minimize potential issues with the application specific external DAO contract. However, the security of that contract is paramount as a maximum potential exploit could result in loss of funds for users of the particular application. 
+We included the updateDAOAddress function to minimize potential issues with the application specific external DAO contract. However, the security of the DAO is important as the VEMP contract could be prematurely or belatedly expired. 
