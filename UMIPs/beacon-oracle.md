@@ -30,7 +30,7 @@ The relationship between `SinkOracle` and `SourceOracle` is "N-to-1":
 
 ## Technical Specification
 To accomplish this upgrade, three governance actions must be taken:
-- The `SourceOracle` will need to be registered with the `Registry` so that it can make price requests to the DVM. The currently deployed `SourceOracle` can be found [here](https://etherscan.io/address/0x3811A29571c9912f15fEFF0747d2F34Aa48f6721).
+- The `SourceOracle` will need to be registered with the `Registry` so that it can make price requests to the DVM. The currently deployed `SourceOracle` can be found [here](https://etherscan.io/address/0x9eD925c04a6e391039f3362976F958e6934Ad0F4).
 - The `Bridge` contract address [here](https://etherscan.io/address/0xBA26bC014c4c889431826C123492861e886408b9) will need to be added to the `Finder` under the name "Bridge". This is how the `SourceOracle` will know which contract to call in order to relay messages to L2.
 - The `GenericHandler` contract address [here](https://etherscan.io/address/0x60E6140330F8FE31e785190F39C1B5e5e833c2a9) will need to be added to the `Finder` under the name "GenericHandler". This contract is a required middle layer for use by the `Bridge` to relay messages from L2 to the `SourceOracle`.
 
@@ -51,3 +51,4 @@ Notably, the ChainBridge system enables the relayer system to eventually grow in
 Relevant pull requests:
 - Adding the `Bridge` contract: [PR](https://github.com/UMAprotocol/protocol/pull/2894)
 - Adding the beacon contracts: [PR](https://github.com/UMAprotocol/protocol/pull/2903)
+- Patching the beacon contracts to prevent spam `Deposit` events: [PR](https://github.com/UMAprotocol/protocol/pull/3032)
