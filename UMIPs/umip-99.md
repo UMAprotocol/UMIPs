@@ -2,7 +2,7 @@
 - UMIP <#248> 
 - UMIP title: Add Variable Expiring MultiParty (VEMP) financial contract template
 - Author: Prelaunch Team, dev@prelaunch.finance
-- Status: Draft
+- Status: Last Call
 - Created: April 14, 2021
 - Discourse Link: https://discourse.umaproject.org/t/add-variable-expiring-multiparty-financial-contract-template/883
 
