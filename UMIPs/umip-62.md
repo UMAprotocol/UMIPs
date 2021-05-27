@@ -29,7 +29,7 @@ For future funding rates, it is likely that a more generalized funding rate iden
 
 - Markets:
 
-Uniswap: ETHBTC_PERP/USDC
+Uniswap: ETHBTC_PERP/DAI
 Coinbase Pro: ETH/BTC
 Binance: ETH/BTC
 Bitstamp: ETH/BTC
@@ -76,7 +76,7 @@ To determine the ETHBTC_PERP synth price on Uniswap, the [UniswapPriceFeed](http
 
 To combine these rates in a mathematical expression, the [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js) is used.
 
-Price feed functionality to incorporate the CFRM and Token Scaling Multiplier (TSM) will still need to be built. Additionally, the CryptowatchPriceFeed does not currently support TWAP calculations, so this functionality will need to be added.
+The CryptowatchPriceFeed does not currently support TWAP calculations, so this functionality will need to be added.
 
 Once these items are taken care of, a [default price feed config](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js) will be defined. Because some of this functionality is still being built out, this default price feed config will likely be different then what is shown below, but will follow this general patten.  
 
@@ -84,13 +84,15 @@ Once these items are taken care of, a [default price feed config](https://github
 ETHBTC_FR: {
     type: "expression",
     expression: `
-        ETHBTC_FV = ETH/BTC * CFRM * TOKEN_SCALING;
-        max(-0.00001, min(0.00001, (ETHBTC_PERP - ETHBTC_FV) / (ETHBTC_FV) / 86400 * (-1)))
+        ETHBTC_FV = ETH\\/BTC * PERP_FRM;
+        max(-0.00001, min(0.00001, (ETHBTC_FV - ETHBTC_PERP) / ETHBTC_FV / 86400))
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
+    twapLength: 3600,
     customFeeds: {
       ETHBTC_PERP: { type: "uniswap", twapLength: 3600, address: "0xETHBTC_PERP_POOL" },
+      PERP_FRM: { type: "frm", perpetualAddress: "0x32f0405834c4b50be53199628c45603cea3a28aa" },
       "ETH/BTC": {
             type: "medianizer",
             pair: "ethbtc",
@@ -111,18 +113,19 @@ ETHBTC_FR: {
 - Base Currency: ETHBTC_FR
 - Quote currency: None. This is a percentage.
 - Scaling Decimals: 18
-- Rounding: Round to nearest 18 decimal places (19th decimal place digit >= 5 rounds up and < 5 rounds down)
-- Synthetic Name: To be added
-- Synthetic Address: To be added
-- AMM Pool Address: To be added
-- AMM Pair: ETHBTC_PERP/USDC
+- Rounding: Round to nearest 9 decimal places (10th decimal place digit >= 5 rounds up and < 5 rounds down)
+- Synthetic Name: Perpetual ETH/BTC (DAI)
+- Synthetic Address: [0xa32321aF5BDAF3C6fEBA2dA7da1d80f33435b73D](https://etherscan.io/address/0xa32321af5bdaf3c6feba2da7da1d80f33435b73d)
+- Perpetual Contract Address: [0x32F0405834C4b50be53199628C45603Cea3A28aA](https://etherscan.io/address/0x32F0405834C4b50be53199628C45603Cea3A28aA)
+- Uniswap Pool Address: [0x899a45ee5a03D8CC57447157A17CE4Ea4745b199](https://etherscan.io/address/0x899a45ee5a03d8cc57447157a17ce4ea4745b199)
+- Uniswap Pair: ETHBTC_PERP/DAI
 
 ## RATIONALE
 
-To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate times the cumulative funding rate multiplier (CFRM) and Token Scaling Multiplier (TSM). The funding rate will be determined with the following formula:
+To create an ETH/BTC perpetual, an ETHBTC funding rate is required. This funding rate will be used to keep the price of the ETHBTC-PERP synthetic pegged to the ETHBTC rate times the cumulative funding rate multiplier (CFRM). The funding rate will be determined with the following formula:
 - [ETHBTC-PERP - ETHBTC-FV] / ETHBTC-FV / 86400
-- `ETHBTC-FV` denotes the ETHBTC price gathered with the methodology shown in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md) multiplied by the CFRM and TSM.
-- `ETHBTC-PERP` denotes the one hour TWAP of the synthetic created with this funding rate identifier. This synth will be pooled with USDC. 
+- `ETHBTC-FV` denotes the ETHBTC price gathered with the methodology shown in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md) multiplied by the CFRM.
+- `ETHBTC-PERP` denotes the one hour TWAP of the synthetic created with this funding rate identifier. This synth will be pooled with DAI. 
 - 86400 is the number of seconds in a day. Assuming all other prices stay constant, this effectively gives the funding rate per second that would need to be applied to move a synthetic token's value back to fair value in one day.  
 
 A one hour TWAP is used for the ETHBTC-PERP and ETHBTC-FV rates. This calculation was modeled off of the [FTX Funding rate calculation](https://help.ftx.com/hc/en-us/articles/360027946571-Funding), which also uses a 1-hour TWAP.
@@ -134,24 +137,24 @@ Min and max bounds of -0.00001 and 0.00001 were chosen because these are the fun
 ## IMPLEMENTATION
 To calculate the ETHBTC-FR, voters should use the following process:
 
-1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the 1-hour ETHBTC TWAP, ending at the disputed funding rate proposal timestamp. This will consist of ~60 queries for the close price of each 60 second price period in that hour.
-2. For each query time that was used in the ETHBTC 1-hour TWAP, query for the cumulative funding rate multiplier (CFRM) at the same timestamps.
-3. For each period within the 1-hour TWAP, the corresponding CFRM and ETHBTC rates should be multiplied to get the 1-hour TWAP of ETHBTC * CFRM. 
-4. Query for the Token Scaling Multiplier (TSM) for the ETHBTC_PERP, and multiply this by the result from step 3 to get the ETHBTC-FV.
-5. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in USDC.
-6. Subtract the result of step 4 from the result of step 5. [ETHBTC-PERP - ETHBTC-FV].
-7. Divide the result of step 6 by the ETHBTC-FV rate from step 4. [ETHBTC-PERP - ETHBTC-FV]/ETHBTC-FV.
-8. Divide the result of step 7 by 86400 (# of seconds in a day) to get the funding rate per second. This should then be multiplied by -1.
-9. Implement min and max bounds on this result with: max(-0.00001, min(0.00001, result)).
-10. Voters should then round this result to 18 decimal places.
+1. Following the specifications in [UMIP-2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-2.md), query for the 1-hour ETHBTC TWAP, ending at the disputed funding rate proposal timestamp. This will consist of 60 queries for the close price of each 60 second ohlc period in that hour. Note that voters should calculate three separate 1-hour TWAPs, one for each exchange in UMIP-2, and then medianize these. 
+2. Query for the cumulative funding rate multiplier (CFRM) at the price request timestamp.
+3. The 1-hour ETHBTC TWAP and the CFRM should then be multiplied - this result is referred to in future steps as ETHBTC-FV.
+4. Query for the ETHBTC-PERP 1-hour TWAP from the listed AMM pool. This will return the ETHBTC-PERP's TWAP denominated in DAI. This rate should be left as is, with no conversion made between DAI and USD.
+5. Subtract the result of step 4 from the result of step 3. [ETHBTC-FV - ETHBTC-PERP].
+6. Divide the result of step 5 by the ETHBTC-FV rate from step 4. [ETHBTC-FV - ETHBTC-PERP]/ETHBTC-FV.
+7. Divide the result of step 6 by 86400 (# of seconds in a day) to get the funding rate per second.
+8. Implement min and max bounds on this result with: max(-0.00001, min(0.00001, result)).
+9. Voters should then round this result to 9 decimal places.
 
 As always, voters should determine whether the returned funding rate differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 ### Cumulative Funding Rate Multiplier (CFRM) Calculation
 
-The contract specific CFRM is stored on-chain for each perpetual contract. Voters can query this on-chain data in any way that they wish, for the block that the funding rate request was made in. 
+The contract specific CFRM is stored on-chain for each perpetual contract. Voters can query this on-chain data at the funding rate proposal timestamp in any way that they wish. 
 
-1. Call the `fundingRate` method on the ETHBTC-PERP.
+1. Simulate an `applyFundingRate` transaction. An example of this be seen [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/FundingRateMultiplierPriceFeed.js#L86). 
+2. Call `fundingRate` on the ETHBTC-PERP.
 
 The results will be in this format:
 
@@ -166,17 +169,11 @@ The results will be in this format:
 }
 ```
 
-Voters should use the `cumulativeMultipler` field.
-
-### Token Scaling Multiplier
-
-Each perpetual contract is given a `tokenScaling` multiplier when launched. This parameter specifies how the tracked index should be scaled. This is for situations where the initial perpetual price is not set to the starting rate of the underlying index.
-
-Voters will need query for `tokenScaling` on the ETHBTC_PERP contract and use this within the `ETHBTC_FV` calculation. 
+Voters should use the `cumulativeMultipler` value. 
 
 ## Security Considerations
 Adding this identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of funding rate proposers and disputers that can correctly manage the funding rate process.
 
-The self-referential nature of this identifier introduces additional security concerns. There is a possibility that ETHBTC-PERP price manipulation could be attempted to adjust the funding rate. Add more elaboration. 
+The self-referential nature of this identifier introduces additional security concerns. There is a possibility that ETHBTC-PERP price manipulation could be attempted to adjust the funding rate. 
 
 Additionally, this is the first UMA identifier of its kind. With novelty comes extra risk, as it is possible that this implementation is flawed. If any issues are identified after approval, UMA voters can always edit this implementation or delist this price identifier. 

@@ -4,7 +4,7 @@
 |-------------------|--------------------------------------------------------------------------------------------|
 | UMIP Title        | Add XIOUSD, USDXIO, XIOETH, ETHXIO as supported price identifiers                         |
 | Authors           | Anthony Scarpulla (anthony@blockzerolabs.io) and Krasimir Raykov (kraykov1994@gmail.com)   |
-| Status            | Last Call                                                                                      |
+| Status            | Approved                                                                                      |
 | Create            | March 24th, 2021                                                                           |
 | Link to Discourse	| https://discourse.umaproject.org/t/approve-xio-price-identifiers/384             |
 
