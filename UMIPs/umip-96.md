@@ -2,7 +2,7 @@
 | UMIP-96   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add BNT, vBNT, BAND, SDT, KP3R, CREAM, CHAIN, and ERN as approved collateral currencies              |
-| Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda  (deepanshuhooda2000@gmail.com) |
+| Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda  (deepanshuhooda2000@gmail.com), Britt, Aaron (bitznbrewz), Shawn Hagenah (Hagz48) |
 | Status     | Last Call                                                                                                                                   |
 | Created    | May 2, 2021                                                                                                                           |
 | [Discourse Link](https://discourse.umaproject.org/t/add-band-sdt-kp3r-cream-lpool-chain-sand-ern-and-pols-as-approved-collateral-currencies/1054)    |                                                                                                                     |
