@@ -61,6 +61,14 @@ Each one of those contracts have its own library for gas optimization:
 
 # List of deployed contracts:
 
+1. Contract [DerivativeFactory](https://etherscan.io/address/0x811f78b7d6bcf1c0e94493c2ec727b50ee32b974)
+
+The above contract has four helper libraries, which are included in the contract, but links for separate review are provided below:
+
+1. Library [FeePayerPartyLib](https://etherscan.io/address/0x97d884d049cd705d681ae83b5cba3efaad0d2c32)
+2. Library [PerpetualPositionManagerPoolPartyLib](https://etherscan.io/address/0x1418830ad554becaf76a4058eec6bee9ac002e19)
+3. Library [PerpetualLiquidatablePoolPartyLib](https://etherscan.io/address/0xfbf14c09079e1aac83be279b6354da710b0cfc5e)
+4. Library [PerpetualPoolPartyLib](https://etherscan.io/address/0x348e4b25077c5133450edad060ea4d8db667913d)
 
 # Implementation and code base
 
