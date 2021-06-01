@@ -78,6 +78,13 @@ Each one of those contract has its own library for gas optimization:
 
 # List of deployed contracts:
 
+1. Contract [SelfMintingDerivativeFactory](https://etherscan.io/address/0x930a54d8af945f6d1bed5aaf63b63fab50a8197f)
+
+The SelfMintingDerivativeFactory includes three helper libraries. For separate review you can see them below:
+
+1. Library [SelfMintingPerpetualPositionManagerMultiPartyLib](https://etherscan.io/address/0xe88178d7e2363c32663abe70e442a0ff2f8b3cce)
+2. Library [SelfMintingPerpetualLiquidatableMultiPartyLib](https://etherscan.io/address/0x2aa25770e92de3d61544e1c5245e8c968ddc34c5)
+3. Library [SelfMintingPerpetualMultiPartyLib](https://etherscan.io/address/0x586cce2d7ce78e9c9fd5c062ec6ee59880eac78f)
 
 # Implementation and code base
 
