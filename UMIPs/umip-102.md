@@ -40,7 +40,7 @@ Why would Bob write the option? He writes the option and provides LP against it,
 
 The rationale behind this change is that it fits into a larger goal of furthering adoption of the UMA protocol by allowing OPEN tokens to be used as collateral and to take advantage of the new options.
 
-A final fee of 500 OPEN was chosen, slightly higher than recommended, to account for price volatility of the token.
+A final fee of 600 OPEN was chosen, slightly higher than recommended, to account for price volatility of the token.
 
 ## Implementation
 
