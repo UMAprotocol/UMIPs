@@ -1,18 +1,12 @@
 ## Headers
 
-| **UMIP #** |
-              
-| ------------------- | ------------------------------------------------------------- |
-
-| **UMIP Title**          | Add OPENUSD and USDOPEN as supported price identifiers|
-
-| **Authors**             | Logan F [logan@opendao.io]                                                      |
-
-| **Status**              | Draft                                                       |
-
-| **Created**             | May 20th, 2021                                             |
-
-| **Discourse Link**      | https://discourse.umaproject.org/t/add-openusd-and-usdopen-as-a-supported-price-identifiers/1116           |
+| **UMIP #** |  
+| ------------------- | ------------------------------------------------------------- |  
+| **UMIP Title**          | Add OPENUSD and USDOPEN as supported price identifiers|  
+| **Authors**             | Logan F [logan@opendao.io]                                                      |  
+| **Status**              | Draft                                                       |  
+| **Created**             | May 20th, 2021                                             |  
+| **Discourse Link**      | https://discourse.umaproject.org/t/add-openusd-and-usdopen-as-a-supported-price-identifiers/1116           |  
 
 # Summary 
 
@@ -45,7 +39,7 @@ Due to low volume and being dispersed across chains, it is recommended to employ
 - **Historical data update frequency: Frequency** - hourly
 
 # Price Feed Implementation
-
+```
 OPENUSD: {
     type: "expression",
     expression: `
@@ -75,7 +69,7 @@ OPENUSD: {
       },
     }
   },
-
+```
 
 # Technical Specifications
 
@@ -130,7 +124,7 @@ This is only a reference implementation, how one queries the exchanges should be
 
 # Security Considerations
 
-Concerns regarding volume and data sources should be reconsidered, as the  this identifier is only intended to be used currently for fully covered call options which will have no liquidation bots running. 
+Concerns regarding volume and data sources should be reconsidered, as the  this identifier is only intended to be used currently for fully covered call options which will have no liquidation bots running.
 
 Issues regarding the number of unlocked tokens on the market have been addressed, as 67.7 million OPEN tokens (67.7% of total supply) have been  locked with Team Finance for 1 year. Details can be found on Medium via this link:
 
