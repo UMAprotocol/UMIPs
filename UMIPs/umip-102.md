@@ -1,12 +1,14 @@
  
 
 ## Headers
-- **UMIP #** -  
-- **UMIP title:**  - Add OPEN as collateral 
-- **Author**   - Logan F [logan@opendao.io]
-- **Status:** Draft
-- **Created:** Created on May 23rd, 2021
-- **Discourse Link:** https://discourse.umaproject.org/t/add-open-as-approved-collateral-currency/1128
+
+| UMIP-102                |                                                               |
+| ------------------- | ------------------------------------------------------------- |
+| UMIP Title          | Add OPEN as a supported collateral type |
+| Authors             | Logan F [logan@opendao.io]                                                     |
+| Status              | Last Call                                                         |
+| Created             | May 23rd, 2021                                              |
+| Discourse Link      | https://discourse.umaproject.org/t/add-open-as-approved-collateral-currency/1128            |
 
 ## Summary (2-5 sentences)
 This UMIP will add OPEN to the supported collateral currencies on the global whitelist contract, allowing the usage of OPEN as collateral currency. This serves as an important step to allow for the creation of call options for OPEN tokens.

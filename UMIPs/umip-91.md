@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add LONUSD, USDLON, BANKUSD, USDBANK, MASKUSD, USDMASK, VSPUSD, USDVSP, SFIUSD, USDSFI, DEXTFUSD, USDDEXTF, ORNUSD, USDORN, BONDUSD, USDBOND, PUNK-BASICUSD and USDPUNK-BASIC as price identifiers                                                                                                  |
 | Authors    | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com) |
-| Status     | Last Call                                                                                                                                 |
+| Status     | Approved                                                                                                                                 |
 | Created    | April 29, 2021
 | Link to Discourse    | [Link](https://discourse.umaproject.org/t/add-lonusd-usdlon-bankusd-usdbank-maskusd-usdmask-vspusd-usdvsp-sfiusd-usdsfi-fraxusd-usdfrax-dextffusd-usddextf-ornusd-usdorn-bondusd-usdbond-punk-basicusd-and-usdpunk-basic-as-price-identifiers/1036)
 
