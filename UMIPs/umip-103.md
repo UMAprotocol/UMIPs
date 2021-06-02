@@ -1,12 +1,11 @@
 ## Headers
-
-| **UMIP #** |  
-| ------------------- | ------------------------------------------------------------- |  
-| **UMIP Title**          | Add OPENUSD and USDOPEN as supported price identifiers|  
-| **Authors**             | Logan F [logan@opendao.io]                                                      |  
-| **Status**              | Draft                                                       |  
-| **Created**             | May 20th, 2021                                             |  
-| **Discourse Link**      | https://discourse.umaproject.org/t/add-openusd-and-usdopen-as-a-supported-price-identifiers/1116           |  
+| UMIP-103                |                                                               |
+| ------------------- | ------------------------------------------------------------- |
+| UMIP Title          | Add OPENUSD and USDOPEN as supported price identifiers |
+| Authors             | Logan F [logan@opendao.io]                                                     |
+| Status              | Last Call                                                         |
+| Created             | May 20th, 2021                                              |
+| Discourse Link      | https://discourse.umaproject.org/t/add-openusd-and-usdopen-as-a-supported-price-identifiers/1116            |
 
 # Summary 
 
