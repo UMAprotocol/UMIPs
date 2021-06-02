@@ -32,7 +32,7 @@ Why would Bob write the option? He writes the option and provides LP against it,
 
 * The OPEN address 0x69e8b9528cabda89fe846c67675b5d73d463a916 (https://etherscan.io/token/0x69e8b9528cabda89fe846c67675b5d73d463a916) needs to be added to the collateral currency whitelist introduced in UMIP-8.
 
-* A final fee of 500 OPEN needs to be added for OPEN in the Store contract.
+* A final fee of 600 OPEN needs to be added for OPEN in the Store contract.
 
 ## Rationale
 
@@ -49,6 +49,8 @@ This change has no implementation other than adding the OPEN token address to th
 ## Security considerations
 
 In the current setting, there will need to be a significant event that erodes confidence in OpenDAO and the OPEN token for it to be a security or PR concern. Due to the nature of the intended product, we don’t expect low liquidity or volume to be a factor in the success of this endeavor and should not impact UMA negatively.
+
+It should be noted that, despite not needing liquidity bots running for our uses, in the event that a significantly large amount of value enters the protocol via the Open options, a 'proposer bot' might be considered to allow for proper liquidity. 
 
 Issues regarding the number of unlocked tokens on the market have been addressed, as 67.7 million OPEN tokens (67.7% of total supply) have been locked with Team Finance for 1 year. Details can be found on Medium via this link:
 
