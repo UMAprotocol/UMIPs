@@ -32,7 +32,7 @@ A final fee of 500 DFX needs to be added for DFX in the Store contract.
 ## Rationale
 Adding the DFX token as collateral (and thereby allowing the DFX community to take advantage of KPI options) advances the goal of further adoption of the UMA protocol.
 
-A final fee of 500 DFX was chosen, slightly higher than recommended, to account for price volatility of the token.
+A final fee of 400 DFX was chosen, slightly higher than recommended, to account for price volatility of the token.
 
 ## Implementation
 
