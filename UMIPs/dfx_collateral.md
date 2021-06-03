@@ -27,7 +27,7 @@ To accomplish this upgrade, the following changes need to be made:
 
 The DFX token [https://etherscan.io/token/0x888888435fde8e7d4c54cab67f206e4199454c60](https://etherscan.io/token/0x888888435fde8e7d4c54cab67f206e4199454c60) needs to be added to the collateral currency whitelist introduced in UMIP-8.
 
-A final fee of 500 DFX needs to be added for DFX in the Store contract.
+A final fee of 400 DFX needs to be added for DFX in the Store contract.
 
 ## Rationale
 Adding the DFX token as collateral (and thereby allowing the DFX community to take advantage of KPI options) advances the goal of further adoption of the UMA protocol.
@@ -41,6 +41,6 @@ This UMIP requires proposing the two governor transactions detailed in the above
 This change has no implementation other than adding the DFX token address to the collateral currency whitelist.
 
 ## Security considerations
-There would need to be a significant event that erodes confidence in DFX and the DFX token for it to be a security or PR concern. Since DFX is an AMM, we don’t expect low liquidity or volume of our token to be a factor in the success of this endeavor and should not impact UMA negatively.
+There would need to be a significant event that erodes confidence in DFX and the DFX token for it to be a security or PR concern. Since the DFX exchange is an AMM, we don’t expect low liquidity or volume of our token to be a factor in the success of this endeavor and should not impact UMA negatively.
 
 Liquidity is expected to rise after the launch of v1 in early June. Liquidity will be incentivized on other DeFi AMMs, and the token will be added to CEXs (timeline still TBD). As of now, however, the main source of the DFX token is liquidity mining.
