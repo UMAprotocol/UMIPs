@@ -19,7 +19,7 @@ DFX is an AMM with a bonding curve that continually shifts to allow for the most
 
 The DFX token is a governance token that will be used to decide on fees, tweak bonding curve parameters for different pools (i.e. EUR pool might be more flat and lower fees whereas a NGN pool will be less flat and the fees higher), decide on new stablecoin additions, determine rewards for different pools, etc.
 
-The DFX token has a circulating supply of about 10,000,000 with a max supply of 100,000,000. [Sushiswap](https://app.sushi.com/swap?outputCurrency=0x888888435fde8e7d4c54cab67f206e4199454c60) is the most active market. At the time of writing DFX has a market cap of ~$13.6m with a 24 hour trading volume of around $30,000. Current liquidity is low as the exchange is currently in a guarded 0.5 beta launch. Liquidity is expected to greatly increase with the 1.0 launch scheduled for the beginning of June.
+The DFX token has a circulating supply of about 10,000,000 with a max supply of 100,000,000. [Sushiswap](https://app.sushi.com/swap?outputCurrency=0x888888435fde8e7d4c54cab67f206e4199454c60) is the most active market. At the time of writing DFX has a market cap of ~$13.6m with a 24 hour trading volume of around $30,000. Current liquidity is low as the exchange is currently in a guarded 0.5 beta launch. Liquidity is expected to greatly increase with the 1.0 launch scheduled for the beginning of June. Current token supply is from genesis distribution to several groups (subject to vesting) including LPs, project treasury, early investors, and founders. Details of distribution, vesting schedules, and other tokenomics can be found at https://docs.dfx.finance/protocol/dfx-token
 
 ## Technical Specification
 
