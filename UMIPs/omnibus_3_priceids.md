@@ -43,16 +43,47 @@ All of these base currencies have deep liquidity on Uniswap, SushiSwap, or both,
 
 Markets: Binance and Coinbase-Pro
 
-* Binance BAND/USDT: https://api.cryptowat.ch/markets/binance/bandusdt/price
-* Coinbase Pro BAND/USD: https://api.cryptowat.ch/markets/coinbase-pro/bandusd/price
+* Binance: [BAND/USDT](https://api.cryptowat.ch/markets/binance/bandusdt/price)
+* Coinbase Pro: [BAND/USD](https://api.cryptowat.ch/markets/coinbase-pro/bandusd/price)
+* Sushi: [BAND/WETH](https://analytics.sushi.com/pairs/0xa75f7c2f025f470355515482bde9efa8153536a8)
 
 How often is the provided price updated?
-   - The lower bound on the price update frequency is a minute.
+   - For Cryptowatch, the lower bound on the price update frequency is a minute.
+   - For Sushiswap, the price is updated with every Ethereum block (~15 seconds per block)
 
 Provide recommended endpoints to query for historical prices from each market listed.
 
 * Binance: https://api.cryptowat.ch/markets/binance/bandusdt/ohlc?after=1617848822&before=1617848822&periods=60
 * Coinbase-Pro: https://api.cryptowat.ch/markets/coinbase-pro/bandusd/ohlc?after=1617848822&before=1617848822&periods=60
+* Sushiswap: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+
+Sushi Query:
+```
+{
+ pair(
+  id:"0xa75f7c2f025f470355515482bde9efa8153536a8",
+  block: {
+    number:12519741
+  }
+){
+  token0 {
+    id
+    symbol
+    name
+    derivedETH
+  }
+  token1 {
+    id
+    symbol
+    name
+    derivedETH
+  }
+  token0Price
+  token1Price
+}
+}
+
+```
 
 
 Do these sources allow for querying up to 74 hours of historical data?
@@ -65,7 +96,8 @@ Is an API key required to query these sources?
    - No.
 
 Is there a cost associated with usage?
-   - Yes.
+   - For Cryptowatch, yes.
+   - For Sushiswap subgraph, no.
 
 If there is a free tier available, how many queries does it allow for?
    - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying both exchanges will cost 0.010 API credits).
@@ -77,7 +109,44 @@ What would be the cost of sending 15,000 queries?
 
 ## PRICE FEED IMPLEMENTATION
 
-These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js).
+These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js) and the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js).
+
+
+```
+BANDUSD: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    mean( (BAND_ETH_SUSHI * eth_usd), BAND_USD_BINANCE, BAND_USD_COINBASEPRO)
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    BAND_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "bandusdt", twapLength: 0},
+    BAND_USD_COINBASEPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "bandusd", twapLength: 0},
+    BAND_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xa75f7c2f025f470355515482bde9efa8153536a8" },
+  },
+},
+USDBAND: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    band_usd = mean( (BAND_ETH_SUSHI * eth_usd), BAND_USD_BINANCE, BAND_USD_COINBASEPRO)
+    1 / band_usd
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    BAND_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "bandusdt", twapLength: 0},
+    BAND_USD_COINBASEPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "bandusd", twapLength: 0},
+    BAND_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xa75f7c2f025f470355515482bde9efa8153536a8" },
+  }
+}
+```
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -121,12 +190,25 @@ These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMApro
 
 Voters should query for the price of BAND/USD at the price request timestamp on Coinbase Pro and Binance. Recommended endpoints are provided in the markets and data sources section.
 
-1. When using the recommended endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
-2. The median of these results should be taken
-3. The median from step 2 should be rounded to six decimals to determine the BANDUSD price.
-4. (for USD/BAND) Take the inverse of the result of step 2 (1/ BAND/USD) to get the USD/BAND price, and round to 6 decimals.
+```
+1. For the cryptowatch endpoints, voters should use the open price of the 1 minute OHLC period that the timestamp falls in for both Binance and Coinbase Pro
+2. Query the BAND/ETH price from SushiSwap using 15-minute TWAP.
+3. Query the ETH/USD price as per UMIP-6.
+4. Multiply the BAND/ETH price by the ETH/USD price and round to 6 decimals to get the BAND/USD price.
+5. The mean of Steps 1 and 4 should be taken.
+6. The result from step 5 should be rounded to six decimals to determine the BANDUSD price.
+7. (for USD/BAND) Take the inverse of the result of step 5, before rounding, (1/ BAND/USD) to get the USD/BAND price, and round to 6 decimals.
+```
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+## SECURITY CONSIDERATIONS
+
+$UMA holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. UMA holders should take note of the collaterals changes, or if added to robustness(Eg. via TWAPs) are necessary to prevent market manipulation.
+
+An additional consideration is that on-chain liquidity for BAND is not particularly strong, with only $250,000 in liquidity in a Uniswap v2 pool and a nearly empty Uniswap v3 pool. If large amounts of BAND are used as collateral in liquidatable contracts, more on-chain liquidity would be desirable to make it easier to liquidate undercollateralized positions. This is a moot point if BAND is used for non-liquidatable contracts.
+
+BAND has a circulating supply of 20.494 Million BAND coins and a max supply of 100 Million. Binance is the current most active market trading it.
 
 
 # SDT
@@ -225,6 +307,42 @@ What would be the cost of sending 15,000 queries?
 
 These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
+
+```
+SDTUSD: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    mean( (SDT_ETH_UNI * eth_usd), (SDT_ETH_SUSHI * eth_usd) )
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    SDT_ETH_UNI: { type: "uniswap", uniswapAddress: "0xc465c0a16228ef6fe1bf29c04fdb04bb797fd537"},
+    SDT_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0x22def8cf4e481417cb014d9dc64975ba12e3a184"},
+  }
+},
+USDSDT: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    sdt_usd = mean ( (SDT_ETH_UNI * eth_usd ), (SDT_ETH_SUSHI * eth_usd) );
+    1 / sdt_usd
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    SDT_ETH_UNI: { type: "uniswap", uniswapAddress: "0xc465c0a16228ef6fe1bf29c04fdb04bb797fd537"},
+    SDT_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0x22def8cf4e481417cb014d9dc64975ba12e3a184"},
+  }
+},
+```
+
+
 ## TECHNICAL SPECIFICATIONS
 
 ### SDT/USD
@@ -275,6 +393,12 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
 
+## SECURITY CONSIDERATIONS
+
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
+
+SDT has a circulating supply of 9.9 Million SDT coins and a max supply of 45.6 Million. Uniswap (v2) is most active trading market.
+
 
 # KP3R
 
@@ -283,13 +407,16 @@ As always, voters should ensure that their results do not differ from broad mark
 Markets: Binance, Sushiswap
 
 Binance: [KP3R/BUSD](https://api.cryptowat.ch/markets/binance/kp3rbusd/price)
+OKEx: [KP3R/USDT](https://api.cryptowat.ch/markets/okex/kp3rusdt/price)
 Sushiswap: [KP3R/ETH](https://analytics.sushi.com/pairs/0xaf988aff99d3d0cb870812c325c588d8d8cb7de8)
 
 Provide recommended endpoints to query for historical prices from each market listed.
 
 * Binance (using cryptowatch): https://api.cryptowat.ch/markets/binance/kp3rbusd/ohlc?after=1617848822&before=1617848822&periods=60
+* OKEx (using cryptowatch): https://api.cryptowat.ch/markets/okex/kp3rusdt/ohlc?after=1617848822&before=1617848822&periods=60
 * Sushiswap (using The Graph): https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
+The following is the query for the SushiSwap subgraph
 ```
 {
  pair(
@@ -320,8 +447,8 @@ Do these sources allow for querying up to 74 hours of historical data?
    - Yes.
 
 How often is the provided price updated?
-   - On Binance, the lower bound on the price update frequency is a minute.
-   - On Sushiswap, the price is updated with every Ethereum block
+   - On Cryptowatch, the lower bound on the price update frequency is a minute.
+   - On Sushiswap, the price is updated with every Ethereum block (~15 seconds)
 
 Is an API key required to query these sources?
    - No
@@ -343,6 +470,43 @@ What would be the cost of sending 15,000 queries?
 These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js) and
 [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
+// Configure price feed
+
+```
+KP3RUSD: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    mean( (KP3R_ETH_SUSHI * eth_usd), KP3R_USD_BINANCE, KP3R_USD_OKEX)
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    KP3R_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "kp3rbusd", twapLength: 0},
+    KP3R_USD_OKEX: { type: "cryptowatch", exchange: "okex", pair: "kp3rusdt", twapLength: 0},
+    KP3R_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8" },
+  },
+},
+USDKP3R: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    kp3r_usd = mean( (KP3R_ETH_SUSHI * eth_usd), KP3R_USD_BINANCE, KP3R_USD_OKEX)
+    1 / kp3r_usd
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    KP3R_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "kp3rbusd", twapLength: 0},
+    KP3R_USD_OKEX: { type: "cryptowatch", exchange: "okex", pair: "kp3rusdt", twapLength: 0},
+    KP3R_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8" },
+  }
+}
+```
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -384,16 +548,22 @@ These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMApro
 
 ## IMPLEMENTATION
 
-Voters should query for the price of KP3R/USD at the price request timestamp on OKEx and Binance. Recommended endpoints are provided in the markets and data sources section.
+Voters should query for the price of KP3R/USD at the price request timestamp on OKEx, Binance, and SushiSwap. Recommended endpoints are provided in the markets and data sources section.
 
 1. When using Cryptowatch, voters should use the open price of the 1 minute OHLC period that the timestamp falls in.
 2. Voters should query the KP3R/ETH Price from Sushiswap (using subgraph) using 15-minute TWAP
 3. Voters should then query the ETH/USD price as per UMIP-6
 4. Multiply the KP3R/ETH price by the ETH/USD price and round to 6 decimals to get the KP3R/USD price.
 5. The median of the numbers from steps 1 and 4 should be taken
-6. (for USD/KP3R) Take the inverse of the result of step 5 (1/ KP3R/USD) to get the USD/KP3R price, and round to 6 decimals.
+6. (for USD/KP3R) Take the inverse of the result of step 5 (1/ KP3R/USD), before rounding, to get the USD/KP3R price, and round to 6 decimals.
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+## SECURITY CONSIDERATIONS
+
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
+
+KP3R has a circulating supply of 231,573 KP3R coins and a max supply of 231,573. Sushiswap is the most active trading market.
 
 
 # CREAM
@@ -403,6 +573,7 @@ For both implementations, voters should determine whether the returned price dif
 Markets: Binance and Sushiswap
 
 Binance: [CREAM/BUSD](https://api.cryptowat.ch/markets/binance/creambusd/price)
+FTX: [CREAM/USD](https://api.cryptowat.ch/markets/ftx/creamusd/price)
 Sushiswap: [CREAM/ETH](https://analytics.sushi.com/pairs/0xf169cea51eb51774cf107c88309717dda20be167)
 
 Provide recommended endpoints to query for historical prices from each market listed.
@@ -463,6 +634,41 @@ What would be the cost of sending 15,000 queries?
 These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js) and
 [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
+```
+CREAMUSD: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    mean( (CREAM_ETH_SUSHI * eth_usd), CREAM_USD_BINANCE, CREAM_USD_FTX)
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    CREAM_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "creambusd", twapLength: 0},
+    CREAM_USD_FTX: { type: "cryptowatch", exchange: "ftx", pair: "creamusd", twapLength: 0},
+    CREAM_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xf169cea51eb51774cf107c88309717dda20be167" },
+  },
+},
+USDCREAM: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    cream_usd = mean( (CREAM_ETH_SUSHI * eth_usd), CREAM_USD_BINANCE, CREAM_USD_FTX)
+    1 / cream_usd
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    CREAM_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "creambusd", twapLength: 0},
+    CREAM_USD_FTX: { type: "cryptowatch", exchange: "ftx", pair: "creamusd", twapLength: 0},
+    CREAM_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xf169cea51eb51774cf107c88309717dda20be167" },
+  }
+}
+```
 
 ## TECHNICAL SPECIFICATIONS
 
@@ -511,10 +717,18 @@ Voters should query for the price of CREAM/USD at the price request timestamp on
 3. Voters should then query the ETH/USD price as per UMIP-6
 4. Multiply the CREAM/ETH price by the ETH/USD price and round to 6 decimals to get the CREAM/USD price.
 5. The median of the numbers from steps 1 and 4 should be taken
-6. (for USD/CREAM) Take the inverse of the result of step 5 (1/ CREAM/USD) to get the USD/CREAM price, and round to 6 decimals.
+6. (for USD/CREAM) Take the inverse of the result of step 5 (1/ CREAM/USD), before rounding, to get the USD/CREAM price, and round to 6 decimals.
 
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+## SECURITY CONSIDERATIONS
+
+Cream has been audited by Trail of Bits as of 28 Jan 2021. A link to the audit report can be found here.
+
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
+
+CREAM has a circulating supply of 721,640 CREAM coins and a max supply of 9,000,000. Gate.io is the current most active market trading it and it has over $1 million in liquidity on Sushiswap.
 
 # CHAIN
 
@@ -528,6 +742,7 @@ Data: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
 Provide recommended endpoints to query for historical prices from each market listed.
     - Historical data can be fetched from the subgraph:
+
 ```
 {
  pair(
@@ -576,6 +791,37 @@ What would be the cost of sending 15,000 queries?
 
 These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
+```
+CHAINUSD: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    CHAIN_ETH_UNI * eth_usd
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    CHAIN_ETH_UNI: { type: "uniswap", uniswapAddress: "0x33906431e44553411b8668543ffc20aaa24f75f9" },
+  }
+},
+USDCHAIN: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    1 / (CHAIN_ETH_UNI * eth_usd)
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    CHAIN_ETH_UNI: { type: "uniswap", uniswapAddress: "0x33906431e44553411b8668543ffc20aaa24f75f9" },
+  }
+},
+```
+
 ## TECHNICAL SPECIFICATIONS
 
 ### CHAIN/USD
@@ -618,14 +864,25 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 
 ```
 1. Query CHAIN/ETH Price from Uniswap using 15-minute TWAP.
-2. Query the ETH/USD Price as per UMIP-6.
-3. Multiply the CHAIN/ETH price by the ETH/USD price and round to 6 decimals to get the CHAIN/USD price.
+  a. Locate the timestamp specified in the voting request
+  b. Navigate to https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
+  c. In the query linked above, input the block number from Step 1a, note the token1 (CHAIN) price
+2. Query the ETH/USD Price as per UMIP-6 from the Block number in step 1a
+3. Multiply the result from 1c by the ETH/USD price from step 2 and round to 6 decimals to get the CHAIN/USD price.
 4. (for USD/CHAIN) Take the inverse of the result of step 3 (1/ CHAIN/USD), before rounding, to get the USD/CHAIN price. Then, round to 6 decimals.
 ```
 
 It should be noted that this identifier is potentially prone to attempted manipulation because of its reliance on one pricing source. As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
 
+## SECURITY CONSIDERATIONS
 
+Chain Games smart contracts were audited by HackenProof before deploying on main net, but the audit does not appear to be publicly available. The Chain Games operates on a Non-Custodial model, reducing exposure to users. The whitepaper can be found here for additional details. As mentioned above, CHAIN has a deflationary measure built in, which should serve to stabilize the value of this token in the future.
+
+Relative to most fiat currencies, CHAIN is much more volatile and is very nascent in the Ethereum ecosystem. Contract developers should exercise caution when parameterizing EMP contracts using CHAIN as a collateral currency.
+
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
+
+CHAIN has a circulating supply of 293,097,683.00 CHAIN coins and a max supply of 500 Million. Its top market is Uniswap v2.
 
 # ERN
 
@@ -639,6 +896,8 @@ Provided recommended endpoints to query for historical prices from each market l
 * Uniswap V2: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 * Uniswap V3: https://thegraph.com/explorer/subgraph/benesjan/uniswap-v3-subgraph
 
+
+The following is the query for the Uniswap V2 subgraph:
 
 ```
 {
@@ -665,6 +924,8 @@ Provided recommended endpoints to query for historical prices from each market l
 }
 }
 ```
+
+The following is the query for the Uniswap V3 subgraph:
 
 ```
 {
@@ -715,6 +976,41 @@ What would be the cost of sending 15,000 queries?
 These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
 
+```
+ERNUSD: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    ern_eth = mean( ERN_ETH_UNIV2, ERN_ETH_UNIV3 )
+    ern_eth * eth_usd
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    ERN_ETH_UNIV2: { type: "uniswap", uniswapAddress: "0x570febdf89c07f256c75686caca215289bb11cfc" },
+    ERN_ETH_UNIV3: { type: "uniswap", uniswapAddress: "0x07ed78c6c91ce18811ad281d0533819cf848075b" },
+  }
+},
+USDERN: {
+  type: "expression",
+  expression: `
+    eth_usd = 1 / USDETH;
+    ern_eth = mean( ERN_ETH_UNIV2, ERN_ETH_UNIV3 )
+    1 / (ern_eth * eth_usd)
+  `,
+  lookback: 7200,
+  minTimeBetweenUpdates: 60,
+  twapLength: 1800,
+  priceFeedDecimals: 8,
+  customFeeds: {
+    ERN_ETH_UNIV2: { type: "uniswap", uniswapAddress: "0x570febdf89c07f256c75686caca215289bb11cfc" },
+    ERN_ETH_UNIV3: { type: "uniswap", uniswapAddress: "0x07ed78c6c91ce18811ad281d0533819cf848075b" },
+  }
+},
+```
+
 ## TECHNICAL SPECIFICATIONS
 
 ### ERN/USD
@@ -756,10 +1052,28 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 ## IMPLEMENTATION
 
 ```
-1. Query ERN/ETH Price from Uniswap using 15-minute TWAP.
-2. Query the ETH/USD Price as per UMIP-6.
-3. Multiply the ERN/ETH price by the ETH/USD price and round to 6 decimals to get the ERN/USD price.
-4. (for USD/ERN) Take the inverse of the result of step 3 (1/ ERN/USD), before rounding, to get the USD/ERN price. Then, round to 6 decimals.
+1. Query ERN/ETH Price from Uniswap V2 using 15-minute TWAP.
+  a. Locate the timestamp specified in the voting request
+  b. Navigate to https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
+  c. In the query linked above, input the block number from Step 1a, note the token0 (ERN) price
+2. Query ERN/ETH Price from Uniswap V3 using 15-minute TWAP.
+  a. Locate the timestamp specified in the voting request
+  b. Navigate to https://thegraph.com/explorer/subgraph/benesjan/uniswap-v3-subgraph
+  c. In the query linked above, input the block number from Step 1a, note the token0 (ERN) price
+3. Take the average of the results from step 1c and 2c
+4. Query the ETH/USD Price as per UMIP-6.
+5. Multiply the ERN/ETH price from step 3 by the ETH/USD price and round to 6 decimals to get the ERN/USD price.
+6. (for USD/ERN) Take the inverse of the result of step 5 (1/ ERN/USD), before rounding, to get the USD/ERN price. Then, round to 6 decimals.
 ```
 
 As always, voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the tokenholders are responsible for defining broad market consensus.
+
+## SECURITY CONSIDERATIONS
+
+Ethernity Chain smart contract has been audited by Immune Bytes, which you can view Here. One low severity-risk regarding the ERN token was identified and addressed in the final version of the whitepaper.
+
+Relative to most fiat currencies, ERN is much more volatile and is very nascent in the Ethereum ecosystem. Contract developers should exercise caution when parameterizing EMP contracts using ERN as a collateral currency.
+
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation.
+
+ERN has a circulating supply of 9,684,684 ERN coins and a max supply of 30 Million. Its top markets are Uniswap v2 and Uniswap v3.
