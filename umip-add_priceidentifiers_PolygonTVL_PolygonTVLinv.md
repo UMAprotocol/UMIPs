@@ -18,7 +18,7 @@ PolygonTVL = Polygon(Matic) TVL / 10^9
 PolygonTVLinv = 1 / Polygon(Matic) TVL * 10^9
 
 # Motivation
-TVL of Defi projects still pretty volatile so if you can predict where TVL will go you need some tools for investing based on TVL.
+TVL of Defi projects are still pretty volatile so if you can predict where TVL will go you need some tools for investing based on TVL.
 
 Polygon(Matic) TVL is needed to create a synthetic token that will reflect the Polygon(Matic) TVL. These tokens can be minted when investors think that Polygon TVL will decrease.
 
@@ -28,7 +28,7 @@ Inverted Polygon(Matic) TVL is needed to create a synthetic token that will refl
 
 To determine TVL, you should use the project Defi Llama (https://defillama.com/home) and calculate by formulas:
 
-PolygonTVL = Polygon(Matic) TVL / 10^9 
+PolygonTVL = Polygon(Matic) TVL / 10^9
 
 PolygonTVLinv = 1 / Polygon(Matic) TVL * 10^9.
 
