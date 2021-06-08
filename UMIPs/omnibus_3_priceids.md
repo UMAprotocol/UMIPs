@@ -29,7 +29,7 @@ The canonical identifiers should be `BANDUSD`, `USDBAND`, `SDTUSD`, `USDSDT`, `K
 
 # MOTIVATION
 
-These price identifiers would allow the above currencies to be used for the creation of synths using currencies.  These tokens were proposed to be used as collateral in UMIP #96.  Examples of synths that could be created using these currencies would be yield dollars or covered call options.
+These price identifiers would allow the above currencies to be used for the creation of synths using currencies. These tokens were proposed to be used as collateral in UMIP #96. Examples of synths that could be created using these currencies would be yield dollars or covered call options.
 
 Proactively approving these price identifiers will make it easier for development teams and protocol treasuries to create new products using these ERC20 tokens and their price identifiers.
 
@@ -41,15 +41,15 @@ All of these base currencies have deep liquidity on Uniswap, SushiSwap, or both,
 
 ## MARKETS & DATA SOURCES
 
-Markets: Binance and Coinbase-Pro
+Markets: Binance, Sushiswap, and Coinbase-Pro
 
 * Binance: [BAND/USDT](https://api.cryptowat.ch/markets/binance/bandusdt/price)
 * Coinbase Pro: [BAND/USD](https://api.cryptowat.ch/markets/coinbase-pro/bandusd/price)
 * Sushi: [BAND/WETH](https://analytics.sushi.com/pairs/0xa75f7c2f025f470355515482bde9efa8153536a8)
 
 How often is the provided price updated?
-   - For Cryptowatch, the lower bound on the price update frequency is a minute.
-   - For Sushiswap, the price is updated with every Ethereum block (~15 seconds per block)
+  - For Cryptowatch, the lower bound on the price update frequency is a minute.
+  - For Sushiswap, the price is updated with every Ethereum block (~15 seconds per block)
 
 Provide recommended endpoints to query for historical prices from each market listed.
 
@@ -87,25 +87,25 @@ Sushi Query:
 
 
 Do these sources allow for querying up to 74 hours of historical data?
-   - Yes.
+  - Yes.
 
 How often is the provided price updated?
-   - The lower bound on the price update frequency is a minute.
+  - The lower bound on the price update frequency is a minute.
 
 Is an API key required to query these sources?
-   - No.
+  - No.
 
 Is there a cost associated with usage?
-   - For Cryptowatch, yes.
-   - For Sushiswap subgraph, no.
+  - For Cryptowatch, yes.
+  - For Sushiswap subgraph, no.
 
 If there is a free tier available, how many queries does it allow for?
-   - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying both exchanges will cost 0.010 API credits).
-   - Therefore, querying both exchanges can be performed 1000 times per day.
-   - In other words, both exchanges can be queried at most every 86 seconds.
+  - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying both exchanges will cost 0.010 API credits).
+  - Therefore, querying both exchanges can be performed 1000 times per day.
+  - In other words, both exchanges can be queried at most every 86 seconds.
 
 What would be the cost of sending 15,000 queries?
-    - Approximately $5
+  - Approximately $5
 
 ## PRICE FEED IMPLEMENTATION
 
@@ -116,34 +116,50 @@ These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMApro
 BANDUSD: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    mean( (BAND_ETH_SUSHI * eth_usd), BAND_USD_BINANCE, BAND_USD_COINBASEPRO)
+    median( (BAND_ETH_SUSHI * ETHUSD), BAND_USD_BINANCE, BAND_USD_COINBASEPRO)
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     BAND_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "bandusdt", twapLength: 0},
     BAND_USD_COINBASEPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "bandusd", twapLength: 0},
     BAND_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xa75f7c2f025f470355515482bde9efa8153536a8" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   },
 },
 USDBAND: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    band_usd = mean( (BAND_ETH_SUSHI * eth_usd), BAND_USD_BINANCE, BAND_USD_COINBASEPRO)
+    band_usd = median( (BAND_ETH_SUSHI * ETHUSD), BAND_USD_BINANCE, BAND_USD_COINBASEPRO)
     1 / band_usd
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     BAND_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "bandusdt", twapLength: 0},
     BAND_USD_COINBASEPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "bandusd", twapLength: 0},
     BAND_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xa75f7c2f025f470355515482bde9efa8153536a8" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   }
 }
 ```
@@ -195,7 +211,7 @@ Voters should query for the price of BAND/USD at the price request timestamp on 
 2. Query the BAND/ETH price from SushiSwap using 15-minute TWAP.
 3. Query the ETH/USD price as per UMIP-6.
 4. Multiply the BAND/ETH price by the ETH/USD price and round to 6 decimals to get the BAND/USD price.
-5. The mean of Steps 1 and 4 should be taken.
+5. The median of Steps 1 and 4 should be taken.
 6. The result from step 5 should be rounded to six decimals to determine the BANDUSD price.
 7. (for USD/BAND) Take the inverse of the result of step 5, before rounding, (1/ BAND/USD) to get the USD/BAND price, and round to 6 decimals.
 ```
@@ -224,14 +240,14 @@ Uniswap : [SDT/ETH](https://v2.info.uniswap.org/pair/0xc465c0a16228ef6fe1bf29c04
 Data: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange, https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
 
 How often is the provided price updated?
-    - On every Ethereum block (i.e. every ~15 seconds)
+  - On every Ethereum block (i.e. every ~15 seconds)
 
 Provide recommended endpoints to query for historical prices from each market listed.
-    - Historical data can be fetched from the subgraph:
+  - Historical data can be fetched from the subgraph:
 
 Uniswap Query:
-```
 
+```
 {
 	pair (
     id:"0xc465c0a16228ef6fe1bf29c04fdb04bb797fd537",
@@ -258,6 +274,7 @@ Uniswap Query:
 ```
 
 Sushi Query:
+
 ```
 {
  pair(
@@ -286,22 +303,22 @@ Sushi Query:
 ```
 
 Do these sources allow for querying up to 74 hours of historical data?
-    - Yes.
+  - Yes.
 
 How often is the provided price updated?
-    - On each Ethereum block (i.e. every ~15 seconds)
+  - On each Ethereum block (i.e. every ~15 seconds)
 
 Is an API key required to query these sources?
-    - No.
+  - No.
 
 Is there a cost associated with usage?
-    - No.
+  - No.
 
 If there is a free tier available, how many queries does it allow for?
-    - No limits at the moment.
+  - No limits at the moment.
 
 What would be the cost of sending 15,000 queries?
-     - $0
+  - $0
 
 ## PRICE FEED IMPLEMENTATION
 
@@ -312,32 +329,49 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 SDTUSD: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    mean( (SDT_ETH_UNI * eth_usd), (SDT_ETH_SUSHI * eth_usd) )
+    median( (SDT_ETH_UNI * ETHUSD), (SDT_ETH_SUSHI * ETHUSD) )
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     SDT_ETH_UNI: { type: "uniswap", uniswapAddress: "0xc465c0a16228ef6fe1bf29c04fdb04bb797fd537"},
     SDT_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0x22def8cf4e481417cb014d9dc64975ba12e3a184"},
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
+
   }
 },
 USDSDT: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    sdt_usd = mean ( (SDT_ETH_UNI * eth_usd ), (SDT_ETH_SUSHI * eth_usd) );
+    sdt_usd = median ( (SDT_ETH_UNI * ETHUSD ), (SDT_ETH_SUSHI * ETHUSD) );
     1 / sdt_usd
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     SDT_ETH_UNI: { type: "uniswap", uniswapAddress: "0xc465c0a16228ef6fe1bf29c04fdb04bb797fd537"},
     SDT_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0x22def8cf4e481417cb014d9dc64975ba12e3a184"},
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   }
 },
 ```
@@ -385,7 +419,7 @@ USDSDT: {
 
 ```
 1. Query SDT/ETH Price from SushiSwap and Uniswap using 15-minute TWAP.
-2. Take the median of the price from 2 sources.
+2. Take the median of the price from the 2 sources.
 3. Query the ETH/USD Price as per UMIP-6.
 4. Multiply the SDT/ETH price by the ETH/USD price and round to 6 decimals to get the SDT/USD price.
 5. (for USD/SDT) Take the inverse of the result of step 4 (1/ SDT/USD), before rounding, to get the USD/SDT price. Then, round to 6 decimals.
@@ -404,7 +438,7 @@ SDT has a circulating supply of 9.9 Million SDT coins and a max supply of 45.6 M
 
 ## MARKETS & DATA SOURCES
 
-Markets: Binance, Sushiswap
+Markets: Binance, OKEx, Sushiswap
 
 Binance: [KP3R/BUSD](https://api.cryptowat.ch/markets/binance/kp3rbusd/price)
 OKEx: [KP3R/USDT](https://api.cryptowat.ch/markets/okex/kp3rusdt/price)
@@ -444,66 +478,81 @@ The following is the query for the SushiSwap subgraph
 ```
 
 Do these sources allow for querying up to 74 hours of historical data?
-   - Yes.
+  - Yes.
 
 How often is the provided price updated?
-   - On Cryptowatch, the lower bound on the price update frequency is a minute.
-   - On Sushiswap, the price is updated with every Ethereum block (~15 seconds)
+  - On Cryptowatch, the lower bound on the price update frequency is a minute.
+  - On Sushiswap, the price is updated with every Ethereum block (~15 seconds)
 
 Is an API key required to query these sources?
-   - No
+  - No
 
 Is there a cost associated with usage?
-   - Querying the subgraph is free, however, there is a cost for querying Cryptowatch
+  - Querying the subgraph is free, however, there is a cost for querying Cryptowatch
 
 If there is a free tier available, how many queries does it allow for?
-   - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying both exchanges will cost 0.010 API credits).
-   - Therefore, querying both exchanges can be performed 1000 times per day.
-   - In other words, both exchanges can be queried at most every 86 seconds.
+  - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits (i.e. querying both exchanges will cost 0.010 API credits).
+  - Therefore, querying both exchanges can be performed 1000 times per day.
+  - In other words, both exchanges can be queried at most every 86 seconds.
 
 What would be the cost of sending 15,000 queries?
-    - Approximately $5 using Cryptowatch
-    - Free using the graph
+  - Approximately $5 using Cryptowatch
+  - Free using the graph
 
 ## PRICE FEED IMPLEMENTATION
 
 These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js) and
 [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js).
 
-// Configure price feed
 
 ```
 KP3RUSD: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    mean( (KP3R_ETH_SUSHI * eth_usd), KP3R_USD_BINANCE, KP3R_USD_OKEX)
+    median( (KP3R_ETH_SUSHI * ETHUSD), KP3R_USD_BINANCE, KP3R_USD_OKEX)
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     KP3R_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "kp3rbusd", twapLength: 0},
     KP3R_USD_OKEX: { type: "cryptowatch", exchange: "okex", pair: "kp3rusdt", twapLength: 0},
     KP3R_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   },
 },
 USDKP3R: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    kp3r_usd = mean( (KP3R_ETH_SUSHI * eth_usd), KP3R_USD_BINANCE, KP3R_USD_OKEX)
+    kp3r_usd = median( (KP3R_ETH_SUSHI * ETHUSD), KP3R_USD_BINANCE, KP3R_USD_OKEX)
     1 / kp3r_usd
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     KP3R_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "kp3rbusd", twapLength: 0},
     KP3R_USD_OKEX: { type: "cryptowatch", exchange: "okex", pair: "kp3rusdt", twapLength: 0},
     KP3R_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   }
 }
 ```
@@ -570,7 +619,7 @@ KP3R has a circulating supply of 231,573 KP3R coins and a max supply of 231,573.
 
 ## MARKETS & DATA SOURCES
 
-Markets: Binance and Sushiswap
+Markets: Binance, FTX, and Sushiswap
 
 Binance: [CREAM/BUSD](https://api.cryptowat.ch/markets/binance/creambusd/price)
 FTX: [CREAM/USD](https://api.cryptowat.ch/markets/ftx/creamusd/price)
@@ -579,6 +628,7 @@ Sushiswap: [CREAM/ETH](https://analytics.sushi.com/pairs/0xf169cea51eb51774cf107
 Provide recommended endpoints to query for historical prices from each market listed.
 
 * Binance: https://api.cryptowat.ch/markets/binance/creambusd/ohlc?after=1617848822&before=1617848822&periods=60
+* FTX: https://api.cryptowat.ch/markets/ftx/creamusd/ohlc?after=1617848822&before=1617848822&periods=60
 * Sushiswap (using The Graph): https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
 ```
@@ -608,26 +658,26 @@ Provide recommended endpoints to query for historical prices from each market li
 ```
 
 Do these sources allow for querying up to 74 hours of historical data?
-   - Yes.
+  - Yes.
 
 How often is the provided price updated?
-   - On Cryptowatch, the lower bound on the price update frequency is a minute.
-   - On Sushiswap, the price is updated with every Ethereum block (~15 seconds)
+  - On Cryptowatch, the lower bound on the price update frequency is a minute.
+  - On Sushiswap, the price is updated with every Ethereum block (~15 seconds)
 
 Is an API key required to query these sources?
-   - No.
+  - No.
 
 Is there a cost associated with usage?
-   - For Cryptowatch, yes.
-   - For the subgraph, no.
+  - For Cryptowatch, yes.
+  - For the subgraph, no.
 
 If there is a free tier available, how many queries does it allow for?
-   - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits
-   - There is no limit on the queries sent via the Sushiswap Subgraph
+  - The free tier is limited to 10 API credits per 24-hours; the cost of querying the market price of a given exchange is 0.005 API credits
+  - There is no limit on the queries sent via the Sushiswap Subgraph
 
 What would be the cost of sending 15,000 queries?
-    - Approximately $5 using Cryptowatch
-    - Free using the subgraph
+  - Approximately $5 using Cryptowatch
+  - Free using the subgraph
 
 ## PRICE FEED IMPLEMENTATION
 
@@ -638,34 +688,50 @@ These price identifiers use the [CryptoWatchPriceFeed](https://github.com/UMApro
 CREAMUSD: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    mean( (CREAM_ETH_SUSHI * eth_usd), CREAM_USD_BINANCE, CREAM_USD_FTX)
+    median( (CREAM_ETH_SUSHI * ETHUSD), CREAM_USD_BINANCE, CREAM_USD_FTX)
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     CREAM_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "creambusd", twapLength: 0},
     CREAM_USD_FTX: { type: "cryptowatch", exchange: "ftx", pair: "creamusd", twapLength: 0},
     CREAM_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xf169cea51eb51774cf107c88309717dda20be167" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   },
 },
 USDCREAM: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    cream_usd = mean( (CREAM_ETH_SUSHI * eth_usd), CREAM_USD_BINANCE, CREAM_USD_FTX)
+    cream_usd = median( (CREAM_ETH_SUSHI * ETHUSD), CREAM_USD_BINANCE, CREAM_USD_FTX)
     1 / cream_usd
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     CREAM_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "creambusd", twapLength: 0},
     CREAM_USD_FTX: { type: "cryptowatch", exchange: "ftx", pair: "creamusd", twapLength: 0},
     CREAM_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xf169cea51eb51774cf107c88309717dda20be167" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   }
 }
 ```
@@ -770,22 +836,22 @@ Provide recommended endpoints to query for historical prices from each market li
 ```
 
 Do these sources allow for querying up to 74 hours of historical data?
-    - Yes.
+  - Yes.
 
 How often is the provided price updated?
-    - On each Ethereum block (i.e. every ~15 seconds)
+  - On each Ethereum block (i.e. every ~15 seconds)
 
 Is an API key required to query these sources?
-    - No.
+  - No.
 
 Is there a cost associated with usage?
-    - No.
+  - No.
 
 If there is a free tier available, how many queries does it allow for?
-    - No limits at the moment.
+  - No limits at the moment.
 
 What would be the cost of sending 15,000 queries?
-     - $0
+  - $0
 
 ## PRICE FEED IMPLEMENTATION
 
@@ -795,29 +861,45 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 CHAINUSD: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    CHAIN_ETH_UNI * eth_usd
+    CHAIN_ETH_UNI * ETHUSD
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     CHAIN_ETH_UNI: { type: "uniswap", uniswapAddress: "0x33906431e44553411b8668543ffc20aaa24f75f9" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   }
 },
 USDCHAIN: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    1 / (CHAIN_ETH_UNI * eth_usd)
+    1 / (CHAIN_ETH_UNI * ETHUSD)
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     CHAIN_ETH_UNI: { type: "uniswap", uniswapAddress: "0x33906431e44553411b8668543ffc20aaa24f75f9" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   }
 },
 ```
@@ -864,11 +946,8 @@ USDCHAIN: {
 
 ```
 1. Query CHAIN/ETH Price from Uniswap using 15-minute TWAP.
-  a. Locate the timestamp specified in the voting request
-  b. Navigate to https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-  c. In the query linked above, input the block number from Step 1a, note the token1 (CHAIN) price
 2. Query the ETH/USD Price as per UMIP-6 from the Block number in step 1a
-3. Multiply the result from 1c by the ETH/USD price from step 2 and round to 6 decimals to get the CHAIN/USD price.
+3. Multiply the result from step 1 by the ETH/USD price from step 2 and round to 6 decimals to get the CHAIN/USD price.
 4. (for USD/CHAIN) Take the inverse of the result of step 3 (1/ CHAIN/USD), before rounding, to get the USD/CHAIN price. Then, round to 6 decimals.
 ```
 
@@ -954,22 +1033,22 @@ The following is the query for the Uniswap V3 subgraph:
 ```
 
 Do these sources allow for querying up to 74 hours of historical data?
-   - Yes.
+  - Yes.
 
 How often is the provided price updated?
-   - The price is updated with every Ethereum block (~15 seconds)
+  - The price is updated with every Ethereum block (~15 seconds)
 
 Is an API key required to query these sources?
-   - No.
+  - No.
 
 Is there a cost associated with usage?
-   - For the subgraph, no.
+  - For the subgraph, no.
 
 If there is a free tier available, how many queries does it allow for?
-   - There is no limit on the queries sent via either of the subgraphs
+  - There is no limit on the queries sent via either of the subgraphs
 
 What would be the cost of sending 15,000 queries?
-    - Free using the subgraph
+  - Free using the subgraph
 
 ## PRICE FEED IMPLEMENTATION
 
@@ -980,33 +1059,49 @@ These price identifiers use the [UniswapPriceFeed](https://github.com/UMAprotoco
 ERNUSD: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    ern_eth = mean( ERN_ETH_UNIV2, ERN_ETH_UNIV3 )
-    ern_eth * eth_usd
+    ern_eth = median( ERN_ETH_UNIV2, ERN_ETH_UNIV3 )
+    ern_eth * ETHUSD
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     ERN_ETH_UNIV2: { type: "uniswap", uniswapAddress: "0x570febdf89c07f256c75686caca215289bb11cfc" },
     ERN_ETH_UNIV3: { type: "uniswap", uniswapAddress: "0x07ed78c6c91ce18811ad281d0533819cf848075b" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   }
 },
 USDERN: {
   type: "expression",
   expression: `
-    eth_usd = 1 / USDETH;
-    ern_eth = mean( ERN_ETH_UNIV2, ERN_ETH_UNIV3 )
-    1 / (ern_eth * eth_usd)
+    ern_eth = median( ERN_ETH_UNIV2, ERN_ETH_UNIV3 )
+    1 / (ern_eth * ETHUSD)
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 1800,
+  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     ERN_ETH_UNIV2: { type: "uniswap", uniswapAddress: "0x570febdf89c07f256c75686caca215289bb11cfc" },
     ERN_ETH_UNIV3: { type: "uniswap", uniswapAddress: "0x07ed78c6c91ce18811ad281d0533819cf848075b" },
+    ETHUSD: {
+      type: "medianizer",
+      minTimeBetweenUpdates: 60,
+      medianizedFeeds: [
+        { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+        { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+        { type: "cryptowatch", exchange: "kraken", pair: "ethusd" }
+      ]
+    },
   }
 },
 ```
@@ -1053,14 +1148,8 @@ USDERN: {
 
 ```
 1. Query ERN/ETH Price from Uniswap V2 using 15-minute TWAP.
-  a. Locate the timestamp specified in the voting request
-  b. Navigate to https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-  c. In the query linked above, input the block number from Step 1a, note the token0 (ERN) price
 2. Query ERN/ETH Price from Uniswap V3 using 15-minute TWAP.
-  a. Locate the timestamp specified in the voting request
-  b. Navigate to https://thegraph.com/explorer/subgraph/benesjan/uniswap-v3-subgraph
-  c. In the query linked above, input the block number from Step 1a, note the token0 (ERN) price
-3. Take the average of the results from step 1c and 2c
+3. Calculate the median of the results from step 1 and 2.
 4. Query the ETH/USD Price as per UMIP-6.
 5. Multiply the ERN/ETH price from step 3 by the ETH/USD price and round to 6 decimals to get the ERN/USD price.
 6. (for USD/ERN) Take the inverse of the result of step 5 (1/ ERN/USD), before rounding, to get the USD/ERN price. Then, round to 6 decimals.
