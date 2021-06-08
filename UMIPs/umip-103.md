@@ -3,7 +3,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add OPENUSD and USDOPEN as supported price identifiers |
 | Authors             | Logan F [logan@opendao.io]                                                     |
-| Status              | Last Call                                                         |
+| Status              | Approved                                                        |
 | Created             | May 20th, 2021                                              |
 | Discourse Link      | https://discourse.umaproject.org/t/add-openusd-and-usdopen-as-a-supported-price-identifiers/1116            |
 

@@ -65,6 +65,10 @@ Existing price feeds include: (*Please remove before submission*)
 - Rounding: *Round to 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)*
 - Estimated current value of price identifier: *15.03*
 
+## Ancillary Data Specifications
+
+*This is an optional section. If your price identifier is not intended to use ancillary data, you can remove this section entirely. You can read a full explanation of the expected ancillary data format [here](https://docs.google.com/document/d/1vl1BcIMO3NTNxvR0u6fFQqdUgWtIY8XyjVtx8Hkl8Qk/edit?usp=sharing). An UMIP example of this section can be seen [here](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-83.md#technical-specifications).*
+
 # Rationale
 
 *The section should describe why price identifier design decisions were made, as well as any alternative designs that were considered.*

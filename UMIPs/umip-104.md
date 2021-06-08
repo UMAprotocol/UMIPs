@@ -1,13 +1,12 @@
-
- 
-
 ## Headers
-- **UMIP #** -  
-- **UMIP title:**  - Add *DFX* as collateral 
-- **Author**   -  Adrian Li (adrian@dfx.finance), Michael Bogan (michael.bogan@gmail.com)
-- **Status: Draft**
-- **Created:** 05/27/2021
-- **Discourse Link:** https://discourse.umaproject.org/t/add-dfx-as-approved-collateral-currency/1144
+| UMIP-104                |                                                               |
+| ------------------- | ------------------------------------------------------------- |
+| UMIP Title          | Add DFX as a supported collateral type |
+| Authors             | Adrian Li (adrian@dfx.finance), Michael Bogan (michael.bogan@gmail.com)                                                    |
+| Status              | Last Call                                                         |
+| Created             | 05/27/2021                                              |
+| Discourse Link      | https://discourse.umaproject.org/t/add-dfx-as-approved-collateral-currency/1144            |
+
 
 ## Summary (2-5 sentences)
 [DFX](https://dfx.finance/) is a decentralized exchange protocol with a dynamically tuned bonding curve optimized for fiat-backed stablecoins like [USDC](https://www.circle.com/en/usdc), [CADC](https://www.getcadc.com/), [EURS](https://eurs.stasis.net/), and [XSGD](https://xfers.com/sg/straitsx#XSGDsection).   
