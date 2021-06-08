@@ -4,7 +4,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add `SelfMintingDerivativeFactory` as `Creator` in DVM registry                                                                                                |
 | Authors    | Pascal Tallarida (pascal@jarvis.network)                 |
-| Status     | Last Call                                                 |
+| Status     | Approved                                                 |
 | Created    | 12/05/2021   
 | Discourse link    | https://discourse.umaproject.org/t/add-selfmintingderivativefactory-as-creator-new-uma-fork/1079                                   |
 

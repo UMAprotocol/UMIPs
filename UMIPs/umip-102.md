@@ -6,7 +6,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add OPEN as a supported collateral type |
 | Authors             | Logan F [logan@opendao.io]                                                     |
-| Status              | Last Call                                                         |
+| Status              | Approved                                                        |
 | Created             | May 23rd, 2021                                              |
 | Discourse Link      | https://discourse.umaproject.org/t/add-open-as-approved-collateral-currency/1128            |
 
