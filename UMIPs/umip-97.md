@@ -70,7 +70,7 @@ Most of the motivation and rationale for this price identifier is explained in m
 
 1. Query for the `ancillaryData` value from the price request
 2. Decode the ancillary data from bytes to UTF-8
-3. Parse JSON from the encoded data
+3. Parse the encoded data
 4. Evaluate success rate based on the method described in `Technical Specifications`
 
 ## Description
@@ -103,8 +103,8 @@ This formula will return weighted average success rate on all specified launches
 
 - Request timestamp: 1614556800 (March 1st 2021 00:00 UTC)
 - List of launches:
-- - Launch 1: `{ "id": "Starlink-18", "w": 1 }`
-- - Launch 2: `{ "id": "Starlink-19", "w": 1 }`
+- - Launch 1: `id0:Starlink-18,w0:1`
+- - Launch 2: `id1:Starlink-19,w1:1`
 
 Launch 1 happened, successfully lifted off, and landed before the request timestamp: `S1=1`
 
@@ -118,7 +118,7 @@ Success Rate = (1 * 1 + 1 * 0.5) / (1 + 1) = 0.75
 ### Example 2
 - Request timestamp: 1612137600 (February 1st 2021 00:00 UTC)
 - List of launches:
-- -  Launch 1: `{ "id": "Transporter-1", "w": 1 }`
+- -  Launch 1: `id0:Transporter-1,w0:1`
 
 Launch 1 happened before request timestamp, successfully lifted off, and landed before the request timestamp: `S1=1`
 
@@ -128,13 +128,10 @@ Success Rate = (1 * 1) / (1) = 1
 ```
 
 ## Format
-Ancillary data in the request will be passed as a JSON  in the following format
+Ancillary data in the request will be passed as a comma-separated key-value pair delimited by colon, where each key is followed by the index in the array of launches in the following format
 
 ```
-[{
-  id: string,
-  w: number
-}]
+id<index>:<id>,w<index>:<weight>
 ```
 
 If voters cannot correctly match a specific ID to an individual launch, `Si` should equal 0 for that launch.
@@ -143,9 +140,9 @@ If voters cannot correctly decode the ancillary data into the format defined bel
 
 ## Parsing example
 ```
-const ancillaryData = '0x5b7b226964223a225472616e73706f727465722d31222c2277223a317d5d'
+const ancillaryData = '0x6964303a537461726c696e6b2d31382c77303a312c6964313a537461726c696e6b2d31392c77313a31'
 const ancillaryDataBuffer = Buffer.from(ancillaryData.slice(2), 'hex')
-const json = JSON.parse(ancillaryDataBuffer.toString()) // json = [ { id: 'Transporter-1', w: 1 } ]
+const result = ancillaryDataBuffer.toString() // result = "id0:Starlink-18,w0:1,id1:Starlink-19,w1:1"
 ```
 
 # Security Considerations
