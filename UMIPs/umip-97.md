@@ -70,7 +70,7 @@ Most of the motivation and rationale for this price identifier is explained in m
 
 1. Query for the `ancillaryData` value from the price request
 2. Decode the ancillary data from bytes to UTF-8
-3. Parse the encoded data
+3. Parse the encoded data and delimit key-value pairs by commas (",")
 4. Evaluate success rate based on the method described in `Technical Specifications`
 
 ## Description
