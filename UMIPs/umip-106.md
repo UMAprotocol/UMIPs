@@ -1,9 +1,9 @@
 # HEADERS
-| UMIP [#]             |                                                                                                                                         |
+| UMIP-106             |                                                                                                                                         |
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title           | [Add BANDUSD, USDBAND, SDTUSD, USDSDT, KP3RUSD, USDKP3R, CREAMUSD, USDCREAM, CHAINUSD, USDCHAIN, ERNUSD and USDERN as price identifiers]|
+| UMIP Title           | Add BANDUSD, USDBAND, SDTUSD, USDSDT, KP3RUSD, USDKP3R, CREAMUSD, USDCREAM, CHAINUSD, USDCHAIN, ERNUSD and USDERN as price identifiers|
 | Authors              | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com), Aaron (bitznbrewz)                                    |
-| Status               | Draft                                                                                                                                   |
+| Status               | Last Call                                                                                                                                   |
 | Created              | May 2, 2021                                                                                                                             |
 | Link to Discourse    | [Link](https://discourse.umaproject.org/t/add-band-sdt-kp3r-cream-lpool-chain-and-sand-price-identifiers-draft/1145)                                                                                                                               |
 
@@ -120,12 +120,11 @@ BANDUSD: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    BAND_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "bandusdt", twapLength: 0},
-    BAND_USD_COINBASEPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "bandusd", twapLength: 0},
-    BAND_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xa75f7c2f025f470355515482bde9efa8153536a8" },
+    BAND_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "bandusdt" },
+    BAND_USD_COINBASEPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "bandusd" },
+    BAND_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xa75f7c2f025f470355515482bde9efa8153536a8", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -145,12 +144,11 @@ USDBAND: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    BAND_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "bandusdt", twapLength: 0},
-    BAND_USD_COINBASEPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "bandusd", twapLength: 0},
-    BAND_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xa75f7c2f025f470355515482bde9efa8153536a8" },
+    BAND_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "bandusdt" },
+    BAND_USD_COINBASEPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "bandusd" },
+    BAND_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xa75f7c2f025f470355515482bde9efa8153536a8", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -333,11 +331,10 @@ SDTUSD: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    SDT_ETH_UNI: { type: "uniswap", uniswapAddress: "0xc465c0a16228ef6fe1bf29c04fdb04bb797fd537"},
-    SDT_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0x22def8cf4e481417cb014d9dc64975ba12e3a184"},
+    SDT_ETH_UNI: { type: "uniswap", uniswapAddress: "0xc465c0a16228ef6fe1bf29c04fdb04bb797fd537", twapLength: 900 },
+    SDT_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0x22def8cf4e481417cb014d9dc64975ba12e3a184", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -358,11 +355,10 @@ USDSDT: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    SDT_ETH_UNI: { type: "uniswap", uniswapAddress: "0xc465c0a16228ef6fe1bf29c04fdb04bb797fd537"},
-    SDT_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0x22def8cf4e481417cb014d9dc64975ba12e3a184"},
+    SDT_ETH_UNI: { type: "uniswap", uniswapAddress: "0xc465c0a16228ef6fe1bf29c04fdb04bb797fd537", twapLength: 900 },
+    SDT_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0x22def8cf4e481417cb014d9dc64975ba12e3a184", twapLength: 900},
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -513,12 +509,11 @@ KP3RUSD: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    KP3R_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "kp3rbusd", twapLength: 0},
-    KP3R_USD_OKEX: { type: "cryptowatch", exchange: "okex", pair: "kp3rusdt", twapLength: 0},
-    KP3R_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8" },
+    KP3R_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "kp3rbusd" },
+    KP3R_USD_OKEX: { type: "cryptowatch", exchange: "okex", pair: "kp3rusdt" },
+    KP3R_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -538,12 +533,11 @@ USDKP3R: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     KP3R_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "kp3rbusd", twapLength: 0},
     KP3R_USD_OKEX: { type: "cryptowatch", exchange: "okex", pair: "kp3rusdt", twapLength: 0},
-    KP3R_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8" },
+    KP3R_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xaf988aff99d3d0cb870812c325c588d8d8cb7de8", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -692,12 +686,11 @@ CREAMUSD: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    CREAM_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "creambusd", twapLength: 0},
-    CREAM_USD_FTX: { type: "cryptowatch", exchange: "ftx", pair: "creamusd", twapLength: 0},
-    CREAM_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xf169cea51eb51774cf107c88309717dda20be167" },
+    CREAM_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "creambusd" },
+    CREAM_USD_FTX: { type: "cryptowatch", exchange: "ftx", pair: "creamusd" },
+    CREAM_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xf169cea51eb51774cf107c88309717dda20be167", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -717,12 +710,11 @@ USDCREAM: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
     CREAM_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "creambusd", twapLength: 0},
     CREAM_USD_FTX: { type: "cryptowatch", exchange: "ftx", pair: "creamusd", twapLength: 0},
-    CREAM_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xf169cea51eb51774cf107c88309717dda20be167" },
+    CREAM_ETH_SUSHI: { type: "uniswap", uniswapAddress: "0xf169cea51eb51774cf107c88309717dda20be167", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -865,10 +857,9 @@ CHAINUSD: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    CHAIN_ETH_UNI: { type: "uniswap", uniswapAddress: "0x33906431e44553411b8668543ffc20aaa24f75f9" },
+    CHAIN_ETH_UNI: { type: "uniswap", uniswapAddress: "0x33906431e44553411b8668543ffc20aaa24f75f9", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -887,10 +878,9 @@ USDCHAIN: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    CHAIN_ETH_UNI: { type: "uniswap", uniswapAddress: "0x33906431e44553411b8668543ffc20aaa24f75f9" },
+    CHAIN_ETH_UNI: { type: "uniswap", uniswapAddress: "0x33906431e44553411b8668543ffc20aaa24f75f9", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -946,7 +936,7 @@ USDCHAIN: {
 
 ```
 1. Query CHAIN/ETH Price from Uniswap using 15-minute TWAP.
-2. Query the ETH/USD Price as per UMIP-6 from the Block number in step 1a
+2. Query the ETH/USD Price as per UMIP-6 from for the timestamp requested.
 3. Multiply the result from step 1 by the ETH/USD price from step 2 and round to 6 decimals to get the CHAIN/USD price.
 4. (for USD/CHAIN) Take the inverse of the result of step 3 (1/ CHAIN/USD), before rounding, to get the USD/CHAIN price. Then, round to 6 decimals.
 ```
@@ -1064,11 +1054,10 @@ ERNUSD: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    ERN_ETH_UNIV2: { type: "uniswap", uniswapAddress: "0x570febdf89c07f256c75686caca215289bb11cfc" },
-    ERN_ETH_UNIV3: { type: "uniswap", uniswapAddress: "0x07ed78c6c91ce18811ad281d0533819cf848075b" },
+    ERN_ETH_UNIV2: { type: "uniswap", uniswapAddress: "0x570febdf89c07f256c75686caca215289bb11cfc", twapLength: 900 },
+    ERN_ETH_UNIV3: { type: "uniswap", uniswapAddress: "0x07ed78c6c91ce18811ad281d0533819cf848075b", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -1088,11 +1077,10 @@ USDERN: {
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
-  twapLength: 900,
   priceFeedDecimals: 8,
   customFeeds: {
-    ERN_ETH_UNIV2: { type: "uniswap", uniswapAddress: "0x570febdf89c07f256c75686caca215289bb11cfc" },
-    ERN_ETH_UNIV3: { type: "uniswap", uniswapAddress: "0x07ed78c6c91ce18811ad281d0533819cf848075b" },
+    ERN_ETH_UNIV2: { type: "uniswap", uniswapAddress: "0x570febdf89c07f256c75686caca215289bb11cfc", twapLength: 900 },
+    ERN_ETH_UNIV3: { type: "uniswap", uniswapAddress: "0x07ed78c6c91ce18811ad281d0533819cf848075b", twapLength: 900 },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
