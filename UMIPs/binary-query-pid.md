@@ -50,9 +50,9 @@ When converted from bytes to UTF-8, the ancillary data should be a dictionary ob
 q:Did the Dallas Mavericks win the NBA Finals in 2021?, p1:0, p2:1, p3:0.5
 ```
 
-The q value should contain the question that UMA voters should answer. 
+The q value should contain the question that UMA voters should answer with. 
 
-When this ancillary data dictionary is stored as bytes, the result would be: `0x7175657374696f6e3a446964207468652044616c6c6173204d6176657269636b732077696e20746865204e42412046696e616c7320696e20323032313f`
+When this ancillary data dictionary is stored as bytes, the result would be: `0x713a446964207468652044616c6c6173204d6176657269636b732077696e20746865204e42412046696e616c7320696e20323032313f2c2070313a302c2070323a312c2070333a302e35`
 
 # Rationale
 
