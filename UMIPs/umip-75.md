@@ -4,7 +4,7 @@
 | ---------- | ----------------------------------- |
 | UMIP Title | Add bDigg as a collateral currency |
 | Authors    | Sean Brown (@smb2796)  |
-| Status     | Last Call                               |
+| Status     | Approved                               |
 | Created    | April 7, 2021                    |
 | [Discourse](https://discourse.umaproject.org/t/add-bdigg-as-a-collateral-currency/854)    |
 
