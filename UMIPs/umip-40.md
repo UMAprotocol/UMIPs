@@ -43,17 +43,17 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
 
 2.  Which specific pairs should be queried from each market?
 
-    FTX: BTC/USDT, BTC-0326, BTC-0625
-    Binance: BTC/USDT, BTCUSD Quarterly 0326, BTCUSD Quarterly 0625
-    Okex: BTC/USDT, BTC-USD-210326, BTC-USD-210625
+    FTX: BTC/USDT, BTC-0924, BTC-0625
+    Binance: BTC/USDT, BTCUSD Quarterly 0924, BTCUSD Quarterly 0625
+    Okex: BTC/USDT, BTC-USD-210924, BTC-USD-210625
 
 3. Provide recommended endpoints to query for real-time prices from each market listed. 
 
-    FTX: [BTC](https://ftx.com/api/markets/BTC/USDT), [BTC-0326](https://ftx.com/api/markets/BTC-0326), [BTC-0625](https://ftx.com/api/markets/BTC-0625)
+    FTX: [BTC](https://ftx.com/api/markets/BTC/USDT), [BTC-0924](https://ftx.com/api/markets/BTC-0924), [BTC-0625](https://ftx.com/api/markets/BTC-0625)
 
-    Binance: [BTC](https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT), [BTC_210326](https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210326), [BTC_210625](https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210625)
+    Binance: [BTC](https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT), [BTC_210924](https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210924), [BTC_210625](https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210625)
 
-    Okex: [BTC](https://www.okex.com/api/spot/v3/instruments/BTC-USDT/ticker/), [BTC-USD-210326](https://www.okex.com/api/futures/v3/instruments/BTC-USD-210326/ticker/), [BTC-USD-210625](https://www.okex.com/api/futures/v3/instruments/BTC-USD-210625/ticker/)
+    Okex: [BTC](https://www.okex.com/api/spot/v3/instruments/BTC-USDT/ticker/), [BTC-USD-210924](https://www.okex.com/api/futures/v3/instruments/BTC-USD-210924/ticker/), [BTC-USD-210625](https://www.okex.com/api/futures/v3/instruments/BTC-USD-210625/ticker/)
 
     
 4. How often is the provided price updated?
@@ -64,7 +64,7 @@ While there does not exist a liquid proxy for basis, one could attribute the abs
 
    FTX, use this endpoint: https://ftx.com/api/markets/BTC/USDT/candles?resolution=15&limit=1&start_time=1608241140&end_time=1608241150
    Okex, use this endpoint: https://www.okex.com/api/futures/v3/instruments/BTC-USD-210625/history/candles?start=2021-01-20T02:31:00.000Z&granularity=60
-   Binance, use this endpoint: https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210326&limit=100&startTime=1611437831000&endTime=1611537831000
+   Binance, use this endpoint: https://dapi.binance.com/dapi/v1/aggTrades?symbol=btcusd_210924&limit=100&startTime=1611437831000&endTime=1611537831000
 
 6.  Do these sources allow for querying up to 74 hours of historical data? 
 
@@ -151,9 +151,9 @@ Not required to have a TWAP/VWAP/etc.
 
 1. **What prices should be queried for and from which markets?**
 
-    FTX: BTC/USDT, BTC-0326, BTC-0625
-    Binance: BTC/USDT, BTCUSD Quarterly 0326, BTCUSD Quarterly 0625
-    Okex: BTC/USDT, BTC0326Quarterly, BTC0625Bi-Quarterly
+    FTX: BTC/USDT, BTC-0924, BTC-0625
+    Binance: BTC/USDT, BTCUSD Quarterly 0924, BTCUSD Quarterly 0625
+    Okex: BTC/USDT, BTC0924Quarterly, BTC0625Bi-Quarterly
 
 2. **Pricing interval**
 
