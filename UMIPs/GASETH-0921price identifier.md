@@ -5,7 +5,7 @@
 | Authors    | Ross (ross@yam.finance)
 | Status     | draft                                                                                                                                 |
 | Created    | June 15th, 2021                                                                                                                              |
-| Link to Discourse| add
+| Link to Discourse| https://discourse.umaproject.org/t/add-ugas-0921-price-identifier/1196
 
 ## SUMMARY
 This UMIP will reference a synthetic token to be created with this price identifier. This token will be referred to as 'uGAS' and will represent the token that tracks this identifier with the most ETH volume on Sushiswap unless a different contract is determined by voters to be more legitimate.
