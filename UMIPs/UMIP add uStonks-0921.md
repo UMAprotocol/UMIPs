@@ -13,7 +13,7 @@ The DVM should support price requests for an updated basket of stocks that repre
 
 ## MOTIVATION
 
-Update the existing uStonks Price identifier (UMIP-79) used by he DMV to support a new basket of stocks based on the current sentiment on the r/wallstreetbets subreddit. 
+Update the existing uStonks Price identifier (UMIP-79) used by the DMV to support a new basket of stocks based on the current sentiment on the r/wallstreetbets subreddit. 
 
 Financial markets should be universally accessible — unrestrained by censorship, pre-existing financial and social capital, or nationality.  With the uSTONKS price identifier synthetic tokens can be created which will allow anybody to obtain exposure to the basket of stocks in a decentralized way.  This will allow unrestricted trading 24 hours a day, 7 days a week.
 
@@ -22,7 +22,8 @@ Financial markets should be universally accessible — unrestrained by censorshi
 - Markets:
 
 NYSE: GME, BB, AMC, CLNE, CLF, UWMC
-NYSEAMERICAN: SENS
+NYSE AMERICAN: SENS
+NYSE ARCA: SPY
 NASDAQ: CLOV, WKHS
 
 
@@ -57,8 +58,8 @@ Because the uSTONKS index value is only used at expiry, it will not be possible 
 [Here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) is a reference implementation for an off-chain price feed that calculates the TWAP of a token based on Uniswap price data. 
 
 ## TECHNICAL SPECIFICATIONS
-- Price Identifier Name: uSTONKS_JUN21
-- Base Currency: uSTONKS_JUN21
+- Price Identifier Name: uSTONKS_0921
+- Base Currency: uSTONKS_0921
 - Quote currency: None. This is an index, but will be used with USDC.
 - Intended Collateral Currency: USDC
 - Scaling Decimals: 18 (1e18)
@@ -71,39 +72,39 @@ This price identifier will conditionally use a different price calculation metho
 
 A 2-hour TWAP was chosen to mitigate any risk of attempted price manipulation attempts on the market price of the synthetic. To meaningfully manipulate the price that token sponsors’ collateralization is calculated with, an attacker would have to manipulate the trading price of a token for an extended amount of time. This is described further in the Security Considerations section.
 
-The stocks chosen represent the stocks with the highest average comment volume on r/WallStreetBets. This index was picked on April 14th, 2021 using r/WallStreetBets comment analysis from swaggystocks.com, and will remain static throughout the life of the price identifier. 
+The stocks chosen represent the stocks with the highest average comment volume on r/WallStreetBets. This index was picked on June 14th, 2021 using r/WallStreetBets comment analysis from swaggystocks.com, and will remain static throughout the life of the price identifier. 
 
 ## IMPLEMENTATION
 Voters should determine which pricing implementation to use depending on when the price request was submitted.
 
 **At Expiry**
 
-If the price request's UTC timestamp is at 1625097600 (July 1, 2021 00:00:00 UTC), a price request for uSTONKS for a given timestamp should be determined by performing the `At Expiry` process.
+If the price request's UTC timestamp is at 1633046400 (Oct. 1, 2021 00:00:00 UTC), a price request for uSTONKS for a given timestamp should be determined by performing the `At Expiry` process.
 
-To create a baseline for the uSTONKS index, a base price for each stock was chosen. These prices are the closing prices of each on 04/14/2021 and can be used by voters as reference values for their calculations. Voters are highly encouraged to verify these values themselves. This basket is static - it will not change over the life of the contract.
+To create a baseline for the uSTONKS index, a base price for each stock was chosen. These prices are the closing prices of each on 06/15/2021 and can be used by voters as reference values for their calculations. Voters are highly encouraged to verify these values themselves. This basket is static - it will not change over the life of the contract.
 
 | Ticker | Stock Price 04/14/2021 |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| TSLA | 732.23 |
-| PLTR | 23.70 |
-| GME | 166.53 |
-| AAPL | 132.03 |
-| COIN | 328.28 |
-| RIOT | 50.16 |
-| SQ | 258.40 |
-| MVIS | 12.34 |
-| RBLX | 75.35 |
-| MARA | 42.97 |
+| AMC | 59.04 |
+| BB | 13.99 |
+| GME | 222.50 |
+| CLNE | 11.11 |
+| CLF | 22.86 |
+| UWMC | 9.81 |
+| SENS | 3.69 |
+| SPY | 424.48 |
+| CLOV | 13.77 |
+| WKHS | 14.15 |
 
-Each stock also is assigned an index value base. The index is equally weighted, so each stock is assigned a base of 10. This means that on 04/14/2021 at close, the uSTONKS index would have been worth 100 with every component making up 1/10th of that index.
+Each stock also is assigned an index value base. The index is equally weighted, so each stock is assigned a base of 10. This means that on 06/15/2021 at close, the uSTONKS index would have been worth 100 with every component making up 1/10th of that index.
  
 To calculate the uSTONKS price, an UMA voter should:
-1. Query for the close price of one component on June 30, 2021. It is recommended that voters use the Google Sheets GOOGLEFINANCE function.
-2. Divide the June 30 price by the base price and multiply by the index value base (10) to get today’s index value. 
+1. Query for the close price of one component on September 30, 2021. It is recommended that voters use the Google Sheets GOOGLEFINANCE function.
+2. Divide the September 30 price by the base price and multiply by the index value base (10) to get today’s index value. 
 3. Perform this function for each component in the index and sum all of the results together.
 4. Round the result of step three to six decimal places
 
-An example of this calculation is shown in [this](https://docs.google.com/spreadsheets/d/1kccQQJ8FqSnaDbeK4ljXERIg9lKkErHXtvGSbPcDTAw/edit?usp=sharing) Google Sheet.
+An example of this calculation is shown in [this](https://docs.google.com/spreadsheets/d/1IbvIZUGQG2TW9YLrV7ykPr3P2F4PhvgvOU-4o2RujZc/edit?usp=sharing) Google Sheet.
 
 It is possible that, over the life of this price identifier, certain situations could arise that would affect the validity of the index calculation. Guidance is provided below for certain situations, but voters are free to come to an alternative consensus if a flaw in the methodology is identified or an unforeseen event occurs. 
 
@@ -112,10 +113,10 @@ It is possible that, over the life of this price identifier, certain situations 
 
 **Before Expiry**
 
-If the price request's UTC timestamp is less than 1625097600 (July 1, 2021 00:00:00 UTC), voters will need to calculate a 2-hour TWAP for the uSTONKS_JUN21 token’s price in USDC. The following process should be used to calculate the TWAP.
+If the price request's UTC timestamp is less than 1633046400 (Oct 1, 2021 00:00:00 UTC), voters will need to calculate a 2-hour TWAP for the uSTONKS_0921 token’s price in USDC. The following process should be used to calculate the TWAP.
 1. The end TWAP timestamp equals the price request timestamp.
 2. The start TWAP timestamp is defined by the end TWAP timestamp minus the TWAP period (2 hours in this case).
-3. A single Uniswap price is defined for each timestamp as the price that the uSTONKS_JUN21 / USDC pool returns in the latest block where the block timestamp is <= the price request timestamp. This is the price of 1 uSTONKS_JUN21 token in USDC. 
+3. A single Sushiswap price is defined for each timestamp as the price that the uSTONKS_JUN21 / USDC pool returns in the latest block where the block timestamp is <= the price request timestamp. This is the price of 1 uSTONKS_JUN21 token in USDC. 
 4. The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will get an equal weight.
 5. This results should be rounded to 6 decimals.
 
