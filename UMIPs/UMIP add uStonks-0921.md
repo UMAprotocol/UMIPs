@@ -5,7 +5,7 @@
 | Authors    | Ross (ross@yam.finance)  |
 | Status     | Draft                                                                                                                                  |
 | Created    | June 11, 2021   
-| Discourse Link | add |  
+| Discourse Link | https://discourse.umaproject.org/t/add-ustonks-0921-price-identifer/1195 |  
 
 ## SUMMARY
 
