@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-xx    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add uSTONKS_J0921 as a price identifier              |
+| UMIP Title | Add uSTONKS_0921 as a price identifier              |
 | Authors    | Ross (ross@yam.finance)  |
 | Status     | Draft                                                                                                                                  |
 | Created    | June 11, 2021   
