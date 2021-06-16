@@ -61,10 +61,14 @@ The values are as follows:
 
 
 Default values to use if these key/value pairs are not defined or cannot be decoded correctly.
-- contract_address: The Ethereum or EVM compatible chain address of the EMP, LSP or Perpetual UMA contract. This contract's TVL is what should be factored into the TVL calculation.
-- min_price: The minimum price that the KPI option can be worth. This value should not be scaled in the ancillary data. The KPI option price can only be settled below this price if criteria is not met. If all criteria is met, and TVL is equal to `lower_tvl_bound`, the KPI option will expire to the `min_price`.
-- max_price: The maximum price that the KPI option can be worth. If all criteria is met, and TVL is equal to `upper_tvl_bound`, the KPI option will expire to the `max_price`.
-- lower_tvl_bound: 
+- contract_address: 
+- min_price:
+- max_price:
+- lower_tvl_bound:
+- upper_tvl_bound:
+- twapLength:
+- criteria_1:
+- penalty_1:
 
 When returned, the `min_price`, `max_price` or any value in between should be scaled by 1e18. Typically voter dapps in the UMA ecosystem abstract this scaling away from voters, so, more often than not, voters should input the values as they appear in the ancillary data. Price requestors should be mindful of this, and not scale their ancillary data inputs.
 
