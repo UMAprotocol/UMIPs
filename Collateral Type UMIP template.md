@@ -6,7 +6,7 @@
 -   **Created:**  Date
 -   **Discourse Link:**  Insert link to discourse topic  after  it has been moved into draft UMIPs
 
-## [](https://discourse.umaproject.org/t/add-tokens-as-approved-collateral-currencies-through-upps/1173#summary-2-5-sentences-1)Summary (2-5 sentences)
+## Summary (2-5 sentences)
 
 This UMIP proposes adding **token** for use as collateral in UMA contracts
 
