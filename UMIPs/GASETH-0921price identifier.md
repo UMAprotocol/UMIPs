@@ -12,7 +12,7 @@ This UMIP will reference a synthetic token to be created with this price identif
 
 This follows the exact same process as UMIP-22 but uses a different timestamp.
 
-The DVM should support requests for a price that resolves to either the median monthly Ethereum gas price or a 2-hour Time-Weighted Average Price (TWAP) on the highest volume Uniswap or sushiswap ETH/uGAS pool. The price resolution method to use will depend on the the timestamp the price request was made at.
+The DVM should support requests for a price that resolves to either the median monthly Ethereum gas price or a 2-hour Time-Weighted Average Price (TWAP) on the highest volume Sushiswap ETH/uGAS pool. The price resolution method to use will depend on the the timestamp the price request was made at.
 
 For a price request made at or after the Unix timestamp `1633046400` (October 1, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20.
 
