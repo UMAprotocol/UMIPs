@@ -33,9 +33,9 @@ By establishing the terms of a qualifying integration, it allows for the communi
 
 # Data Specifications
 
-The UMA team will maintain a "green light" list of qualified integrations. Each integration will be added one at a time, after it has been discussed in the #voting channel in the UMA discord. The following criteria will be considered during the evaluation of each integration:
+The UMA team will maintain a "green light" list of qualified integrations, which will be readily available upon request. Each integration will be added one at a time, after it has been discussed in the #voting channel in the UMA discord. The following criteria will be considered during the evaluation of each integration:
 
-Any contract that falls into one of the categories listed below that has been funded with at least $10,000 of value. 
+Any contract that falls into one of the categories listed below.
 * Call or Put options
 * KPI options
 * Range Bonds
@@ -69,7 +69,7 @@ Below are some examples of when discussion around good faith may be necessary:
 
 * Someone creates and funds a call option for one month. When it expires, they then create another one for the next month. This would count as two integrations, provided that the intention and lifespan make sense for this product. 
 
-* An unidentified address funds a contract that was launched by UMA as a proof-of-concept for another team. The contract was funded in such a way to meet the minimium threshold, but there was no coordination or acceptance by the other team, and the product does not appear to be used by the intended project. This would not count as an integration, because even though the value threshold was met, there was no demonstration of planning, and intention is not clear.
+* A contract was launched by UMA as a proof-of-concept for another team. An unidentified address funds a contract, but there was no coordination or acceptance by the other team, and the product does not appear to be used by the intended project. This would not count as an integration, because even though the value threshold was met, there was no demonstration of planning, and intention is not clear.
 
 
 # Technical Specifications
@@ -94,19 +94,19 @@ Specifics of this design were chosen to establish a minimum payout that will def
 
 * Choosing a starting timestamp of June 1 helps to reward the community for the integrations they have already started on and help keep momentum going while the current KPI expires. 
 
-* In order to reward the extra work that goes into larger integrations, any qualifying integration valued at or above $5 million will qualify for a bonus point that will increase the value of uINT by 0.0833 UMA. 
+* In order to reward the extra work that goes into larger integrations, any qualifying integration valued at or above $5 million in TVL for any amount of time will qualify for a bonus point that will increase the value of uINT by 0.0833 UMA. 
 
 
 # Implementation
 
 Step 1: Refer to "green light" list for finalized information on all qualified integrations. Assign 1 point for each integration.
 
-Step 2: Tally up the total number of points, and use the following criteria to determine the $UMA value of each uINT token (uINT/UMA). Note: any integrations with a (____) indicator qualify for a BONUS. See details below.
+Step 2: Tally up the total number of points, and use the following criteria to determine the $UMA value of each uINT token (uINT/UMA). Note: any integrations with a 🐋 indicator qualify for a BONUS. See details below.
 
 Starting at 0, the value of each uINT increases according to the following scale:
 * 0.0167 for the first 10 points.
 * 0.0500 for the next 15 points.
-* A BONUS value of 0.0833 should be added for each integration on the "green light" list with a (____) indicator. Treat this as a separate component of your calculation. See example below. 
+* A BONUS value of 0.0833 should be added for each integration on the "green light" list with a 🐋 indicator, with a maximum of 4 possible bonuses. Treat this as a separate component of your calculation. See example below. 
 
 Step 5: return the appropriate value (in UMA) per uINT that corresponds to the total number of points tallied. If value returned is greater than 1.2500, return 1.2500.
 
@@ -115,17 +115,20 @@ If a voter determines a tally of 12 points and no BONUS points, they would calcu
 
 If a voter determines a tally of 22 points and 2 of them include BONUS points, they would calculate that 1 uINT = (10 x 0.0167) + (12 x 0.0500) + (2 x 0.0833) = 0.9333 UMA.
 
-If a voter determines a tally of 20 points and 7 of them include BONUS points, they would calculate that 1 uINT = (10 x 0.0167) + (10 x 0.0500) + (7 x 0.0833) = ??? (come back to this after discussion)
+If a voter determines a tally of 20 points and 7 of them would individually qualify for BONUS points, they would calculate that 1 uINT = (10 x 0.0167) + (10 x 0.0500) + (4 x 0.0833) = 1.000 
+This is because even though 7 of the integrations qualified for bonus, there is a maximum of 4 bonuses allowed in this KPI option.
 
 # Security Considerations
 
+Due to the bespoke nature of this UMIP, it should not be considered a standard against which futuer UMIPs can me measured without considering the amount of risk in establishing a set of rules as qualitative as is the case here. When assessing the risk of using qualitative data to determine an outcome, several things have been considered, such as the intended "in house" use of this UMIP, the intended recipients of the uINT token, the intended outcome of the KPI option, and how to handle any ambiguities that could arise over the course of this option. 
+
 How could metric manipulation occur?
 
-* By establishing a minimum value for qualifying integrations, it ensures that the cost of manipulation is higher than the possible reward for doing so. Additionally, the DVM voters have the ability to determine if it appears that someone is acting maliciously and can disqualify any integrations that majority believe should not be included.
+* By establishing a discussion system for determining qualitative validity of an integration, it reduces the ability of any individual to game the system. The DVM voters have the ability to determine if it appears that someone is acting maliciously and can disqualify any integrations that majority believe should not be included.
 
 How could this price ID be exploited?
 
-* I’m not sure it can be, since it is based on the definition of the metric. Thoughts?
+* The definition of the metric is inherently qualitative, which makes it inprobable that it will be exploited.
 
 Do the instructions for determining the price provide people with enough certainty?
 
@@ -133,10 +136,10 @@ Do the instructions for determining the price provide people with enough certain
 	
 Are there any current or future possible concerns with the way the price identifier is defined?
 
-* It could be determined that the scaling is not appropriate in the event of overwhelming failure of the option. This would happen if we achieved too few integrations or if we had an unexpected number of integrations from one particular team. The latter can be remedied by the voting power of the DVM, as discussed above. 
+* It could be determined that the scaling is not appropriate in the event of overwhelming failure of the option. This would happen if we achieved too few integrations or if we reach the goal too quickly.
 * Additionally, there is the potential for ambiguities to present that have not been considered at the time of writing. In this case it will be up to the DVM to determine the resolution of those ambiguities. We anticipate hitting the ceiling, so it is possible that any ambiguities that arise will be non-significant. 
 * It is possible that over the course of the KPI option, UMA could determine there are other products they would like to prioritize that are not defined in this UMIP. In that case, another KPI option can be launched to include that product.
 
 Are there any concerns around if the price identifier implementation is deterministic?
 
-* No?
+* No
