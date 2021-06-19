@@ -76,7 +76,7 @@ Below are some examples of when discussion around good faith may be necessary:
 
 - **Price identifier name:**  *uINT_KPI_UMA*
 - **Base: Number of qualified integrations
-- **There is no quote currency in this option, as design feature. The collateral redemption is tied to the** *number of qualified integrations* **by design**
+- **There is no quote currency in this option, as design feature. The collateral redemption is tied to the** *number of qualified integrations* **as a design feature**
  - **Intended Collateral Currency** *UMA*.
 - **Rounding:** *Round to 4 decimal places* 
  - If the value returned is greater than 1.2500, round down to 1.2500 to provide a ceiling price.

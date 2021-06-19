@@ -19,7 +19,7 @@ These could be used with *token*/USD price identifiers that are also being propo
 Proactively approving these collateral types and price feeds will make it easier for development teams and protocol treasuries to create new products using these tokens.
 
 # Proposed Collateral Currencies
-Note : The final fee for all ERC20 tokens will be ~$400 at time of writing
+Note : The final fee for all ERC20 tokens will be ~$400 at time of writing.
 
 ## MPH
 
