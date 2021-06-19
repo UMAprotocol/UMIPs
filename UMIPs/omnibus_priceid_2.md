@@ -30,7 +30,7 @@ The canonical identifiers should be:
 
 Adding these price identifiers allows the use of the base currencies as collateral for minting synthetics or call options.
 
-Any of the base currencies could be used to mint yield dollars or other synthetics, and liquidators could identify under collateralized positions by comparing the USD value of the locked collateral.
+Any of the base currencies could be used to mint yield dollars or other synthetics, and liquidators could identify undercollateralized positions by comparing the USD value of the locked collateral.
 Base currency call options could be minted and paid out based on the USD price of the base currency at expiry.
 KPI options tied to the price of the base currency could be minted, with a payout increasing as the base currency price increases.
 
@@ -38,12 +38,12 @@ KPI options tied to the price of the base currency could be minted, with a payou
 
 ## MARKETS & DATA SOURCES
 
-Markets: Sushiswap
+Markets: SushiSwap
 
-* Sushiswap [BASK/ETH](https://analytics.sushi.com/pairs/0x34d25a4749867ef8b62a0cd1e2d7b4f7af167e01)
+* SushiSwap [BASK/ETH](https://analytics.sushi.com/pairs/0x34d25a4749867ef8b62a0cd1e2d7b4f7af167e01)
 
 How often is the provided price updated?
-- For Sushiswap, the price is updated with every Ethereum block (~15 seconds per block)
+- For SushiSwap, the price is updated with every Ethereum block (~15 seconds per block)
 
 Do these sources allow for querying up to 74 hours of historical data?
 - Yes
@@ -58,7 +58,7 @@ If there is a free tier available, how many queries does it allow for?
 - Subgraph is free to use
 
 Provide recommended endpoints to query for historical prices from each market listed.
-* Sushiswap: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+* SushiSwap: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
 Sushi Query:
 ```
@@ -179,7 +179,7 @@ USDBASK: {
 
 ## IMPLEMENTATION
 
-Voters should query for the price of BASK/ETH on Sushiswap and the ETHUSD price as specified via UMIP-6. Recommended endpoints are provided in the markets and data sources section.
+Voters should query for the price of BASK/ETH on SushiSwap and the ETHUSD price as specified via UMIP-6. Recommended endpoints are provided in the markets and data sources section.
 
 ```
 1. Query the BASK/ETH price from SushiSwap using 15-minute TWAP.
@@ -197,7 +197,7 @@ Audited by Haechi
 
 https://github.com/basketdao/contracts/tree/main/audits
 
-This project is currently in Beta testing. Additionally, the inclusion of only a single market makes this subject to possible manipulation $UMA holders should evaluate the on going cost and benefit of supporting this asset as a collateral if liquidity concerns are identified. UMA holders should take note of the collaterals nature as liquidity, if the collateral changes, or if added robustness(Eg. via TWAPs) are necessary to prevent market manipulation.
+This project is currently in Beta testing. Additionally, the inclusion of only a single market makes this subject to possible manipulation $UMA holders should evaluate the ongoing cost and benefit of supporting this asset as a collateral if liquidity concerns are identified. UMA holders should take note of the collaterals nature as liquidity, if the collateral changes, or if added robustness(e.g., via TWAPs) are necessary to prevent market manipulation.
 
 **BASK**: https://discourse.umaproject.org/u/Hagz48
 
@@ -206,11 +206,11 @@ This project is currently in Beta testing. Additionally, the inclusion of only a
 
 ## Markets and Data Sources
 
-Markets: Sushiswap, GateIO, Uniswap, and Bancor
+Markets: SushiSwap, GateIO, Uniswap, and Bancor
 
 * Uniswap: [MPH/ETH](https://v2.info.uniswap.org/pair/0x4d96369002fc5b9687ee924d458a7e5baa5df34e)
 
-* Sushiswap: [MPH/ETH](https://analytics.sushi.com/pairs/0xb2c29e311916a346304f83aa44527092d5bd4f0f)
+* SushiSwap: [MPH/ETH](https://analytics.sushi.com/pairs/0xb2c29e311916a346304f83aa44527092d5bd4f0f)
 
 * Gateio: [MPH/USDT](https://api.cryptowat.ch/markets/gateio/mphusdt/price)
 
@@ -220,7 +220,7 @@ https://app.bancor.network/eth/portfolio/stake/add/single/0xAbf26410b1cfF45641aF
 
 
 How often is the provided price update?
-- Both Uniswap and Sushiswap updated their price with every Ethereum block (~15 seconds per block)
+- Both Uniswap and SushiSwap updated their price with every Ethereum block (~15 seconds per block)
 - On Cryptowatch, the lower bound on the price update frequency is a minute.
 
 Do these sources allow for querying up to 74 hours of historical data?
@@ -241,7 +241,7 @@ What would be the cost of sending 15,000 queries?
 
 Provide recommended endpoints to query for historical prices from each market listed.
 * Uniswap V2: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-* Sushiswap: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+* SushiSwap: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
 Uniswap Query:
 
@@ -415,7 +415,7 @@ Audit links:
 - [Peckshield V2](https://github.com/peckshield/publications/blob/master/audit_reports/peckshield-audit-report-88mph-v1.0.pdf)
 - [Quantstamp v2](https://certificate.quantstamp.com/full/88-mph)
 
-$UMA holders should evaluate the on going cost and benefit of supporting this asset as a collateral if liquidity concerns are identified. UMA holders should take note of the collaterals nature as liquidity, if the collateral changes, or if added robustness(Eg. via TWAPs) are necessary to prevent market manipulation.
+$UMA holders should evaluate the ongoing cost and benefit of supporting this asset as a collateral if liquidity concerns are identified. UMA holders should take note of the collaterals nature as liquidity, if the collateral changes, or if added robustness (e.g., via TWAPs) are necessary to prevent market manipulation.
 
 **MPH**:https://discourse.umaproject.org/u/Hagz48
 
@@ -423,12 +423,12 @@ $UMA holders should evaluate the on going cost and benefit of supporting this as
 
 ## Markets and Data Sources
 
-Markets: Sushiswap
+Markets: SushiSwap
 
-Sushiswap: [APW/ETH](https://analytics.sushi.com/pairs/0x53162d78dca413d9e28cf62799d17a9e278b60e8)
+SushiSwap: [APW/ETH](https://analytics.sushi.com/pairs/0x53162d78dca413d9e28cf62799d17a9e278b60e8)
 
 How often is the provided price updated?
-- Sushiswap price is updated with every Ethereum block (~15 seconds per block)
+- SushiSwap price is updated with every Ethereum block (~15 seconds per block)
 
 Do these sources allow for querying up to 74 hours of historical data?
 - Yes
@@ -444,9 +444,9 @@ If there is a free tier available, how many queries does it allow for?
 
 Provide recommended endpoints to query for historical prices from each market listed.
 
-* Sushiswap: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+* SushiSwap: https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
 
-Sushiswap Query:
+SushiSwap Query:
 
 ```
 {
@@ -576,7 +576,7 @@ USDAPW: {
 
 Audited by Bramah Systems.
 
-An inclusion of a single market makes that price subject to manipulation, this is something that must be considered by UMA governance.  $UMA holders should evaluate the ongoing cost and benefit of supporting this asset as a collateral if liquidity concerns are identified. UMA holders should take note of this collateral nature as liquidity, if the collateral changes, or if added robustness(Eg. via TWAPs) are necessary to prevent market manipulation
+An inclusion of a single market makes that price subject to manipulation, this is something that must be considered by UMA governance.  $UMA holders should evaluate the ongoing cost and benefit of supporting this asset as a collateral if liquidity concerns are identified. UMA holders should take note of this collateral nature as liquidity, if the collateral changes, or if added robustness(e.g., via TWAPs) are necessary to prevent market manipulation
 **APWINE**:https://discourse.umaproject.org/u/Hagz48
 
 # SNOW
@@ -748,7 +748,7 @@ Audited by Quantstamp
 
 https://hackmd.io/@9GUQpanJRF6cloQ0fwyPFw/r1_ctUuqv
 
-The SNOW protocol is in Beta. $UMA holders should evaluate the ongoing cost and benefit of supporting this asset as a collateral if liquidity concerns are identified. UMA holders should take note of this collateral nature as liquidity, if the collateral changes, or if added robustness(Eg. via TWAPs) are necessary to prevent market manipulation
+The SNOW protocol is in Beta. $UMA holders should evaluate the ongoing cost and benefit of supporting this asset as a collateral if liquidity concerns are identified. UMA holders should take note of this collateral nature as liquidity, if the collateral changes, or if added robustness(e.g., via TWAPs) are necessary to prevent market manipulation
 
 **SNOW**:https://discourse.umaproject.org/u/Hagz48
 
@@ -916,7 +916,7 @@ Audit Reports:
 - https://github.com/monoceros-alpha/audit-indexed-finance-2020-10
 - https://github.com/maxsam4/indexed-finance-review
 
-Additionally, Indexed finance is still in beta and has not yet been audited by an established security firm, however they have been audited by two individuals with previous associations to security firms.
-$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (eg via TWAPs) are necessary to prevent market manipulation
+Additionally, Indexed Finance is still in beta and has not yet been audited by an established security firm, however they have been audited by two individuals with previous associations to security firms.
+$UMA-holders should evaluate the ongoing cost and benefit of supporting this asset as collateral and also contemplate removing support of this collateral if liquidity concerns are identified. $UMA-holders should take note of the collateral’s nature as liquidity of the collateral changes, or if added robustness (e.g., via TWAPs) are necessary to prevent market manipulation
 **NDX**:https://discourse.umaproject.org/u/Britt
 
