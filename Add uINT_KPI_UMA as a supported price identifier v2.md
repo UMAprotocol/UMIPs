@@ -22,7 +22,7 @@ A synthetic option is minted against a base collateral, in this case UMA, which 
 
 # Motivation
 
-The primary motivation for the development of KPI options is to allow protocols to incentivize Defi users to assist them to reach the protocol's identified targets by leveraging their community resources by sharing their value with their community members.
+The primary motivation for the development of KPI options is to allow protocols to incentivize DeFi users to assist them to reach the protocol's identified targets by leveraging their community resources by sharing their value with their community members.
 
 Using integrations as a key metric directly benefits the UMA protocol because it encourages the community to build relationships in the broader DeFi community with the intention of providing tools that may be useful to teams who are currently unaware of what UMA has to offer. This creates a win-win across the board because it allows us to showcase our products and our products can then help other protocols to complete their goals. 
 
@@ -33,7 +33,7 @@ By establishing the terms of a qualifying integration, it allows for the communi
 
 # Data Specifications
 
-The UMA team will maintain a "green light" list of qualified integrations, which will be readily available upon request. Each integration will be added one at a time, after it has been discussed in the #voting channel in the UMA discord. The following criteria will be considered during the evaluation of each integration:
+The UMA team will maintain a "green light" list of qualified integrations, which will be readily available upon request. Each integration will be added one at a time, after it has been discussed in the #voting channel in the UMA Discord. The following criteria will be considered during the evaluation of each integration:
 
 Any contract that falls into one of the categories listed below.
 * Call or Put options
@@ -50,7 +50,7 @@ The applied timeframe for this UMIP will be between 1622505600 and 1633046399, m
 
 **Revolution Clause** 
 
-The "green light" list should not be considered the *only* source of truth. The DVM has the ability and responsibility to challenge the validity of any integration that has been included or excluded from the list if the broader consensus of UMA tokenholders is that it is within the spirit of this UMIP to do so. Any and all questions surrounding the validity of an integration can be brought up in further detail in the voting channel on the UMA discord.
+The "green light" list should not be considered the *only* source of truth. The DVM has the ability and responsibility to challenge the validity of any integration that has been included or excluded from the list if the broader consensus of UMA tokenholders is that it is within the spirit of this UMIP to do so. Any and all questions surrounding the validity of an integration can be brought up in further detail in the #voting channel on the UMA Discord.
 
 This UMIP is meant to identify integrations with UMA that are good faith experiments and product launches, as a way to gauge DeFi community engagement with the protocol. This should not be considered an all-inclusive list, but here are some components to take into account when determining whether or not something is a good faith integration:
 
@@ -59,7 +59,7 @@ What kind of planning stages occurred prior to launch? Was there a proposal from
 
 **Intention:** WHAT is the goal? Has it been made clear that there is a desire to use UMA infrastructure to launch a product that will serve to improve a protocol or for the purpose of experimental hedging/speculation/betting?
 
-**Rationale:** WHY was it executed the way it was? (Note: struggling to find more words to say here, although I do believe this is the biggest factor in determining the good faith nature of a launch.)
+**Rationale:** WHY was it executed the way it was? Was this product designed in such a way that it could or did work? Was it being given a chance at success? If it appears that multiple integrations could have been condensed into one, why was that route not taken? What design features were necessary or unnecessary in this launch?
 
 **Lifespan:** Did this launch last for a meaningful amount of time? If it was intended to last a month, did it last that long? If it was “shut down” sooner than expected, why?
 
@@ -108,7 +108,7 @@ Starting at 0, the value of each uINT increases according to the following scale
 * 0.0500 for the next 15 points.
 * A BONUS value of 0.0833 should be added for each integration on the "green light" list with a 🐋 indicator, with a maximum of 4 possible bonuses. Treat this as a separate component of your calculation. See example below. 
 
-Step 5: return the appropriate value (in UMA) per uINT that corresponds to the total number of points tallied. If value returned is greater than 1.2500, return 1.2500.
+Step 3: return the appropriate value (in UMA) per uINT that corresponds to the total number of points tallied. If value returned is greater than 1.2500, return 1.2500.
 
 Examples: 
 If a voter determines a tally of 12 points and no BONUS points, they would calculate that 1 uINT = (10 x 0.0167) + (2 x 0.0500) = 0.2667 UMA. 
