@@ -1,7 +1,7 @@
 **UMIP #**  - tbd
 
 -   **UMIP title: Add** MPH, APW, SNOW, NDX **as collateral currencies** 
--   **Author**  Brittany Madruga (brittany.madruga@gmail.com), Shawn C. Hagenah (www.shawnhagenah99@yahoo.com)
+-   **Author**  Brittany Madruga (brittany.madruga@gmail.com), Shawn C. Hagenah (shawnhagenah99@yahoo.com)
 -   **Status: Draft**
 -   **Created:**  06/16/2021
 -   **Discourse Link:**  Insert link to discourse topic  after  it has been moved into draft UMIPs
