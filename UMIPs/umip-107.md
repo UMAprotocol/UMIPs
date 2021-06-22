@@ -1,16 +1,16 @@
 ## Headers
 
-| UMIP                |                                                               |
+| UMIP-107                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add `BINARY_QUERY` as a supported price identifier (need a better name) |
+| UMIP Title          | Add `YES_NO_QUERY` as a supported price identifier (need a better name) |
 | Authors             | Sean Brown, Matthew Rice, John Shutt, Mhairi McAlpine                                                     |
-| Status              | Draft                                                         |
+| Status              | Last Call                                                         |
 | Created             | June 3rd, 2021                                              |
 | [Discourse Link](https://discourse.umaproject.org/t/add-binary-query-tbd-name-as-a-supported-price-identifier/1161)      |             |
 
 # Summary 
 
-The DVM should support price requests for the `BINARY_QUERY` price identifier. `BINARY_QUERY` is intended to be used with ancillary data to allow anyone to request an answer to a "yes or no" question from UMA governance. This UMIP does not attempt to put any other restrictions on the content of the query, and instead leaves construction of the query up to the requester within ancillary data.
+The DVM should support price requests for the `YES_NO_QUERY` price identifier. `YES_NO_QUERY` is intended to be used with ancillary data to allow anyone to request an answer to a "yes or no" question from UMA governance. This UMIP does not attempt to put any other restrictions on the content of the query, and instead leaves construction of the query up to the requester within ancillary data.
 
 Price settlement can happen in three ways:
 - Return the `p1` value from ancillary data if the answer is "NO".
@@ -35,7 +35,7 @@ No price feed is needed (or possible) for this price identifier.
 # Technical Specifications
 
 -----------------------------------------
-- Price identifier name: BINARY_QUERY
+- Price identifier name: YES_NO_QUERY
 - Base Currency: NA
 - Quote Currency: NA
 - Rounding: None, there is a predetermined set of results.
@@ -65,7 +65,7 @@ This construction sacrifices assurances of determinism in favor of greater price
 1. Voters should decode the ancillary data and attempt to interpret the UTF-8 question.
 2. If UMA voters believes that the answer to the question is no, they should vote return the p1 value (in the example given, they would return `0`).
 3. If UMA voters believe that the answer to the question is yes, they should return the p2 value (in the example given, they would return `1`).
-4. If a voter cannot make a determination about what the correct answer to the question is, or there is no question present, UMA voters should return 0.5.
+4. If a voter cannot make a determination about what the correct answer to the question is, or there is no question present, UMA voters should return the p3 value (in the example given, they would return `0.5`).
 5. If there are no p1, p2, p3 values in the ancillary data voters should use 0, 1, 0.5 respectively.
 6. If there is no ancillary data or it is not interpretable to UTF-8, voters should return 0.5.
 
