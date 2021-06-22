@@ -2,7 +2,7 @@
 
 | UMIP-107                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add `YES_OR_NO_QUERY` as a supported price identifier (need a better name) |
+| UMIP Title          | Add `YES_OR_NO_QUERY` as a supported price identifier |
 | Authors             | Sean Brown, Matthew Rice, John Shutt, Mhairi McAlpine                                                     |
 | Status              | Last Call                                                         |
 | Created             | June 3rd, 2021                                              |
