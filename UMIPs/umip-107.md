@@ -2,7 +2,7 @@
 
 | UMIP-107                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add `YES_NO_QUERY` as a supported price identifier (need a better name) |
+| UMIP Title          | Add `YES_OR_NO_QUERY` as a supported price identifier (need a better name) |
 | Authors             | Sean Brown, Matthew Rice, John Shutt, Mhairi McAlpine                                                     |
 | Status              | Last Call                                                         |
 | Created             | June 3rd, 2021                                              |
@@ -10,7 +10,7 @@
 
 # Summary 
 
-The DVM should support price requests for the `YES_NO_QUERY` price identifier. `YES_NO_QUERY` is intended to be used with ancillary data to allow anyone to request an answer to a "yes or no" question from UMA governance. This UMIP does not attempt to put any other restrictions on the content of the query, and instead leaves construction of the query up to the requester within ancillary data.
+The DVM should support price requests for the `YES_OR_NO_QUERY` price identifier. `YES_OR_NO_QUERY` is intended to be used with ancillary data to allow anyone to request an answer to a "yes or no" question from UMA governance. This UMIP does not attempt to put any other restrictions on the content of the query, and instead leaves construction of the query up to the requester within ancillary data.
 
 Price settlement can happen in three ways:
 - Return the `p1` value from ancillary data if the answer is "NO".
@@ -35,7 +35,7 @@ No price feed is needed (or possible) for this price identifier.
 # Technical Specifications
 
 -----------------------------------------
-- Price identifier name: YES_NO_QUERY
+- Price identifier name: YES_OR_NO_QUERY
 - Base Currency: NA
 - Quote Currency: NA
 - Rounding: None, there is a predetermined set of results.
