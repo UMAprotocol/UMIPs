@@ -1,17 +1,19 @@
 # Headers
-| UMIP-108     |                                                                                                                                          |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add GASETH-0921 as a supported price identifier                                                                                             |
-| Authors    | Ross (ross@yam.finance)
-| Status     | Last Call                                                                                                                                 |
-| Created    | June 15th, 2021                                                                                                                              |
-| Link to Discourse| https://discourse.umaproject.org/t/add-utvl-kpi-sdt-as-price-identifier-for-kpi-options/1189
 
-## SUMMARY
+| **UMIP #** Leave blank - an UMIP no will be assigned at proposal stage|                                                                           |
+| ------------------------|------------------------------------------------------------------------------------------------------------------------ |
+| UMIP Title              | Add uTVL_KPI_SDT as price identifier for KPI Options                                                                    |
+| Authors                 | Greg Tumbiola - Tumbiola@gmail.com                                                                                      |
+| Status                  | Draft                                                                                                                   |
+| Created                 | 6/12/2021                                                                                                               |
+| Discourse Link          | *Insert link to discourse topic  **after**  it has been moved into draft UMIPs_*                                        |
+
+
+# SUMMARY
 This UMIP enables the DVM to support price requests based on the TVL of Stake Dao.
 
 
-## MOTIVATION
+# MOTIVATION
 * The metric being used for Stake DAO’s KPI Options is to reach the key target of 10^9 ($1 billion) in TVL.
 * This will allow the creation of tokens which will expire 30 days after issuance to the set rate of the collateral asset tokens based on a pre-identified bounded ratio as determined by the TVL of Stake DAO.
 
@@ -25,11 +27,11 @@ At 30 day expiry:
 It is anticipated that this Price Identifier will be used to create KPI Options, however it is acknowledged that it may be used for a variety of purposes.
 
 
-## Data Specifications
+# Data Specifications
 
 Voters should access the following endpoint as a source of truth for the calculation of TVL for Stake DAO, the sum of all the stats make up the total TVL.
 
-# Note - see rationale for further discussion
+## Note - see rationale for further discussion
 
 * Price identifier name: uTVL_KPI_SDT
 * Sources & Metrics: https://uma.stakedao.org/api/tvl
@@ -39,7 +41,7 @@ Voters should access the following endpoint as a source of truth for the calcula
 * Historical data update frequency: N/A
 
 
-## Technical Specifications
+# Technical Specifications
 
 * Price identifier name: uTVL_KPI_SDT
 * Base: uTVL_SDT
@@ -50,7 +52,7 @@ Voters should access the following endpoint as a source of truth for the calcula
 * Ceiling limit if KPI is satisfied: 10 SDT
 
 
-## Rationale
+# Rationale
 
 * This synthetic is designed as an incentivization mechanism to leverage the Stake DAO community, to grow their protocol as measured by their identified Key Performance Indicator of TVL (Total Value Locked).
 * This price identifier offers a guarantee that these options will be of value, even if this key metric is poor. However, the amount of value that can be locked in the protocol is potentially limitless and consequently a ceiling price of 10 SDT is required to provide a cap limit.
@@ -58,12 +60,12 @@ Voters should access the following endpoint as a source of truth for the calcula
 * There is no need for price processing. This is a snapshot based on a particular time, however it may be useful for TVL Options holders to have oversight of the ongoing TVL and consequently query the value of their options on an ongoing basis.
 
 
-## Implementation
+# Implementation
 
 As there is no requirement for ongoing monitoring through liquidation or dispute bots, a price feed is not required. The only requirement is a query of the SDT TVL statistic at the timestamp 00.00(UTC) on the date of expiry according to the data and markets as defined above under - DATA SPECIFICATIONS.
 
 
-## Security Considerations
+# Security Considerations
 
 * It is possible that as expiry approaches, a user may be able to purchase a large number of TVL option on the open market, should the TVL be significantly below the level required to achieve the ceiling level, then add large amounts of collateral to an UMA contract slightly before expiry to temporarily drive up the TVL, redeem the synthetic tokens, then withdraw the collateral immediately afterwards.
 * It is possible that a user may purchase uTVL_KPI_SDT at a low price, lock substantial amounts of collateral in UMA contracts causing the uTVL_KPI_SDT price to rise, then sell the these tokens at a profit and immediately withdraw the collateral from the contracts.
