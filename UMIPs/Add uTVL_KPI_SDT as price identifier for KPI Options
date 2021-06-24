@@ -1,11 +1,11 @@
-# Headers
+## Headers
 |     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add uTVL_KPI_SDT as supported price identifier                                                                                             |
 | Authors    | Greg Tumbiola - Tumbiola@gmail.com
 | Status     | Draft                                                                                                                                 |
 | Created    | June 12th, 2021                                                                                                                              |
-| Link to Discourse| https://discourse.umaproject.org/t/add-ugas-0921-price-identifier/1196
+| Link to Discourse| https://discourse.umaproject.org/t/add-ugas-0921-price-identifier/1196            |
 
 ## SUMMARY
 This UMIP enables the DVM to support price requests based on the TVL of Stake Dao.
