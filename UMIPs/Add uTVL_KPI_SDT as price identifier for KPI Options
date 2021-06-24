@@ -1,11 +1,11 @@
-## Headers
-|     |                                                                                                                                          
+# Headers
+| UMIP-108     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add uTVL_KPI_SDT as supported price identifier                                                                                             |
-| Authors    | Greg Tumbiola - Tumbiola@gmail.com
-| Status     | Draft                                                                                                                                 |
-| Created    | June 12th, 2021                                                                                                                              |
-| Link to Discourse| https://discourse.umaproject.org/t/add-ugas-0921-price-identifier/1196            |
+| UMIP Title | Add GASETH-0921 as a supported price identifier                                                                                             |
+| Authors    | Ross (ross@yam.finance)
+| Status     | Last Call                                                                                                                                 |
+| Created    | June 15th, 2021                                                                                                                              |
+| Link to Discourse| https://discourse.umaproject.org/t/add-utvl-kpi-sdt-as-price-identifier-for-kpi-options/1189
 
 ## SUMMARY
 This UMIP enables the DVM to support price requests based on the TVL of Stake Dao.
