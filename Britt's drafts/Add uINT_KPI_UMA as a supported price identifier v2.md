@@ -33,20 +33,19 @@ By establishing the terms of a qualifying integration, it allows for the communi
 
 # Data Specifications
 
-The UMA team will maintain a "green light" list of qualified integrations, which will be readily available upon request. Each integration will be added one at a time, after it has been discussed in the #voting channel in the UMA Discord. The following criteria will be considered during the evaluation of each integration:
+The UMA team will maintain a "green light" list of qualified integrations, which will be readily available upon request. Any one can propose adding an integration to the list. Each integration will be added one at a time, after it has been discussed in the #voting channel in the UMA Discord. The following criteria will be considered during the evaluation of each integration:
 
-Any contract that falls into one of the categories listed below.
-* Call or Put options
-* KPI options
-* Range Bonds
-* Integration with Optimistic Oracle
-* Long/Short Pair (LSP) Contract
+* Any use of an LSP contract with a TVL of $100,000 or more (TBD if that's the right number)
+* Any externally launched contract with $100,000 TVL that integrates with Optimistic Oracle.
 
 Contracts included are not limited to Ethereum mainnet- contracts on other chains where DVM message bridging is available (e.g. Polygon) will be included in consideration.
 
-Note: Contracts deployed by UMA, for use by UMA do not count. 
+Note: LSP contracts deployed by UMA for use by UMA do not count, but if UMA deploys a contract for use by another team, it is elligible as long as it meets the criteria above. 
 
-The applied timeframe for this UMIP will be between 1622505600 and 1633046399, meaning that all qualifying integrations launched during this timeframe should be counted. 
+The applied timeframe for this UMIP will be between 1622505600 (Jun 01 2021 00:00:00 UTC)  and 1633046399 (Sep 30 2021 23:59:59 UTC), meaning that all qualifying integrations launched during this timeframe should be counted. 
+
+## Ancillary data specifications
+Sean, comment here please! Also, if you have thoughts on whether or not we should specify anything specific to the contract construction, let me know. After taking out the payout section in implementation, it feels like it is lacking a little bit of transparency.
 
 **Revolution Clause** 
 
@@ -65,7 +64,7 @@ What kind of planning stages occurred prior to launch? Was there a proposal from
 
 Below are some examples of when discussion around good faith may be necessary:
 
-* Someone creates 10 call options on polygon that are nearly identical, but with different strike prices. It is likely that this case would be treated as only 1 integration, but discussion around rationale should be considered. 
+* Someone creates 10 call options on polygon that are nearly identical, but with different strike prices. Discussion around rationale should be considered. 
 
 * Someone creates and funds a call option for one month. When it expires, they then create another one for the next month. This would count as two integrations, provided that the intention and lifespan make sense for this product. 
 
@@ -78,15 +77,17 @@ Below are some examples of when discussion around good faith may be necessary:
 - **Base: Number of qualified integrations
 - **There is no quote currency in this option, as design feature. The collateral redemption is tied to the** *number of qualified integrations* **by design**
  - **Intended Collateral Currency** *UMA*.
-- **Rounding:** *Round to 4 decimal places* 
- - If the value returned is greater than 1.2500, round down to 1.2500 to provide a ceiling price.
+- **Rounding:** *Round to nearest whole number* 
+ - If the value returned is greater than 15, round down to 15. (need to determine what the new goal is for number of integrations)
  
 
 # Rationale
 
-Specifics of this design were chosen to establish a minimum payout that will definitely occur, with the maximum payout being within reach. One idea behind this is that if we make sure we can reach our KPI, then we can turn around and launch another before this one expires to keep that positive momentum going strong. 
+Specifics of this design were chosen to establish a a target number of meaningful integrations that we believe is within reach.  Adding a TVL minimum helps to align the desires of the UMA team and the UMA community to establish new and meaningful relationships with other communities with a real desire to use UMA products. 
 
-* Variable scaling is set up to reward implementations that occur before launch (between June 1 and launch date), but to provide the highest incentive to go out and get new integrations at the start of launch date.
+* Linear scaling is used for sake of ease for voters. Integrations that qualify for a bonus will simply be treated as multiple integrations as a way to recognize the increased value and work needed to get them across the finish line.
+
+*Minimum payout will be baked into the contract, rather than reflected in the implementation process, to account for the integrations that occurred between June 1 and launch date. This is intended to reward the community for hard work leading up to the launch of this KPI.
 
 * The decision to stick to the listed product types was made in order to bring focus to the products we want to push the most at this time.
 
@@ -94,29 +95,12 @@ Specifics of this design were chosen to establish a minimum payout that will def
 
 * Choosing a starting timestamp of June 1 helps to reward the community for the integrations they have already started on and help keep momentum going while the current KPI expires. 
 
-* In order to reward the extra work that goes into larger integrations, any qualifying integration valued at or above $5 million in TVL for any amount of time will qualify for a bonus point that will increase the value of uINT by 0.0833 UMA. 
-
-
 # Implementation
 
-Step 1: Refer to "green light" list for finalized information on all qualified integrations. Assign 1 point for each integration.
+Step 1: Refer to "green light" list for finalized information on all qualified integrations. Assign 1 point for each integration. If an integration qualifies for a bonus, it will be indicated with a 🐋. These integrations are worth 3 points each (This number should be discussed prior to vote)
 
-Step 2: Tally up the total number of points, and use the following criteria to determine the $UMA value of each uINT token (uINT/UMA). Note: any integrations with a 🐋 indicator qualify for a BONUS. See details below.
+Step 2: Tally up the total number of points, and return this value. No rounding should be necessary as it should be a whole number
 
-Starting at 0, the value of each uINT increases according to the following scale:
-* 0.0167 for the first 10 points.
-* 0.0500 for the next 15 points.
-* A BONUS value of 0.0833 should be added for each integration on the "green light" list with a 🐋 indicator, with a maximum of 4 possible bonuses. Treat this as a separate component of your calculation. See example below. 
-
-Step 3: return the appropriate value (in UMA) per uINT that corresponds to the total number of points tallied. If value returned is greater than 1.2500, return 1.2500.
-
-Examples: 
-If a voter determines a tally of 12 points and no BONUS points, they would calculate that 1 uINT = (10 x 0.0167) + (2 x 0.0500) = 0.2667 UMA. 
-
-If a voter determines a tally of 22 points and 2 of them include BONUS points, they would calculate that 1 uINT = (10 x 0.0167) + (12 x 0.0500) + (2 x 0.0833) = 0.9333 UMA.
-
-If a voter determines a tally of 20 points and 7 of them would individually qualify for BONUS points, they would calculate that 1 uINT = (10 x 0.0167) + (10 x 0.0500) + (4 x 0.0833) = 1.000 
-This is because even though 7 of the integrations qualified for bonus, there is a maximum of 4 bonuses allowed in this KPI option.
 
 # Security Considerations
 
