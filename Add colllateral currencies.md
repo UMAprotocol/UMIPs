@@ -44,11 +44,15 @@ This store fee was chosen as it is approximately equivalent to $400 in line with
 
 This change has no implementations other than the aforementioned governor transactions
 
+## Token Summary 
+
+Geyser offers developers a configurable toolkit to support liquidity mining campaigns.  Developers can launch Geysers to reward investors who undertake certain blockchain-based activities like providing liquidity in a pool on a decentralized exchange.  The GYSR core contracts were audited for functionality, safety, and security by [Pessimistic (formerly SmartDec)](https://resources.gysr.io/gysr_v1_audit_pessimistic.pdf). The v2 audits were performed by [CertiK](https://resources.gysr.io/gysr_v2_audit_certik.pdf)
+
 ## Security considerations
 
 Adding a collateral currency introduces a level of risk into the UMA Ecosystem. This collateral type should be monitored to ensure that the proposed collateral continues to have value.
 
-Contract deployers considering using this collateral in an UMA contract should refer to the guidelines on collateral type usage available here **(insert docs link)** to ensure appropriate use.
+Contract deployers considering using this collateral should note that liquidity is only currenly available on one exchange, and the depth is low.  Consequently it should not be used in any liquidatable contract.
 
 ## MPH
 
@@ -57,7 +61,7 @@ Contract deployers considering using this collateral in an UMA contract should r
 To accomplish this upgrade, the following changes need to be made:
 
 -   The MPH  address  [0x8888801af4d980682e47f1a9036e589479e835c5](https://etherscan.io/address/0x8888801af4d980682e47f1a9036e589479e835c5)  needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of 12 MPH  needs to be added for MPH in the Store contract.
+-   A final fee of 15 MPH  needs to be added for MPH in the Store contract.
 
 ### Implementation
 
@@ -84,7 +88,7 @@ $UMA holders should evaluate the ongoing cost and benefit of supporting this ass
 To accomplish this upgrade, the following changes need to be made:
 
 -   The APW address  [0x4104b135dbc9609fc1a9490e61369036497660c8](https://etherscan.io/address/0x4104b135dbc9609fc1a9490e61369036497660c8)  needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of 260 APW needs to be added for APW in the Store contract.
+-   A final fee of 400 APW needs to be added for APW in the Store contract.
 
 ### Implementation
 
@@ -114,7 +118,7 @@ APWine has a circulating supply of 2,603,248 APW and a max supply of 50,000,000.
 To accomplish this upgrade, the following changes need to be made:
 
 -   The SNOW address [0xfe9A29aB92522D14Fc65880d817214261D8479AE](https://etherscan.io/address/0xfe9A29aB92522D14Fc65880d817214261D8479AE)  needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of 45 SNOW needs to be added for SNOW in the Store contract.
+-   A final fee of 80 SNOW needs to be added for SNOW in the Store contract.
 
 ### Implementation
 
