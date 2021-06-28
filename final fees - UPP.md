@@ -1,8 +1,8 @@
 ## Summary
 
-This UPP will increase the final fees for RenBTC, PERL, bBADGER RenDOGE, OCEAN, YAM, wBTC, AAVE, SNX, UMA, DPI SUSHI, xSUSHI, XIO, BAL,bDIGG RAI, COMP, ALCX, ALPHA, REN, CRV, RGT NFTX, LON, MASK, BANK, SFI, VSP DEXTF, ORN, PUNK-BASIC, iFARM, BNT, vBNT, BAND, SDT, KP3R, CHAIN OPEN and DFX  to be around $400. This will increase the cost of initiating disputes for the DVM.
+This UPP will increase the final fees for RenBTC, PERL, bBADGER , OCEAN, YAM, wBTC, AAVE, LINK SNX, UMA, DPI, SUSHI, xSUSHI, XIO, BAL,bDIGG, RAI, COMP, ALCX, ALPHA, REN, CRV, RGT, NFTX, LON, MASK, BANK, SFI, VSP, DEXTF, ORN, PUNK-BASIC, iFARM, BNT, vBNT, BAND, SDT, KP3R, CHAIN, OPEN and DFX  to be around $400. This will increase the cost of initiating disputes for the DVM.
 
-Additionally, this UPP will decrease the final fees for RenDoge, and BASK to around $400, reducing the cost of initiating disputes for the DVM.
+Additionally, this UPP will decrease the final fees for RenDOGE, and BASK to around $400, reducing the cost of initiating disputes for the DVM.
 
 ## Rationale
 
@@ -15,7 +15,7 @@ It is also necessary to ensure that the cost of dispute is not so high that is i
 ## Specifics
 
   - The RenBTC final fee will be increased to 0.01 RenBTC
-  - The PERL final fee will be increased to 3500 PERL. 
+  - The PERL final fee will be increased to 6000 PERL. 
   - The bBADGER final fee will be increased to 40 bBADGER
    
   - The RenDOGE final fee will be decreased to 1500 RenDOGE
@@ -37,7 +37,7 @@ It is also necessary to ensure that the cost of dispute is not so high that is i
   - The ALCX final fee will be increased to 1.35 ALCX
   - The ALPHA final fee will be increased to 1100 ALPHA
   - The REN final fee will be increased to 1150 REN
-  - The CRX final fee will be increased to 250 CRV
+  - The CRV final fee will be increased to 250 CRV
   - The RGT final fee will be increased to 85 RGT
   - The NFTX final fee will be increased to 10 NFTX
   - 
