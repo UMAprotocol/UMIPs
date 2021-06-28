@@ -103,7 +103,7 @@ The following pieces of data will be included as ancillary data when the contrac
 
 Step 1: Refer to "green light" list for finalized information on all qualified integrations. Assign 1 point for each integration on the list. 
 
-Step 2: If an integration qualifies for a bonus, it will be indicated with a 🐋. These integrations are worth some multiplier of points, which will be specified in the ancillary data. Keep track of bonus points in addition to base points.  
+Step 2: If an integration qualifies for a bonus, it will be indicated with a 🐋. These integrations are worth some multiplier of points, which will be specified in the ancillary data as `bonusIntegrationsMultiplier`. Keep track of bonus points in addition to base points.  
 
 Step 2: Tally up the total number of base points as well as the number of bonus points. At this point, the two numbers should be separate.
 
