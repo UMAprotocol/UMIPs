@@ -118,7 +118,7 @@ APWine has a circulating supply of 2,603,248 APW and a max supply of 50,000,000.
 To accomplish this upgrade, the following changes need to be made:
 
 -   The SNOW address [0xfe9A29aB92522D14Fc65880d817214261D8479AE](https://etherscan.io/address/0xfe9A29aB92522D14Fc65880d817214261D8479AE)  needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of 80 SNOW needs to be added for SNOW in the Store contract.
+-   A final fee of 60 SNOW needs to be added for SNOW in the Store contract.
 
 ### Implementation
 
@@ -145,7 +145,7 @@ SnowSwap has a circulating supply of 311,036.71 SNOW and a max supply of 500,000
 To accomplish this upgrade, the following changes need to be made:
 
 -   The NDX address  [0x86772b1409b61c639eaac9ba0acfbb6e238e5f83](https://etherscan.io/address/0x86772b1409b61c639eaac9ba0acfbb6e238e5f83)  needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of 70 NDX needs to be added for NDX in the Store contract.
+-   A final fee of 100 NDX needs to be added for NDX in the Store contract.
 
 ### Implementation
 
