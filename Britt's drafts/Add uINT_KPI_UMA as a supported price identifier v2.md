@@ -66,14 +66,21 @@ Contracts included are not limited to Ethereum mainnet- contracts on other chain
 
 The applied timeframe for this UMIP will be specified in ancillary data, and all qualifying integrations launched during this timeframe should be counted. 
 
+The "green light" list should not be considered the *only* source of truth. The DVM has the ability and responsibility to challenge the validity of any integrations that have been included or excluded from the list if the broader consensus of UMA tokenholders is that it is within the spirit of this UMIP to do so. Any and all questions surrounding the validity of an integration can be brought up in further detail in the #voting channel on the UMA Discord.
+
 # Ancillary Data Specifications
 The following pieces of data will be included as ancillary data when the contract is deployed, and will provide additional details & instructions to help voters correctly identify the number of qualifying integrations.
 
-* expiry timestamp
-* start timestamp
-* Max base integrations
-* Max bonus integrations
-* Bonus integrations multiplier
+* `startTimestamp` (unix timestamp)
+* `maxBaseIntegrations` (non-negative interger)
+* `maxBonusIntegrations` (non-negative interger)
+* `bonusIntegrationsMultiplier` (non-negative number rounded to 2 decimals)
+* `floorIntegrations` (non-negative interger)
+
+Ancillary data should be passed into the contract using the format in the example below.
+```
+startTimestamp:1622527200, maxBaseIntegrations:15, maxBonusIntegrations:3, bonusIntegrationsMultiplier:3.00, floorIntegrations:3
+```
 
 # Technical Specifications
 
@@ -81,20 +88,22 @@ The following pieces of data will be included as ancillary data when the contrac
 - **Base: Number of qualified DAO integrations
 - **There is no quote currency in this option, as design feature. The collateral redemption is tied to the** *number of qualified integrations* **by design**
  - **Intended Collateral Currency** *UMA*.
-- **Rounding:** *Round to nearest whole number, however this should not be necessary* 
+- **Rounding:** *Round to nearest whole number, unless ancillary data supplies a multiplier that cannot be expressed as a whole number. In this case, round to 2 decimal places.* 
  
 
 # Rationale
 
 * Linear scaling is used for sake of ease for contract deployment and for voters. Integrations that qualify for a bonus will simply be treated as multiple integrations as a way to recognize the increased value and work needed to get them across the finish line.
 
-*Minimum payout will be baked into the contract, rather than reflected in the implementation process. This design choice is intented to account for the integrations that occurred prior to launch, in an effort to reward the community for hard work leading up to the launch of this KPI option. More details on minimum payout and scaling can be found within the deployed contract. 
+* Allowing for a specified minimum payout is intented to account for the integrations that occurred prior to launch, in an effort to reward the community for hard work leading up to the launch of this KPI option.
+
+* Minimum payout may be established in ancillary data via the `floorIntegrations` parameter, or it can be baked into the contract. This is a design decision to be made by the contract deployer. If it is baked into the contract, details can be customized using the [financial products library] (https://github.com/UMAprotocol/protocol/tree/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries). Allowing variations of this feature as a design choice allows deployers to weigh the pros and cons of exchainging simplisity for transparancy. In both cases, more details on minimum payout and scaling can be found within the deployed contract. 
 
 * The decision to stick to the listed product types was made in order to focus the community and align incentives with the strategic goals of the organization.
 
 * Setting it up to allow for all qualified launches to be counted throughout the period rather than just at the time of expiry helps to ensure that we are not missing out on any integrations that might expire before the KPI option does. 
 
-* Choosing a starting timestamp prior to launch of this option is a design feature that helps to reward the community for the integrations they have already started on and help keep momentum going while the current KPI expires. Using ancillary data to provide this field allows the deployer of the contract to choose the starting timestamp as they see fit.
+* Having a customized starting timestamp allows a contract deployer to include integrations that occur prior to launch of this option. This design feature can act to reward the community for prior work done and may also help keep momentum going while the current KPI expires. 
 
 * The rationale for choosing DAO integrations was to emphasize building DAO-to-DAO relationships. UMA’s product suite has increasingly gained focus and traction on DAO treasury management. However, it is not scalable for the development team to focus on promotion and integration efforts alone, and this KPI Option has been designed to help recruit the community to help.
 
@@ -103,13 +112,13 @@ The following pieces of data will be included as ancillary data when the contrac
 
 Step 1: Refer to "green light" list for finalized information on all qualified integrations. Assign 1 point for each integration on the list. 
 
-Step 2: If an integration qualifies for a bonus, it will be indicated with a 🐋. These integrations are worth some multiplier of points, which will be specified in the ancillary data. Keep track of bonus points in addition to base points.  
+Step 2: If an integration qualifies for a bonus, it will be indicated with a 🐋. These integrations are worth some multiplier of points, which will be specified in the ancillary data as `bonusIntegrationsMultiplier`. Keep track of bonus points in addition to base points.  
 
 Step 2: Tally up the total number of base points as well as the number of bonus points. At this point, the two numbers should be separate.
 
-Step 3: The ancillary data specifications for max base points and max bonus points, decide if your tally requires rounding down for either of those values. 
+Step 3: Using the ancillary data specifications for `maxBaseIntegrations` and `maxBonusIntegrations`, decide if your tally requires rounding down for either of those values. 
 
-Step 4: After rounding has been accounted for, add base points plus bonus points for the total number of points. This is the value you will return. 
+Step 4: After rounding has been accounted for, add base points plus bonus points for the total number of points. This is the value you will return. If the value returned would be lower than `floorIntegrations`, round up to the value provided by this field in ancillary data.
 
 
 # Security Considerations
