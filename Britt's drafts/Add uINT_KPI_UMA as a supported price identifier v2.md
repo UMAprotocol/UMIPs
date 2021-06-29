@@ -33,7 +33,7 @@ By establishing the terms of a qualifying integration, it allows for the communi
 
 # Data Specifications
 
-The UMA team will maintain a "green light" list of qualified integrations, which will be readily available upon request. Anyone can propose adding an integration to the list. Each integration will be added one at a time, after it has been discussed in the #voting channel in the UMA Discord. UMA tokenholders are encouraged to participate in these discussions.
+The UMA team will maintain a "green light" list of qualified integrations, which will be readily available upon request. This list will include details that voters need to assess the validity of the integration (e.g. launch date of the contract so that voters can verify it is within the specified timeframe of the the current KPI option). Anyone can propose adding an integration to the list. Each integration will be added one at a time, after it has been discussed in the #voting channel in the UMA Discord. UMA tokenholders are encouraged to participate in these discussions.
 
 An integration will have been achieved when a DAO funds with tokens one of the following three product categories:
 
@@ -47,7 +47,7 @@ An integration will have been achieved when a DAO funds with tokens one of the f
 *Product Categories* - The three product categories have been explored and defined in a variety of articles, and many of the articles can be seen on UMA’s medium page. These product types would primarily be built using UMA’s LSP (Long/Short Pair) contract, and in some cases can use the EMP contract. However, it is important to note that they will all be fully capitalized products, without any chance or need for liquidations.
 Only one integration per product type per DAO can qualify. This means that the maximum number of integrations available to a single DAO would be 3. It is perhaps possible to imagine a DAO that has subsidiaries or close partnerships with other DAOs, such that it is not clear to which DAO a product integration would apply. In this case, the authors suggest deferring to the ambiguity consideration section below. 
 
-*DAO* - A decentralized, autonomous organization. We would expect them to have a native token (although this is not a requirement) and a governance system. There are perhaps DAOs that are not yet very decentralized--they should be included all the same. However, the spirit of this design is that it incentivizes DAO-to-DAO activity, and so we would expect that to represent the lionshare of activity. If there is a non-DAO integration that is judged to be especially valuable, it is up to the discretion of Risk Labs to offer additional uDAO tokens as a reward. 
+*DAO* - A decentralized, autonomous organization. We would expect them to have a native token (although this is not a requirement) and a governance system. There are perhaps DAOs that are not yet very decentralized--they should be included all the same. However, the spirit of this design is that it incentivizes DAO-to-DAO activity in a way that engages the core team and community for both DAOs, and so we would expect that to represent the lionshare of activity. If there is a non-DAO integration that is judged to be especially valuable, it is up to the discretion of Risk Labs to offer additional uDAO tokens as a reward. 
 
 **Ambiguity Considerations**
 
@@ -56,7 +56,12 @@ With regard to the definition of a DAO, this is perhaps the definition in the li
 * CoinGecko - Their product token must be listed here
 * DeFi Pulse - If they are listed on DeFi Pulse, they quality as a DAO
 
-There is one type that this misses: new projects with illiquid tokens. We wouldn’t want to exclude this valuable integration type from inclusion in the KPI Options. This is a category that we will leave to UMA tokenholders to evaluate. As a guiding principle, a qualifying DAO is part of a good faith project; a disqualifying DAO would be one with no genuine attempt at a company or organization.
+There is one type that this misses: new projects with illiquid tokens. We wouldn’t want to exclude this valuable integration type from inclusion in the KPI Options. This is a category that we will leave to UMA tokenholders to evaluate. As a guiding principle, a qualifying DAO is part of a good faith project; a disqualifying DAO would be one with no genuine attempt at a company or organization. Any ambiguities around the question of, "is it a DAO?" will be discussed in the #voting channel on the UMA Discord. It is especially important to the design of this UMIP that UMA tokenholders participate in these discussions to establish borad consensus on questions that don't have black and white answers. 
+
+**Bonus Integrations**
+As seen below in the ancillary data section, this UMIP allows for the deployer of the contract to include bonus parameters for integrations above a set TVL threshold, denominated in $USD. If a deployer elects to include a bonus option, they should specify the minimum value required to qualify, the max number of integrations that can qualify for a bonus, and the multiplier to be applied to these integrations. To be consistent throught this UMIP, an integration will qualify for a bonus if it reaches the TVL threshold at any point in the life of the kpi option. If an integration qualifies for the specified bonus, it will be indicated on the "green light" list with a 🐋. 
+
+It is assumed that the collateral token in most cases will not be USD. Rather than requiring contract deployers to supply a price feed for determining the collateral token value in USD, this should be a component of discussion in the evaluation process that occurrs in the #voting channel in UMA Discord. As a reminder, anyone can propose that something be included on the "green light" list. If someone believes that an integration has qualified for a bonus, they should provide a detailed explanation of their proposal to be discussed in the #voting channel in the UMA Discord. 
 
 **Additional Notes:** 
 
@@ -74,12 +79,13 @@ The following pieces of data will be included as ancillary data when the contrac
 * `startTimestamp` (unix timestamp)
 * `maxBaseIntegrations` (non-negative interger)
 * `maxBonusIntegrations` (non-negative interger)
+* `bonusMinValue` (TVL represented in $USD)
 * `bonusIntegrationsMultiplier` (non-negative number rounded to 2 decimals)
 * `floorIntegrations` (non-negative interger)
 
 Ancillary data should be passed into the contract using the format in the example below.
 ```
-startTimestamp:1622527200, maxBaseIntegrations:15, maxBonusIntegrations:3, bonusIntegrationsMultiplier:3.00, floorIntegrations:3
+startTimestamp:1622527200, maxBaseIntegrations:15, maxBonusIntegrations:3, bonusMinValue:$1,000,000, bonusIntegrationsMultiplier:3.00, floorIntegrations:3
 ```
 
 # Technical Specifications
@@ -110,15 +116,15 @@ startTimestamp:1622527200, maxBaseIntegrations:15, maxBonusIntegrations:3, bonus
 
 # Implementation
 
-Step 1: Refer to "green light" list for finalized information on all qualified integrations. Assign 1 point for each integration on the list. 
+Step 1: Refer to "green light" list for finalized information on all qualified integrations. Assign 1 point for each integration on the list, including any integrations that have qualified for a bonus. 
 
-Step 2: If an integration qualifies for a bonus, it will be indicated with a 🐋. These integrations are worth some multiplier of points, which will be specified in the ancillary data as `bonusIntegrationsMultiplier`. Keep track of bonus points in addition to base points.  
+Step 2: If an integration qualifies for a bonus, it will be indicated with a 🐋. These integrations are worth some multiplier of points *in addition* to the base points counted above. This multiplier will be specified in the ancillary data as `bonusIntegrationsMultiplier`. Keep track of bonus points and base points separately.  
 
-Step 2: Tally up the total number of base points as well as the number of bonus points. At this point, the two numbers should be separate.
+Step 3: Tally up the total number of base points as well as the number of bonus points. At this point, the two numbers should be separate.
 
-Step 3: Using the ancillary data specifications for `maxBaseIntegrations` and `maxBonusIntegrations`, decide if your tally requires rounding down for either of those values. 
+Step 4: Using the ancillary data specifications for `maxBaseIntegrations` and `maxBonusIntegrations`, decide if your tally exceeds the max allowed for either category. If the value of your tally exceeds the max allowable points in either category, use the value provided by `maxBaseIntegrations` and `maxBonusIntegrations`.
 
-Step 4: After rounding has been accounted for, add base points plus bonus points for the total number of points. This is the value you will return. If the value returned would be lower than `floorIntegrations`, round up to the value provided by this field in ancillary data.
+Step 5: Add base points plus bonus points from the step above for the total number of points. This is the value you will return. If the value returned would be lower than `floorIntegrations`, use the value provided by this field in ancillary data.
 
 
 # Security Considerations
