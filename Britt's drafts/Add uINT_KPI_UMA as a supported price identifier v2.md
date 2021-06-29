@@ -44,7 +44,7 @@ An integration will have been achieved when a DAO funds with tokens one of the f
 **Definitions:**
 *Fund* - To fund means to take the DAO’s native token or another asset from the treasury and put it into one of these above product types. The intention here is that these products will be used as a way to interact with the DAO’s community. There is an edge case here where a DAO might put money into a product with the intention to trade--This is not the spirit of this initiative and should not count towards an integration (although it is not discouraged behavior.)
 
-*Product Categories* - The three product categories have been explored and defined in a variety of articles, and many of the articles can be seen on UMA’s medium page. These product types would primarily be built using UMA’s LSP (Long/Short Pair) contract, and in some cases can use the EMP contract. However, it is important to note that they will all be fully capitalized products, without any chance or need for liquidations.
+*Product Categories* - The three product categories have been explored and defined in a variety of articles, and many of the articles can be seen on UMA’s medium [page](https://medium.com/uma-project). These product types would primarily be built using UMA’s LSP (Long/Short Pair) contract, and in some cases can use the EMP contract. However, it is important to note that they will all be fully capitalized products, without any chance or need for liquidations.
 Only one integration per product type per DAO can qualify. This means that the maximum number of integrations available to a single DAO would be 3. It is perhaps possible to imagine a DAO that has subsidiaries or close partnerships with other DAOs, such that it is not clear to which DAO a product integration would apply. In this case, the authors suggest deferring to the ambiguity consideration section below. 
 
 *DAO* - A decentralized, autonomous organization. We would expect them to have a native token (although this is not a requirement) and a governance system. There are perhaps DAOs that are not yet very decentralized--they should be included all the same. However, the spirit of this design is that it incentivizes DAO-to-DAO activity in a way that engages the core team and community for both DAOs, and so we would expect that to represent the lionshare of activity. If there is a non-DAO integration that is judged to be especially valuable, it is up to the discretion of Risk Labs to offer additional uDAO tokens as a reward. 
@@ -59,6 +59,7 @@ With regard to the definition of a DAO, this is perhaps the definition in the li
 There is one type that this misses: new projects with illiquid tokens. We wouldn’t want to exclude this valuable integration type from inclusion in the KPI Options. This is a category that we will leave to UMA tokenholders to evaluate. As a guiding principle, a qualifying DAO is part of a good faith project; a disqualifying DAO would be one with no genuine attempt at a company or organization. Any ambiguities around the question of, "is it a DAO?" will be discussed in the #voting channel on the UMA Discord. It is especially important to the design of this UMIP that UMA tokenholders participate in these discussions to establish borad consensus on questions that don't have black and white answers. 
 
 **Bonus Integrations**
+
 As seen below in the ancillary data section, this UMIP allows for the deployer of the contract to include bonus parameters for integrations above a set TVL threshold, denominated in $USD. If a deployer elects to include a bonus option, they should specify the minimum value required to qualify, the max number of integrations that can qualify for a bonus, and the multiplier to be applied to these integrations. To be consistent throught this UMIP, an integration will qualify for a bonus if it reaches the TVL threshold at any point in the life of the kpi option. If an integration qualifies for the specified bonus, it will be indicated on the "green light" list with a 🐋. 
 
 It is assumed that the collateral token in most cases will not be USD. Rather than requiring contract deployers to supply a price feed for determining the collateral token value in USD, this should be a component of discussion in the evaluation process that occurrs in the #voting channel in UMA Discord. As a reminder, anyone can propose that something be included on the "green light" list. If someone believes that an integration has qualified for a bonus, they should provide a detailed explanation of their proposal to be discussed in the #voting channel in the UMA Discord. 
@@ -71,7 +72,7 @@ Contracts included are not limited to Ethereum mainnet- contracts on other chain
 
 The applied timeframe for this UMIP will be specified in ancillary data, and all qualifying integrations launched during this timeframe should be counted. 
 
-The "green light" list should not be considered the *only* source of truth. The DVM has the ability and responsibility to challenge the validity of any integrations that have been included or excluded from the list if the broader consensus of UMA tokenholders is that it is within the spirit of this UMIP to do so. Any and all questions surrounding the validity of an integration can be brought up in further detail in the #voting channel on the UMA Discord.
+The "green light" list should not be considered the *only* source of truth, but rather a reflection of the discussions that take place within the community. The DVM has the ability and responsibility to challenge the validity of any integrations that have been included or excluded from the list if the broader consensus of UMA tokenholders is that it is within the spirit of this UMIP to do so. Any and all questions surrounding the validity of an integration can be brought up in further detail in the #voting channel on the UMA Discord.
 
 # Ancillary Data Specifications
 The following pieces of data will be included as ancillary data when the contract is deployed, and will provide additional details & instructions to help voters correctly identify the number of qualifying integrations.
@@ -94,7 +95,7 @@ startTimestamp:1622527200, maxBaseIntegrations:15, maxBonusIntegrations:3, bonus
 - **Base: Number of qualified DAO integrations
 - **There is no quote currency in this option, as design feature. The collateral redemption is tied to the** *number of qualified integrations* **by design**
  - **Intended Collateral Currency** *UMA*.
-- **Rounding:** *Round to nearest whole number, unless ancillary data supplies a multiplier that cannot be expressed as a whole number. In this case, round to 2 decimal places.* 
+- **Rounding:** *Round to 2 decimals* 
  
 
 # Rationale
@@ -107,7 +108,7 @@ startTimestamp:1622527200, maxBaseIntegrations:15, maxBonusIntegrations:3, bonus
 
 * The decision to stick to the listed product types was made in order to focus the community and align incentives with the strategic goals of the organization.
 
-* Setting it up to allow for all qualified launches to be counted throughout the period rather than just at the time of expiry helps to ensure that we are not missing out on any integrations that might expire before the KPI option does. 
+* Setting it up to allow for all qualified launches to be counted throughout the period rather than just at the time of expiry helps to ensure that we are not missing out on any integrations that might expire before the KPI option does. The same logic is applied to bonus qualifying integrations.
 
 * Having a customized starting timestamp allows a contract deployer to include integrations that occur prior to launch of this option. This design feature can act to reward the community for prior work done and may also help keep momentum going while the current KPI expires. 
 
