@@ -384,15 +384,13 @@ An inclusion of a single market makes that price subject to manipulation, this i
 
 ## Markets and Data Sources
 
-Markets: Uniswap and Gate.io
+Markets: Uniswap
 
-* Gate.io [SNOW/USDT](https://api.cryptowat.ch/markets/gateio/snowusdt/price)
 * Uniswap [SNOW/ETH](https://v2.info.uniswap.org/pair/0xe4f8f3cb9b33247789e4984a457bb69a1a621df3)
 
 
 How often is the provided price update?
 - Uniswap updates their price with every Ethereum block (~15 seconds per block)
-- For Cryptowatch, the lower bound on the price update frequency is a minute
 
 Do these sources allow for querying up to 74 hours of historical data?
 - Yes
@@ -402,15 +400,12 @@ Is an API key required to query these sources?
 
 Is there a cost associated with usage?
 - For uniswap subgraph, no
-- For Cryptowatch, yes
 
 If there is a free tier available, how many queries does it allow for?
 - Subgraph is free to use
-- Cryptowatch, the free tier is limited to 10 API credits per 24 hours; the cost of querying the market price of a given exchange is 0.005 API credits
 
 Provide recommended endpoints to query for historical prices from each market listed.
 - Uniswap V2: https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-- Gate.io: https://api.cryptowat.ch/markets/gateio/snowusdt/ohlc?after=1617848822&before=1617848822&periods=60
 
 Uniswap Query:
 ```
@@ -441,22 +436,20 @@ Uniswap Query:
 
 ## Price Feed Implementation
 
-Uses the [Expression](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js),
-[Cryptowatch](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js),
+Uses the [Expression](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js)
 and [Uniswap](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) price feeds.
 
 ```
 SNOWUSD: {
   type: "expression",
   expression: `
-    median( (SNOW_ETH_UNI * ETHUSD), SNOW_USD_GATE)
+    SNOW_ETH_UNI * ETHUSD
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
   priceFeedDecimals: 8,
   customFeeds: {
-    SNOW_USD_GATE: { type: "cryptowatch", exchange: "gateio", pair: "snowusdt" },
-    SNOW_ETH_UNI: { type: "uniswap", uniswapAddress: "0xe4f8f3cb9b33247789e4984a457bb69a1a621df3", twapLength: 900 },
+    SNOW_ETH_UNI: { type: "uniswap", uniswapAddress: "0xe4f8f3cb9b33247789e4984a457bb69a1a621df3", twapLength: 900, invertPrice: true  },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -471,15 +464,14 @@ SNOWUSD: {
 USDSNOW: {
   type: "expression",
   expression: `
-    snow_usd = median( (SNOW_ETH_UNI * ETHUSD), SNOW_USD_GATE)
+    snow_usd = (SNOW_ETH_UNI * ETHUSD)
     1 / snow_usd
   `,
   lookback: 7200,
   minTimeBetweenUpdates: 60,
   priceFeedDecimals: 8,
   customFeeds: {
-    SNOW_USD_GATE: { type: "cryptowatch", exchange: "gateio", pair: "snowusdt" },
-    SNOW_ETH_UNI: { type: "uniswap", uniswapAddress: "0xe4f8f3cb9b33247789e4984a457bb69a1a621df3", twapLength: 900 },
+    SNOW_ETH_UNI: { type: "uniswap", uniswapAddress: "0xe4f8f3cb9b33247789e4984a457bb69a1a621df3", twapLength: 900, invertPrice: true  },
     ETHUSD: {
       type: "medianizer",
       minTimeBetweenUpdates: 60,
@@ -534,13 +526,11 @@ USDSNOW: {
 ## Implementation
 
 ```
-1. For the cryptowatch endpoint, voters should use the open price of the 1 minute OHLC period that the timestamp falls in for Gate.io
-2. Query the SNOW/ETH price from Uniswap using 15-minute TWAP.
-3. Query the ETH/USD price as per UMIP-6.
-4. Multiply the SNOW/ETH price by the ETH/USD price and round to 6 decimals to get the SNOW/USD price.
-5. The median of Steps 1 and 4 should be taken.
-6. The result from step 5 should be rounded to six decimals to determine the SNOWUSD price.
-7. (for USD/SNOW) Take the inverse of the result of step 5, before rounding, (1/ SNOW/USD) to get the USD/BAND price, and round to 6 decimals.
+1. Query the SNOW/ETH price from Uniswap using 15-minute TWAP.
+2. Query the ETH/USD price as per UMIP-6.
+3. Multiply the SNOW/ETH price by the ETH/USD price and round to 6 decimals to get the SNOW/USD price.
+4. The result from step 3 should be rounded to six decimals to determine the SNOWUSD price.
+5. (for USD/SNOW) Take the inverse of the result of step 4, before rounding, (1/ SNOW/USD) to get the USD/SNOW price, and round to 6 decimals.
 ```
 
 ## Security Considerations
