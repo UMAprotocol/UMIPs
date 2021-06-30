@@ -14,7 +14,7 @@ It is also necessary to ensure that the cost of dispute is not so high that is i
 
 ## Specifics
 
-  - The RenBTC final fee will be increased to 0.01 RenBTC
+  - The RenBTC final fee will be increased to 0.012 RenBTC
   - The PERL final fee will be increased to 6000 PERL. 
   - The bBADGER final fee will be increased to 40 bBADGER
    
@@ -33,13 +33,13 @@ It is also necessary to ensure that the cost of dispute is not so high that is i
   - The BAL final fee will be increased to 24 BAL
   - The bDIGG final fee will be increased to 0.09 bDIGG
   - The RAI final fee will be increased to 500 RAI
-  - The COMP final fee will be increased to 1.75 COMP
+  - The COMP final fee will be increased to 1.3 COMP
   - The ALCX final fee will be increased to 1.35 ALCX
-  - The ALPHA final fee will be increased to 1100 ALPHA
+  - The ALPHA final fee will be increased to 900 ALPHA
   - The REN final fee will be increased to 1150 REN
   - The CRV final fee will be increased to 250 CRV
   - The RGT final fee will be increased to 85 RGT
-  - The NFTX final fee will be increased to 10 NFTX
+  - The NFTX final fee will be increased to 7.5 NFTX
   - 
   - The LON final fee will be increased to 130 LON
   - The MASK final fee will be increased to 115 MASK
