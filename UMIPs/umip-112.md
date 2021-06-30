@@ -1,6 +1,6 @@
 ## Headers
 
-| **UMIP 112**
+| **UMIP 112** |
               
 | ------------------- | ------------------------------------------------------------- |
 | **UMIP Title**          | **Add** *uDAO_KPI_UMA* **as a supported price identifier**|
