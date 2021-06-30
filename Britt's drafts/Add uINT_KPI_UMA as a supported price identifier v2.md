@@ -121,6 +121,8 @@ Step 1: Refer to "green light" list for finalized information on all qualified i
 
 Step 2: If an integration qualifies for a bonus, it will be indicated with a 🐋. These integrations are worth some multiplier of points *in addition* to the base points counted above. This multiplier will be specified in the ancillary data as `bonusIntegrationsMultiplier`. Keep track of bonus points and base points separately.  
 
+* Note for step 2: In order for an integration to earn a 🐋 marker, it must meet the minimum TVL threshold as defined in the ancilary data parameter `minBonusValue`. This value is denominated in $USD rather than the collateral token, so discussion of $USD value had to take place in the #voting channel in UMA Discord in order for an integration to earn this status. For additional details on bonuses, see the above section on bonus integrations.
+
 Step 3: Tally up the total number of base points as well as the number of bonus points. At this point, the two numbers should be separate.
 
 Step 4: Using the ancillary data specifications for `maxBaseIntegrations` and `maxBonusIntegrations`, decide if your tally exceeds the max allowed for either category. If the value of your tally exceeds the max allowable points in either category, use the value provided by `maxBaseIntegrations` and `maxBonusIntegrations`.
