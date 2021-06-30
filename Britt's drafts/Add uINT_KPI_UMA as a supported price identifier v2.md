@@ -82,7 +82,7 @@ The following pieces of data will be included as ancillary data when the contrac
 * `maxBonusIntegrations` (non-negative interger)
 * `bonusMinValue` (TVL represented in $USD)
 * `bonusIntegrationsMultiplier` (non-negative number rounded to 2 decimals)
-* `floorIntegrations` (non-negative interger)
+* `floorIntegrations` (non-negative integer)
 
 Ancillary data should be passed into the contract using the format in the example below.
 ```
