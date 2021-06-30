@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add GASETH-0921 as a supported price identifier                                                                                             |
 | Authors    | Ross (ross@yam.finance)
-| Status     | Last Call                                                                                                                                 |
+| Status     | Approved                                                                                                                               |
 | Created    | June 15th, 2021                                                                                                                              |
 | Link to Discourse| https://discourse.umaproject.org/t/add-ugas-0921-price-identifier/1196
 

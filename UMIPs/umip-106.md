@@ -3,7 +3,7 @@
 |----------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title           | Add BANDUSD, USDBAND, SDTUSD, USDSDT, KP3RUSD, USDKP3R, CREAMUSD, USDCREAM, CHAINUSD, USDCHAIN, ERNUSD and USDERN as price identifiers|
 | Authors              | John Shutt (john@umaproject.org), Deepanshu Hooda (deepanshuhooda2000@gmail.com), Aaron (bitznbrewz)                                    |
-| Status               | Last Call                                                                                                                                   |
+| Status               | Approved                                                                                                                                   |
 | Created              | May 2, 2021                                                                                                                             |
 | Link to Discourse    | [Link](https://discourse.umaproject.org/t/add-band-sdt-kp3r-cream-lpool-chain-and-sand-price-identifiers-draft/1145)                                                                                                                               |
 
