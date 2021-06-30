@@ -1,4 +1,6 @@
-UMIP-111
+## Headers
+
+**UMIP-111**
 
 -   UMIP title: Add GYSR, MPH, APW, SNOW, NDX as collateral currencies
 -   Author:  Brittany Madruga (brittany.madruga@gmail.com), Shawn C. Hagenah (www.shawnhagenah99@yahoo.com)

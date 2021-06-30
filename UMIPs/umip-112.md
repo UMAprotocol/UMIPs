@@ -4,7 +4,7 @@
               
 | ------------------- | ------------------------------------------------------------- |
 | **UMIP Title**          | **Add** *uDAO_KPI_UMA* **as a supported price identifier**|
-| **Authors**             | *Brittany Madruga (brittany.madruga@gmail.com) Clayton Roche (claytonroche@gmail.com)*                                                      |
+| **Authors**             | *Brittany Madruga (brittany.madruga@gmail.com) Clayton Roche (claytonroche@gmail.com)*      |
 | **Status**              | **Last Call**                                                         |
 | **Created**             | *06/08/2021*                                             |
 | **Discourse Link**      | https://discourse.umaproject.org/t/add-uint-kpi-uma-as-a-supported-price-identifier/1181           |
