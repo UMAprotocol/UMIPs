@@ -78,8 +78,8 @@ The "green light" list should not be considered the *only* source of truth, but 
 The following pieces of data will be included as ancillary data when the contract is deployed, and will provide additional details & instructions to help voters correctly identify the number of qualifying integrations.
 
 * `startTimestamp` (unix timestamp)
-* `maxBaseIntegrations` (non-negative interger)
-* `maxBonusIntegrations` (non-negative interger)
+* `maxBaseIntegrations` (non-negative integer)
+* `maxBonusIntegrations` (non-negative integer)
 * `bonusMinValue` (TVL represented in $USD)
 * `bonusIntegrationsMultiplier` (non-negative number rounded to 2 decimals)
 * `floorIntegrations` (non-negative integer)
@@ -88,6 +88,15 @@ Ancillary data should be passed into the contract using the format in the exampl
 ```
 startTimestamp:1622527200, maxBaseIntegrations:15, maxBonusIntegrations:3, bonusMinValue:$1,000,000, bonusIntegrationsMultiplier:3.00, floorIntegrations:3
 ```
+
+If a contract deployer incorrectly formats or simply does not provide one of the parameters above, it will default to the following values.
+
+* `startTimestamp` (timestamp of contract deployment)
+* `maxBaseIntegrations` (???)
+* `maxBonusIntegrations` (0)
+* `bonusMinValue` ($0)
+* `bonusIntegrationsMultiplier` (0.00)
+* `floorIntegrations` (0)
 
 # Technical Specifications
 
