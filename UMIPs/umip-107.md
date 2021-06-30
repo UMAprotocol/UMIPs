@@ -4,7 +4,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add `YES_OR_NO_QUERY` as a supported price identifier |
 | Authors             | Sean Brown, Matthew Rice, John Shutt, Mhairi McAlpine                                                     |
-| Status              | Last Call                                                         |
+| Status              | Approved                                                         |
 | Created             | June 3rd, 2021                                              |
 | [Discourse Link](https://discourse.umaproject.org/t/add-binary-query-tbd-name-as-a-supported-price-identifier/1161)      |             |
 

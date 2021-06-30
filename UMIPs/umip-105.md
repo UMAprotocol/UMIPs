@@ -3,7 +3,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add BASK as a supported collateral type |
 | Authors             | Shawn C. Hagenah (Hagz48)shawnhagenah99@yahoo.com                                                    |
-| Status              | Last Call                                                         |
+| Status              | Approved                                                         |
 | Created             | 6/2/2021                                              |
 | Discourse Link      | https://discourse.umaproject.org/t/add-dfx-as-approved-collateral-currency/1144            |
 

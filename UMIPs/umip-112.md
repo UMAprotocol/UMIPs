@@ -1,13 +1,13 @@
 ## Headers
 
-| **UMIP #** *Leave blank - an UMIP no will be assigned at proposal stage*
+| **UMIP 112**
               
 | ------------------- | ------------------------------------------------------------- |
 | **UMIP Title**          | **Add** *uDAO_KPI_UMA* **as a supported price identifier**|
 | **Authors**             | *Brittany Madruga (brittany.madruga@gmail.com) Clayton Roche (claytonroche@gmail.com)*                                                      |
-| **Status**              | **Draft**                                                         |
+| **Status**              | **Last Call**                                                         |
 | **Created**             | *06/08/2021*                                             |
-| **Discourse Link**      | *Insert link to discourse topic  **after**  it has been moved into draft UMIPs_*            |
+| **Discourse Link**      | https://discourse.umaproject.org/t/add-uint-kpi-uma-as-a-supported-price-identifier/1181           |
 
 # Summary 
 
@@ -80,7 +80,7 @@ The following pieces of data will be included as ancillary data when the contrac
 * `startTimestamp` (unix timestamp)
 * `maxBaseIntegrations` (non-negative integer)
 * `maxBonusIntegrations` (non-negative integer)
-* `bonusMinValue` (TVL represented in $USD)
+* `bonusMinValue` (TVL threshold for bonus integrations represented in $USD)
 * `bonusIntegrationsMultiplier` (non-negative number rounded to 2 decimals)
 * `floorIntegrations` (non-negative integer)
 
@@ -89,10 +89,10 @@ Ancillary data should be passed into the contract using the format in the exampl
 startTimestamp:1622527200, maxBaseIntegrations:15, maxBonusIntegrations:3, bonusMinValue:$1,000,000, bonusIntegrationsMultiplier:3.00, floorIntegrations:3
 ```
 
-If a contract deployer incorrectly formats or simply does not provide one of the parameters above, it will default to the following values.
+If a contract deployer incorrectly formats or simply does not provide one of the parameters above, it will default to the following values. This means that if no ancillary data is present, the value returned should be 0.
 
 * `startTimestamp` (timestamp of contract deployment)
-* `maxBaseIntegrations` (???)
+* `maxBaseIntegrations` (0)
 * `maxBonusIntegrations` (0)
 * `bonusMinValue` ($0)
 * `bonusIntegrationsMultiplier` (0.00)
