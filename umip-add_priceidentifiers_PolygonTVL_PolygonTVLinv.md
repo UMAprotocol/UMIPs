@@ -105,6 +105,9 @@ PolygonTVLinv
    
 Round to nearest 3 decimal places (fourth decimal place digit >= 5 rounds up and < 5 rounds down)
 
+For receiving historical TVL data make a GET request: https://api.llama.fi/protocol/Polygon/:
+Returns historical data on the TVL of a protocol along with some basic data on it.
+
 
 # Security Considerations
 
