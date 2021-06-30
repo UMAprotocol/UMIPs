@@ -20,13 +20,13 @@ PolygonTVLinv = 1 / Polygon(Matic) TVL * 10^9
 # Motivation
 TVL of Defi projects are still pretty volatile so if you can predict where TVL will go you need some tools for investing based on TVL.
 
-Polygon(Matic) TVL is needed to create a synthetic token that will reflect the Polygon(Matic) TVL. These tokens can be minted when investors think that Polygon TVL will decrease.
+Polygon(Matic) TVL is needed to create a synthetic token that will reflect the Polygon(Matic) TVL. These tokens can be minted and sold when investors think that Polygon TVL will decrease.
 
-Inverted Polygon(Matic) TVL is needed to create a synthetic token that will reflect the inverted Polygon(Matic) TVL. These tokens can be minted when investors think that Polygon TVL will increase.
+Inverted Polygon(Matic) TVL is needed to create a synthetic token that will reflect the inverted Polygon(Matic) TVL. These tokens can be minted and sold when investors think that Polygon TVL will increase.
 
 # Data Specifications
 
-To determine TVL, you should use the project Defi Llama (https://defillama.com/home) and calculate by formulas:
+To determine TVL, you should use the project Defi Llama (https://defillama.com/protocol/polygon) and calculate it in USD by formulas:
 
 PolygonTVL = Polygon(Matic) TVL / 10^9
 
@@ -93,12 +93,17 @@ PolygonTVL
 1. Make a GET request https://api.llama.fi/tvl/Polygon and take answer (just a number, there is no nesting).
 2. Calculating by formula: PolygonTVL = Polygon(Matic) TVL / 10^9 (where Polygon(Matic) TVL is the response
    from request above).
+
+Round to nearest 3 decimal places (fourth decimal place digit >= 5 rounds up and < 5 rounds down)
+
 -----------------------------------------
 PolygonTVLinv
 
 1. Make a GET request https://api.llama.fi/tvl/Polygon and take the answer (just a number, there is no nesting).
 2. Calculating by formula: PolygonTVLinv = 1 / Polygon(Matic) TVL * 10^9 (where Polygon(Matic) TVL is the response
    from request above).
+   
+Round to nearest 3 decimal places (fourth decimal place digit >= 5 rounds up and < 5 rounds down)
 
 
 # Security Considerations
