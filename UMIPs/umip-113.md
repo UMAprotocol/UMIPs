@@ -1,4 +1,4 @@
-**UMIP #**  - 113
+**UMIP #113**
 
 -   **UMIP title:** Add **BPRO** as collateral currency 
 -   **Author**  yaron@bprotocol.org
