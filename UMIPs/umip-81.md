@@ -81,12 +81,7 @@ The `last` indicated the timestamp when the last DAO was moved over.
     - To get the latest price of the KPI options perform a `GET /organizations` request to [datafeed.aragon.org](https://datafeed.aragon.org).
     - Take the returned `total` value and round to the nearest million (10^6) leaving 0 decimal places.
                                                                                                                                                                                                  
-3. **Range bounds**
-- 100 000 ANT tokens will be used to mint 1 000 000 Option tokens
-- The KPI target will be between $0 and $100 000 000 migrated assets
-- The payout function will be a linear scale between 0 and 100 000 000 meaning each option will payout 0 to 0.1. 
-
-4. **Migration mechanics**
+3. **Migration mechanics**
 - The migration of funds of a V1 DAO to a V2 DAO will be done in the following way:
 1. User create a proposal on v1 DAO to vote about the migration. If the proposal for the migration is accepted it will: 
 2. Call GovernBaseFactory and create a Govern + Queue pair registered by a name in the GovernRegistry.
@@ -103,7 +98,7 @@ Involved contracts:
     - Vault (``0xfcc089230e47d9376fcbd7177164c095ce8e9f23``): https://github.com/aragon/aragon-apps/blob/master/apps/vault/contracts/Vault.sol
     - Voting (``0xfcc089230e47d9376fcbd7177164c095ce8e9f23``): https://github.com/aragon/aragon-apps/blob/master/apps/voting/contracts/Voting.sol 
 
-7. **Calculation rules**
+4. **Calculation rules**
 
 The calculation is done by Aragon backend (code available here [https://github.com/aragon/v2-datafeed](https://github.com/aragon/v2-datafeed))
 
