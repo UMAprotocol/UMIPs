@@ -59,24 +59,25 @@ More information about the program can be found on these two proposals on snapsh
 
 The value of an option is determined by performing a GET request at the following endpoint provided by the Aragon Association: [datafeed.aragon.org](https://datafeed.aragon.org)
 
-To request our data end-point for the Aragon KPI options value can you send a simple GET request to ``datafeed.aragon.org``.
+To request our data end-point for the Aragon KPI options value can you send a `GET /organizations` request to ``datafeed.aragon.org``.
 This request will return you the following response body:
 ```
 {
-    value: <Value of a option in ANT>,
-    migratedAssets: <Total USD value of migrated assets>,
-    timestamp: <Timestamp of the last DAO migration>
+    "count": <Number of DAOs migrated>,
+    "total": <Total USD value of migrated assets>,
+    "option": <Expected value of a option in ANT>,
+    "last": <Timestamp of the last DAO migration>
 } 
 ```
-The range of `value` will be between 0 and 0.1
-The `migratedAssets`is the total value of assets migrated from V1 to V2. The option has a migration cap of $100 million so this number can go higher.
-The `timestamp` indicated when the last DAO was moved over
+The range of `option` will be between 0 and 0.1
+The `total`is the total value of assets migrated from V1 to V2. The option has a migration cap of $100 million so this number can go higher.
+The `last` indicated the timestamp when the last DAO was moved over
 
 1. **Pricing interval**
     - The pricing interval are updated each day at 00:00.
 
 2. **Input processing**
-    - To get the latest price of the KPI options perform a simple GET request to [datafeed.aragon.org](https://datafeed.aragon.org).
+    - To get the latest price of the KPI options perform a `GET /organizations` request to [datafeed.aragon.org](https://datafeed.aragon.org).
                                                                                                                                                                                                  
 3. **Range bounds**
 - 100 000 ANT tokens will be used to mint 1 000 000 Option tokens
