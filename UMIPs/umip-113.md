@@ -26,7 +26,7 @@ To accomplish this upgrade, the following changes need to be made:
 
 This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by **[coingecko price display](https://www.coingecko.com/en/coins/b-protocol)**
 
-## Implementation0
+## Implementation
 
 
 This change has no implementations other than the aforementioned governor transactions
