@@ -33,7 +33,6 @@ Added to that, a script to be able to value the options at any point in time is 
 
 **3. Quote currency** - NA
 
-- There is no quote currency, the denominator is fixed to the ANT token.
 - This price identifier does not have a quote currency as it is designed not to be tied to a currency price metric.
 
 **4. Intended Collateral Currency** - ANT
@@ -45,7 +44,7 @@ Added to that, a script to be able to value the options at any point in time is 
 
 **5. Collateral Decimals** - 18 decimels
 
-**6. Rounding** - 2 decimal places
+**6. Rounding** - Round to the nearest whole million (10^6) leaving 0 decimal places (e.g. 99,499,999 rounds down to 99,000,000 and 99,500,000 rounds up to 100,000,000)
 
 # **RATIONALE**
 
@@ -55,11 +54,13 @@ This contract will only be called once at expiry, there will be no need to run b
 
 More information about the program can be found on these two proposals on snapshot: [Proposal 1 - The reward program and ANT collateral](https://snapshot.org/#/aragon/proposal/QmXDBG7ZdCfg4fSRDhSwNSsdXggjsLapP9q3ijArysS56C) and [Proposal 2 - Upper AUM threshold for the program](https://snapshot.org/#/aragon/proposal/QmXq7KzLPQUeqxQ9cceoHwFR3oxoq7oTHHeNLfhrXNehJ9)
 
+Rounding the migrated AUM USD value to the nearest whole million is used in order to ease reaching consensus by voters in case the Aragon API is unavailable (or manipulation is suspected) and voters need to verify actual migration value independently.
+
 # **IMPLEMENTATION**
 
-The value of an option is determined by performing a GET request at the following endpoint provided by the Aragon Association: [datafeed.aragon.org](https://datafeed.aragon.org)
+The value of this price identifier (i.e. USD value of AUM migrated) is determined by performing a GET request at the following endpoint provided by the Aragon Association: [datafeed.aragon.org](https://datafeed.aragon.org)
 
-To request our data end-point for the Aragon KPI options value can you send a `GET /organizations` request to ``datafeed.aragon.org``.
+To request our data end-point for the Aragon KPI options value you can send a `GET /organizations` request to ``datafeed.aragon.org``.
 This request will return you the following response body:
 ```
 {
@@ -69,15 +70,16 @@ This request will return you the following response body:
     "last": <Timestamp of the last DAO migration>
 } 
 ```
-The range of `option` will be between 0 and 0.1
-The `total`is the total value of assets migrated from V1 to V2. The option has a migration cap of $100 million so this number can go higher.
-The `last` indicated the timestamp when the last DAO was moved over
+The `total`is the total USD value of assets migrated from V1 to V2 and this is the value that should be resolved for this price identifier. The option has a migration cap of $100 million so this number can go higher.
+The range of `option` will be between 0 and 0.1 and it represents indicative value of 1 option expressed in ANT. This would be provided for information purposes only since the actual payout would be calculated by the employed financial contract and financial product library based on the raw value of assets migrated resolved for this price identifier.
+The `last` indicated the timestamp when the last DAO was moved over.
 
 1. **Pricing interval**
     - The pricing interval are updated each day at 00:00.
 
 2. **Input processing**
     - To get the latest price of the KPI options perform a `GET /organizations` request to [datafeed.aragon.org](https://datafeed.aragon.org).
+    - Take the returned `total` value and round to the nearest million (10^6) leaving 0 decimal places.
                                                                                                                                                                                                  
 3. **Range bounds**
 - 100 000 ANT tokens will be used to mint 1 000 000 Option tokens
