@@ -20,7 +20,7 @@ This UMIP proposes to register an updated optimistic oracle that "stamps" ancill
 
 ## Technical Specification
 To accomplish this upgrade, the following actions need to be taken:
-- A new `OptimisticOracle` contract will need to be deployed. Once deployed, the contract address will be added to this UMIP.
+- A new `OptimisticOracle` contract has been deployed. Address can be found in "Implementation" section.
 - A transaction will need to be proposed to add this new address to the `Finder` contract under the name `“OptimisticOracle”`. This is how other contracts will find the optimistic oracle and reference it.
 - The `OptimisticOracle` will need to be registered with the `Registry` so that it can make requests to the DVM.
 - (TBD) We need to un-register the current `OptimisticOracle`.
@@ -31,7 +31,7 @@ This UMIP enhances voter experience by upgrading the optimistic oracle so that i
 
 ## Implementation
 
-The `OptimisticOracle` contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/implementation/OptimisticOracle.sol). It has been audited.
+The `OptimisticOracle` contract implementation can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/implementation/OptimisticOracle.sol). It has been audited.
 
 The following changes have been introduced since the last deployment:
 - [Upgrade from Solidity 0.6 to 0.8](https://github.com/UMAprotocol/protocol/commit/5db0d7178cd6a3c807db4586eeb22a16229e9213#diff-ddccb329354a2589ec298040dd90f48a74ddaa5129516804145af7e6b8ca6327)
@@ -43,6 +43,9 @@ The following changes have been introduced since the last deployment:
 - [Response to audit of new `OptimisticOracle`](https://github.com/UMAprotocol/protocol/commit/dd211c4e3825fe007d1161025a34e9901b26031a#diff-ddccb329354a2589ec298040dd90f48a74ddaa5129516804145af7e6b8ca6327)
 
 The new `OptimisticOracle` uses a new `AncillaryData` library that manages converting different data types to `utf8`-decodable strings which can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/common/implementation/AncillaryData.sol).
+
+Contract addresses can be found here:
+- [OptimisticOracle](https://etherscan.io/address/0x9f631aea633be790b45f2d8e91081efcded7d256#code)
 
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin and the audit feedback can be found in this [PR](https://github.com/UMAprotocol/protocol/pull/3188) specifically in the section on PR #3061.
