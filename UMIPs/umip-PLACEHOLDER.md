@@ -45,7 +45,7 @@ The following changes have been introduced since the last deployment:
 The new `OptimisticOracle` uses a new `AncillaryData` library that manages converting different data types to `utf8`-decodable strings which can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/common/implementation/AncillaryData.sol).
 
 Contract addresses can be found here:
-- [OptimisticOracle](https://etherscan.io/address/0x9f631aea633be790b45f2d8e91081efcded7d256#code)
+- [OptimisticOracle](https://etherscan.io/address/0xc43767f4592df265b4a9f1a398b97ff24f38c6a6#code)
 
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin and the audit feedback can be found in this [PR](https://github.com/UMAprotocol/protocol/pull/3188) specifically in the section on PR #3061.
