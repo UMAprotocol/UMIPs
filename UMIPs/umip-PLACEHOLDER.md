@@ -34,13 +34,13 @@ This UMIP enhances voter experience by upgrading the optimistic oracle so that i
 The `OptimisticOracle` contract implementation can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/implementation/OptimisticOracle.sol). It has been audited.
 
 The following changes have been introduced since the last deployment:
-- [Upgrade from Solidity 0.6 to 0.8](https://github.com/UMAprotocol/protocol/commit/5db0d7178cd6a3c807db4586eeb22a16229e9213#diff-ddccb329354a2589ec298040dd90f48a74ddaa5129516804145af7e6b8ca6327)
-- [Remove abicoder v2](https://github.com/UMAprotocol/protocol/commit/a0cdf22ac57209d0fa760863b7d18a100e68df16#diff-ddccb329354a2589ec298040dd90f48a74ddaa5129516804145af7e6b8ca6327)
-- [Add override keyword to `stampAncillaryData` method](https://github.com/UMAprotocol/protocol/commit/6c8fd405bc156a8b8765c71f70092f2d0a9d7b0d#diff-ddccb329354a2589ec298040dd90f48a74ddaa5129516804145af7e6b8ca6327)
-- [Standardize optimistic oracle stamping of ancillary data](https://github.com/UMAprotocol/protocol/commit/43d569f66af0323813716927ef2dcc8c7f60dd33#diff-ddccb329354a2589ec298040dd90f48a74ddaa5129516804145af7e6b8ca6327)
-- [Refactor ancillary data stamping logic to new AncillaryData library](https://github.com/UMAprotocol/protocol/commit/a3bf46270787cbaae4ed2218f064b1217c153a50#diff-ddccb329354a2589ec298040dd90f48a74ddaa5129516804145af7e6b8ca6327)
-- [Fix typo in comment for `stampAncillaryData` method](https://github.com/UMAprotocol/protocol/commit/d146d4feddcf99e157a909032a3071e95ca51eb9#diff-ddccb329354a2589ec298040dd90f48a74ddaa5129516804145af7e6b8ca6327)
-- [Response to audit of new `OptimisticOracle`](https://github.com/UMAprotocol/protocol/commit/dd211c4e3825fe007d1161025a34e9901b26031a#diff-ddccb329354a2589ec298040dd90f48a74ddaa5129516804145af7e6b8ca6327)
+- [Upgrade from Solidity 0.6 to 0.8](https://github.com/UMAprotocol/protocol/pull/2924)
+- [Remove abicoder v2](https://github.com/UMAprotocol/protocol/pull/2977)
+- [Add override keyword to `stampAncillaryData` method](https://github.com/UMAprotocol/protocol/pull/3057)
+- [Standardize optimistic oracle stamping of ancillary data](https://github.com/UMAprotocol/protocol/pull/3061)
+- [Refactor ancillary data stamping logic to new AncillaryData library](https://github.com/UMAprotocol/protocol/pull/3054)
+- [Fix typo in comment for `stampAncillaryData` method](https://github.com/UMAprotocol/protocol/pull/3092)
+- [Response to audit of new `OptimisticOracle`](https://github.com/UMAprotocol/protocol/pull/3188)
 
 The new `OptimisticOracle` uses a new `AncillaryData` library that manages converting different data types to `utf8`-decodable strings which can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/common/implementation/AncillaryData.sol).
 
