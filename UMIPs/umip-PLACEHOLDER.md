@@ -7,7 +7,7 @@
 | Created    | July 8, 2021                                                                                                                           |
 
 ## Summary (2-5 sentences)
-This UMIP will have the effect of registering an oracle root tunnel contract that will enable the optimistic oracle deployed on Polygon to make cross-chain price requests to the DVM on Ethereum.
+This UMIP will have the effect of registering an oracle root tunnel contract that will enable the optimistic oracle deployed on Polygon to make cross-chain price requests to the DVM on mainnet Ethereum.
 
 ## Motivation
 [This document](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/polygon/README.md) describes a two way tunnel architecture that is built on top of the [canonical state transfer mechanism](https://docs.matic.network/docs/develop/l1-l2-communication/state-transfer) between Polygon and Ethereum. Data is sent between the networks through the tunnel using the same public infrastructure that you use to deposit ERC20 tokens from Ethereum to Polygon and vice versa. The only trusted third parties are the Polygon validators.
