@@ -27,14 +27,15 @@ This UMIP will productionize the optimistic oracle infrastructure on Polygon and
 
 ## Implementation
 
-The Polygon tunnel contract implementations can be found [here](https://github.com/UMAprotocol/protocol/tree/master/packages/core/contracts/polygon) and they have been audited. Note that the directory contains Governor tunnel contracts as well, which are built on the same state transfer mechanism as the oracle tunnel. There are no governance actions neccessary at this time involving the governor tunnel contracts, but they are deployed to both Mainnet and Polygon and will enable UMA voters on Ethereum to execute governance actions on Polygon.
+The Polygon tunnel contract implementations can be found [here](https://github.com/UMAprotocol/protocol/tree/master/packages/core/contracts/polygon) and they have been audited (relevant audit response PR can be found in following section). Note that the directory contains Governor tunnel contracts as well, which are built on the same state transfer mechanism as the oracle tunnel. There are no governance actions neccessary at this time involving the governor tunnel contracts, but they are deployed to both Mainnet and Polygon and will enable UMA voters on Ethereum to execute governance actions on Polygon.
 
 The following PR's implemented the contract:
-- [Introduce Polygon Oracle tunnel architecture](https://github.com/UMAprotocol/protocol/commit/a3bf46270787cbaae4ed2218f064b1217c153a50#diff-0b107e6f8b172512e41e497fa2381f53ca1a8f193a4d51dec6b460abbb161256)
-- [Added unit tests to tunnel contracts](https://github.com/UMAprotocol/protocol/commit/2f8eaf0d4c0e9261424aa415cf675a4011849eb8#diff-0b107e6f8b172512e41e497fa2381f53ca1a8f193a4d51dec6b460abbb161256)
-- [Small changes made to contracts after integration testing](https://github.com/UMAprotocol/protocol/commit/d146d4feddcf99e157a909032a3071e95ca51eb9#diff-0b107e6f8b172512e41e497fa2381f53ca1a8f193a4d51dec6b460abbb161256)
-- [Add Governor tunnel achitecture and unit tests](https://github.com/UMAprotocol/protocol/commit/20a386693cc380827b3eedd7ff7382b15d7670f3#diff-0b107e6f8b172512e41e497fa2381f53ca1a8f193a4d51dec6b460abbb161256)
-- [Response to audit on all Polygon tunnel contracts](https://github.com/UMAprotocol/protocol/commit/dd211c4e3825fe007d1161025a34e9901b26031a#diff-0b107e6f8b172512e41e497fa2381f53ca1a8f193a4d51dec6b460abbb161256)
+- [Introduce Polygon Oracle tunnel architecture](https://github.com/UMAprotocol/protocol/pull/3054)
+- [Added unit tests to tunnel contracts](https://github.com/UMAprotocol/protocol/pull/3082)
+- [Add Governor tunnel achitecture and unit tests](https://github.com/UMAprotocol/protocol/pull/3089)
+- [Small changes made to contracts after integration testing](https://github.com/UMAprotocol/protocol/pull/3092)
+- [Response to audit on all Polygon tunnel contracts](https://github.com/UMAprotocol/protocol/pull/3188)
+- [Response to audit of PR's #3089 and #3188](https://github.com/UMAprotocol/protocol/pull/3208)
 
 Contract addresses can be found here:
 - [OracleRootTunnel](https://etherscan.io/address/0xe7b0d6a9943bb8cd8cd323368450ad74474bb1b7#code)
