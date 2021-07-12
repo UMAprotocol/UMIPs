@@ -35,5 +35,5 @@ This change has no implementations other than the aforementioned governor transa
 
 Adding a collateral currency introduces a level of risk into the UMA Ecosystem.  This collateral type should be monitored to ensure that the proposed collateral continues to have value.
 
-Contract deployers considering using this collateral in an UMA contract should refer to the guidelines on collateral type usage available here (insert docs link) to ensure appropriate use.
+Contract deployers considering using this collateral in an UMA contract should refer to the [guidelines on collateral type usage](https://docs.umaproject.org/uma-tokenholders/guidence-on-collateral-currency-addition) to ensure appropriate use.
 
