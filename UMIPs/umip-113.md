@@ -19,7 +19,7 @@ The addition of this collateral currency offers additional functionality to the 
 To accomplish this upgrade, the following changes need to be made:
 
 -   The **BPRO** address **[0xbbbbbbb5aa847a2003fbc6b5c16df0bd1e725f61](https://etherscan.io/token/0xbbbbbbb5aa847a2003fbc6b5c16df0bd1e725f61)** needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of **150 BPRO** needs to be added for **BPRO** in the Store contract.
+-   A final fee of **200 BPRO** needs to be added for **BPRO** in the Store contract.
     
 
 ## Rationale
