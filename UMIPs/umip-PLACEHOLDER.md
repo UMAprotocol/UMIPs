@@ -23,7 +23,6 @@ To accomplish this upgrade, the following actions need to be taken:
 - A new `OptimisticOracle` contract has been deployed. Address can be found in "Implementation" section.
 - A transaction will need to be proposed to add this new address to the `Finder` contract under the name `“OptimisticOracle”`. This is how other contracts will find the optimistic oracle and reference it.
 - The `OptimisticOracle` will need to be registered with the `Registry` so that it can make requests to the DVM.
-- (TBD) We need to un-register the current `OptimisticOracle`.
 
 ## Rationale
 
