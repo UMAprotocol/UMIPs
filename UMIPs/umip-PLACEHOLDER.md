@@ -37,10 +37,10 @@ The following PR's implemented the contract:
 - [Response to audit on all Polygon tunnel contracts](https://github.com/UMAprotocol/protocol/commit/dd211c4e3825fe007d1161025a34e9901b26031a#diff-0b107e6f8b172512e41e497fa2381f53ca1a8f193a4d51dec6b460abbb161256)
 
 Contract addresses can be found here:
-- [OracleRootTunnel](https://etherscan.io/address/0x55a8ec3fe18f8074d090eea8abd56501a4ba098e#code)
-- [OracleChildTunnel](https://polygonscan.com/address/0x4093dC528c8A8371647e4E960c8Bb7Bc5e90e7C9#code)
-- [GovernorRootTunnel](https://etherscan.io/address/0xeA7Cf05c0bF907997Abd499395556df52F2a20bb#code)
-- [GovernorChildTunnel](https://polygonscan.com/address/0x5E828cB22CEfa920E0f3fa18583269f6239818AD#code)
+- [OracleRootTunnel](https://etherscan.io/address/0xe7b0d6a9943bb8cd8cd323368450ad74474bb1b7#code)
+- [OracleChildTunnel](https://polygonscan.com/address/0x7f08B770E52e80ad418A90038FbcDf10DC7CD62F#code)
+- [GovernorRootTunnel](https://etherscan.io/address/0x4F490F4835B3693A8874aee87D7CC242c25DCCAf#code)
+- [GovernorChildTunnel](https://polygonscan.com/address/0xb4AeaD497FCbEAA3C37919032d42C29682f46376#code)
 
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin and the audit feedback can be found in this [PR](https://github.com/UMAprotocol/protocol/pull/3188) specifically in the section on PRs #3054, #3082, and #3092.
