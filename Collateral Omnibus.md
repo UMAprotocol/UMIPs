@@ -55,7 +55,6 @@ To accomplish this upgrade, the following changes need to be made:
   The **POOL**  [token address](https://etherscan.io/token/0x0cec1a9154ff802e7934fc916ed7ca50bde6844e) 
 -   A final fee of **40 POOL**
     
-
 ## Rationale
 
 This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by reference the median price over the past 7 days as reported by Crypto Watch, CoinGecko or CoinMarket Cap 
