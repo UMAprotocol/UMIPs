@@ -1,10 +1,10 @@
 ## Headers
 
-| **UMIP #** Leave blank - an UMIP no will be assigned at proposal stage|                                                                           |
+| UMIP-110|                                                                           |
 | ------------------------|------------------------------------------------------------------------------------------------------------------------ |
 | UMIP Title              | Add BASKUSD, USDBASK, APWUSD, USDAPW, SNOWUSD, USDSNOW as supported price identifiers                                   |
 | Authors                 | Shawn C. Hagenah(Hagz 48)www.shawnhagenah99@yahoo.com and Aaron (@bitznbrewz)                                           |
-| Status                  | Draft                                                                                                                   |
+| Status                  | Last Call                                                                                                                   |
 | Created                 | 5/31/2021                                                                                                               |
 | Discourse Link          | https://discourse.umaproject.org/t/add-mph-apw-snow-and-ndx-as-price-identifiers/1148                                   |
 
