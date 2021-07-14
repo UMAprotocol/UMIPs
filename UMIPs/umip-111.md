@@ -4,7 +4,7 @@
 
 -   UMIP title: Add GYSR, MPH, APW, SNOW, NDX as collateral currencies
 -   Author:  Brittany Madruga (brittany.madruga@gmail.com), Shawn C. Hagenah (www.shawnhagenah99@yahoo.com)
--   Status: Last Call
+-   Status: Approved
 -   Created:  06/16/2021
 -   Discourse Link:  https://discourse.umaproject.org/t/add-gysr-mph-apw-snow-and-ndx-as-approved-collateral-currencies/1215
 
