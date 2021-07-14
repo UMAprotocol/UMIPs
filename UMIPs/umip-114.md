@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-PLACEHOLDER    |                                                                                                                                          |
+| UMIP-114    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Register updated Optimistic Oracle             |
 | Authors    | Nick Pai (nick@umaproject.org) |
-| Status     | Draft                                                                                                                                    |
+| Status     | Last call                                                                                                                                    |
 | Created    | July 8, 2021                                                                                                                           |
 
 ## Summary (2-5 sentences)

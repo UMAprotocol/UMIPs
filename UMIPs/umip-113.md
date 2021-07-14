@@ -1,8 +1,8 @@
-**UMIP #-**
+**UMIP #** -113
 
 -   **UMIP title:** Add **BPRO** as collateral currency 
 -   **Author**  yaron@bprotocol.org
--   **Status: Draft**
+-   **Status: Last call**
 -   **Created:**  7.7.2021
 -   **Discourse Link:**  https://discourse.umaproject.org/t/add-bpro-as-approved-collateral/1236
 
