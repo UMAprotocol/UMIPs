@@ -104,6 +104,18 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
 Associated AAVE price feeds are available via Cryptowatch. No other further feeds required.
 
+## Ancillary Data Specifications
+
+These price identifiers can optionally include ancillary data to specify a `twapLength`. When converted from bytes to UTF-8, the ancillary data should be a dictionary containing a twapLength key:value pair like so:
+
+```
+twapLength:7200
+```
+
+`twapLength` should be specified in seconds. If a `twapLength` key value pair is not present, then the spot price should be used.
+
+When the ancillary data dictionary "twapLength:7200" is stored as bytes, the result would be: 0x747761704c656e6774683a37323030
+
 ### Technical Specifications
 
 #### AAVE/USD:
@@ -136,6 +148,8 @@ Voters should query for the price of AAVE/USD at the price request timestamp on 
 3.  The median from step 2 should be rounded to six decimals to determine the AAVEUSD price.
 4.  The value of USDAAVE will follow the exact same process but undergo one additional step: it will be the result of dividing 1/AAVEUSD rounded to nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+If a `twapLength` is present in ancillary data, voters should calculate a TWAP with over that time period rather than calculating the spot price.
 
 ### Rationale
 
@@ -211,6 +225,18 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
 Associated LINK price feeds are available via Cryptowatch. No other further feeds required.
 
+## Ancillary Data Specifications
+
+These price identifiers can optionally include ancillary data to specify a `twapLength`. When converted from bytes to UTF-8, the ancillary data should be a dictionary containing a twapLength key:value pair like so:
+
+```
+twapLength:7200
+```
+
+`twapLength` should be specified in seconds. If a `twapLength` key value pair is not present, then the spot price should be used.
+
+When the ancillary data dictionary "twapLength:7200" is stored as bytes, the result would be: 0x747761704c656e6774683a37323030
+
 ### Technical Specifications
 
 #### LINK/USD:
@@ -243,6 +269,8 @@ Voters should query for the price of LINK/USD at the price request timestamp on 
  3.  The median from step 2 should be rounded to six decimals to determine the LINKUSD price.
  4.  The value of USDLINK will follow the exact same process but undergo one additional step: it will be the result of dividing 1/LINKUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
  For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+ If a `twapLength` is present in ancillary data, voters should calculate a TWAP with over that time period rather than calculating the spot price.
 
 ### Rationale
 
@@ -315,6 +343,18 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
 Associated SNX price feeds are available via Cryptowatch. No other further feeds required.
 
+## Ancillary Data Specifications
+
+These price identifiers can optionally include ancillary data to specify a `twapLength`. When converted from bytes to UTF-8, the ancillary data should be a dictionary containing a twapLength key:value pair like so:
+
+```
+twapLength:7200
+```
+
+`twapLength` should be specified in seconds. If a `twapLength` key value pair is not present, then the spot price should be used.
+
+When the ancillary data dictionary "twapLength:7200" is stored as bytes, the result would be: 0x747761704c656e6774683a37323030
+
 ### Technical Specifications
 
 #### SNX/USD
@@ -348,6 +388,8 @@ Voters should query for the price of SNX/USD at the price request timestamp on C
 3.  The median from step 2 should be rounded to six decimals to determine the SNXUSD price.
 4.  The value of USDSNX will follow the exact same process but undergo one additional step: it will be the result of dividing 1/SNXUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+If a `twapLength` is present in ancillary data, voters should calculate a TWAP with over that time period rather than calculating the spot price.
 
 ### Rationale
 
@@ -423,6 +465,17 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
 Associated UMA price feeds are available via Cryptowatch. No other further feeds required.
 
+## Ancillary Data Specifications
+
+These price identifiers can optionally include ancillary data to specify a `twapLength`. When converted from bytes to UTF-8, the ancillary data should be a dictionary containing a twapLength key:value pair like so:
+
+```
+twapLength:7200
+```
+
+`twapLength` should be specified in seconds. If a `twapLength` key value pair is not present, then the spot price should be used.
+
+When the ancillary data dictionary "twapLength:7200" is stored as bytes, the result would be: 0x747761704c656e6774683a37323030
 
 ### Technical Specifications
 
@@ -458,6 +511,7 @@ Voters should query for the price of UMA/USD at the price request timestamp on C
 4.  The value of USDUMA will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UMAUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
+If a `twapLength` is present in ancillary data, voters should calculate a TWAP with over that time period rather than calculating the spot price.
 
 ### Rationale
 
@@ -536,6 +590,18 @@ Coinbase Pro, Binance, and OKEx should be used to construct the price. These 3 e
 
 Associated UNI price feeds are available via Cryptowatch. No other further feeds required.
 
+## Ancillary Data Specifications
+
+These price identifiers can optionally include ancillary data to specify a `twapLength`. When converted from bytes to UTF-8, the ancillary data should be a dictionary containing a twapLength key:value pair like so:
+
+```
+twapLength:7200
+```
+
+`twapLength` should be specified in seconds. If a `twapLength` key value pair is not present, then the spot price should be used.
+
+When the ancillary data dictionary "twapLength:7200" is stored as bytes, the result would be: 0x747761704c656e6774683a37323030
+
 ### Technical Specifications
 
 #### UNI/USD
@@ -569,6 +635,8 @@ Voters should query for the price of UNI/USD at the price request timestamp on C
 3.  The median from step 2 should be rounded to six decimals to determine the UNIUSD price.
 4.  The value of USDUNI will follow the exact same process but undergo one additional step: it will be the result of dividing 1/UNIUSD and rounding to the nearest 18 decimal places (nineteenth decimal place digit >= 5 rounds up and < 5 rounds down).  
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+If a `twapLength` is present in ancillary data, voters should calculate a TWAP with over that time period rather than calculating the spot price.
 
 ### Rationale
 
