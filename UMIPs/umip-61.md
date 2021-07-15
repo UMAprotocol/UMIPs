@@ -280,18 +280,20 @@ DIGG is not a collateral on any loan services and the majority of the liquidity 
 
 A 30 minute TWAP was chosen to help smooth out price changes and give sponsors time to react before becoming undercollateralized. A 30 minute TWAP will also mitigate risk of attempted price manipulation attempts on the market price of the synthetic. To meaningfully manipulate the price that token sponsors’ collateralization is calculated with, an attacker would have to manipulate the trading price of a token for an extended amount of time. Another factor influencing the TWAP decision is the daily rebase and its potential impact on the supply and exchange rate which is described further in the Security Considerations section.
 
+A 24 hour TWAP was chosen for DIGGBTC to be applicable as a price oracle for DIGG rebases.
+
 <br>
 
 # IMPLEMENTATION
 
 For all implementations, a block number will need to be used. The block number should be the block that is closest to and before the timestamp that the price request timestamp.
 
-For all TWAP implementations, the TWAP start time should be determined by the latest block 30 minutes before requested timestamp.
+For DIGG/ETH and DIGG/USD TWAP implementations, the TWAP start time should be determined by the latest block 30 minutes before requested timestamp. For DIGG/BTC, it should be 24 hours before. When using DIGG/BTC in DIGG/ETH and DIGG/USD price calculations, a 30 minute TWAP should be used for DIGG/BTC.
 
 **For DIGG/WBTC**
 
-    1. Query DIGG/WBTC Price from Sushiswap using 30 minute TWAP (0x9a13867048e01c663ce8ce2fe0cdae69ff9f35e3).
-    2. Query DIGG/WBTC Price from Uniswap using 30 minute TWAP (0xe86204c4eddd2f70ee00ead6805f917671f56c52).
+    1. Query DIGG/WBTC Price from Sushiswap using 24 hour TWAP (0x9a13867048e01c663ce8ce2fe0cdae69ff9f35e3).
+    2. Query DIGG/WBTC Price from Uniswap using 24 hour TWAP (0xe86204c4eddd2f70ee00ead6805f917671f56c52).
     3. Take the mean of steps 1 and 2 to get the DIGG/WBTC price. This result should have 8 decimals, rounding the closest 0.5 up.
 
 **For DIGG/ETH**
