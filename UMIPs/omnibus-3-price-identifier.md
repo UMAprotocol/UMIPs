@@ -390,6 +390,10 @@ This price identifier uses the [UniswapPriceFeed](https://github.com/UMAprotocol
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
 - Estimated current value of price identifier: 0.00214179
 
+## Rationale
+
+OHM token does not have any visible liquidity on CEXs, thus, the only viable alternative currently is to query its pricing from available AMM pools on Uniswap and SushiSwap. In order to mitigate attempted price manipulation 5 minute TWAP would be applied. For this price identifier it will be assumed that 1 DAI = 1 FRAX = 1 USD. In case either DAI or FRAX loose their peg voters would still be able to detect it and need to resolve it by using actual pair token value instead.
+
 ## Implementation
 
 ```
@@ -401,6 +405,12 @@ This price identifier uses the [UniswapPriceFeed](https://github.com/UMAprotocol
 ```
 
 Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus.
+
+## Security considerations
+
+Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders.
+
+Even though the liquidity of OHM is quite reasonable with combined liquidity above $35 million on Uniswap and SushiSwap users still should be aware that the main expected application for this price identifier is to be used in non-liquidatable contracts.
 
 # IDLE
 
@@ -465,6 +475,10 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
 - Estimated current value of price identifier: 0.27857259
 
+## Rationale
+
+IDLE token does not have any visible liquidity on CEXs, thus, the only viable alternative currently is to query its pricing from available AMM pools on Uniswap and SushiSwap. In order to mitigate attempted price manipulation 5 minute TWAP would be applied.
+
 ## Implementation
 
 ```
@@ -477,4 +491,10 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 7. (for USD/IDLE) Round result from step 6 to 8 decimals to get the USD/IDLE price.
 ```
 
-Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus.
+Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus. Considering limited liquidity of IDLE token voters should watch out for any attempted price manipulation.
+
+## Security considerations
+
+IDLE token does not have any visible liquidity on CEXs and also its on-chain liquidity is quite weak, with less than $2 million combined on both Uniswap and SushiSwap pools. Even though TWAP price processing is applied, this might not be sufficient to protect against well capitalized attacks on liquidatable contracts. Thus, it is strongly advised to use this price identifier only for non-liquidatable contracts like issuing range tokens.
+
+UMA holders should also consider re-defining this identifier as liquidity in the underlying asset changes.
