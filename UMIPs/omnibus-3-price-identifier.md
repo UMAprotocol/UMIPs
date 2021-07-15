@@ -6,7 +6,7 @@
 | Authors             | Reinis Martinsons (reinis@umaproject.org)                                                      |
 | Status              | Draft                                                         |
 | Created             | July 13, 2021                                              |
-| Discourse Link      | **Create a post in [UMA's Discourse](https://discourse.umaproject.org/c/umips/18) and link here**            |
+| Discourse Link      | [Discourse](https://discourse.umaproject.org/t/price-identifier-omnibus-for-pool-badger-gno-ohm-and-idle/1248)            |
 
 # Summary 
 
