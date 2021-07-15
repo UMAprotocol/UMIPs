@@ -26,7 +26,7 @@ The canonical identifiers should be `POOLUSD`, `USDPOOL`, `BADGER/USD`, `USD/BAD
 
 # Motivation
 
-These price identifiers would allow the above listed assets to be used for the creation range tokens. These tokens are also proposed to be used as collateral in [UMIP # - WIP](https://). As showcased in [this article](https://medium.com/uma-project/uma-raises-2-6mm-in-the-pilot-of-the-range-token-de5be578fa5e), the range token is a new treasury primitive that enables DAOs to access funds and diversify their treasury without directly selling their native tokens.
+These price identifiers would allow the above listed assets to be used for the creation range tokens. These tokens are also being proposed to be used as collateral in UMA contracts. As showcased in [this article](https://medium.com/uma-project/uma-raises-2-6mm-in-the-pilot-of-the-range-token-de5be578fa5e), the range token is a new treasury primitive that enables DAOs to access funds and diversify their treasury without directly selling their native tokens.
 
 Proactively approving these price identifiers will make it easier for development teams and protocol treasuries to create new products using these ERC20 tokens and their price identifiers.
 
