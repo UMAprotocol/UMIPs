@@ -18,7 +18,7 @@ The addition of this collateral currency offers additional functionality to the 
 
 To accomplish this upgrade, the following changes need to be made:
 
--   The **AX** address **token address ** needs to be added to the collateral currency whitelist introduced in UMIP-8.
+-   The **AX** address **https://kovan.etherscan.io/address/0xA77a597C1b0ddA403aF54656c28bF7Bc0565351c ** needs to be added to the collateral currency whitelist introduced in UMIP-8.
 -   A final fee of **5,000** needs to be added for **AX** in the Store contract.
     
 
