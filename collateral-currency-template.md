@@ -1,14 +1,14 @@
 **UMIP #**  - tbd
 
--   **UMIP title:** Add **token** as collateral currency 
--   **Author**  Name (email)
+-   **UMIP title:** Add **AX** as collateral currency 
+-   **Author**  athletexmarkets@gmail.com
 -   **Status: Draft**
--   **Created:**  Date
--   **Discourse Link:**  Insert link to discourse topic after it has been moved into draft UMIPs
+-   **Created:**  7/16/2021
+-   **Discourse Link:**  https://discourse.umaproject.org/t/whitelist-ax-as-collateral/1250
 
-## Summary (2-5 sentences)
+## Summary 
 
-This UMIP proposes adding **token** for use as collateral in UMA contracts.
+This UMIP proposes adding **AX** for use as collateral in UMA contracts.
 
 ## Motivation
 
@@ -18,13 +18,13 @@ The addition of this collateral currency offers additional functionality to the 
 
 To accomplish this upgrade, the following changes need to be made:
 
--   The **token** address **token address (etherscan link)** needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of **amount token** needs to be added for **token** in the Store contract.
+-   The **AX** address **token address ** needs to be added to the collateral currency whitelist introduced in UMIP-8.
+-   A final fee of **5,000** needs to be added for **AX** in the Store contract.
     
 
 ## Rationale
 
-This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by **insert how the value of $400 was determined**
+This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by taking **the # of coins multiplied by .08 (presale price) = 400** which results in a store fee of 5,000AX
 
 ## Implementation
 
