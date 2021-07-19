@@ -60,7 +60,7 @@ When converting ancillary data to UTF8 string it must contain price request para
 - `Interval`: This describes how request timestamps for pricing queries should be rounded and what is the granularity of historical data update frequency.
 - `Aggregation` (optional): In case any time series data processing is required this describes processing method used (e.g. calculating TWAP, finding peak value, etc.) and also sets the start timestamp for such aggregation.
 - `Rounding`: This is integer number defining how many digits should be left to the right of decimal delimiter after rounding.
-- `Scaling` (optional): This is integer number defining power of 10 scaling to be applied after rounding.
+- `Scaling` (optional): This is integer number defining power of 10 scaling to be applied after rounding. This is not to be confused with additional scaling performed by voting dApp, and it is just an optional transformation for scaling reported metric from the `Endpoint` instead (e.g. transforming USD to billions of USD).
 
 KPI options launcher can also add any arbitrary ancillary data fields as long as they are clearly documented in the linked `Method` document and voters are instructed on how to interpret them for price processing.
 
