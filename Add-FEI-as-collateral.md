@@ -5,7 +5,7 @@ Created: 07/08/2021
 
 
 Summary (2-5 sentences)
-This UMIP will add FEI to the supported collateral currencies on the global whitelist contract, allowing the usage of FEI as collateral currency. FEI is a scalable and decentralized stablecoin that leverages protocol controlled value (PCV) for peg maintenance while maintaining highly liquid secondary markets. The PCV controlled by  the FEI DAO, gives FEI an unprecedented ability to positively affect the DeFi landscape, and currently holds roughly $500m in value.
+This UMIP will add FEI to the supported collateral currencies on the global whitelist contract, allowing the usage of FEI as collateral currency. FEI is a scalable and decentralized stablecoin that leverages protocol controlled value (PCV) for peg maintenance while maintaining highly liquid secondary markets. The PCV controlled by the FEI DAO, gives FEI an unprecedented ability to positively affect the DeFi landscape, and currently holds roughly $500m in value.
 Motivation
 Adding FEI as collateral will allow the creation of new synthetic assets backed by FEI and users more collateral options. The FEI community is also considering using KPI options to align token holders with protocol objectives, and incentivize people to adopt and utilize FEI.
 Fei supplies most of the liquidity on the largest pool on Uniswap, with a total liquidity of $343,523,824. Recently FEI has also been integrated with several other platforms, including; Rari, and Saddle.
