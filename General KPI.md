@@ -43,7 +43,7 @@ The data should also have the following accessibility requirements:
 # Technical Specifications
 
 -----------------------------------------
-- Price identifier name:  General KPI Price Identifier
+- Price identifier name: General KPI Price Identifier
 - Base Currency: Determined by the `Metric` parameter from the ancillary data
 - Quote Currency: NA
 - Rounding: Determined by the linked document in the `Method` parameter from the ancillary data
@@ -52,9 +52,9 @@ The data should also have the following accessibility requirements:
 
 When converting ancillary data to UTF8 string it must contain price request parameters expressed as key-value pairs and delimited by ":", colons. The below listed key parameters will be used to instruct voters how to resolve a given price request for this identifier and request timestamp:
 
-- `Metric`:  Short description reflecting the metric and units to be measured.
+- `Metric`: Short description reflecting the metric and units to be measured.
 - `Endpoint`: Link to data endpoint that should return the `Metric` at request timestamp. The response format should comply with the linked document from the `Method` parameter. The data endpoint should either allow passing the timestamp as parameter or returned data should include timestamp value for each returned data point.
-- `Method`:  Link to a descriptive source covering the objective and methodology for calculating a particular metric. This methodology should include how the calculation of the metric is measured. Links to repositories and explainer documentation are strongly recommended. Clearly articulate any post-processing required.
+- `Method`: Link to a descriptive source covering the objective and methodology for calculating a particular metric. This methodology should include how the calculation of the metric is measured. Links to repositories and explainer documentation are strongly recommended. Clearly articulate any post-processing required.
 - `Fallback` (optional): In the event of the end-point not working or reporting false outcomes, a fallback ensures that UMA token holders can arrive at the proper result. If the methodology source demonstrates a fallback alternative, this field can be optional.
 - `Key`: Which key value from the `Endpoint` response should be used by voters for further processing of the price request.
 - `Interval`: This describes how request timestamps for pricing queries should be rounded and what is the granularity of historical data update frequency.
@@ -102,7 +102,7 @@ The technical implementation of this price feed is to allow flexibility for proj
  
 The user of this UMIP accepts responsibility to provide the information passed through via ancillary data is sufficient to resolve price requests. Suppose the user of the price identifier cannot give enough information for UMA token holders to determine the outcome. In that case, UMA token holders can expire the KPI option tokens in a worthless state. 
 
-This UMIP also allows the use of KPI measures that may, in some part, rely on information that a trusted party may report. The assumption is that the party reporting the numbers is either trusted or has a vested interest in ensuring the accuracy of the price, but this is not guaranteed. As such, the voter follows i) the methodology outlined in the ancillary data, ii) the fall back alternative outlined in the ancillary data, iii) the most commonly agreed metric to measure a KPI (If and only if this measure is trusted). If none of these outcomes are achieved or the data source is corrupted then the options can be expired to  worthless state. 
+This UMIP also allows the use of KPI measures that may, in some part, rely on information that a trusted party may report. The assumption is that the party reporting the numbers is either trusted or has a vested interest in ensuring the accuracy of the price, but this is not guaranteed. As such, the voter follows i) the methodology outlined in the ancillary data, ii) the fall back alternative outlined in the ancillary data, iii) the most commonly agreed metric to measure a KPI (If and only if this measure is trusted). If none of these outcomes are achieved or the data source is corrupted then the options can be expired to worthless state. 
 
 # Implementation
 
