@@ -90,7 +90,7 @@ Rounding:2,
 startTimestamp:1622527200,
 maxBaseIntegrations:15,
 maxBonusIntegrations:3,
-bonusMinValue:$1,000,000,
+bonusMinValue:$1\\,000\\,000,
 bonusIntegrationsMultiplier:3.00,
 floorIntegrations:3
 ```
