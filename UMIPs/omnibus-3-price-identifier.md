@@ -85,13 +85,13 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 - Base Currency: POOL
 - Quote Currency: USD
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 9.32952097
+- Estimated current value of price identifier: 9.18390777 (19 Jul 2021 12:00:00 GMT)
 -----------------------------------------
 - Price identifier name: USDPOOL
 - Base Currency: USD
 - Quote Currency: POOL
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 0.10718664
+- Estimated current value of price identifier: 0.10888611 (19 Jul 2021 12:00:00 GMT)
 
 ## Rationale
 
@@ -187,13 +187,13 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 - Base Currency: BADGER
 - Quote Currency: USD
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 7.63740346
+- Estimated current value of price identifier: 7.49833035 (19 Jul 2021 12:00:00 GMT)
 -----------------------------------------
 - Price identifier name: USD/BADGER
 - Base Currency: USD
 - Quote Currency: BADGER
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 0.13093455
+- Estimated current value of price identifier: 0.13336302 (19 Jul 2021 12:00:00 GMT)
 
 ## Rationale
 
@@ -293,13 +293,13 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 - Base Currency: GNO
 - Quote Currency: USD
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 157.99530007
+- Estimated current value of price identifier: 160.04968267 (19 Jul 2021 12:00:00 GMT)
 -----------------------------------------
 - Price identifier name: USDGNO
 - Base Currency: USD
 - Quote Currency: GNO
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 0.00632930
+- Estimated current value of price identifier: 0.00624806 (19 Jul 2021 12:00:00 GMT)
 
 ## Rationale
 
@@ -382,13 +382,13 @@ This price identifier uses the [UniswapPriceFeed](https://github.com/UMAprotocol
 - Base Currency: OHM
 - Quote Currency: USD
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 466.89850680
+- Estimated current value of price identifier: 626.93574430 (19 Jul 2021 12:00:00 GMT)
 -----------------------------------------
 - Price identifier name: USDOHM
 - Base Currency: USD
 - Quote Currency: OHM
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 0.00214179
+- Estimated current value of price identifier: 0.00159506 (19 Jul 2021 12:00:00 GMT)
 
 ## Rationale
 
@@ -462,13 +462,13 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 - Base Currency: IDLE
 - Quote Currency: USD
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 3.58972857
+- Estimated current value of price identifier: 3.20436254 (19 Jul 2021 12:00:00 GMT)
 -----------------------------------------
 - Price identifier name: USDIDLE
 - Base Currency: USD
 - Quote Currency: IDLE
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 0.27857259
+- Estimated current value of price identifier: 0.31207455 (19 Jul 2021 12:00:00 GMT)
 
 ## Rationale
 
