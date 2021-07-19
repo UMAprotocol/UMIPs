@@ -60,7 +60,7 @@ To accomplish this upgrade, the following changes need to be made:
 -   A final fee of **1000 DOUGH V2**
 
 ### 88 MPH.app
-**88MPH** [token address](https://etherscan.io/token/0x8888801af4d980682e47f1a9036e589479e835c5)
+   The **88MPH** [token address](https://etherscan.io/token/0x8888801af4d980682e47f1a9036e589479e835c5)
 - A final fee of **16 88MPH**
 ## Rationale
 
