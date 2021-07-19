@@ -122,7 +122,7 @@ UMA holders should also consider re-defining this identifier as liquidity in the
 -----------------------------------------
 - Price identifier name: BADGER/USD and USD/BADGER
 - Markets & Pairs:
-  - BADGER/USDT: [Binance](https://www.binance.com/en/trade/BADGER_USDT) and [Huobi](https://www.huobi.com/en-us/exchange/badger_usdt)
+  - BADGER/USDT: [Binance](https://www.binance.com/en/trade/BADGER_USDT)
   - BADGER/WBTC: [Uniswap v2](https://v2.info.uniswap.org/pair/0xcd7989894bc033581532d2cd88da5db0a4b12859) and [SushiSwap](https://analytics.sushi.com/pairs/0x110492b31c59716ac47337e616804e3e3adc0b4a)
   - BTC/USD(T): Refer to `BTCUSD` in [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md)
 - Example data providers:
@@ -147,7 +147,7 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
     expression: `
       badger_usd_sushi = BTCUSD * BADGER_WBTC_SUSHI;
       badger_usd_uni = BTCUSD * BADGER_WBTC_UNI;
-      median( badger_usd_sushi, badger_usd_uni, BADGER_USD_BINANCE, BADGER_USD_HUOBI )
+      median( badger_usd_sushi, badger_usd_uni, BADGER_USD_BINANCE )
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
@@ -165,7 +165,6 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
         invertPrice: true,
       },
       BADGER_USD_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "badgerusdt" },
-      BADGER_USD_HUOBI: { type: "cryptowatch", exchange: "huobi", pair: "badgerusdt" },
     },
   },
   "USD/BADGER": {
@@ -182,17 +181,17 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 - Base Currency: BADGER
 - Quote Currency: USD
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 7.49833035 (19 Jul 2021 12:00:00 GMT)
+- Estimated current value of price identifier: 7.53336069 (19 Jul 2021 12:00:00 GMT)
 -----------------------------------------
 - Price identifier name: USD/BADGER
 - Base Currency: USD
 - Quote Currency: BADGER
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 0.13336302 (19 Jul 2021 12:00:00 GMT)
+- Estimated current value of price identifier: 0.13274288 (19 Jul 2021 12:00:00 GMT)
 
 ## Rationale
 
-BADGER token has well distributed trading activity among CEXs with highest trading volumes on Binance and BKEX. Since BKEX price information is not available through CryptoWatch it will be replaced with Huobi exchange and supplemented with available AMM pools for this price identifier. For this price identifier it is also assumed that 1 USDT = 1 BUSD = 1 USD.
+BADGER token has well distributed trading activity among CEXs with highest trading volumes on Binance that will be supplemented with available AMM pools for this price identifier. For this price identifier it is also assumed that 1 USDT = 1 BUSD = 1 USD.
 
 BADGER has quite strong liquidity on Uniswap and Sushiswap pools paired with WBTC. In order to mitigate attempted price manipulation 5 minute TWAP would be applied. For this price identifier it will be assumed that 1 WBTC = 1 BTC. In case WBTC looses its peg voters would still be able to detect it and need to resolve it by using actual WBTC value instead.
 
@@ -202,7 +201,7 @@ BADGER has quite strong liquidity on Uniswap and Sushiswap pools paired with WBT
 1. Query BADGER/WBTC price from Uniswap v2 and SushiSwap using 5-minute TWAP.
 2. Query the BTC/USD price as per UMIP-7.
 3. Multiply each of BADGER/WBTC prices in step 1 with BTC/USD price from step 2.
-4. Take the open BADGER/USDT price of the 1 minute OHLC period that the timestamp falls in from Binance and Huobi.
+4. Take the open BADGER/USDT price of the 1 minute OHLC period that the timestamp falls in from Binance.
 5. Take the median of all results from step 3 and 4.
 6. Round result from step 5 to 8 decimals to get the BADGER/USD price.
 7. (for USD/BADGER) Take the inverse of the result of step 5.
