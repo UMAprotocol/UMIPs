@@ -71,8 +71,8 @@ As an example, possible ancillary data for UMA TVL KPI options (as specified in 
 
 ```
 Metric:TVL in UMA financial contracts measured in billions of USD,
-Endpoint:api.umaproject.org/uma-tvl,
-Method:github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-65.md,
+Endpoint:https\\://api.umaproject.org/uma-tvl,
+Method:https\\://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-65.md,
 Key:currentTvl,
 Interval:Updated every 10 minutes,
 Rounding:-7,
@@ -82,8 +82,8 @@ As for another example, possible ancillary data to implement UMA protocol DAO in
 
 ```
 Metric:Number of qualifying UMA DAO integrations,
-Endpoint:api.umaproject.org/uma-dao-integrations,
-Method:github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-112.md,
+Endpoint:https\\://api.umaproject.org/uma-dao-integrations,
+Method:https\\://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-112.md,
 Key:currentIntegrations,
 Interval:Updated daily,
 Rounding:2,
