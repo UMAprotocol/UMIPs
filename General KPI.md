@@ -61,6 +61,7 @@ When converting ancillary data to UTF8 string it must contain price request para
 - `Aggregation` (optional): In case any time series data processing is required this describes processing method used (e.g. calculating TWAP, finding peak value, etc.) and also sets the start timestamp for such aggregation.
 - `Rounding`: This is integer number defining how many digits should be left to the right of decimal delimiter after rounding.
 - `Scaling` (optional): This is integer number defining power of 10 scaling to be applied after rounding. This is not to be confused with additional scaling performed by voting dApp, and it is just an optional transformation for scaling reported metric from the `Endpoint` instead (e.g. transforming USD to billions of USD).
+- `Unresolved` (optional): This is numeric value that voters should return for unresolvable price request (defaults to zero if omitted).
 
 KPI options launcher can also add any arbitrary ancillary data fields as long as they are clearly documented in the linked `Method` document and voters are instructed on how to interpret them for price processing.
 
@@ -118,7 +119,7 @@ Voters should ensure that their results do not differ from broad market consensu
 
 Voters should also carefully follow any versioning history to the linked `Method` document and the `Endpoint` service source code. While it is possible that methodology and code could be improved over time in order to clarify any original oversight or fix bugs, voters should ensure that any changes are consistent with the original KPI options program launch objectives.
 
-In case the ancillary data provided does not comply with the ancillary data specification in this price identifier (to the extent that voters are unable to reasonable figure out what are the intended values of the required parameters) or the linked `Method` document is ambiguous or incomplete with unclear or missing fallback method, the voters should resolve the price request as zero. Though, the linked `Method` document might include any other positive non-zero fallback value that the voters should return in case of any unresolvable ambiguity and voters should respect this fallback value to the extent it is clearly formulated in the linked `Method` document.
+In case the ancillary data provided does not comply with the ancillary data specification in this price identifier (to the extent that voters are unable to reasonably figure out what are the intended values of the required parameters) or the linked `Method` document is ambiguous or incomplete with unclear or missing fallback method, the voters should resolve the price request as zero. Though, the optionally passed `Unresolved` parameter in the ancillary data might set any other non-zero fallback value that the voters should return in case of any unresolvable ambiguity and voters should respect this fallback value to the extent it is unambiguously recognizable in the passed ancillary data.
 
 # Security considerations
 
