@@ -1,4 +1,4 @@
-﻿## Headers
+## Headers
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
@@ -37,7 +37,7 @@ Proactively approving these price identifiers will make it easier for developmen
 -----------------------------------------
 - Price identifier name: POOLUSD and USDPOOL
 - Markets & Pairs:
-  - POOL/ETH: Uniswap v2 and SushiSwap
+  - POOL/ETH: [Uniswap v2](https://v2.info.uniswap.org/pair/0x85cb0bab616fe88a89a35080516a8928f38b518b) and [SushiSwap](https://analytics.sushi.com/pairs/0x577959c519c24ee6add28ad96d3531bc6878ba34)
   - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
 - Example data providers:
   - POOL/ETH: the Graph
@@ -124,8 +124,8 @@ UMA holders should also consider re-defining this identifier as liquidity in the
 -----------------------------------------
 - Price identifier name: BADGER/USD and USD/BADGER
 - Markets & Pairs:
-  - BADGER/USDT: Binance and Huobi
-  - BADGER/WBTC: Uniswap v2 and SushiSwap
+  - BADGER/USDT: [Binance](https://www.binance.com/en/trade/BADGER_USDT) and [Huobi](https://www.huobi.com/en-us/exchange/badger_usdt)
+  - BADGER/WBTC: [Uniswap v2](https://v2.info.uniswap.org/pair/0xcd7989894bc033581532d2cd88da5db0a4b12859) and [SushiSwap](https://analytics.sushi.com/pairs/0x110492b31c59716ac47337e616804e3e3adc0b4a)
   - BTC/USD(T): Refer to `BTCUSD` in [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md)
 - Example data providers:
   - BADGER/USDT: CryptoWatch
@@ -229,8 +229,8 @@ Even though the liquidity of BADGER is quite reasonable with combined liquidity 
 -----------------------------------------
 - Price identifier name: GNOUSD and USDGNO
 - Markets & Pairs:
-  - GNO/USD: Kraken
-  - GNO/ETH: Balancer and Uniswap v3
+  - GNO/USD: [Kraken](https://trade.kraken.com/markets/kraken/gno/usd)
+  - GNO/ETH: [Balancer](https://pools.balancer.exchange/#/pool/0xe42237f32708bd5c04d69cc77e1e36c8f911a016/) and [Uniswap v3](https://v3.info.uniswap.org/#/pools/0xa46466ad5507be77ff5abdc27df9dfeda9bd7aee)
   - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
 - Example data providers:
   - GNO/USD: CryptoWatch
@@ -335,8 +335,8 @@ Even though the liquidity of GNO is quite reasonable with combined liquidity abo
 -----------------------------------------
 - Price identifier name: OHMUSD and USDOHM
 - Markets & Pairs:
-  - OHM/DAI: SushiSwap
-  - OHM/FRAX: Uniswap v2
+  - OHM/DAI: [SushiSwap](https://analytics.sushi.com/pairs/0x34d7d7aaf50ad4944b70b320acb24c95fa2def7c)
+  - OHM/FRAX: [Uniswap v2](https://v2.info.uniswap.org/pair/0x2dce0dda1c2f98e0f171de8333c3c6fe1bbf4877)
 - Example data providers:
   - OHM/DAI: the Graph
   - OHM/FRAX: the Graph
@@ -419,7 +419,7 @@ Even though the liquidity of OHM is quite reasonable with combined liquidity abo
 -----------------------------------------
 - Price identifier name: IDLEUSD and USDIDLE
 - Markets & Pairs:
-  - IDLE/ETH: Uniswap v2 and SushiSwap
+  - IDLE/ETH: [Uniswap v2](https://v2.info.uniswap.org/pair/0x29a9777da2bacd8c4a28b6fd8247c4ca4f098f12) and [SushiSwap](https://analytics.sushi.com/pairs/0xa7f11e026a0af768d285360a855f2bded3047530)
   - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
 - Example data providers:
   - IDLE/ETH: the Graph
@@ -498,3 +498,4 @@ Voters should ensure that their results do not differ from broad market consensu
 IDLE token does not have any visible liquidity on CEXs and also its on-chain liquidity is quite weak, with less than $2 million combined on both Uniswap and SushiSwap pools. Even though TWAP price processing is applied, this might not be sufficient to protect against well capitalized attacks on liquidatable contracts. Thus, it is strongly advised to use this price identifier only for non-liquidatable contracts like issuing range tokens.
 
 UMA holders should also consider re-defining this identifier as liquidity in the underlying asset changes.
+
