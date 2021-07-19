@@ -50,7 +50,7 @@ The data should also have the following accessibility requirements:
 
 ## Ancillary Data Specifications
 
-When converting ancillary data to UTF8 string it must contain price request parameters expressed as key-value pairs and delimited by ":", colons. The below listed key parameters will be used to instruct voters how to resolve a given price request for this identifier and request timestamp:
+When converting ancillary data to UTF8 string it must contain price request parameters expressed as a list of key-value pairs delimited by `,` (commas) and each key-value pair further delimited by `:` (colons). Double backslash `\\` must be used to escape `,` and `:` characters in the ancillary data that are not intended to delimit the key-value dictionary. The below listed key parameters will be used to instruct voters how to resolve a given price request for this identifier and request timestamp:
 
 - `Metric`: Short description reflecting the metric and units to be measured.
 - `Endpoint`: Link to data endpoint that should return the `Metric` at request timestamp. The response format should comply with the linked document from the `Method` parameter. The data endpoint should either allow passing the timestamp as parameter or returned data should include timestamp value for each returned data point.
