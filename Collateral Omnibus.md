@@ -43,10 +43,6 @@ To accomplish this upgrade, the following changes need to be made:
   The **GNO** [token address](https://etherscan.io/token/0x6810e776880c02933d47db1b9fc05908e5386b96) 
 -   A final fee of **2.4 GNO**
 
-### GYSR
-  The **GYSR** [token address](https://etherscan.io/token/0xbEa98c05eEAe2f3bC8c3565Db7551Eb738c8CCAb)
--   A final fee of **2000 GYSR** 
-
 ### QiDAO - note this is a Polygon token
   The **Qi** [token address](https://polygonscan.com/token/0x580a84c73811e1839f75d86d75d88cca0c241ff4) 
 -   A final fee of **230 Qi**
@@ -59,9 +55,6 @@ To accomplish this upgrade, the following changes need to be made:
    The **DOUGH V2** [token address](https://etherscan.io/token/0xad32A8e6220741182940c5aBF610bDE99E737b2D) 
 -   A final fee of **1000 DOUGH V2**
 
-### 88 MPH.app
-   The **88MPH** [token address](https://etherscan.io/token/0x8888801af4d980682e47f1a9036e589479e835c5)
-- A final fee of **16 88MPH**
 ## Rationale
 
 This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by reference the median price over the past 7 days as reported by Crypto Watch, CoinGecko or CoinMarket Cap 
