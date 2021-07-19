@@ -1,9 +1,3 @@
-This is the suggested template for new UMIPs.
-
-Note that an UMIP number will be assigned by an editor. 
-When opening a pull request to submit your UMIP, please use an abbreviated title in the filename, umip-draft_title_abbrev.md.
-
-The title should be 44 characters or less.
 
 ## Headers
 - UMIP <#> 
@@ -15,7 +9,7 @@ The title should be 44 characters or less.
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding **BADGER**, **OHM**, **IDLE**, **GNO**, **GYSR**, **Qi**, **POOL** for use as collateral in UMA contracts.
+This UMIP proposes adding **BADGER**, **OHM**, **IDLE**, **GNO**, **Qi**, **POOL**, **DOUGH V2**, ** for use as collateral in UMA contracts.
 
 ## Motivation
 
@@ -29,11 +23,11 @@ To accomplish this upgrade, the following changes need to be made:
 
 ### BadgerDAO
 -   The **BADGER** [token address](https://etherscan.io/token/0x3472a5a71965499acd81997a54bba8d852c6e53d)
--   A final fee of **50 BADGER**
+-   A final fee of **60 BADGER**
 
 ### OlympusDAO
   The **OHM** [token address](https://etherscan.io/address/0x383518188c0c6d7730d91b2c03a03c837814a899)
--   A final fee of **1 OHM** 
+-   A final fee of **0.8 OHM** 
 
 ### IDLE Finance
   The **IDLE** [token address](https://etherscan.io/token/0x875773784af8135ea0ef43b5a374aad105c5d39e) 
@@ -41,19 +35,19 @@ To accomplish this upgrade, the following changes need to be made:
 
 ### Gnosis
   The **GNO** [token address](https://etherscan.io/token/0x6810e776880c02933d47db1b9fc05908e5386b96) 
--   A final fee of **2.4 GNO**
+-   A final fee of **3 GNO**
 
 ### QiDAO - note this is a Polygon token
   The **Qi** [token address](https://polygonscan.com/token/0x580a84c73811e1839f75d86d75d88cca0c241ff4) 
--   A final fee of **230 Qi**
+-   A final fee of **400 Qi**
 
 ### PoolTogether
   The **POOL**  [token address](https://etherscan.io/token/0x0cec1a9154ff802e7934fc916ed7ca50bde6844e) 
--   A final fee of **40 POOL**
+-   A final fee of **45 POOL**
 
 ### PieDAO
    The **DOUGH V2** [token address](https://etherscan.io/token/0xad32A8e6220741182940c5aBF610bDE99E737b2D) 
--   A final fee of **1000 DOUGH V2**
+-   A final fee of **1100 DOUGH V2**
 
 ### FEI
    The **FEI** [token address](https://etherscan.io/address/0x956F47F50A910163D8BF957Cf5846D573E7f87CA)
