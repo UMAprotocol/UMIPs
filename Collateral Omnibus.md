@@ -58,6 +58,10 @@ To accomplish this upgrade, the following changes need to be made:
 ### PieDAO
    The **DOUGH V2** [token address](https://etherscan.io/token/0xad32A8e6220741182940c5aBF610bDE99E737b2D) 
 -   A final fee of **1000 DOUGH V2**
+
+### 88 MPH.app
+**88MPH** [token address](https://etherscan.io/token/0x8888801af4d980682e47f1a9036e589479e835c5)
+- A final fee of **16 88MPH**
 ## Rationale
 
 This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by reference the median price over the past 7 days as reported by Crypto Watch, CoinGecko or CoinMarket Cap 
