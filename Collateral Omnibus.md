@@ -55,6 +55,10 @@ To accomplish this upgrade, the following changes need to be made:
    The **DOUGH V2** [token address](https://etherscan.io/token/0xad32A8e6220741182940c5aBF610bDE99E737b2D) 
 -   A final fee of **1000 DOUGH V2**
 
+### FEI
+   The **FEI** [token address](https://etherscan.io/address/0x956F47F50A910163D8BF957Cf5846D573E7f87CA)
+- A final fee of **400 FEI**
+
 ## Rationale
 
 This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by reference the median price over the past 7 days as reported by Crypto Watch, CoinGecko or CoinMarket Cap 
