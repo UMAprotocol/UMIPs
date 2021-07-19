@@ -100,9 +100,9 @@ floorIntegrations:3
 
 The technical implementation of this price feed is to allow flexibility for project teams to self-report their own KPI metric. Scalability at the cost of clarity and security trade-off occurs when off-loading the reporting requires externally. 
  
-The user of this UMIP accepts responsibility to provide the information passed through via ancillary data is sufficient to resolve price requests. Suppose the user of the price identifier cannot give enough information for UMA token holders to determine the outcome. In that case, UMA token holders can expire the contract in a worthless state or a result that will deem the options to have a value of zero (or as close to zero as the terms allow). 
+The user of this UMIP accepts responsibility to provide the information passed through via ancillary data is sufficient to resolve price requests. Suppose the user of the price identifier cannot give enough information for UMA token holders to determine the outcome. In that case, UMA token holders can expire the KPI option tokens in a worthless state. 
 
-This UMIP also allows the use of KPI measures that may, in some part, rely on information that a trusted party may report. The assumption is that the party reporting the numbers is either trusted or has a vested interest in ensuring the accuracy of the price, but this is not guaranteed. As such, the voter follows i) the methodology outlined in the ancillary data, ii) the fall back alternative outlined in the ancillary data, iii) the most commonly agreed metric to measure a KPI (If and only if this measure is trusted). If none of these outcomes are achieved or the data source is corrupted then the options can be expired to zero (or as close to worthless). 
+This UMIP also allows the use of KPI measures that may, in some part, rely on information that a trusted party may report. The assumption is that the party reporting the numbers is either trusted or has a vested interest in ensuring the accuracy of the price, but this is not guaranteed. As such, the voter follows i) the methodology outlined in the ancillary data, ii) the fall back alternative outlined in the ancillary data, iii) the most commonly agreed metric to measure a KPI (If and only if this measure is trusted). If none of these outcomes are achieved or the data source is corrupted then the options can be expired to  worthless state. 
 
 # Implementation
 
@@ -122,7 +122,7 @@ In case the ancillary data provided does not comply with the ancillary data spec
 
 # Security considerations
 
-This UMIP makes it easier for teams to launch their KPI options without having a pre-approved methodology. This opens the DVM to a potential situation where a price resolution may not be reached since the data is ambiguous or cannot be verified. This concern should be addressed by allowing price resolutions for this price identifier to return a no-answer resulting in the options expiring at as close to zero as possible.
+This UMIP makes it easier for teams to launch their KPI options without having a pre-approved methodology. This opens the DVM to a potential situation where a price resolution may not be reached since the data is ambiguous or cannot be verified. This concern is addressed by allowing price resolutions for this price identifier to return a zero value resulting in the options expiring worthless.
 
 An additional security concern is that of manipulation by the controlling entity of the data. Since the creator of a KPI can also be the entity reporting the results, there can be a trusted intermediary involved. To ensure the integrity of the reported figures, each price request will require a link to the methodology of how the feed is being calculated. It should be noted that a price request may be sent without a viable method attached and will be up to the voters to discern the accuracy of the reported figures.
 
