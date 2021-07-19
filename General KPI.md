@@ -66,12 +66,35 @@ KPI options launcher can also add any arbitrary ancillary data fields as long as
 
 When designing the ancillary data KPI options deployer should be aware that the total size of ancillary data cannot exceed 8192 bytes also accounting for any ancillary data stamping by Optimistic Oracle. This limit would be checked by the LSP creator contract upon the deployment.
 
-As an example, possible ancillary data for Aragon v2 migration KPI options (as specified in [UMIP-81](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-81.md) is listed below if it was using `General KPI Price Identifier` instead:
+As an example, possible ancillary data for UMA TVL KPI options (as specified in [UMIP-65](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-65.md) is listed below if it was using `General KPI Price Identifier` instead:
 
 ```
-Metric: Assets under management in USD migrated to v2 by qualified Aragon v1 DAOs by request timestamp, Endpoint: datafeed.aragon.org/organizations, Method: github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-81.md, Key: total, Interval: Updated each day at midnight, Rounding: -6
+Metric:TVL in UMA financial contracts measured in billions of USD,
+Endpoint:api.umaproject.org/uma-tvl,
+Method:github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-65.md,
+Key:currentTvl,
+Interval:Updated every 10 minutes,
+Rounding:-7,
+Scaling:-9
 ```
-***Note:** UMIP-81 has been provided only as an illustration of possible `Method` document. In reality it should be more focused document developed by KPI launch team without going through UMIP approval process*
+As for another example, possible ancillary data to implement UMA protocol DAO integrations KPI options (as specified in [UMIP-112](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-112.md)) is listed below:
+
+```
+Metric:Number of qualifying UMA DAO integrations,
+Endpoint:api.umaproject.org/uma-dao-integrations,
+Method:github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-112.md,
+Key:currentIntegrations,
+Interval:Updated daily,
+Rounding:2,
+startTimestamp:1622527200,
+maxBaseIntegrations:15,
+maxBonusIntegrations:3,
+bonusMinValue:$1,000,000,
+bonusIntegrationsMultiplier:3.00,
+floorIntegrations:3
+```
+
+***Note:** UMIP-65 and UMIP-112 have been provided only as an illustration of possible `Method` documents. In reality it should be more focused document developed by KPI launch team without going through UMIP approval process.*
 
 # Rationale
 
