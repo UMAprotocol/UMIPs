@@ -419,7 +419,7 @@ Even though the liquidity of OHM is quite reasonable with combined liquidity abo
 -----------------------------------------
 - Price identifier name: IDLEUSD and USDIDLE
 - Markets & Pairs:
-  - IDLE/ETH: [Uniswap v2](https://v2.info.uniswap.org/pair/0x29a9777da2bacd8c4a28b6fd8247c4ca4f098f12) and [SushiSwap](https://analytics.sushi.com/pairs/0xa7f11e026a0af768d285360a855f2bded3047530)
+  - IDLE/ETH: [SushiSwap](https://analytics.sushi.com/pairs/0xa7f11e026a0af768d285360a855f2bded3047530)
   - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
 - Example data providers:
   - IDLE/ETH: the Graph
@@ -436,16 +436,11 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
   IDLEUSD: {
     type: "expression",
     expression: `
-      median( (IDLE_ETH_UNI * ETHUSD), (IDLE_ETH_SUSHI * ETHUSD) )
+      IDLE_ETH_SUSHI * ETHUSD
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
     customFeeds: {
-      IDLE_ETH_UNI: {
-        type: "uniswap",
-        uniswapAddress: "0x29a9777da2bacd8c4a28b6fd8247c4ca4f098f12",
-        twapLength: 300,
-      },
       IDLE_ETH_SUSHI: {
         type: "uniswap",
         uniswapAddress: "0xa7f11e026a0af768d285360a855f2bded3047530",
@@ -477,25 +472,24 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 
 ## Rationale
 
-IDLE token does not have any visible liquidity on CEXs, thus, the only viable alternative currently is to query its pricing from available AMM pools on Uniswap and SushiSwap. In order to mitigate attempted price manipulation 5 minute TWAP would be applied.
+IDLE token does not have any visible liquidity on CEXs, thus, the only viable alternative currently is to query its pricing from SushiSwap. Even though there is also Uniswap v2 pool available, its liquidity is deemed insufficient for reliable information, though it can be added to this price identifier later once sufficient liquidity is developed. In order to mitigate attempted price manipulation 5 minute TWAP would be applied.
 
 ## Implementation
 
 ```
-1. Query IDLE/ETH price from Uniswap v2 and SushiSwap using 5-minute TWAP.
+1. Query IDLE/ETH price from SushiSwap using 5-minute TWAP.
 2. Query the ETH/USD price as per UMIP-6.
-3. Multiply each of IDLE/ETH prices in step 1 with ETH/USD price from step 2.
-4. Take the median of results from step 3.
-5. Round result from step 4 to 8 decimals to get the IDLE/USD price.
-6. (for USD/IDLE) Take the inverse of the result of step 4.
-7. (for USD/IDLE) Round result from step 6 to 8 decimals to get the USD/IDLE price.
+3. Multiply IDLE/ETH price in step 1 with ETH/USD price from step 2.
+4. Round result from step 3 to 8 decimals to get the IDLE/USD price.
+5. (for USD/IDLE) Take the inverse of the result of step 3.
+6. (for USD/IDLE) Round result from step 5 to 8 decimals to get the USD/IDLE price.
 ```
 
 Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus. Considering limited liquidity of IDLE token voters should watch out for any attempted price manipulation.
 
 ## Security considerations
 
-IDLE token does not have any visible liquidity on CEXs and also its on-chain liquidity is quite weak, with less than $2 million combined on both Uniswap and SushiSwap pools. Even though TWAP price processing is applied, this might not be sufficient to protect against well capitalized attacks on liquidatable contracts. Thus, it is strongly advised to use this price identifier only for non-liquidatable contracts like issuing range tokens.
+IDLE token does not have any visible liquidity on CEXs and also its on-chain liquidity is quite weak, with less than $2 million on SushiSwap pool. Even though TWAP price processing is applied, this might not be sufficient to protect against well capitalized attacks on liquidatable contracts. Thus, it is strongly advised to use this price identifier only for non-liquidatable contracts like issuing range tokens.
 
 UMA holders should also consider re-defining this identifier as liquidity in the underlying asset changes.
 
