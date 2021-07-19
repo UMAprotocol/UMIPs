@@ -39,10 +39,8 @@ Proactively approving these price identifiers will make it easier for developmen
 - Markets & Pairs:
   - POOL/ETH: [Uniswap v2](https://v2.info.uniswap.org/pair/0x85cb0bab616fe88a89a35080516a8928f38b518b) and [SushiSwap](https://analytics.sushi.com/pairs/0x577959c519c24ee6add28ad96d3531bc6878ba34)
   - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
-- Example data providers:
-  - POOL/ETH: the Graph
-  - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
-- Cost to use: As of writing this UMIP, Graph Protocol is free. However, they have plans to start charging for access in the future.
+- Example data providers: Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
+- Cost to use: Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
 - Real-time data update frequency: price is updated with every Ethereum block (~15 seconds per block)
 - Historical data update frequency: price is updated with every Ethereum block (~15 seconds per block)
 
@@ -129,11 +127,8 @@ UMA holders should also consider re-defining this identifier as liquidity in the
   - BTC/USD(T): Refer to `BTCUSD` in [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md)
 - Example data providers:
   - BADGER/USDT: CryptoWatch
-  - BADGER/WBTC: the Graph
   - BTC/USD(T): Refer to `BTCUSD` in [UMIP-7](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-7.md)
-- Cost to use:
-  - As of writing this UMIP, Graph Protocol is free. However, they have plans to start charging for access in the future.
-  - CryptoWatch has a free tier subject to [rate limiting](https://docs.cryptowat.ch/rest-api/rate-limit) and [pricing plan ](https://cryptowat.ch/pricing) beyond their free tier.
+- Cost to use: CryptoWatch has a free tier subject to [rate limiting](https://docs.cryptowat.ch/rest-api/rate-limit) and [pricing plan ](https://cryptowat.ch/pricing) beyond their free tier.
 - Real-time data update frequency:
   - CryptoWatch: price is updated with every trade.
   - AMM pools: price is updated with every Ethereum block (~15 seconds per block)
@@ -234,11 +229,8 @@ Even though the liquidity of BADGER is quite reasonable with combined liquidity 
   - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
 - Example data providers:
   - GNO/USD: CryptoWatch
-  - GNO/ETH: the Graph
   - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
-- Cost to use:
-  - As of writing this UMIP, Graph Protocol is free. However, they have plans to start charging for access in the future.
-  - CryptoWatch has a free tier subject to [rate limiting](https://docs.cryptowat.ch/rest-api/rate-limit) and [pricing plan ](https://cryptowat.ch/pricing) beyond their free tier.
+- Cost to use: CryptoWatch has a free tier subject to [rate limiting](https://docs.cryptowat.ch/rest-api/rate-limit) and [pricing plan ](https://cryptowat.ch/pricing) beyond their free tier.
 - Real-time data update frequency:
   - CryptoWatch: price is updated with every trade.
   - AMM pools: price is updated with every Ethereum block (~15 seconds per block)
@@ -337,10 +329,8 @@ Even though the liquidity of GNO is quite reasonable with combined liquidity abo
 - Markets & Pairs:
   - OHM/DAI: [SushiSwap](https://analytics.sushi.com/pairs/0x34d7d7aaf50ad4944b70b320acb24c95fa2def7c)
   - OHM/FRAX: [Uniswap v2](https://v2.info.uniswap.org/pair/0x2dce0dda1c2f98e0f171de8333c3c6fe1bbf4877)
-- Example data providers:
-  - OHM/DAI: the Graph
-  - OHM/FRAX: the Graph
-- Cost to use: As of writing this UMIP, Graph Protocol is free. However, they have plans to start charging for access in the future.
+- Example data providers: NA, use on-chain data
+- Cost to use: NA for on-chain data
 - Real-time data update frequency: price is updated with every Ethereum block (~15 seconds per block)
 - Historical data update frequency: price is updated with every Ethereum block (~15 seconds per block)
 
@@ -421,10 +411,8 @@ Even though the liquidity of OHM is quite reasonable with combined liquidity abo
 - Markets & Pairs:
   - IDLE/ETH: [SushiSwap](https://analytics.sushi.com/pairs/0xa7f11e026a0af768d285360a855f2bded3047530)
   - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
-- Example data providers:
-  - IDLE/ETH: the Graph
-  - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
-- Cost to use: As of writing this UMIP, Graph Protocol is free. However, they have plans to start charging for access in the future.
+- Example data providers: Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
+- Cost to use: Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
 - Real-time data update frequency: price is updated with every Ethereum block (~15 seconds per block)
 - Historical data update frequency: price is updated with every Ethereum block (~15 seconds per block)
 
