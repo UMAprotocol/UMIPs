@@ -46,7 +46,7 @@ The data should also have the following accessibility requirements:
 - Price identifier name: General_KPI
 - Base Currency: Determined by the `Metric` parameter from the ancillary data
 - Quote Currency: NA
-- Rounding: Determined by the linked document in the `Method` parameter from the ancillary data
+- Rounding: Determined by the `Rounding` parameter from the ancillary data
 
 ## Ancillary Data Specifications
 
