@@ -44,7 +44,7 @@ To accomplish this upgrade, the following changes need to be made:
 -   A final fee of **2.4 GNO**
 
 ### GYSR
-  The **GYSR** [token address](ttps://etherscan.io/token/0xbea98c05eeae2f3bc8c3565db7551eb738c8cc)
+  The **GYSR** [token address](https://etherscan.io/token/0xbEa98c05eEAe2f3bC8c3565Db7551Eb738c8CCAb)
 -   A final fee of **2000 GYSR** 
 
 ### QiDAO - note this is a Polygon token
