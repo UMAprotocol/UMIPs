@@ -2,7 +2,7 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add **General KPI options* as a supported price identifier |
+| UMIP Title          | Add **General_KPI** as a supported price identifier |
 | Authors             | **Chandler De Kock** **Reinis Martinsons**                                                           |
 | Status              | Draft                                                         |
 | Created             | **14 July**                                              |
@@ -10,7 +10,7 @@
 
 # Summary
 
-`General KPI Price Identifier` will allow any team to use the KPI identifier to track any verifiable key performance metric a team would want to create KPI options for. Ancillary data will guide voters to reach the KPI result correctly.
+`General_KPI` price identifier will allow any team to use the KPI identifier to track any verifiable key performance metric a team would want to create KPI options for. Ancillary data will guide voters to reach the KPI result correctly.
 
 This UMIP outlines the critical considerations for any user of this identifier. The user acknowledges that extra steps are required to use the identifier for their specific KPI to resolve at expiry.
 
@@ -18,19 +18,19 @@ This UMIP outlines the critical considerations for any user of this identifier. 
 
 Price (or data) Identifiers for KPI options tend to be project-specific, time sensitive, and not reusable identifiers for other projects to make use of. Instead, this identifier sets a general standard for all metric-based feeds and removes the need to create individual proposals for KPI identifiers. 
 
-The user of the General KPI Price Identifier is intended to have their project report their specific metric themselves in the interest of incentivizing their users.
+The user of the `General_KPI` price identifier is intended to have their project report their specific metric themselves in the interest of incentivizing their users.
 
 # Data Specifications
 
 -----------------------------------------
-- Price identifier name: General KPI Price Identifier
+- Price identifier name: General_KPI
 - Markets & Pairs: Should be described in the `Metric` parameter and detailed in the linked `Method` document from the ancillary data
 - Example data providers: `Endpoint` parameter from the ancillary data
 - Cost to use: Should be explained in the linked `Method` document from the ancillary data
 - Real-time data update frequency: Not applicable for KPI options
 - Historical data update frequency: Should be specified in the `Interval` parameter from the ancillary data
 
-Since the project running KPI options is expected to provide some visibility on the target metric, it is reasonable to assume that the user of the `General KPI Price Identifier` provides an endpoint for serving this data. The role of UMA DVM would be to verify and deliver human judgment failover considering the linked source code of the end server and general target objectives and calculation methodology. Required data for setting project specific data should be provided through ancillary data.
+Since the project running KPI options is expected to provide some visibility on the target metric, it is reasonable to assume that the user of the `General_KPI` price identifier provides an endpoint for serving this data. The role of UMA DVM would be to verify and deliver human judgment failover considering the linked source code of the end server and general target objectives and calculation methodology. Required data for setting project specific data should be provided through ancillary data.
 
 The data should also have the following accessibility requirements:
 
@@ -43,7 +43,7 @@ The data should also have the following accessibility requirements:
 # Technical Specifications
 
 -----------------------------------------
-- Price identifier name: General KPI Price Identifier
+- Price identifier name: General_KPI
 - Base Currency: Determined by the `Metric` parameter from the ancillary data
 - Quote Currency: NA
 - Rounding: Determined by the linked document in the `Method` parameter from the ancillary data
@@ -67,7 +67,7 @@ KPI options launcher can also add any arbitrary ancillary data fields as long as
 
 When designing the ancillary data KPI options deployer should be aware that the total size of ancillary data cannot exceed 8192 bytes also accounting for any ancillary data stamping by Optimistic Oracle. This limit would be checked by the LSP creator contract upon the deployment.
 
-As an example, possible ancillary data for UMA TVL KPI options (as specified in [UMIP-65](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-65.md) is listed below if it was using `General KPI Price Identifier` instead:
+As an example, possible ancillary data for UMA TVL KPI options (as specified in [UMIP-65](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-65.md) is listed below if it was using `General_KPI` price identifier instead:
 
 ```
 Metric:TVL in UMA financial contracts measured in billions of USD,
