@@ -54,6 +54,7 @@ To accomplish this upgrade, the following changes need to be made:
 ### FEI
    The FEI Protocol [Ethereum token address:](https://etherscan.io/address/0x956F47F50A910163D8BF957Cf5846D573E7f87CA) 0x956F47F50A910163D8BF957Cf5846D573E7f87CA
 - A final fee of **400 FEI**
+Due to FEI being an algorithmic stablecoin, it is at risk of losing the peg. However this is countered through the reweighting system, coupled with the $0.95c price floor, allowing any user to always redeem their FEI for $0.95c.
 
 ### TRIBE
  The TRIBE [Ethereum token address:](https://etherscan.io/token/0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B) 0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B
