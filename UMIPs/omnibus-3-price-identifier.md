@@ -2,7 +2,7 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add POOLUSD, USDPOOL, BADGER/USD, USD/BADGER, GNOUSD, USDGNO, OHMUSD, USDOHM, IDLEUSD, USDIDLE, FEIUSD and USDFEI as supported price identifiers |
+| UMIP Title          | Add POOLUSD, USDPOOL, BADGER/USD, USD/BADGER, GNOUSD, USDGNO, OHMUSD, USDOHM, IDLEUSD, USDIDLE, FEIUSD, USDFEI, TRIBEUSD and USDTRIBE as supported price identifiers |
 | Authors             | Reinis Martinsons (reinis@umaproject.org)                                                      |
 | Status              | Draft                                                         |
 | Created             | July 13, 2021                                              |
@@ -23,8 +23,10 @@ The DVM should support price requests for the below listed asset pairs:
 - USD/IDLE
 - FEI/USD
 - USD/FEI
+- TRIBE/USD
+- USD/TRIBE
 
-The canonical identifiers should be `POOLUSD`, `USDPOOL`, `BADGER/USD`, `USD/BADGER`, `GNOUSD`, `USDGNO`, `OHMUSD`, `USDOHM`, `IDLEUSD`, `USDIDLE`, `FEIUSD` and `USDFEI`.
+The canonical identifiers should be `POOLUSD`, `USDPOOL`, `BADGER/USD`, `USD/BADGER`, `GNOUSD`, `USDGNO`, `OHMUSD`, `USDOHM`, `IDLEUSD`, `USDIDLE`, `FEIUSD`, `USDFEI`, `TRIBEUSD` and `USDTRIBE`.
 
 # Motivation
 
@@ -578,4 +580,84 @@ Voters should ensure that their results do not differ from broad market consensu
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders.
 
 Even though the liquidity of FEI is quite reasonable with combined liquidity around $300 million on Uniswap users still should be aware that the main expected application for this price identifier is to be used as dependency for TRIBE token locked in non-liquidatable contracts.
+
+# TRIBE
+
+## Data Specifications
+
+-----------------------------------------
+- Price identifier name: TRIBEUSD and USDTRIBE
+- Markets & Pairs:
+  - TRIBE/FEI: [Uniswap v2](https://v2.info.uniswap.org/pair/0x9928e4046d7c6513326ccea028cd3e7a91c7590a)
+  - FEI/USD: Refer to `FEIUSD` in this UMIP above
+- Example data providers: Refer to `FEIUSD` in this UMIP above
+- Cost to use: Refer to `FEIUSD` in this UMIP above
+- Real-time data update frequency: price is updated with every Ethereum block (~15 seconds per block)
+- Historical data update frequency: price is updated with every Ethereum block (~15 seconds per block)
+
+## Price Feed Implementation
+
+This price identifier uses the [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js) with example configuration below:
+
+```
+  TRIBEUSD: {
+    type: "expression",
+    expression: `
+      TRIBE_FEI_UNI * FEIUSD
+    `,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      TRIBE_FEI_UNI: {
+        type: "uniswap",
+        uniswapAddress: "0x9928e4046d7c6513326ccea028cd3e7a91c7590a",
+        twapLength: 300,
+        invertPrice: true,
+      },
+    },
+  },
+  USDTRIBE: {
+    type: "expression",
+    expression: "1 / TRIBEUSD",
+  },
+```
+***Note**: this assumes `FEIUSD` defined in [default price feed configuration](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js)*
+
+## Technical Specifications
+
+-----------------------------------------
+- Price identifier name: TRIBEUSD
+- Base Currency: TRIBE
+- Quote Currency: USD
+- Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Estimated current value of price identifier: 0.57181392 (19 Jul 2021 12:00:00 GMT)
+-----------------------------------------
+- Price identifier name: USDTRIBE
+- Base Currency: USD
+- Quote Currency: TRIBE
+- Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Estimated current value of price identifier: 1.74882067 (19 Jul 2021 12:00:00 GMT)
+
+## Rationale
+
+TRIBE token does not have any recognizable liquidity on CEXs, thus, the only viable alternative currently is to query its pricing from available AMM pool on Uniswap. In order to mitigate attempted price manipulation 5 minute TWAP would be applied.
+
+## Implementation
+
+```
+1. Query TRIBE/FEI price from Uniswap v2 using 5-minute TWAP.
+2. Query the FEI/USD price as defined in this UMIP above.
+3. Multiply TRIBE/FEI price in step 1 with FEI/USD price from step 2.
+4. Round result from step 3 to 8 decimals to get the TRIBE/USD price.
+5. (for USD/TRIBE) Take the inverse of the result of step 3.
+6. (for USD/TRIBE) Round result from step 5 to 8 decimals to get the USD/TRIBE price.
+```
+
+Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus.
+
+## Security considerations
+
+Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders.
+
+Even though the liquidity of TRIBE is quite reasonable with above $300 million on Uniswap users still should be aware that the main expected application for this price identifier is to be used in non-liquidatable contracts.
 
