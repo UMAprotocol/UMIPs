@@ -9,7 +9,7 @@
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding **BADGER**, **OHM**, **IDLE**, **GNO**, **Qi**, **POOL**, **DOUGH V2**, **FEI**, **RBN**, **TRIBE** and **FOX** for use as collateral in UMA contracts.
+This UMIP proposes adding **BADGER**, **OHM**, **IDLE**, **GNO**, **Qi**, **POOL**, **DOUGH V2**, **FEI**, **TRIBE** and **FOX** for use as collateral in UMA contracts.
 
 ## Motivation
 
@@ -54,10 +54,6 @@ To accomplish this upgrade, the following changes need to be made:
 ### FEI
    The FEI Protocol [Ethereum token address:](https://etherscan.io/address/0x956F47F50A910163D8BF957Cf5846D573E7f87CA) 0x956F47F50A910163D8BF957Cf5846D573E7f87CA
 - A final fee of **400 FEI**
-
-### RBN
-  The Ribbon Finance [Ethereum token address](https://etherscan.io/token/0x6123b0049f904d730db3c36a31167d9d4121fa6b) 0x6123b0049f904d730db3c36a31167d9d4121fa6b
-- A final fee of
 
 ### TRIBE
  The TRIBE [Ethereum token address:](https://etherscan.io/token/0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B) 0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B
