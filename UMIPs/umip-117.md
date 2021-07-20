@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP                |                                                               |
-| ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add **General_KPI** as a supported price identifier |
-| Authors             | **Chandler De Kock** **Reinis Martinsons**                                                           |
-| Status              | Draft                                                         |
-| Created             | **14 July**                                              |
-| Discourse Link      | **Create a post in [UMA's Discourse](https://discourse.umaproject.org/c/umips/18) and link here**            |
+| UMIP-117            |                                                                                                        |
+| ------------------- | ------------------------------------------------------------------------------------------------------ |
+| UMIP Title          | Add General_KPI as a supported price identifier                                                        |
+| Authors             | Chandler De Kock (chandler@umaproject.org), Reinis Martinsons (reinis@umaproject.org)                  |
+| Status              | Last call                                                                                              |
+| Created             | July 14, 2021                                                                                          |
+| Discourse Link      | [UMA's Discourse](https://discourse.umaproject.org/t/create-general-kpi-options-price-identifier/1259) |
 
 # Summary
 
