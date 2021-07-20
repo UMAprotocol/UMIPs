@@ -40,19 +40,19 @@ To accomplish this upgrade, the following changes need to be made:
 -   A final fee of **3 GNO**
 
 ### Qi -note this is a Polygon token
-  The QiDAO [Polygon token address](https://polygonscan.com/token/0x580a84c73811e1839f75d86d75d88cca0c241ff4) 0x580a84c73811e1839f75d86d75d88cca0c241ff4
+  The QiDAO [Polygon token address:](https://polygonscan.com/token/0x580a84c73811e1839f75d86d75d88cca0c241ff4) 0x580a84c73811e1839f75d86d75d88cca0c241ff4
 -   A final fee of **400 Qi**
 
 ### POOL
-  The PoolTogether [Ethereum token address](https://etherscan.io/token/0x0cec1a9154ff802e7934fc916ed7ca50bde6844e) 0x0cec1a9154ff802e7934fc916ed7ca50bde6844e
+  The PoolTogether [Ethereum token address:](https://etherscan.io/token/0x0cec1a9154ff802e7934fc916ed7ca50bde6844e) 0x0cec1a9154ff802e7934fc916ed7ca50bde6844e
 -   A final fee of **45 POOL**
 
 ### PieDAO DOUGH V2 
-   The PieDAO [Ethereum token address](https://etherscan.io/token/0xad32A8e6220741182940c5aBF610bDE99E737b2D) 0xad32A8e6220741182940c5aBF610bDE99E737b2D
+   The PieDAO [Ethereum token address:](https://etherscan.io/token/0xad32A8e6220741182940c5aBF610bDE99E737b2D) 0xad32A8e6220741182940c5aBF610bDE99E737b2D
 -   A final fee of **1100 DOUGH V2**
 
 ### FEI
-   The FEI Protocol [Ethereum token address](https://etherscan.io/address/0x956F47F50A910163D8BF957Cf5846D573E7f87CA) 0x956F47F50A910163D8BF957Cf5846D573E7f87CA
+   The FEI Protocol [Ethereum token address:](https://etherscan.io/address/0x956F47F50A910163D8BF957Cf5846D573E7f87CA) 0x956F47F50A910163D8BF957Cf5846D573E7f87CA
 - A final fee of **400 FEI**
 
 ### RBN
@@ -60,13 +60,12 @@ To accomplish this upgrade, the following changes need to be made:
 - A final fee of
 
 ### TRIBE
- The TRIBE [Ethereum token address](https://etherscan.io/token/0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B) 0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B
+ The TRIBE [Ethereum token address:](https://etherscan.io/token/0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B) 0xc7283b66Eb1EB5FB86327f08e1B5816b0720212B
  - A final fee of **800 TRIBE**
 
 ### FOX
   The ShapeShift 
-  [Ethereum token address](https://etherscan.io/token/0xc770eefad204b5180df6a14ee197d99d808ee52d) 0xc770eefad204b5180df6a14ee197d99d808ee52d
-  [Polygon token address](https://polygonscan.com/token/0x84259e4c4207ec8f2e6db22ba30d283180bacdb5) 0x84259e4c4207ec8f2e6db22ba30d283180bacdb5
+  [Ethereum token address:](https://etherscan.io/token/0xc770eefad204b5180df6a14ee197d99d808ee52d) 0xc770eefad204b5180df6a14ee197d99d808ee52d
   - A final fee of **670 FOX**
 
 ## Rationale
