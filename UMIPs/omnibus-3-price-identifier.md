@@ -2,7 +2,7 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add POOLUSD, USDPOOL, BADGER/USD, USD/BADGER, GNOUSD, USDGNO, OHMUSD, USDOHM, IDLEUSD, USDIDLE, FEIUSD, USDFEI, TRIBEUSD and USDTRIBE as supported price identifiers |
+| UMIP Title          | Add POOLUSD, USDPOOL, BADGER/USD, USD/BADGER, GNOUSD, USDGNO, OHMUSD, USDOHM, IDLEUSD, USDIDLE, FEIUSD, USDFEI, TRIBEUSD, USDTRIBE, FOXUSD and USDFOX as supported price identifiers |
 | Authors             | Reinis Martinsons (reinis@umaproject.org)                                                      |
 | Status              | Draft                                                         |
 | Created             | July 13, 2021                                              |
@@ -25,8 +25,10 @@ The DVM should support price requests for the below listed asset pairs:
 - USD/FEI
 - TRIBE/USD
 - USD/TRIBE
+- FOX/USD
+- USD/FOX
 
-The canonical identifiers should be `POOLUSD`, `USDPOOL`, `BADGER/USD`, `USD/BADGER`, `GNOUSD`, `USDGNO`, `OHMUSD`, `USDOHM`, `IDLEUSD`, `USDIDLE`, `FEIUSD`, `USDFEI`, `TRIBEUSD` and `USDTRIBE`.
+The canonical identifiers should be `POOLUSD`, `USDPOOL`, `BADGER/USD`, `USD/BADGER`, `GNOUSD`, `USDGNO`, `OHMUSD`, `USDOHM`, `IDLEUSD`, `USDIDLE`, `FEIUSD`, `USDFEI`, `TRIBEUSD`, `USDTRIBE`, `FOXUSD` and `USDFOX`.
 
 # Motivation
 
@@ -660,4 +662,84 @@ Voters should ensure that their results do not differ from broad market consensu
 Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders.
 
 Even though the liquidity of TRIBE is quite reasonable with above $300 million on Uniswap users still should be aware that the main expected application for this price identifier is to be used in non-liquidatable contracts.
+
+# FOX
+
+## Data Specifications
+
+-----------------------------------------
+- Price identifier name: FOXUSD and USDFOX
+- Markets & Pairs:
+  - FOX/ETH: [Uniswap v2](https://v2.info.uniswap.org/pair/0x470e8de2ebaef52014a47cb5e6af86884947f08c)
+  - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
+- Example data providers: Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
+- Cost to use: Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
+- Real-time data update frequency: price is updated with every Ethereum block (~15 seconds per block)
+- Historical data update frequency: price is updated with every Ethereum block (~15 seconds per block)
+
+## Price Feed Implementation
+
+This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js), [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js) with example configuration below:
+
+```
+  FOXUSD: {
+    type: "expression",
+    expression: `
+      FOX_ETH_UNI * ETHUSD
+    `,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      FOX_ETH_UNI: {
+        type: "uniswap",
+        uniswapAddress: "0x470e8de2ebaef52014a47cb5e6af86884947f08c",
+        twapLength: 300,
+        invertPrice: true,
+      },
+    },
+  },
+  USDFOX: {
+    type: "expression",
+    expression: "1 / FOXUSD",
+  },
+```
+***Note**: this assumes `ETHUSD` defined in [default price feed configuration](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js)*
+
+## Technical Specifications
+
+-----------------------------------------
+- Price identifier name: FOXUSD
+- Base Currency: FOX
+- Quote Currency: USD
+- Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Estimated current value of price identifier: 0.81484422 (19 Jul 2021 12:00:00 GMT)
+-----------------------------------------
+- Price identifier name: USDFOX
+- Base Currency: USD
+- Quote Currency: FOX
+- Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Estimated current value of price identifier: 1.22722844 (19 Jul 2021 12:00:00 GMT)
+
+## Rationale
+
+FOX token does not have any visible liquidity on CEXs, thus, the only viable alternative currently is to query its pricing from available AMM pool on Uniswap. In order to mitigate attempted price manipulation 5 minute TWAP would be applied.
+
+## Implementation
+
+```
+1. Query FOX/ETH price from Uniswap v2 using 5-minute TWAP.
+2. Query the ETH/USD price as per UMIP-6.
+3. Multiply FOX/ETH price in step 1 with ETH/USD price from step 2.
+4. Round result from step 3 to 8 decimals to get the FOX/USD price.
+5. (for USD/FOX) Take the inverse of the result of step 3.
+6. (for USD/FOX) Round result from step 5 to 8 decimals to get the USD/FOX price.
+```
+
+Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus. Considering limited liquidity of FOX token voters should watch out for any attempted price manipulation.
+
+## Security considerations
+
+FOX token does not have any visible liquidity on CEXs and also its on-chain liquidity is not particularly strong, with above $4 million on its Uniswap pool. Even though TWAP price processing is applied, this might not be sufficient to protect against well capitalized attacks on liquidatable contracts. Thus, it is strongly advised to use this price identifier only for non-liquidatable contracts like issuing range tokens.
+
+UMA holders should also consider re-defining this identifier as liquidity in the underlying asset changes.
 
