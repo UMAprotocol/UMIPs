@@ -9,7 +9,7 @@
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding **BADGER**, **OHM**, **IDLE**, **GNO**, **Qi**, **POOL**, **DOUGH V2**, ** for use as collateral in UMA contracts.
+This UMIP proposes adding **BADGER**, **OHM**, **IDLE**, **GNO**, **Qi**, **POOL**, **DOUGH V2** for use as collateral in UMA contracts.
 
 ## Motivation
 
