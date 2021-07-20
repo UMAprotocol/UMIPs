@@ -33,7 +33,7 @@ To accomplish this upgrade, the following changes need to be made:
 
 ### IDLE 
   The IDLE Finance [Ethereum token address:](https://etherscan.io/token/0x875773784af8135ea0ef43b5a374aad105c5d39e) 0x875773784af8135ea0ef43b5a374aad105c5d39e
--   A final fee of **100 IDLE**
+-   A final fee of **130 IDLE**
 
 ### GNO
   The Gnosis [Ethereum token address:](https://etherscan.io/token/0x6810e776880c02933d47db1b9fc05908e5386b96) 0x6810e776880c02933d47db1b9fc05908e5386b96
@@ -41,7 +41,7 @@ To accomplish this upgrade, the following changes need to be made:
 
 ### Qi -note this is a Polygon token
   The QiDAO [Polygon token address:](https://polygonscan.com/token/0x580a84c73811e1839f75d86d75d88cca0c241ff4) 0x580a84c73811e1839f75d86d75d88cca0c241ff4
--   A final fee of **400 Qi**
+-   A final fee of **500 Qi**
 
 ### POOL
   The PoolTogether [Ethereum token address:](https://etherscan.io/token/0x0cec1a9154ff802e7934fc916ed7ca50bde6844e) 0x0cec1a9154ff802e7934fc916ed7ca50bde6844e
