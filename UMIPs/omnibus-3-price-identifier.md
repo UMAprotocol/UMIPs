@@ -2,7 +2,7 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add POOLUSD, USDPOOL, BADGER/USD, USD/BADGER, GNOUSD, USDGNO, OHMUSD, USDOHM, IDLEUSD and USDIDLE as supported price identifiers |
+| UMIP Title          | Add POOLUSD, USDPOOL, BADGER/USD, USD/BADGER, GNOUSD, USDGNO, OHMUSD, USDOHM, IDLEUSD, USDIDLE, FEIUSD and USDFEI as supported price identifiers |
 | Authors             | Reinis Martinsons (reinis@umaproject.org)                                                      |
 | Status              | Draft                                                         |
 | Created             | July 13, 2021                                              |
@@ -21,8 +21,10 @@ The DVM should support price requests for the below listed asset pairs:
 - USD/OHM
 - IDLE/USD
 - USD/IDLE
+- FEI/USD
+- USD/FEI
 
-The canonical identifiers should be `POOLUSD`, `USDPOOL`, `BADGER/USD`, `USD/BADGER`, `GNOUSD`, `USDGNO`, `OHMUSD`, `USDOHM`, `IDLEUSD` and `USDIDLE`.
+The canonical identifiers should be `POOLUSD`, `USDPOOL`, `BADGER/USD`, `USD/BADGER`, `GNOUSD`, `USDGNO`, `OHMUSD`, `USDOHM`, `IDLEUSD`, `USDIDLE`, `FEIUSD` and `USDFEI`.
 
 # Motivation
 
@@ -479,4 +481,101 @@ Voters should ensure that their results do not differ from broad market consensu
 IDLE token does not have any visible liquidity on CEXs and also its on-chain liquidity is quite weak, with less than $2 million on SushiSwap pool. Even though TWAP price processing is applied, this might not be sufficient to protect against well capitalized attacks on liquidatable contracts. Thus, it is strongly advised to use this price identifier only for non-liquidatable contracts like issuing range tokens.
 
 UMA holders should also consider re-defining this identifier as liquidity in the underlying asset changes.
+
+# FEI
+
+## Data Specifications
+
+-----------------------------------------
+- Price identifier name: FEIUSD and USDFEI
+- Markets & Pairs:
+  - FEI/ETH: [Uniswap v2](https://v2.info.uniswap.org/pair/0x94b0a3d511b6ecdb17ebf877278ab030acb0a878)
+  - FEI/USDC: [Uniswap v3](https://v3.info.uniswap.org/#/pools/0x8c54aa2a32a779e6f6fbea568ad85a19e0109c26)
+  - FEI/USDT: [Uniswap v3](https://v3.info.uniswap.org/#/pools/0xda14993eee56d3fb77f23c19b98281deb385e87a)
+  - ETH/USD(T): Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
+- Example data providers: Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
+- Cost to use: Refer to `ETHUSD` in [UMIP-6](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-6.md)
+- Real-time data update frequency: price is updated with every Ethereum block (~15 seconds per block)
+- Historical data update frequency: price is updated with every Ethereum block (~15 seconds per block)
+
+## Price Feed Implementation
+
+This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js), [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js) and [ExpressionPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js) with example configuration below:
+
+```
+  FEIUSD: {
+    type: "expression",
+    // Note: lower-case variables are intermediate, upper-case are configured feeds.
+    expression: `
+      fei_usd_uni = ETHUSD * FEI_ETH_UNI;
+      median( fei_usd_uni, FEI_USDC_UNI, FEI_USDT_UNI )
+    `,
+    lookback: 7200,
+    minTimeBetweenUpdates: 60,
+    customFeeds: {
+      FEI_ETH_UNI: {
+        type: "uniswap",
+        uniswapAddress: "0x94b0a3d511b6ecdb17ebf877278ab030acb0a878",
+        twapLength: 300,
+      },
+      FEI_USDC_UNI: {
+        type: "uniswap",
+        version: "v3",
+        uniswapAddress: "0x8c54aa2a32a779e6f6fbea568ad85a19e0109c26",
+        twapLength: 300,
+      },
+      FEI_USDT_UNI: {
+        type: "uniswap",
+        version: "v3",
+        uniswapAddress: "0xda14993eee56d3fb77f23c19b98281deb385e87a",
+        twapLength: 300,
+      },
+    },
+  },
+  USDFEI: {
+    type: "expression",
+    expression: "1 / FEIUSD",
+  },
+```
+***Note**: this assumes `ETHUSD` defined in [default price feed configuration](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js)*
+
+## Technical Specifications
+
+-----------------------------------------
+- Price identifier name: FEIUSD
+- Base Currency: FEI
+- Quote Currency: USD
+- Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Estimated current value of price identifier: 0.997767 (19 Jul 2021 12:00:00 GMT)
+-----------------------------------------
+- Price identifier name: USDFEI
+- Base Currency: USD
+- Quote Currency: FEI
+- Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
+- Estimated current value of price identifier: 1.002238 (19 Jul 2021 12:00:00 GMT)
+
+## Rationale
+
+FEI token does not have any recognizable liquidity on CEXs, thus, the only viable alternative currently is to query its pricing from available AMM pools on Uniswap. In order to mitigate attempted price manipulation 5 minute TWAP would be applied.
+
+## Implementation
+
+```
+1. Query FEI/ETH price from Uniswap v2 using 5-minute TWAP.
+2. Query the ETH/USD price as per UMIP-6.
+3. Multiply FEI/ETH price in step 1 with ETH/USD price from step 2.
+4. Query FEI/USD(C/T) prices from Uniswap v3 using 5-minute TWAP.
+5. Take the median of results from step 3 and step 4.
+6. Round result from step 5 to 8 decimals to get the FEI/USD price.
+7. (for USD/FEI) Take the inverse of the result of step 5.
+8. (for USD/FEI) Round result from step 7 to 8 decimals to get the USD/FEI price.
+```
+
+Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus.
+
+## Security considerations
+
+Adding this new identifier by itself poses little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to the reference asset’s volatility and liquidity characteristics to avoid the loss of funds for synthetic token holders.
+
+Even though the liquidity of FEI is quite reasonable with combined liquidity around $300 million on Uniswap users still should be aware that the main expected application for this price identifier is to be used as dependency for TRIBE token locked in non-liquidatable contracts.
 
