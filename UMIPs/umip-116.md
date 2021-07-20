@@ -1,11 +1,12 @@
-
 ## Headers
-- UMIP <#> 
-- UMIP title: <Collateral Omnibus 4>
+
+**UMIP-116**
+ 
+- UMIP title: Add BADGER, OHM, IDLE, GNO, Qi, POOL, DOUGH V2, FEI, TRIBE and FOX as collateral currencies
 - Author Chandler De Kock (chandler@umaproject.org)
-- Status: <Draft> 
-- Created: <15 July 2021>
-- Discourse Link: <Link>
+- Status: Last call 
+- Created: July 15, 2021
+- Discourse Link: https://discourse.umaproject.org/t/collateral-omnibus/1258
 
 ## Summary (2-5 sentences)
 
@@ -54,6 +55,7 @@ To accomplish this upgrade, the following changes need to be made:
 ### FEI
    The FEI Protocol [Ethereum token address:](https://etherscan.io/address/0x956F47F50A910163D8BF957Cf5846D573E7f87CA) 0x956F47F50A910163D8BF957Cf5846D573E7f87CA
 - A final fee of **400 FEI**
+
 Due to FEI being an algorithmic stablecoin, it is at risk of losing the peg. However this is countered through the reweighting system, coupled with the $0.95c price floor, allowing any user to always redeem their FEI for $0.95c.
 
 ### TRIBE
