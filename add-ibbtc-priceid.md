@@ -2,7 +2,7 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add ibBTCBTC, ibBTCUSD as a supported price identifiers |
+| UMIP Title          | Add ibBTC/BTC, BTC/ibBTC, ibBTC/USD, USD/ibBTC as a supported price identifiers |
 | Authors             | hash_error                                                      |
 | Status              | Draft                                                         |
 | Created             | July 18, 2021                                              |
@@ -12,11 +12,13 @@
 
 The DVM should support price requests for the below price indexes:
 - ibBTC/BTC
+- BTC/ibBTC
 - ibBTC/USD
+- USD/ibBTC
 
 # Motivation
 
-The DVM currently does not support the ibBTC/BTC, or ibBTC/USD price identifiers.
+The DVM currently does not support the ibBTC/BTC, BTC/ibBTC, ibBTC/USD or USD/ibBTC price identifiers.
 
 Badger DAO and DefiDollar partnered to create a collateralized interest bearing Bitcoin token (ibBTC) providing holders exposure to Badger's Bitcoin collateralized non-native vaults composed of strategies to generate yield on Bitcoin.  The intent of ibBTC is to become THE interst bearing BTC asset in the cryptocurrency multi-verse (cross-chain).  ibBTC offers the holder direct exposure to BTC and allows for yield generating properties through the underlying vault strategies of the collateral assets.
 
@@ -32,11 +34,11 @@ ibBTC is a BTC collateral backed asset.  A strong, trusted price oracle is criti
     - Uniswap
 
 2. Specific pairs to query from each market
-    - ibBTC/BTC
-        - Sushiswap (Ethereum network) and Sushiswap (Polygon network) ibBTC/WBTC
-    - ibBTC/USD
-        - Sushiswap (Ethereum network) and Sushiswap (Polygon network) ibBTC/WBTC
-        - [confirm]Binance, Coinbase, and Kraken for BTC/USD (follows the specification in UMIP-7)
+    - ibBTC/BTC and BTC/ibBTC
+        - ibBTC/WBTC: Sushiswap (Ethereum network) and Sushiswap (Polygon network)
+    - ibBTC/USD and USD/ibBTC
+        - ibBTC/WBTC: Sushiswap (Ethereum network) and Sushiswap (Polygon network)
+        - BTC/USD: refer to `BTCUSD` in UMIP-7
 
 3. Provide recommended endpoints to query for real-time prices from each market listed.
 
@@ -48,7 +50,7 @@ ibBTC/WBTC Pool Address: 0x8F8e95Ff4B4c5E354ccB005c6B0278492D7B5907
 
 - **ibBTC/WBTC Sushiswap (Ethereum) query** 
 
-The query below uses the spot price. [confirm]However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
+The query below uses the spot price. However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
 
 - To query the ibBTC/WBTC price, divide `reserve0` by `reserve1`:
 ``` 
@@ -69,7 +71,7 @@ The query below uses the spot price. [confirm]However, the ibBTC/WBTC identifier
 
 - **ibBTC/WBTC Sushiswap (Polygon) query** 
 
-The query below uses the spot price. [confirm]However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
+The query below uses the spot price. However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
 
 - To query the ibBTC/WBTC price, divide `reserve0` by `reserve1`:
 ``` 
@@ -94,7 +96,7 @@ The query below uses the spot price. [confirm]However, the ibBTC/WBTC identifier
 5. Recommended endpoints to query for historical prices from each market listed
 - **ibBTC/WBTC Sushiswap (Ethereum) query** 
 
-The query below uses the spot price. [confirm]However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
+The query below uses the spot price. However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
 
 - To query the ibBTC/WBTC price, divide `reserve0` by `reserve1`:
 ``` 
@@ -115,7 +117,7 @@ The query below uses the spot price. [confirm]However, the ibBTC/WBTC identifier
 
 - **ibBTC/WBTC Sushiswap (Polygon) query** 
 
-The query below uses the spot price. [confirm]However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
+The query below uses the spot price. However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
 
 - To query the ibBTC/WBTC price, divide `reserve0` by `reserve1`:
 ``` 
@@ -228,11 +230,11 @@ Sushiswap on Ethereum and Polygon networks has the vast majority of ibBTC volume
 
 **What is the potential for the price to be manipulated on the chosen exchanges?**
 
-NEED TO FIGURE OUT WHAT TO WRITE HERE...example DIGG is not a collateral on any loan services and the majority of the liquidity is locked into farming vaults.  The potential risk for this is low.
+The potential risk for this is low.
 
 **Should the prices have any processing (e.g., TWAP)?**
 
-NEED TO FIGURE OUT IF/WHAT APPROPRIATE TWAP WOULD BE FOR IBBTC...example A 30 minute TWAP was chosen to help smooth out price changes and give sponsors time to react before becoming undercollateralized. A 30 minute TWAP will also mitigate risk of attempted price manipulation attempts on the market price of the synthetic. To meaningfully manipulate the price that token sponsors’ collateralization is calculated with, an attacker would have to manipulate the trading price of a token for an extended amount of time. Another factor influencing the TWAP decision is the daily rebase and its potential impact on the supply and exchange rate which is described further in the Security Considerations section.
+A 30 minute TWAP was chosen to help smooth out price changes and give sponsors time to react before becoming undercollateralized. A 30 minute TWAP will also mitigate risk of attempted price manipulation attempts on the market price of the synthetic. To meaningfully manipulate the price that token sponsors’ collateralization is calculated with, an attacker would have to manipulate the trading price of a token for an extended amount of time. Another factor influencing the TWAP decision is the daily rebase and its potential impact on the supply and exchange rate which is described further in the Security Considerations section.
 
 <br>
 
@@ -247,6 +249,8 @@ For ibBTC/BTC and ibBTC/USD TWAP implementations, the TWAP start time should be 
     1. Query ibBTC/WBTC Price from Sushiswap (Ethereum) using 30 minute TWAP (0x18d98D452072Ac2EB7b74ce3DB723374360539f1).
     2. Query ibBTC/WBTC Price from Sushiswap (Polygon) using 30 minute TWAP (0x8F8e95Ff4B4c5E354ccB005c6B0278492D7B5907).
     3. Take the mean of steps 1 and 2 to get the ibBTC/WBTC price. This result should have 8 decimals, rounding the closest 0.5 up.
+    4. (for BTC/ibBTC) Take the inverse of the result of step 3.
+    5. (for BTC/ibBTC) Round result from step 4 to 8 decimals to get the BTC/ibBTC price.
 
 **For ibBTC/USD**
 
@@ -255,14 +259,16 @@ For ibBTC/BTC and ibBTC/USD TWAP implementations, the TWAP start time should be 
     3. Query the BTC/USD Price as per UMIP-7
     4. Take the mean of steps 1 and 2 to get the ibBTC/WBTC price.
     5. Multiply ibBTC/WBTC price acquired from step 4 by BTC/USD price acquired in step 3 and round to 6 decimals to get the final ibBTC/USD price
+    6. (for USD/ibBTC) Take the inverse of the result of step 5.
+    7. (for USD/ibBTC) Round result from step 6 to 6 decimals to get the USD/ibBTC price.
 
 1. **What prices should be queried for and from which markets?**
 
     -	ibBTC/WBTC
-        - Sushiswap on Ethereum and Polygon for ibBTC/WBTC
+        - ibBTC/WBTC: Sushiswap on Ethereum and Polygon
     -	ibBTC/USD
-        - Sushiswap on Ethereum and Polygon for ibBTC/WBTC
-        - [confirm]Binance, Coinbase, and Kraken for BTC/USD (follows the specification in UMIP-7)
+        - ibBTC/WBTC: Sushiswap on Ethereum and Polygon
+        - BTC/USD: refer to `BTC/USD` in UMIP-7
 
 2. **Pricing interval**
 
