@@ -6,7 +6,7 @@
 | Authors             | hash_error                                                      |
 | Status              | Draft                                                         |
 | Created             | July 18, 2021                                              |
-| Discourse Link      | NEED TO UPDATE**Create a post in [UMA's Discourse](https://discourse.umaproject.org/c/umips/18) and link here**            |
+| Discourse Link      |             |
 
 # Summary 
 
@@ -116,7 +116,7 @@ The query below uses the spot price. However, the ibBTC/WBTC identifier uses a T
 ```
 
 - **ibBTC/WBTC Sushiswap (Polygon) query** 
-https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
+https://thegraph.com/legacy-explorer/subgraph/sushiswap/matic-exchange
 
 The query below uses the spot price. However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
 
