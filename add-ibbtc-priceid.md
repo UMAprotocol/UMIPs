@@ -41,123 +41,35 @@ ibBTC is a BTC collateral backed asset. A strong, trusted price oracle is critic
 
 Sushiswap (Ethereum)
 ibBTC/WBTC Pool Address: 0x18d98D452072Ac2EB7b74ce3DB723374360539f1
-https://analytics.sushi.com/pairs/0x18d98D452072Ac2EB7b74ce3DB723374360539f1
 
 Sushiswap (Polygon)
 ibBTC/WBTC Pool Address: 0x8F8e95Ff4B4c5E354ccB005c6B0278492D7B5907
-https://analytics-polygon.sushi.com/pairs/0x8f8e95ff4b4c5e354ccb005c6b0278492d7b5907
-
-- **ibBTC/WBTC Sushiswap (Ethereum) query** 
-
-The query below uses the spot price. However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
-
-- To query the ibBTC/WBTC price, divide `reserve0` by `reserve1`:
-``` 
-{
-    pair(id: "0x18d98D452072Ac2EB7b74ce3DB723374360539f1") {
-        totalSupply
-        reserve0
-        reserve1
-        token0{
-            derivedETH
-        }
-        token1{
-            derivedETH
-        }
-    }
-}
-```
-
-- **ibBTC/WBTC Sushiswap (Polygon) query** 
-
-The query below uses the spot price. However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
-
-- To query the ibBTC/WBTC price, divide `reserve0` by `reserve1`:
-``` 
-{
-    pair(id: "0x8F8e95Ff4B4c5E354ccB005c6B0278492D7B5907") {
-        totalSupply
-        reserve0
-        reserve1
-        token0{
-            derivedETH
-        }
-        token1{
-            derivedETH
-        }
-    }
-}
-```
 
 4. Frequency of price update
-- every block
+    
+    - every block
 
-5. Recommended endpoints to query for historical prices from each market listed
-- **ibBTC/WBTC Sushiswap (Ethereum) query** 
-https://thegraph.com/explorer/subgraph/jiro-ono/sushiswap-v1-exchange
-
-The query below uses the spot price. However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
-
-- To query the ibBTC/WBTC price, divide `reserve0` by `reserve1`:
-``` 
-{
-    pair(id: "0x18d98D452072Ac2EB7b74ce3DB723374360539f1",  block:{number: 11808657}) {
-        totalSupply
-        reserve0
-        reserve1
-        token0{
-            derivedETH
-        }
-        token1{
-            derivedETH
-        }
-    }
-}
-```
-
-- **ibBTC/WBTC Sushiswap (Polygon) query** 
-https://thegraph.com/legacy-explorer/subgraph/sushiswap/matic-exchange
-
-The query below uses the spot price. However, the ibBTC/WBTC identifier uses a TWAP calculation which will need to be applied.
-
-- To query the ibBTC/WBTC price, divide `reserve0` by `reserve1`:
-``` 
-{
-    pair(id: "0x8F8e95Ff4B4c5E354ccB005c6B0278492D7B5907",  block:{number: 11808657}) {
-        totalSupply
-        reserve0
-        reserve1
-        token0{
-            derivedETH
-        }
-        token1{
-            derivedETH
-        }
-    }
-}
-```
-
-6.  Do these sources allow for querying up to 74 hours of historical data? 
+5.  Do these sources allow for querying up to 74 hours of historical data? 
 
     - Sushiswap: Yes
 
-7.  How often is the provided price updated?
+6.  How often is the provided price updated?
 
     - Every Block for Sushiswap
 
-8. Is an API key required to query these sources? 
+7. Is an API key required to query these sources? 
 
     - No
 
-9. Is there a cost associated with usage? 
+8. Is there a cost associated with usage? 
 
     - No (this could change when The Graph turns into a marketplace). Note, the price feed does not use The Graph. Using the graph is a secondary reference implementation.
 
-10. If there is a free tier available, how many queries does it allow for?
+9. If there is a free tier available, how many queries does it allow for?
 
     - No limit currently
 
-11.  What would be the cost of sending 15,000 queries?
+10.  What would be the cost of sending 15,000 queries?
 
      - $0
 
@@ -168,53 +80,25 @@ The price feed configuration is shown [insert here]. These price identifiers use
 
 # Technical Specifications
 ## ibBTC/USD
-**1. Price Identifier Name** - ibBTCUSD
+**1. Price Identifier Name** - ibBTC/USD
 
 **2. Base Currency** - ibBTC
 
 **3. Quote currency** - USD
 
-**4. Intended Collateral Currency** - USDC
-
-- Does the value of this collateral currency match the standalone value of the listed quote currency? 
-
-    - Yes
-
-- Is your collateral currency already approved to be used by UMA financial contracts?
-    
-    - Yes (https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-18.md)
-
-**5. Collateral Decimals** - USDC has 6 decimals (https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)
-
-**6. Scaling Decimals** - 18 (1e18)
-
-**7. Rounding** - Round to 6 decimal places. (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+**4. Rounding** - Round to 6 decimal places. (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
  
 <br>
 
 ## ibBTC/BTC
 
-**1. Price Identifier Name** - ibBTCBTC
+**1. Price Identifier Name** - ibBTC/BTC
 
 **2. Base Currency** - ibBTC
 
 **3. Quote currency** - BTC
 
-**4. Intended Collateral Currency** - WBTC
-
-- Does the value of this collateral currency match the standalone value of the listed quote currency? 
-
-    - Yes
-
-- Is your collateral currency already approved to be used by UMA financial contracts? 
-
-    - Yes (https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-45.md)
-
-**5. Collateral Decimals** - WBTC has 8 decimals (https://etherscan.io/token/0x2260fac5e5542a773aa44fbcfedf7c193bc2c599)
-
-**6. Scaling Decimals** - 18 (1e18)
-
-**7. Rounding** - Round to 8 decimal places. (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
+**4. Rounding** - Round to 8 decimal places. (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
  
 <br>
 
@@ -234,7 +118,7 @@ The potential risk for this is low. Ethereum and Polygon are reliable networks, 
 
 **Should the prices have any processing (e.g., TWAP)?**
 
-A 30 minute TWAP was chosen to help smooth out price changes and give sponsors time to react before becoming undercollateralized. A 30 minute TWAP will also mitigate risk of attempted price manipulation attempts on the market price of the synthetic. To meaningfully manipulate the price that token sponsors’ collateralization is calculated with, an attacker would have to manipulate the trading price of a token for an extended amount of time. Another factor influencing the TWAP decision is the daily rebase and its potential impact on the supply and exchange rate which is described further in the Security Considerations section.
+A 30 minute TWAP was chosen to help smooth out price changes and give sponsors time to react before becoming undercollateralized. A 30 minute TWAP will also mitigate risk of attempted price manipulation attempts on the market price of the synthetic. To meaningfully manipulate the price that token sponsors’ collateralization is calculated with, an attacker would have to manipulate the trading price of a token for an extended amount of time.
 
 <br>
 
@@ -244,45 +128,23 @@ For all implementations, a block number will need to be used. The block number s
 
 For ibBTC/BTC and ibBTC/USD TWAP implementations, the TWAP start time should be determined by the latest block 30 minutes before requested timestamp.
 
-**For ibBTC/WBTC**
+**For ibBTC/BTC and BTC/ibBTC**
 
     1. Query ibBTC/WBTC Price from Sushiswap (Ethereum) using 30 minute TWAP (0x18d98D452072Ac2EB7b74ce3DB723374360539f1).
     2. Query ibBTC/WBTC Price from Sushiswap (Polygon) using 30 minute TWAP (0x8F8e95Ff4B4c5E354ccB005c6B0278492D7B5907).
-    3. Take the mean of steps 1 and 2 to get the ibBTC/WBTC price. This result should have 8 decimals, rounding the closest 0.5 up.
+    3. Take the mean of steps 1 and 2 to get the ibBTC/BTC price. This result should have 8 decimals, rounding the closest 0.5 up.
     4. (for BTC/ibBTC) Take the inverse of the before-rounding result of step 3 to retain precision.
     5. (for BTC/ibBTC) Round result from step 4 to 8 decimals to get the BTC/ibBTC price.
 
-**For ibBTC/USD**
+**For ibBTC/USD and USD/ibBTC**
 
     1. Query ibBTC/WBTC Price from Sushiswap (Ethereum) using 30 minute TWAP (0x18d98D452072Ac2EB7b74ce3DB723374360539f1).
     2. Query ibBTC/WBTC Price from Sushiswap (Polygon) using 30 minute TWAP (0x8F8e95Ff4B4c5E354ccB005c6B0278492D7B5907).
     3. Query the BTC/USD Price as per UMIP-7
-    4. Take the mean of steps 1 and 2 to get the ibBTC/WBTC price.
+    4. Take the mean of steps 1 and 2 to get the ibBTC/BTC price.
     5. Multiply ibBTC/WBTC price acquired from step 4 by BTC/USD price acquired in step 3 and round to 6 decimals to get the final ibBTC/USD price
     6. (for USD/ibBTC) Take the inverse of the before-rounding result of step 5 to retain precision.
     7. (for USD/ibBTC) Round result from step 6 to 6 decimals to get the USD/ibBTC price.
-
-1. **What prices should be queried for and from which markets?**
-
-    -	ibBTC/WBTC
-        - ibBTC/WBTC: Sushiswap on Ethereum and Polygon
-    -	ibBTC/USD
-        - ibBTC/WBTC: Sushiswap on Ethereum and Polygon
-        - BTC/USD: refer to `BTC/USD` in UMIP-7
-
-2. **Pricing interval**
-
-    - Every block.
-
-3. **Input processing**
-
-    - None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-
-4. **Result processing** 
-
-     - Mean for ibBTC/WBTC
-     - ibBTC/WBTC: 8 decimals
-     - ibBTC/USD: 6 decimals
 
 <br>
 
