@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP                |                                                 |
-| ------------------- | ----------------------------------------------- |
-| UMIP Title          | Add TOKEN_PRICE as a supported price identifier |
-| Authors             | Reinis Martinsons (reinis@umaproject.org)       |
-| Status              | Draft                                           |
-| Created             | July 23, 2021                                   |
-| Discourse Link      | [UMA's Discourse]()                             |
+| UMIP                |                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------ |
+| UMIP Title          | Add TOKEN_PRICE as a supported price identifier                                                  |
+| Authors             | Reinis Martinsons (reinis@umaproject.org)                                                        |
+| Status              | Draft                                                                                            |
+| Created             | July 23, 2021                                                                                    |
+| Discourse Link      | [UMA's Discourse](https://discourse.umaproject.org/t/create-general-token-price-identifier/1265) |
 
 # Summary
 
