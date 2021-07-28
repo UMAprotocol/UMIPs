@@ -6,7 +6,7 @@
 | Authors    | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                 |
 | Status     | Draft                                                |
 | Created    | 28/07/2021   
-| Discourse link    |                                 |
+| Discourse link    |  https://discourse.umaproject.org/t/register-polygon-derivativefactory-as-creator-in-dvm-registry/1267                               |
 
 # Summary
 
