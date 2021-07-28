@@ -1,6 +1,6 @@
-**UMIP #**  - tbd
+**UMIP 120**
 
--   **UMIP title:** Collateral Omnibus 5
+-   **UMIP title:** Add Polygon renBTC and RBN as collateral currencies.
 -   **Author**  Chandler De Kock (chandler@umaproject.org)
 -   **Status: Draft**
 -   **Created:**  21 July
@@ -17,7 +17,13 @@ To accomplish this upgrade, the following changes need to be made:
 -   A final fee of **0.012 renBTC**
 
 -   The **RBN** address [Ethereum token address](https://etherscan.io/token/0x6123B0049F904d730dB3C36a31167D9d4121fA6B) 0x6123B0049F904d730dB3C36a31167D9d4121fA6B needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of **10 000 RBN** (note: an accurate final fee cannot be attained right now, instead an arbitrary figure of 10 000 tokens is deemed sufficient until such time an accurate price of RBN is available. This should be updated in a UPP at a later date)
+-   A final fee of **10 000 RBN** 
+
+*Note*: a precisely accurate final fee cannot be obtained currently for RBN, since RBN is not yet actively traded. Instead a somewhat arbitrary amount of 10,000 tokens was chosen.
+
+RBN has a max total supply of 1b RBN. RBN is a protocol that has gained a large amount of traction, so an estimated starting market cap of $50m seems reasonable. This would give RBN a starting price of $0.05, putting the final fee at $500 - or right around the $400 target value.
+
+This should however be updated in a UPP at a later date if needed.
     
 
 ## Security considerations
