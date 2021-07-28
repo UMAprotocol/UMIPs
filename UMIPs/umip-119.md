@@ -1,10 +1,10 @@
 ## Headers
 
-| UMIP                |                                                               |
+| UMIP-119                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add ibBTC/BTC, BTC/ibBTC, ibBTC/USD, USD/ibBTC as a supported price identifiers |
 | Authors             | hash_error                                                      |
-| Status              | Draft                                                         |
+| Status              | Last Call                                                         |
 | Created             | July 18, 2021                                              |
 | Discourse Link      |             |
 
