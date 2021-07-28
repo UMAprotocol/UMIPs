@@ -46,7 +46,7 @@ If the required application needs a new price feed implementation, the user of t
 
 ## Ancillary Data Specifications
 
-When converting ancillary data to UTF8 string it must contain price request parameters expressed as a list of key-value pairs delimited by `,` (commas) and each key-value pair further delimited by `:` (colons). Double backslash `\\` must be used to escape `,` and `:` characters in the ancillary data that are not intended to delimit the key-value dictionary or are not part of a JSON formatted object. The below listed key parameters will be used to instruct voters how to resolve a given price request for this identifier and request timestamp:
+When converting ancillary data to UTF8 string it must contain price request parameters expressed as a list of key-value pairs delimited by `,` (commas) and each key-value pair further delimited by `:` (colons). If a value should contain `,` or `:` characters, such value should be enclosed in double quotes. The below listed key parameters will be used to instruct voters how to resolve a given price request for this identifier and request timestamp:
 - `base`: Collateral token symbol that should be priced in the submitted price request.
 - `baseAddress`: `base` token deployment address on Ethereum network (or any other network if `baseChain` parameter is provided). In case the token is deployed on several networks the user of this price identifier is free to select any network as long as it allows correctly identifying the required base token.
 - `baseChain` (optional): ChainID number for the network where base token is deployed. If omitted, Ethereum mainnet would be assumed.
@@ -62,7 +62,7 @@ When designing the ancillary data TOKEN_PRICE user should be aware that the tota
 As an example, possible ancillary data for UMA token priced in USD (as specified in UMAUSD in [UMIP-57](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-57.md)) if the user was using TOKEN_PRICE price identifier instead:
 
 ```
-base:UMA,baseAddress:0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828,quote:USD,quoteDetails:United States Dollar,rounding:6,fallback:https\\://www.coingecko.com/en/coins/uma,configuration:{
+base:UMA,baseAddress:0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828,quote:USD,quoteDetails:United States Dollar,rounding:6,fallback:"https://www.coingecko.com/en/coins/uma",configuration:{
     "type": "medianizer",
     "minTimeBetweenUpdates": 60,
     "twapLength": 3600,
@@ -77,7 +77,7 @@ base:UMA,baseAddress:0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828,quote:USD,quoteD
 When this ancillary data dictionary is stored as bytes, the result would be:
 
 ```
-0x626173653a554d412c62617365416464726573733a3078303446613064323335433461626634426346343738376146344346343437444535373265463832382c71756f74653a5553442c71756f746544657461696c733a556e697465642053746174657320446f6c6c61722c726f756e64696e673a362c66616c6c6261636b3a68747470735c5c3a2f2f7777772e636f696e6765636b6f2e636f6d2f656e2f636f696e732f756d612c636f6e66696775726174696f6e3a7b0a202020202274797065223a20226d656469616e697a6572222c0a20202020226d696e54696d654265747765656e55706461746573223a2036302c0a2020202022747761704c656e677468223a20333630302c0a20202020226d656469616e697a65644665656473223a205b0a2020202020207b202274797065223a202263727970746f7761746368222c202265786368616e6765223a2022636f696e626173652d70726f222c202270616972223a2022756d6175736422207d2c0a2020202020207b202274797065223a202263727970746f7761746368222c202265786368616e6765223a202262696e616e6365222c202270616972223a2022756d617573647422207d2c0a2020202020207b202274797065223a202263727970746f7761746368222c202265786368616e6765223a20226f6b6578222c202270616972223a2022756d617573647422207d0a202020205d0a20207d
+0x626173653a554d412c62617365416464726573733a3078303446613064323335433461626634426346343738376146344346343437444535373265463832382c71756f74653a5553442c71756f746544657461696c733a556e697465642053746174657320446f6c6c61722c726f756e64696e673a362c66616c6c6261636b3a2268747470733a2f2f7777772e636f696e6765636b6f2e636f6d2f656e2f636f696e732f756d61222c636f6e66696775726174696f6e3a7b0a202020202274797065223a20226d656469616e697a6572222c0a20202020226d696e54696d654265747765656e55706461746573223a2036302c0a2020202022747761704c656e677468223a20333630302c0a20202020226d656469616e697a65644665656473223a205b0a2020202020207b202274797065223a202263727970746f7761746368222c202265786368616e6765223a2022636f696e626173652d70726f222c202270616972223a2022756d6175736422207d2c0a2020202020207b202274797065223a202263727970746f7761746368222c202265786368616e6765223a202262696e616e6365222c202270616972223a2022756d617573647422207d2c0a2020202020207b202274797065223a202263727970746f7761746368222c202265786368616e6765223a20226f6b6578222c202270616972223a2022756d617573647422207d0a202020205d0a20207d
 ```
 
 # Rationale
