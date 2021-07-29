@@ -1,6 +1,6 @@
 # Headers
 
-| UMIP-101  |                                                                                                                                          |
+|   |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Add Polygon `DerivativeFactory` as `Creator` in DVM registry                                                                                                |
 | Authors    | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                 |
@@ -10,7 +10,6 @@
 
 # Summary
 
-Due to necessity and after discussing with the UMA team, their perpetual contract system was modified to fit the needs of our protocol. 
 
 Reminder: Synthereum is a protocol to issue multi-collateralized synthetic fiat assets against liquidity pools. Liquidity pools hold USD-stablecoin such as USDC and are the sole Token Sponsor: a mint is a transaction where the liquidity pool self-mints a synthetic fiat with a collateral in USDC, and sell this synthetic fiat for USDC to the end-user, at the Chainlink price.
 
@@ -18,7 +17,7 @@ The [UMIP-34](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-34.md)
 
 Later on we have made a redeployment of the `DerivativeFactory.sol` and it has been approved by the governance in [UMIP-101](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-101.md). In that version we have done a bit of code cleaning and removal of unnecessary code. All the changes done can be seen in the formentioned UMIP.
 
-Now the time has come for Jarvis to expand to L2 solutions starting with a deployment on Polygon Mainnet. There are no changes done to the `DerivativeFactory.sol` contract since the previously approved version in UMIP-101. 
+Now the time has come for Jarvis to expand to L2 solutions starting with a deployment on Polygon Mainnet. There are no changes done to the `DerivativeFactory.sol` contract since the previously approved version in [UMIP-101](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-101.md). 
 
 # Motivation
 
@@ -26,26 +25,16 @@ A deployment on Polygon would allow for the protocol to scale as it would become
 
 # Technical Specification
 
-### Here is a breakdown on the whole deployment process of a new derivative:
+### Breakdown on the whole deployment process of a new derivative:
 
-1. Our DAO address (which is currently a team address until the DAO is set up) calls `deployPoolAndDerivative` or `deployOnlyDerivative` of `Deployer.sol`.
-2. `Deployer.sol` calls `createPerpetual` function of `DerivativeFactory.sol` and this function will call `createPerpetual` function of the base contract `PerpetualPoolPartyCreator.sol` that will deploy the new `PerpetualPoolParty.sol`.
+For reference on the deployment process you can check [[UMIP-101](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-101.md) as the process remains the same with the current version deployed on Polygon.
 
 ### Modifications done: 
 
-No modifications were done to the `DerivativeFactory.sol` since the previously approved and deployed version. For reference check [UMIP-101](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-101.md).
+The only modification done since the previous approved version of the `DerivativeFatory.sol` is the update from pragma solidity version 0.6.12 to 0.8.4. 
 
-### Nesting of the contracts:
+Apart from that no modifications were done to the actual code base. The previous version modifications can be seen in [UMIP-101](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-101.md).
 
-1. `PerpetualPoolParty.sol` is a derived contract that inherit from `PerpetualLiquidatablePoolParty.sol`.
-2. `PerpetualLiquidatablePoolParty.sol` is derived contract that inherit from `PerpetualPositionManagerPoolParty.sol`.
-3. `PerpetualPositionManagerPoolParty.sol` is derived contract that inherit from `FeePayerParty.sol`.
-
-Each one of those contracts have its own library for gas optimization:
-1. `PerpetualPoolPartyCreator.sol` uses `PerpetualPoolPartyLib.sol` for gas optimization.
-2. `PerpetualLiquidatablePoolParty.sol` uses `PerpetualLiquidatablePoolPartyLib.sol` for gas optimization.
-3. `PerpetualPositionManagerPoolParty.sol` uses `PerpetualPositionManagerPoolPartyLib.sol` for gas optimization.
-4. `FeePayerParty.sol` uses `FeePayerPartyLib.sol` for gas optimization.
 
 # List of deployed contracts:
 
@@ -73,8 +62,5 @@ Two security audits have been conducted by Halborn:
 
 We have published an answer to the audits [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/blob/dev/docs/security-audits/halborn/02-response-to-jarvis-v3-smart-contracts-report-v1.md).
 
-Another full security audit of the Synthereum protocol was done by Ubiq and can be found [here]().
+Another full security audit of the Synthereum protocol was done by Ubiq and can be found [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/blob/dev/docs/security-audits/ubik/01-synthereum-v3.pdf).
 
-As of now any position opened through the broker derivative contract (`PerpetualPoolParty.sol`) could become undercapitalized, meaning that the CR could drop below 100%, thus making the position not profitable to be liquidated.Although, Forex pairs are not very volatile and rarely move by more than 10% a year, and we have set liquidation at 120% so it is quite unlikely to experience this situation. However by running liquidation bots the possible undercapitalization situation can be avoided. Another solution which can be implemented to avoid this situation is to have a reserve fund which will automatically deposit additional collateral in the derivative if the position becomes undercapitalized.
-
-A vulnerability in the Synthereum protocol (as example a faulty PerpetualPoolParty derivative) can not affect in any negative way the DVM as the derivatives deployed by the DerivativeFactory are siloed and has not direct integration with the DVM apart from the dispute system.
