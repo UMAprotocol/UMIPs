@@ -18,6 +18,8 @@ This UMIP outlines the critical considerations for any user of this identifier. 
 
 This price identifier will allow a deployer to use any UMA-approved collateral token to be locked in Long Short Pair (LSP) contracts for issuing range bonds, success tokens, call options or any other financial instrument parameterized in its specific financial product library without the need for a use-specific UMIP. This will considerably reduce the time and effort involved in creating a contract where no such identifier exists.
 
+Even though currently users of LSP contracts would most likely benefit from this generic price identifier, it could also be used by any other contract integrating with Optimistic Oracle as long as it is able to set custom ancillary data, and it could even be used in future versions of EMP contracts once this functionality is implemented.
+
 # Data Specifications
 
 -----------------------------------------
