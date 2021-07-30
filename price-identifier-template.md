@@ -27,6 +27,8 @@ The DVM should support price requests for **Price Identifier Name**. **Price Ide
 
 -----------------------------------------
 - Price identifier name: **First Price ID Name** 
+- Base Currency: **BASE** - *ETH - May not apply if this is not a typical Base/Quote price*
+- Quote Currency: **QUOTE** - *USD - May not apply if this is not a typical Base/Quote price*
 - Markets & Pairs: **Markets & Pairs** - *Example: Binance ETH/USDT, Coinbase Pro ETH/USD. This might not apply to all price identifiers*
 - Example data providers: **Provider to use** - *Cryptowatch, TraderMade, Quandl, the Graph*
 - Cost to use: **Explanation or link to provider pricing plan**
@@ -54,17 +56,6 @@ Existing price feeds include: (*Please remove before submission*)
 - [Quandl](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/QuandlPriceFeed.js)
 - [Any combination of these](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js)
 
-# Technical Specifications
-
-*If proposing multiple price identifiers, please add technical specifications for each.*
-
------------------------------------------
-- Price identifier name: **First Price ID Name** - *ETHUSD*
-- Base Currency: **BASE** - *ETH - May not apply if this is not a typical Base/Quote price*
-- Quote Currency: **QUOTE** - *USD - May not apply if this is not a typical Base/Quote price*
-- Rounding: *Round to 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down)*
-- Estimated current value of price identifier: *15.03*
-
 ## Ancillary Data Specifications
 
 *This is an optional section. If your price identifier is not intended to use ancillary data, you can remove this section entirely. You can read a full explanation of the expected ancillary data format [here](https://docs.google.com/document/d/1vl1BcIMO3NTNxvR0u6fFQqdUgWtIY8XyjVtx8Hkl8Qk/edit?usp=sharing). An UMIP example of this section can be seen [here](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-83.md#technical-specifications).*
@@ -75,7 +66,7 @@ Existing price feeds include: (*Please remove before submission*)
 
 # Implementation
 
-*Describe how UMA tokenholders should arrive at the price in the case of a DVM price request. Document each step a voter should take to query for and return a price at a specific timestamp. This should include an example calculation where you pick a specific timestamp and calculate the price at that timestamp.*
+*Describe how UMA tokenholders should arrive at the price in the case of a DVM price request. Document each step a voter should take to query for and return a price at a specific timestamp, including rounding instructions. This should include an example calculation where you pick a specific timestamp and calculate the price at that timestamp.*
 
 # Security Considerations
 
