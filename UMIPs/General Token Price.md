@@ -38,14 +38,6 @@ This price identifier can use any price feed from the [UMA protocol repository](
 
 If the required application needs a new price feed implementation, the user of this price identifier can develop its own price feed and open the Pull Request. In case of new price feed implementation the user should wait before it is reviewed and merged into the main (master) branch of the [UMA protocol repository](https://github.com/UMAprotocol/protocol) in order for other proposers/disputers and UMA voters being able to run the price feed script with the passed configuration from the ancillary data.
 
-# Technical Specifications
-
------------------------------------------
-- Price identifier name: TOKEN_PRICE
-- Base Currency: Determined by the `base` parameter from the ancillary data
-- Quote Currency: Determined by the `quote` parameter from the ancillary data
-- Rounding: Determined by the `rounding` parameter from the ancillary data
-
 ## Ancillary Data Specifications
 
 When converting ancillary data to UTF8 string it must contain price request parameters expressed as a list of key-value pairs delimited by `,` (commas) and each key-value pair further delimited by `:` (colons). If a value should contain `,` or `:` characters, such value should be enclosed in double quotes. The below listed key parameters will be used to instruct voters how to resolve a given price request for this identifier and request timestamp:
