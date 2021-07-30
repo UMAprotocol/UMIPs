@@ -113,7 +113,7 @@ The user of this UMIP accepts the responsibility to provide the information pass
    ```
    yarn truffle exec ./packages/core/scripts/local/getHistoricalPrice.js --network mainnet_mnemonic --identifier UMAUSD_CUSTOM --time 1626984000
    ```
-5. Obtained price feed script value should be `rounded` leaving rounding number of digits after the decimal delimiter. In case the `rounding` parameter is not provided or it is not possible to interpret its value, voters should apply default rounding of 6 digits after the decimal delimiter.
+5. Obtained price feed script value should be rounded leaving `rounding` number of digits after the decimal delimiter. In case the `rounding` parameter is not provided or it is not possible to interpret its value, voters should apply default rounding of 6 digits after the decimal delimiter.
 6. It might be possible that some data sources do not return price data for the requested timestamp due to lack of trading activity or any other technical reason causing the price feed script to fail. In case the price feed `configuration` contains alternative pricing routes for the same asset pair (e.g. when calculating median), voters should reconfigure it without the failing data source and attempt to calculate the requested price from the remaining data sources.
 7. In case it is not possible to resolve the requested price either due to lack of trading activity in the specified markets or the `configuration` parameter being misconfigured, voters should attempt to resolve the price from the passed `fallback` parameter:
    - Unless other guidance is provided in the `fallback` parameter, voters should assume that the provided endpoint should be queried for the price of `base` expressed in the `quote` currency.
