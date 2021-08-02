@@ -33,7 +33,9 @@ For reference on the deployment process you can check [[UMIP-101](https://github
 
 The only modification done since the previous approved version of the `DerivativeFatory.sol` is the update from pragma solidity version 0.6.12 to 0.8.4. 
 
-Apart from that no modifications were done to the actual code base. The previous version modifications can be seen in [UMIP-101](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-101.md).
+Apart from that the only modifications done, not concerning the `DerivativeFactory.sol` were to integrate UMA Bridge in order to access the DVM from Polygon. 
+
+The previous version modifications can be seen in [UMIP-101](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-101.md).
 
 
 # List of deployed contracts:
