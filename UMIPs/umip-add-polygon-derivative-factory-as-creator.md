@@ -49,9 +49,9 @@ The above contract has four helper libraries, which are included in the contract
 
 # Implementation and code base
 
-The `DerivativeFactory.sol` contract as well as all supporting contracts for the `PerpetualPoolParty.sol` contract (including `PerpetualPoolParty.sol` contract) can be found here are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/chore/deploy-script-rebased-generic-improvements/libs/contracts/contracts/derivative/v2).
+The `DerivativeFactory.sol` contract as well as all supporting contracts for the `PerpetualPoolParty.sol` contract (including `PerpetualPoolParty.sol` contract) can be found here are available for a review by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/polygon-integration/libs/contracts/contracts/derivative/v2).
 
-The core contracts of the protocol like `Manager.sol` and `Deployer.sol` can be found and reviewed by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/chore/deploy-script-rebased-generic-improvements/libs/contracts/contracts/core).
+The core contracts of the protocol like `Manager.sol` and `Deployer.sol` can be found and reviewed by anyone [here](https://gitlab.com/jarvis-network/apps/exchange/mono-repo/-/tree/feature/polygon-integration/libs/contracts/contracts/core).
 
 # Security considerations
 
