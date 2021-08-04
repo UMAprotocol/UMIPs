@@ -1,15 +1,14 @@
-## Status
+##  Summary
 
-Draft
+This UPP will increase the final fees for DSD to be around $400. This will increase the cost of initiating disputes for the DVM.
 
-## Summary
+##  Rationale
 
-This UPP will remove SGT from the collateral currency whitelist introduced in [UMIP-8](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-8.md). 
+It is extremely expensive, in terms of gas, for the DVM voters to vote on a price request. The DVM also pays out a relatively large number of rewards on each vote. To ensure that price requests remain rare, they need to be more expensive to discourage any sort of purposeful triggering.
 
-## Rationale
+While this does make the capital requirements for liquidators and disputers higher, the increased size of the final fee lockup is unlikely to deter honest participants.
 
-SGT was approved as a collateral currency in [UMIP-96](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-96.md), liquidity has since dropped massively which is a concern for $UMA token holders since collateral liquidity is an important factor in determining whether a collateral currency is approved or rejected. This makes SGT an unsuitable collateral currency.
+##  Specifics
 
-## Specifics
+- The DSD final fee will be increased to 20000 DSD
 
-Remove SGT from collateral currency whitelist introduced in [UMIP-8](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-8.md) 
