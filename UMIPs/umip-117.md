@@ -4,7 +4,7 @@
 | ------------------- | ------------------------------------------------------------------------------------------------------ |
 | UMIP Title          | Add General_KPI as a supported price identifier                                                        |
 | Authors             | Chandler De Kock (chandler@umaproject.org), Reinis Martinsons (reinis@umaproject.org)                  |
-| Status              | Last call                                                                                              |
+| Status              | Approved                                                                                             |
 | Created             | July 14, 2021                                                                                          |
 | Discourse Link      | [UMA's Discourse](https://discourse.umaproject.org/t/create-general-kpi-options-price-identifier/1259) |
 

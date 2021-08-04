@@ -2,7 +2,7 @@
 
 -   **UMIP title:** Add Polygon renBTC and RBN as collateral currencies.
 -   **Author**  Chandler De Kock (chandler@umaproject.org)
--   **Status: Draft**
+-   **Status: Approved**
 -   **Created:**  21 July
 
 ## Summary (2-5 sentences)

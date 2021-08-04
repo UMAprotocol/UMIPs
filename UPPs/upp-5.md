@@ -1,3 +1,7 @@
+## Status
+
+Approved
+
 ##  Summary
 
 This UPP will increase the final fees for DSD to be around $400. This will increase the cost of initiating disputes for the DVM.
