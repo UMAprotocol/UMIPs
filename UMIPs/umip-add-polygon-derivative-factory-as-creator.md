@@ -40,14 +40,14 @@ The previous version modifications can be seen in [UMIP-101](https://github.com/
 
 # List of deployed contracts:
 
-1. Contract [DerivativeFactory]()
+1. Contract [DerivativeFactory](https://polygonscan.com/address/0xD5ed74178Fa50EfD7d3E3f30EF5f0ACab56933Bc#code)
 
 The above contract has four helper libraries, which are included in the contract, but links for separate review are provided below:
 
-1. Library [FeePayerPartyLib]()
-2. Library [PerpetualPositionManagerPoolPartyLib]()
-3. Library [PerpetualLiquidatablePoolPartyLib]()
-4. Library [PerpetualPoolPartyLib]()
+1. Library [FeePayerPartyLib](https://polygonscan.com/address/0xd0B5376b91E06Fb1296F803AE8879B49740cE89f#code)
+2. Library [PerpetualPositionManagerPoolPartyLib](https://polygonscan.com/address/0x03BC653285f8527e1C877b18dF285E66898864b3#code)
+3. Library [PerpetualLiquidatablePoolPartyLib](https://polygonscan.com/address/0x34f7fd5cD0Ddd4b27073475cD494dC74a9A4c8aB#code)
+4. Library [PerpetualPoolPartyLib](https://polygonscan.com/address/0xa513A13Db767d4609eCe1c705dBeeFB0f5822224#code)
 
 # Implementation and code base
 
