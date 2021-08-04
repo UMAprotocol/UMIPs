@@ -3,7 +3,7 @@
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | UMIP Title | Register Polygon Oracle Root Tunnel             |
 | Authors    | Nick Pai (nick@umaproject.org) |
-| Status     | Last call                                                                                                                                    |
+| Status     | Approved                                                                                                                                    |
 | Created    | July 8, 2021                                                                                                                           |
 
 ## Summary (2-5 sentences)

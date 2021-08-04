@@ -4,7 +4,7 @@
  
 - UMIP title: Add BADGER, OHM, IDLE, GNO, Qi, POOL, DOUGH V2, FEI, TRIBE and FOX as collateral currencies
 - Author Chandler De Kock (chandler@umaproject.org)
-- Status: Last call 
+- Status: Approved 
 - Created: July 15, 2021
 - Discourse Link: https://discourse.umaproject.org/t/collateral-omnibus/1258
 

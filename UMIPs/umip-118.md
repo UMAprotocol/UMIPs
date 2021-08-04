@@ -4,7 +4,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add POOLUSD, USDPOOL, BADGER/USD, USD/BADGER, GNOUSD, USDGNO, OHMUSD, USDOHM, IDLEUSD, USDIDLE, FEIUSD, USDFEI, TRIBEUSD, USDTRIBE, FOXUSD and USDFOX as supported price identifiers |
 | Authors             | Reinis Martinsons (reinis@umaproject.org)                     |
-| Status              | Last call                                                     |
+| Status              | Approved                                                     |
 | Created             | July 13, 2021                                                 |
 | Discourse Link      | [UMA's Discourse](https://discourse.umaproject.org/t/price-identifier-omnibus-for-pool-badger-gno-ohm-and-idle/1248) |
 
