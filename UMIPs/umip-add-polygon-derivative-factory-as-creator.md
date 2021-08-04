@@ -13,7 +13,7 @@
 
 Reminder: Synthereum is a protocol to issue multi-collateralized synthetic fiat assets against liquidity pools. Liquidity pools hold USD-stablecoin such as USDC and are the sole Token Sponsor: a mint is a transaction where the liquidity pool self-mints a synthetic fiat with a collateral in USDC, and sell this synthetic fiat for USDC to the end-user, at the Chainlink price.
 
-The [UMIP-34](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-34.md) has been approved by the governance, allowing us to launch our synthetic assets collateralized by USDC on the mainnet ($1M TVL, $700k of synthetic assets minted; we have capped the amount of synthetic assets that can be minted until more audits are conducted; the protocol has received two full audit from Halborn and Ubik. 
+The [UMIP-34](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-34.md) has been approved by the governance, allowing us to launch our synthetic assets collateralized by USDC on the mainnet ($1M TVL, $700k of synthetic assets minted; we have capped the amount of synthetic assets that can be minted until more audits are conducted; the protocol has received two full audit from Halborn and Ubik.) 
 
 Later on we have made a redeployment of the `DerivativeFactory.sol` and it has been approved by the governance in [UMIP-101](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-101.md). In that version we have done a bit of code cleaning and removal of unnecessary code. All the changes done can be seen in the formentioned UMIP.
 
