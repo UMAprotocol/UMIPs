@@ -50,7 +50,7 @@ The data should also have the following accessibility requirements:
 
 ## Ancillary Data Specifications
 
-When converting ancillary data to UTF8 string it must contain price request parameters expressed as a list of key-value pairs delimited by `,` (commas) and each key-value pair further delimited by `:` (colons). Double backslash `\\` must be used to escape `,` and `:` characters in the ancillary data that are not intended to delimit the key-value dictionary. The below listed key parameters will be used to instruct voters how to resolve a given price request for this identifier and request timestamp:
+When converting ancillary data to UTF8 string it must contain price request parameters expressed as a list of key-value pairs delimited by `,` (commas) and each key-value pair further delimited by `:` (colons). If a value should contain `,` or `:` characters, such value should be enclosed in double quotes. The below listed key parameters will be used to instruct voters how to resolve a given price request for this identifier and request timestamp:
 
 - `Metric`: Short description reflecting the metric and units to be measured.
 - `Endpoint`: Link to data endpoint that should return the `Metric` at request timestamp. The response format should comply with the linked document from the `Method` parameter. The data endpoint should either allow passing the timestamp as parameter or returned data should include timestamp value for each returned data point.
@@ -71,8 +71,8 @@ As an example, possible ancillary data for UMA TVL KPI options (as specified in 
 
 ```
 Metric:TVL in UMA financial contracts measured in billions of USD,
-Endpoint:https\\://api.umaproject.org/uma-tvl,
-Method:https\\://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-65.md,
+Endpoint:"https://api.umaproject.org/uma-tvl",
+Method:"https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-65.md",
 Key:currentTvl,
 Interval:Updated every 10 minutes,
 Rounding:-7,
@@ -80,21 +80,21 @@ Scaling:-9
 ```
 Key-value pairs above are separated by newlines just for readability, but no newlines should be used in real application. When this ancillary data dictionary (without newlines) is stored as bytes, the result would be:
 ```
-0x4d65747269633a54564c20696e20554d412066696e616e6369616c20636f6e747261637473206d6561737572656420696e2062696c6c696f6e73206f66205553442c456e64706f696e743a68747470735c5c3a2f2f6170692e756d6170726f6a6563742e6f72672f756d612d74766c2c4d6574686f643a68747470735c5c3a2f2f6769746875622e636f6d2f554d4170726f746f636f6c2f554d4950732f626c6f622f6d61737465722f554d4950732f756d69702d36352e6d642c4b65793a63757272656e7454766c2c496e74657276616c3a55706461746564206576657279203130206d696e757465732c526f756e64696e673a2d372c5363616c696e673a2d39
+0x4d65747269633a54564c20696e20554d412066696e616e6369616c20636f6e747261637473206d6561737572656420696e2062696c6c696f6e73206f66205553442c456e64706f696e743a2268747470733a2f2f6170692e756d6170726f6a6563742e6f72672f756d612d74766c222c4d6574686f643a2268747470733a2f2f6769746875622e636f6d2f554d4170726f746f636f6c2f554d4950732f626c6f622f6d61737465722f554d4950732f756d69702d36352e6d64222c4b65793a63757272656e7454766c2c496e74657276616c3a55706461746564206576657279203130206d696e757465732c526f756e64696e673a2d372c5363616c696e673a2d39
 ```
 As for another example, possible ancillary data to implement UMA protocol DAO integrations KPI options (as specified in [UMIP-112](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-112.md)) is listed below:
 
 ```
 Metric:Number of qualifying UMA DAO integrations,
-Endpoint:https\\://api.umaproject.org/uma-dao-integrations,
-Method:https\\://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-112.md,
+Endpoint:"https://api.umaproject.org/uma-dao-integrations",
+Method:"https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-112.md",
 Key:currentIntegrations,
 Interval:Updated daily,
 Rounding:2,
 startTimestamp:1622527200,
 maxBaseIntegrations:15,
 maxBonusIntegrations:3,
-bonusMinValue:$1\\,000\\,000,
+bonusMinValue:"$1,000,000",
 bonusIntegrationsMultiplier:3.00,
 floorIntegrations:3
 ```
@@ -102,7 +102,7 @@ floorIntegrations:3
 Again, key-value pairs above are separated by newlines just for readability. When this ancillary data dictionary (without newlines) is stored as bytes, the result would be:
 
 ```
-0x4d65747269633a4e756d626572206f66207175616c696679696e6720554d412044414f20696e746567726174696f6e732c456e64706f696e743a68747470735c5c3a2f2f6170692e756d6170726f6a6563742e6f72672f756d612d64616f2d696e746567726174696f6e732c4d6574686f643a68747470735c5c3a2f2f6769746875622e636f6d2f554d4170726f746f636f6c2f554d4950732f626c6f622f6d61737465722f554d4950732f756d69702d3131322e6d642c4b65793a63757272656e74496e746567726174696f6e732c496e74657276616c3a55706461746564206461696c792c526f756e64696e673a322c737461727454696d657374616d703a313632323532373230302c6d617842617365496e746567726174696f6e733a31352c6d6178426f6e7573496e746567726174696f6e733a332c626f6e75734d696e56616c75653a24315c5c2c3030305c5c2c3030302c626f6e7573496e746567726174696f6e734d756c7469706c6965723a332e30302c666c6f6f72496e746567726174696f6e733a33
+0x4d65747269633a4e756d626572206f66207175616c696679696e6720554d412044414f20696e746567726174696f6e732c456e64706f696e743a2268747470733a2f2f6170692e756d6170726f6a6563742e6f72672f756d612d64616f2d696e746567726174696f6e73222c4d6574686f643a2268747470733a2f2f6769746875622e636f6d2f554d4170726f746f636f6c2f554d4950732f626c6f622f6d61737465722f554d4950732f756d69702d3131322e6d64222c4b65793a63757272656e74496e746567726174696f6e732c496e74657276616c3a55706461746564206461696c792c526f756e64696e673a322c737461727454696d657374616d703a313632323532373230302c6d617842617365496e746567726174696f6e733a31352c6d6178426f6e7573496e746567726174696f6e733a332c626f6e75734d696e56616c75653a2224312c3030302c303030222c626f6e7573496e746567726174696f6e734d756c7469706c6965723a332e30302c666c6f6f72496e746567726174696f6e733a33
 ```
 
 ***Note:** UMIP-65 and UMIP-112 have been provided only as an illustration of possible `Method` documents. In reality it should be more focused document developed by KPI launch team without going through UMIP approval process.*
