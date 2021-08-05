@@ -3,7 +3,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add DFX as a supported collateral type |
 | Authors             | Adrian Li (adrian@dfx.finance), Michael Bogan (michael.bogan@gmail.com)                                                    |
-| Status              | Last Call                                                         |
+| Status              | Approved                                                         |
 | Created             | 05/27/2021                                              |
 | Discourse Link      | https://discourse.umaproject.org/t/add-dfx-as-approved-collateral-currency/1144            |
 
