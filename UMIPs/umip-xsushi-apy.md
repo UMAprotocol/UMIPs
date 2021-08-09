@@ -32,9 +32,9 @@ All relevant price data is computed using information that can be found directly
 
 # Technical Specifications:
 
-* Price identifier name: `XSUSHI_7D_APY`
+* Price identifier name: `XSUSHI_7D_APY` (5% expressed as 5 i.e not decimal format)
 * Base Currency: XSUSHI 7D APY
-* Quote Currency: DAI
+* Quote Currency: N/A
 * Rounding: Round to 4 decimal places (fifth decimal place digit >= 5 rounds up and < 5 rounds down)
 
 # Rationale:
@@ -57,10 +57,10 @@ from web3 import Web3
 w3 = some_archive_node_connection
 
 #create the contract objects, using relevant addresses and abi's easily found on etherscan
-xsushi_contract = w3.eth.contract(address=xsushi_add, abi=xsushi_abi)
-sushi_contract = w3.eth.contract(address= sushi_add, abi= sushi_abi)
+xsushi_contract = w3.eth.contract(address=0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272, abi=xsushi_abi)
+sushi_contract = w3.eth.contract(address= '0x6B3595068778DD592e39A122f4f5a5cF09C90fE2', abi= sushi_abi)
 #list of blocks that are just before 00:00:00 UTC for the last 7 days, with block_t0 referencing the latest blocktime in the list
-blocks = [block_t-6, block_t-5, block_t-4, block_t-3, block_t-2, block_t-1, block_t0]
+blocks = [block_t-6, block_t0]
 
 for block in blocks: 
   #retrieve the total supply of xsushi
