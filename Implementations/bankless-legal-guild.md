@@ -35,13 +35,13 @@ The Bankless DAO Legal Guild will utilize the endpoint document(linked above) to
 
 1. Review the scope of work from the previous weeks for each section of the project. Previous weeks that have reached 100% completion do not require additional review.
 2. Using their internal consensus mechanism, determine total % completion for each section (based on quality and completeness). 
-    a. If tasks from a previous week were not complete at the time, but have since been completed, that week’s total % completion should be updated accordingly as well. As the project progresses, each weekly % complete should trend towards 100%.
+    - If tasks from a previous week were not complete at the time, but have since been completed, that week’s total % completion should be updated accordingly as well. As the project progresses, each weekly % complete should trend towards 100%.
 3. As % completion is determined, the results should be recorded in the appropriate section of the endpoint document. There is a tab for each section of the project, and a weekly breakdown within each tab to record progress.
-    a. After reaching a consensus, the % completion should be indicated in the appropriate green colored box within each tab. This action will automatically update the summary page information.
+    - After reaching a consensus, the % completion should be indicated in the appropriate green colored box within each tab. This action will automatically update the summary page information.
 4. On the summary page, there is a single blue colored box that represents the total % completion for the project. It is calculated in the following way:
-    a. Section completion: calculated as an average of all weekly % completion data points. 
-    b. Section weight: a designated % of the project established prior to contract launch that determines the value of that section in relation to the project as a whole (not all sections are weighted equally)
-    c. Total completion: Calculated as a sum of each section’s total value, which can be represented by (section completion x section weight)
+    - Section completion: calculated as an average of all weekly % completion data points. 
+    - Section weight: a designated % of the project established prior to contract launch that determines the value of that section in relation to the project as a whole (not all sections are weighted equally)
+    - Total completion: Calculated as a sum of each section’s total value, which can be represented by (section completion x section weight)
 
 Note: token distribution will also be determined during their weekly evaluations based on internal consensus mechanisms. However, the details of that process are not relevant to the payout implementation, so they will not be addressed in this document.
 
