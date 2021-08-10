@@ -14,7 +14,7 @@ Using KPI options creates a structure where each contributor to the project is i
 
 Metric:Completion percentage of Bankless DAO Legal Guild's project to legally assess the BANK token as determined by the Guild,
 Endpoint:”https://docs.google.com/spreadsheets/d/1jkRO91ACGFCwhwVQsXKtnAt1Nz2qSdkNg9XYJdgbmYs/edit?usp=sharing”,
-Method:””,
+Method:”https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/bankless-legal-guild.md",
 Key:Total Section Completion Percentage,
 Interval:varied,
 Rounding:4,
