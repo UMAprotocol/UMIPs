@@ -14,7 +14,7 @@ This follows the exact same process as UMIP-22 but uses a different timestamp.
 
 The DVM should support requests for a price that resolves to either the median monthly Ethereum gas price or a 2-hour Time-Weighted Average Price (TWAP) on the highest volume Sushiswap ETH/uGAS pool. The price resolution method to use will depend on the the timestamp the price request was made at.
 
-For a price request made at or after the Unix timestamp `1633046400` (October 1, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20.
+For a price request made at or after the Unix timestamp `1633046400` (October 1, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20 with the modification that it uses `effective_gas_price` instead of `gas_price` in order to account for EIP-1559. Full logic for this change is embedded in the Implementation section below.
 
 For a price request made before `1633046400`, the price will be resolved to a 2-hour TWAP for the Sushiswap price of the listed synthetic token in ETH. The synthetic token address will be listed in the Technical Specification section.
 
@@ -50,7 +50,7 @@ To further explain the price feed implementation beyond what is stated in [umip-
 # IMPLEMENTATION
 The identifier requires updated timestamps.
 
-For a price request made at or after the Unix timestamp `1633046400` (October 1, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20.
+For a price request made at or after the Unix timestamp `1633046400` (October 1, 2021 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20 with the modification that it uses `effective_gas_price` instead of `gas_price` in order to account for EIP-1559. Full logic for this change is below
 
 For a price request made before `1633046400`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the listed synthetic token in ETH. The synthetic token address will be listed in the Technical Specification section.
 
