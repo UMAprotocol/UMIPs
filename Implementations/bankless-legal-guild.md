@@ -31,13 +31,14 @@ Scaling:0
 
 ## Process:
 
-The Bankless DAO Legal Guild will utilize the endpoint document(linked above) to record completion(%) of the project on a weekly basis. During their weekly evaluation meetings, the following steps will be taken:
+The Bankless DAO Legal Guild will utilize the endpoint document(linked above) to record completion(%) of the project on a weekly basis (typically on Thursday). During their weekly evaluation meetings, the following steps will be taken:
 
 1. Review the scope of work from the previous weeks for each section of the project. Previous weeks that have reached 100% completion do not require additional review.
 2. Using their internal consensus mechanism, determine total % completion for each section (based on quality and completeness). 
     - If tasks from a previous week were not complete at the time, but have since been completed, that week’s total % completion should be updated accordingly as well. As the project progresses, each weekly % complete should trend towards 100%.
 3. As % completion is determined, the results should be recorded in the appropriate section of the endpoint document. There is a tab for each section of the project, and a weekly breakdown within each tab to record progress.
     - After reaching a consensus, the % completion should be indicated in the appropriate green colored box within each tab. This action will automatically update the summary page information.
+    - Consensus is reached during weekly Bankless Legal guild meetings on Thursdays. Updates to the completion doc will be made after these.
 4. On the summary page, there is a single blue colored box that represents the total % completion for the project. It is calculated in the following way:
     - Section completion: calculated as an average of all weekly % completion data points. 
     - Section weight: a designated % of the project established prior to contract launch that determines the value of that section in relation to the project as a whole (not all sections are weighted equally)
