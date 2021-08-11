@@ -1,12 +1,12 @@
 # Headers:
 
-| UMIP-123            |                                                                           |
-| ------------------- | ------------------------------------------------------------------------- |
-| UMIP Title          | Add `XSUSHI_APY` as a price identifier                                 |
-| Authors             | Jono (thevdm100@gmail.com)                                                |
-| Status              | Draft                                                                     |
-| Created             | August 5th, 2021                                                          |
-| Discourse Link      | https://discourse.umaproject.org/t/XXXXXXXXXXXXXXXXXXXXX                  |
+| UMIP-123            |                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------- |
+| UMIP Title          | Add `XSUSHI_APY` as a price identifier                                          |
+| Authors             | Jono (thevdm100@gmail.com)                                                      |
+| Status              | Last Call                                                                       |
+| Created             | August 5th, 2021                                                                |
+| Discourse Link      | https://discourse.umaproject.org/t/add-xsushi-7d-apy-as-a-price-identifier/1284 |
 
 # Summary:
 
