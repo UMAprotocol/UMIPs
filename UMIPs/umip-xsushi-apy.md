@@ -72,7 +72,7 @@ for block in blocks:
   #retrieve the total supply of xsushi
   xsushi_supply = xsushi_contract.functions.totalSupply().call(block_identifier = block)
   #retrieve the amount of sushi staked in the xsushi contract (aka sushi-bar)
-  sushi_staked = sushi_contract.functions.balanceOf(xsushi_add).call(block_identifier = block)
+  sushi_staked = sushi_contract.functions.balanceOf('0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272').call(block_identifier = block)
   #calculate how much Sushi can be redeemed for each xSushi token (Sushi:xSushi ratio)
   ratio = sushi_staked/xsushi_supply
   ratios.append(ratio)
