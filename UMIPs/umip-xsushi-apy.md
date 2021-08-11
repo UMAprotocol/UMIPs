@@ -89,7 +89,7 @@ When the ancillary data dictionary "period:7" is stored as bytes, the result wou
 
 Formally the `XSUSHI_APY` pricing identifier calculation is defined as:
 
-<img src="https://render.githubusercontent.com/render/math?math={( [\frac{r_1}{r_0}]^( \frac{365}{p} ) - 1 )\times 100}">
+<img src="https://render.githubusercontent.com/render/math?math={( [\frac{r_1}{r_0}]^p - 1 )\times 100}">
 
 where:
 
@@ -97,7 +97,7 @@ where:
 
 <img src="https://render.githubusercontent.com/render/math?math={r_0}"> = Sushi:xSushi ratio`period` 7 days ago
 
-<img src="https://render.githubusercontent.com/render/math?math={p}"> = period (ancilliary data)
+<img src="https://render.githubusercontent.com/render/math?math={p}"> = 365/period
 
 To further clarify the identifier, below is an example of the calculation. Please note for illustrative purposes there has been rounding to 13 decimal places (in the actual price identifier please retain all decimals until final rounding) and a `period` of 7 days from ancilliary data is assumed.
 
