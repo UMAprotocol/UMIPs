@@ -17,7 +17,7 @@ The addition of this collateral currency offers additional functionality to the 
 
 To accomplish this upgrade, the following changes need to be made:
 
--   The BANK **[token address](https://etherscan.io/address/0x2d94aa3e47d9d5024503ca8491fce9a2fb4da198) 0x2d94aa3e47d9d5024503ca8491fce9a2fb4da198** needs to be added to the collateral currency whitelist introduced in UMIP-8.
+-   The Bankless DAO (BANK) **[token address](https://etherscan.io/address/0x2d94aa3e47d9d5024503ca8491fce9a2fb4da198) 0x2d94aa3e47d9d5024503ca8491fce9a2fb4da198** needs to be added to the collateral currency whitelist introduced in UMIP-8.
 -   A final fee of **5500 BANK** needs to be added for **token** in the Store contract.
 
 ## Implementation
