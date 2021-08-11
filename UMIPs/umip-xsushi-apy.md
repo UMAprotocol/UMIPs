@@ -60,8 +60,8 @@ period = passed_in_ancilliary_data
 #create the contract objects, using relevant addresses and abi's easily found on etherscan
 xsushi_contract = w3.eth.contract(address=0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272, abi=xsushi_abi)
 sushi_contract = w3.eth.contract(address= '0x6B3595068778DD592e39A122f4f5a5cF09C90fE2', abi= sushi_abi)
-#list of blocks that are just before 00:00:00 UTC for the last 7 days, with block_t0 referencing the latest blocktime in the list
-blocks = [block_t-6, block_t0]
+#list of blocks that are just before 00:00:00 UTC for the last period days, with block_t0 referencing the latest blocktime in the list
+blocks = [block_t-1, block_t0]
 
 for block in blocks: 
   #retrieve the total supply of xsushi
@@ -89,7 +89,7 @@ When the ancillary data dictionary "period:7" is stored as bytes, the result wou
 
 Formally the `XSUSHI_APY` pricing identifier calculation is defined as:
 
-<img src="https://render.githubusercontent.com/render/math?math={( [\frac{r_1}{r_0}]^(\frac{365}{p}) - 1 )\times 100}">
+<img src="https://render.githubusercontent.com/render/math?math={( [\frac{r_1}{r_0}]^(\frac{365}{p} ) - 1 )\times 100}">
 
 where:
 
