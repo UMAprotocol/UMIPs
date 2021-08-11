@@ -95,7 +95,7 @@ where:
 
 <img src="https://render.githubusercontent.com/render/math?math={r_1}"> = Sushi:xSushi latest ratio
 
-<img src="https://render.githubusercontent.com/render/math?math={r_0}"> = Sushi:xSushi ratio`period` 7 days ago
+<img src="https://render.githubusercontent.com/render/math?math={r_0}"> = Sushi:xSushi ratio`period` days ago
 
 <img src="https://render.githubusercontent.com/render/math?math={p}"> = 365/period
 
