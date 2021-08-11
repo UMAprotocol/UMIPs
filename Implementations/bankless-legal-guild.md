@@ -16,7 +16,7 @@ Metric:Completion percentage of Bankless DAO Legal Guild's project to legally as
 Endpoint:”https://docs.google.com/spreadsheets/d/1jkRO91ACGFCwhwVQsXKtnAt1Nz2qSdkNg9XYJdgbmYs/edit?usp=sharing”,
 Method:”https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/bankless-legal-guild.md",
 Key:Total Section Completion Percentage,
-Interval:varied,
+Interval:weekly,
 Rounding:4,
 Scaling:0
 
