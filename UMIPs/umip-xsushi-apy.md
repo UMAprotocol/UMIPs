@@ -33,7 +33,7 @@ All relevant price data is computed using information that can be found directly
 # Technical Specifications:
 
 * Price identifier name: `XSUSHI_APY` (5% expressed as 5 i.e not decimal format)
-* Base Currency: XSUSHI 7D APY
+* Base Currency: XSUSHI APY
 * Quote Currency: N/A
 * Rounding: Round to 4 decimal places (fifth decimal place digit >= 5 rounds up and < 5 rounds down)
 
@@ -55,6 +55,7 @@ The `XSUSHI_APY` price would require the creation of a new price feed. The pytho
 from web3 import Web3
 #connect to archive node - note that infura doesn't offer free archive node services
 w3 = some_archive_node_connection
+period = passed_in_ancilliary_data
 
 #create the contract objects, using relevant addresses and abi's easily found on etherscan
 xsushi_contract = w3.eth.contract(address=0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272, abi=xsushi_abi)
