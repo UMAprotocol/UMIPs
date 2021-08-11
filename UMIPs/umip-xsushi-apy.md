@@ -55,7 +55,12 @@ The `XSUSHI_APY` price would require the creation of a new price feed. The pytho
 from web3 import Web3
 #connect to archive node - note that infura doesn't offer free archive node services
 w3 = some_archive_node_connection
-period = passed_in_ancilliary_data
+
+#set ancilliary data (default is 7)
+if period == None:
+ period = 7
+else:
+ period = ancillaryData.period.value
 
 #create the contract objects, using relevant addresses and abi's easily found on etherscan
 xsushi_contract = w3.eth.contract(address=0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272, abi=xsushi_abi)
