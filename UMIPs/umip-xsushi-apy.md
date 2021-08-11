@@ -10,7 +10,7 @@
 
 # Summary:
 
-The DVM should support price requests for the xSushi APY derived from 7 days of sushi yield data, assuming weekly compounding.
+The DVM should support price requests for the xSushi APY derived from an arbitrary number of days of sushi yield data.
 
 # Motivation:
 
