@@ -2,7 +2,7 @@
 
 | UMIP-123            |                                                                           |
 | ------------------- | ------------------------------------------------------------------------- |
-| UMIP Title          | Add `XSUSHI_7D_APY` as a price identifier                                 |
+| UMIP Title          | Add `XSUSHI_APY` as a price identifier                                 |
 | Authors             | Jono (thevdm100@gmail.com)                                                |
 | Status              | Draft                                                                     |
 | Created             | August 5th, 2021                                                          |
@@ -23,7 +23,7 @@ Across Defi there exists no product in which traders can express views on the ra
 # Data Specifications:
 
 All relevant price data is computed using information that can be found directly on the blockchain using an archive node.
-* Price identifier name: `XSUSHI_7D_APY`
+* Price identifier name: `XSUSHI_APY`
 * Example price providers: The relevant data can be obtained on-chain using an archive node:
   * Alchemy (node) offers a free 25,000,000 compute units / month with archive node capability
 * This information is also available on The Graph with the exact timestamps needed (UTC 00:00:00)
@@ -32,7 +32,7 @@ All relevant price data is computed using information that can be found directly
 
 # Technical Specifications:
 
-* Price identifier name: `XSUSHI_7D_APY` (5% expressed as 5 i.e not decimal format)
+* Price identifier name: `XSUSHI_APY` (5% expressed as 5 i.e not decimal format)
 * Base Currency: XSUSHI 7D APY
 * Quote Currency: N/A
 * Rounding: Round to 4 decimal places (fifth decimal place digit >= 5 rounds up and < 5 rounds down)
@@ -49,7 +49,7 @@ Both methods above significantly reduce potential price identifier manipulation.
 
 The accounting methodology for xSushi is fortunately very simple. The Sushi generated from protocol revenue is deposited into a smart contract which all xSushi holders have a proportional share in. The ratio in which xSushi can be redeemed for Sushi is calculated by dividing the ever increasing Sushi balance in the xSushi smart contract by the number of xSushi tokens in circulation. 
 
-The `XSUSHI_7D_APY` price would require the creation of a new price feed. The pythonic pseudo-code for such an identifier is below:
+The `XSUSHI_APY` price would require the creation of a new price feed. The pythonic pseudo-code for such an identifier is below:
 
 ```python
 from web3 import Web3
@@ -72,22 +72,33 @@ for block in blocks:
   ratios.append(ratio)
 #note that as we multiply by 100 in the final step the final result is calculated to 10 decimal places
 
-xsushi_apy = (((ratios[-1]/ratios[0])**52)-1)*100
+xsushi_apy = (((ratios[-1]/ratios[0])**(365/period))-1)*100
 ```
+## Ancillary Data Specifications:
+
+This price identifiers can optionally include ancillary data to specify the period over which data for the APY is calculated. When converted from bytes to UTF-8, the ancillary data should be a dictionary containing a period key:value pair like so:
+
+```period:7```
+
+`period` should be specified in days. If a `period` key value pair is not present, then the ancilliary data should default to a period:7
+
+When the ancillary data dictionary "period:7" is stored as bytes, the result would be: 0x706572696f643a37
 
 ## Implementation in natural language:
 
-Formally the `XSUSHI_7D_APY` pricing identifier calculation is defined as:
+Formally the `XSUSHI_APY` pricing identifier calculation is defined as:
 
-<img src="https://render.githubusercontent.com/render/math?math={( [\frac{r_1}{r_0}]^52 - 1 )\times 100}">
+<img src="https://render.githubusercontent.com/render/math?math={( [\frac{r_1}{r_0}]^(\frac{365}{p}) - 1 )\times 100}">
 
 where:
 
 <img src="https://render.githubusercontent.com/render/math?math={r_1}"> = Sushi:xSushi latest ratio
 
-<img src="https://render.githubusercontent.com/render/math?math={r_0}"> = Sushi:xSushi ratio 7 days ago
+<img src="https://render.githubusercontent.com/render/math?math={r_0}"> = Sushi:xSushi ratio`period` 7 days ago
 
-To further clarify the identifier, below is an example of the calculation. Please note for illustrative purposes there has been rounding to 13 decimal places (in the actual price identifier please retain all decimals until final rounding)
+<img src="https://render.githubusercontent.com/render/math?math={p}"> = period (ancilliary data)
+
+To further clarify the identifier, below is an example of the calculation. Please note for illustrative purposes there has been rounding to 13 decimal places (in the actual price identifier please retain all decimals until final rounding) and a `period` of 7 days from ancilliary data is assumed.
 
 | Date  (00:00:00 UTC)  | Sushi:xSushi ratio|
 | ------------- | ------------- |
