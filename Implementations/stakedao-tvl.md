@@ -49,7 +49,8 @@ Total StakeDAO TVL is determined by calculating the USD value of assets locked i
 
 Each vault holds a "crvToken". A crvToken is an LP token for a curve pool and also has an associated swapContract. Component assets and swap contracts for each curveToken can be viewed [here](https://github.com/DefiLlama/DefiLlama-Adapters/blob/main/projects/helper/unwrapLPs.js).
 
-Calculating the TVL for one strategy should follow these steps:
+
+### General vault calculation:
 
 1. Determine the crvToken from the list above (with the exception of "Crv_perpetual_vault", see section below).
 2. Call `balance()` on the vault contract. This will return the underlying balance of the "crvToken" for the specific vault. Depending on the vault, this "crvToken" balance can be split between multiple contracts including in some scenarios a "gauge" contract and the "vault" contract.
@@ -59,19 +60,25 @@ Calculating the TVL for one strategy should follow these steps:
 6. Each component asset should be priced in USD for the same timestamp. DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
 7. Calculate the sum of all component assets in USD from Step 6 and also add the Crv_perpetual_vault TVL (see section below).
 
-Crv_perpetual_vault calculation:
+### Crv_perpetual_vault calculation:
 
 1. For the Crv_perpetual_vault TVL calculation, voters should call the `locked` method on the Vote-escrowed CRV contract (this corresponds to the "crvToken" address for the Crv_perpetual_vault) by passing vault contract address as parameter. This represents CRV locked in vote escrow by the Crv_perpetual_vault.
 2. CRV locked from Step 1 should be converted to USD for the same timestamp as other vault underlying asset components. DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
 
-Crv_eth_vault calculation:
+### Crv_eth_vault calculation:
 
 DeFiLlama does not correctly calculate the underlying balance for the Crv_eth_vault, since the associated "swapContract" for ETH/sETH holds ETH that cannot be estimated with the `balanceOf` method. DeFiLlama estimates ETH balance by multiplying sETH balance by 2. This does not return completely accurate results, because the sETH/ETH pool is not weighted equally.
 
 1. Voters should subtract the chainTvls.Ethereum.tokensInUsd[i].tokens.SETH value from tvl[i].totalLiquidityUSD.
 2. Separately query for the correct sETH and ETH balances for the underlying Crv_eth_vault swap contract (0xc5424B857f758E906013F3555Dad202e4bdB4567).
 3. Multiply those balances by the respective sETH and ETH USD prices for the same timestamp and sum these results. DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
-4. Add the result from step 3 back to [tvl[i].totalLiquidityUSD -  chainTvls.Ethereum.tokensInUsd[i].tokens.SETH] to get the TVL result that should be returned.
+4. Add the result from step 3 back to [tvl[i].totalLiquidityUSD -  chainTvls.Ethereum.tokensInUsd[i].tokens.SETH] to get the TVL result.
 
 ***Note:** The adjustment for Crv_eth_vault would become redundant if DeFiLlama corrects its methodology.*
 
+## Post processing
+
+StakeDAO TVL calculation would be used for resolving payout to StakeDAO KPI options program recipients. The expected payout should be 10 SDT per one option if the USD 200 million TVL threshold is reached and 1 SDT in case if it is below this target. Since at the time of planned KPI options deployment the audited binary options financial product libraries do not allow setting custom payouts, the voters will need to perform price processing and should return the expected payout instead of raw metric:
+
+* If the rounded StakeDAO TVL was at least USD 200 million, then resolve request as 10.
+* If the rounded StakeDAO TVL was below USD 200 million, then resolve request as 1.
