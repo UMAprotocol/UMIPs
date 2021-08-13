@@ -22,13 +22,11 @@ To accomplish this upgrade, the following changes need to be made:
 -   The MATIC **[Polygon token address](https://polygonscan.com/address/0x0000000000000000000000000000000000001010) 0x0000000000000000000000000000000000001010** 
 -   A final fee of **380 MATIC** needs to be added for Store in the contract.
     
-
 ## Rationale
 
-This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by **insert how the value of $400 was determined**
+This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by looking at the price on CoinGecko, Coinmarketcap and Cryptowatch.
 
 ## Implementation
-
 
 This change has no implementations other than the aforementioned governor transactions
 
