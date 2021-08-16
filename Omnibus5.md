@@ -1,14 +1,13 @@
 **UMIP #**  - tbd
 
--   **UMIP title:** Add MATIC and INST as collateral currency 
+-   **UMIP title:** Add MATIC, INST and JRT as collateral currency 
 -   **Author**  Chandler De Kock (chandler@umaproject.org)
 -   **Status: Draft**
--   **Created:**  Date
--   **Discourse Link:**  Insert link to discourse topic after it has been moved into draft UMIPs
+-   **Created:**  12 August 2021
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding **MATIC** and **INST** for use as collateral in UMA contracts.
+This UMIP proposes adding **MATIC**, **INST** and **JRT** for use as collateral in UMA contracts.
 
 ## Motivation
 
@@ -18,13 +17,20 @@ The addition of this collateral currency offers additional functionality to the 
 
 To accomplish this upgrade, the following changes need to be made:
 
--   The MATIC [Ethereum token address](https://etherscan.io/address/0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0)  0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0
--   The MATIC [Polygon token address](https://polygonscan.com/address/0x0000000000000000000000000000000000001010) 0x0000000000000000000000000000000000001010
+
+ ### Matic token (note that the token on Polygon is Wrapped Matic)   
+-   The MATIC [Ethereum token address](https://etherscan.io/address/0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0):  0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0
+-   The WMATIC [Polygon token address](https://polygonscan.com/token/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270): 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
 -   A final fee of **380 MATIC** needs to be added for Store in the contract.
 
--   The INST [Ethereum token address](https://etherscan.io/address/0x6f40d4a6237c257fff2db00fa0510deeecd303eb) 0x6f40d4a6237c257fff2db00fa0510deeecd303eb
--   The INST [Polygon token address](https://polygonscan.com/address/0xf50D05A1402d0adAfA880D36050736f9f6ee7dee) 0xf50D05A1402d0adAfA880D36050736f9f6ee7dee
--   A final fee of **46 INST** needs to be added for Store in the contract.
+### InstaDapp token
+-   The INST [Ethereum token address](https://etherscan.io/address/0x6f40d4a6237c257fff2db00fa0510deeecd303eb): 0x6f40d4a6237c257fff2db00fa0510deeecd303eb
+-   The INST [Polygon token address](https://polygonscan.com/address/0xf50D05A1402d0adAfA880D36050736f9f6ee7dee): 0xf50D05A1402d0adAfA880D36050736f9f6ee7dee
+-   A final fee of **45 INST** needs to be added for Store in the contract.
+
+### Jarvis reward token
+-   The JRT [Ethereum token address](https://etherscan.io/address/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270): 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
+-   A final fee of **4000 JRT** needs to be added for Store in the contract.
     
 ## Rationale
 
