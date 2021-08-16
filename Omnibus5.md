@@ -29,7 +29,7 @@ To accomplish this upgrade, the following changes need to be made:
 -   A final fee of **45 INST** needs to be added for Store in the contract.
 
 ### Jarvis reward token
--   The JRT [Ethereum token address](https://etherscan.io/address/0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270): 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270
+-   The JRT [Ethereum token address](https://etherscan.io/address/0x8a9c67fee641579deba04928c4bc45f66e26343a): 0x8a9c67fee641579deba04928c4bc45f66e26343a
 -   A final fee of **4000 JRT** needs to be added for Store in the contract.
     
 ## Rationale
