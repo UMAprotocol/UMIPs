@@ -1,9 +1,10 @@
-**UMIP #**  - tbd
+**UMIP-125**
 
 -   **UMIP title:** Add MATIC, INST and JRT as collateral currency 
--   **Author**  Chandler De Kock (chandler@umaproject.org)
--   **Status: Draft**
+-   **Author:**  Chandler De Kock (chandler@umaproject.org)
+-   **Status:** Last Call
 -   **Created:**  12 August 2021
+-   **Discourse Link:** https://discourse.umaproject.org/t/add-matic-inst-and-jrt-as-collateral/1305
 
 ## Summary (2-5 sentences)
 
