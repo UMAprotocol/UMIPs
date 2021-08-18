@@ -4,7 +4,7 @@
 
 -   **UMIP title:** Add BANK as collateral currency 
 -   **Author**  chandler@umaproject.org 
--   **Status:** Last Call
+-   **Status:** Approved
 -   **Created:**  11 August 2021
 -   **Discourse Link:** https://discourse.umaproject.org/t/add-bank-as-collateral/1285
 
