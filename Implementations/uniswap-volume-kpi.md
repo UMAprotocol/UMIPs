@@ -21,7 +21,7 @@ In this document, we'll document Uniswap's methodology, but, if we wanted, we co
 ## Intended Ancillary Data
 
 ```
-Metric:Uniswap v2 and v3 30 day average daily volume quoted in USD, Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/uni-volume.md", Key:kpi_volume, Interval:daily, Aggregation:30 day average of the sum of Uniswap v2 and Uniswap v3 daily volume for a preset list of liquidity pools, Rounding:0, Scaling:-6
+Metric:Uniswap v2 and v3 30 day average daily volume quoted in USD, Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/uniswap-volume-kpi.md", Key:kpi_volume, Interval:daily, Aggregation:30 day average of the sum of Uniswap v2 and Uniswap v3 daily volume for a preset list of liquidity pools, Rounding:0, Scaling:-6
 ```
 
 
