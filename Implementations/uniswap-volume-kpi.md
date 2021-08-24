@@ -11,8 +11,9 @@ However, we think it's important to protect the KPI from this and similar attack
 
 1. Identify a set of pairs/pools.
   - We choose to use the criteria that Uniswap itself uses to only track "meaningful usage".
+  - We then took a snapshot of pools with "meaningful usage" at 00:00 UTC on August 1st, 2021.
 2. Compute the volume
-  - In order to further fend off manipulation, we will use an average over 30 days rather than using a single day's volume.
+  - In order to further fend off manipulation, we will use an average of 30 day daily volume rather than using a single day's volume.
 
 In this document, we'll document Uniswap's methodology, but, if we wanted, we could design our own criteria to choose pairs/pools or pick a different number of days.
 
@@ -20,7 +21,7 @@ In this document, we'll document Uniswap's methodology, but, if we wanted, we co
 ## Intended Ancillary Data
 
 ```
-Metric:Uniswap v2 and v3 30 day average daily volume quoted in USD, Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/uni-volume.md", Key:kpi_volume, Interval:daily, Aggregation:30 day average of the sum of Uniswap v2 and Uniswap v3 daily volume for a preset list of liquidity pools, Rounding:0
+Metric:Uniswap v2 and v3 30 day average daily volume quoted in USD, Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/uni-volume.md", Key:kpi_volume, Interval:daily, Aggregation:30 day average of the sum of Uniswap v2 and Uniswap v3 daily volume for a preset list of liquidity pools, Rounding:0, Scaling:-6
 ```
 
 
@@ -38,6 +39,7 @@ Uniswap v2 has the following criteria for inclusion in their volume metric:
 1. It cannot be listed in the [explicitly blacklisted tokens](https://github.com/Uniswap/uniswap-v2-subgraph/blob/master/src/mappings/helpers.ts#L22)
 2. One or both tokens in a pair must be included in the [explicitly whitelisted tokens](https://github.com/Uniswap/uniswap-v2-subgraph/blob/537e5392719ea9b02b3e56a42c1f3eba116d6918/src/mappings/pricing.ts#L42-L63)
 3. If there are less than 5 LPs, the liquidity must be higher than 400,000 USD
+4. It must meet this criteria at 00:00 UTC on August 1st, 2021.
 
 
 ## Uniswap v3
@@ -47,6 +49,7 @@ Uniswap v2 has the following criteria for inclusion in their volume metric:
 Uniswap v3 has the following criteria for inclusion in their volume metric:
 
 1. One or both tokens in a pair must be included in the [explicitly whitelisted tokens](https://github.com/Uniswap/uniswap-v3-subgraph/blob/main/src/utils/pricing.ts#L12-L34)
+2. It must meet this criteria at 00:00 UTC on August 1st, 2021.
 
 
 ### Python Script
