@@ -69,7 +69,7 @@ In math rather than words, `min(1,840, max(970, round(final_volume/1_000_000)))`
 For example:
 
 * If the total volume traded were 529,542,139 then, since this is below  voters would report `970`
-* If the total volume traded were 923,232,325 then voters would report `923`
+* If the total volume traded were 983,232,325 then voters would report `983`
 * If the total volume traded were 1,431,333,938 then voters would report `1431`
 * If the total volume traded were 2,523,842,232 then voters would report `1840`
 
