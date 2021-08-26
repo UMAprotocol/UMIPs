@@ -62,16 +62,17 @@ The included pools are listed in the appendix.
 
 ### Voting instrutions
 
-The value that voters should report is the min of 1,840,000,000 and the max of 970,000,000 million USD (starting total volume) and the current total volume. This value should be reported in millions of USD and be rounded to the nearest million (no decimals).
+The value that voters should report is the max of 970,000,000 million USD (starting total volume) and the current total volume. This value should be reported in millions of USD and be rounded to the nearest million (no decimals).
 
-In math rather than words, `min(1,840, max(970, round(final_volume/1_000_000)))`
+In math rather than words, `max(970, round(final_volume/1_000_000))`
 
 For example:
 
 * If the total volume traded were 529,542,139 then, since this is below  voters would report `970`
 * If the total volume traded were 983,232,325 then voters would report `983`
-* If the total volume traded were 1,431,333,938 then voters would report `1431`
-* If the total volume traded were 2,523,842,232 then voters would report `1840`
+* If the total volume traded were 1,831,333,938 then voters would report `1831`
+
+The value 970 million corresponds to the total volume (averaged over 30 days) that was being traded on Uniswap prior to the KPI options being issued (as of August 1, 2021). The goal of the KPI is to increase the volume being traded on Uniswap and incentivize people to use the protocol and so the payouts will increase as the volume increases. The upper-bound of the payout corresponds to an average trade volume of 1,940 million (i.e., double the current volume).
 
 
 ## Appendix
