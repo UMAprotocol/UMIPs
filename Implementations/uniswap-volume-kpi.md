@@ -60,6 +60,20 @@ In addition to these criteria, we restrict it further to keep only the 1,000 poo
 The included pools are listed in the appendix.
 
 
+### Voting instrutions
+
+The value that voters should report is the min of 1,840,000,000 and the max of 970,000,000 million USD (starting total volume) and the current total volume. This value should be reported in millions of USD and be rounded to the nearest million (no decimals).
+
+In math rather than words, `min(1,840, max(970, round(final_volume/1_000_000)))`
+
+For example:
+
+* If the total volume traded were 529,542,139 then, since this is below  voters would report `970`
+* If the total volume traded were 923,232,325 then voters would report `923`
+* If the total volume traded were 1,431,333,938 then voters would report `1431`
+* If the total volume traded were 2,523,842,232 then voters would report `1840`
+
+
 ## Appendix
 
 **Python script**
@@ -597,10 +611,6 @@ if __name__ == "__main__":
         'v3_eligible_volume': volume['v3'],
         'kpi_volume': volume['total']
     })
-
-    kpi_val = max(0.5, min(1.0, volume["total"]/(2*kpi_volume["total"])))
-    print("The KPI option is currently worth:")
-    print(f"\t{kpi_val} UNI")
 
 ```
 
