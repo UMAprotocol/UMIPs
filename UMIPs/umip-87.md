@@ -29,7 +29,7 @@ https://medium.com/badgerdao/badgerdao-x-uma-introducing-rebase-mining-3c663a5ab
 
 # Price Feed Implementation
 
-At 12:00 UTC every day compare the total supply of DIGG (https://etherscan.io/token/0x798d1be841a82a273720ce31c822c61a67a601c3) to its supply from the previous day.  If it is greater than the previous day then Positive_rebases should iterate by 1.  The exact amount of DIGG in the redemption pool has not been settled yet but there will be 1000 options tokens minted for every 1 bDIGG in the pool, the maximum value for this implementation is .001.  the below formula and accompanying spreadsheet illustrates how to calculate the percentage of the redemption pool that each option will be redeemable for.  
+At 22:00 UTC every day compare the total supply of DIGG (https://etherscan.io/token/0x798d1be841a82a273720ce31c822c61a67a601c3) to its supply from the previous day.  If it is greater than the previous day then Positive_rebases should iterate by 1.  The exact amount of DIGG in the redemption pool has not been settled yet but there will be 1000 options tokens minted for every 1 bDIGG in the pool, the maximum value for this implementation is .001.  the below formula and accompanying spreadsheet illustrates how to calculate the percentage of the redemption pool that each option will be redeemable for.  
 
 r = Positive_Rebases (using iterative calculation above)
 5 = minmum rebases
@@ -65,8 +65,8 @@ https://docs.google.com/spreadsheets/d/1Kb58KUiaCFClfL9hkf0OCXJzXHC-9lDwnrxQ3eEo
 
 The main input needed is the number for Positive_Rebases that has occured during the life of the options (30 days). This also includes rebases where the supply is not changed (stays at equilibrium).
 
-1. Using the timestamp that falls on 12:00 UTC but is closest and earlier than the price request timestamp (D2), read totalSupply from the DIGG token contract (D2_Supply).
-2. Query for totalSupply at 12:00 UTC on the day preceeding the day's (D1_Supply).
+1. Using the timestamp that falls on 22:00 UTC but is closest and earlier than (or the same) the price request timestamp (D2), read totalSupply from the DIGG token contract (D2_Supply).
+2. Query for totalSupply at 22:00 UTC on the day preceeding the day's (D1_Supply).
 3. If D2_Supply >= D1_Supply, increment Positive_Rebases by 1. If D2_Supply < D1_Supply, the Positive_Rebases value should remain constant.
 4. Steps 2 and 3 should be repeated for the 30 days preceeding the expiry timestamp.
 
