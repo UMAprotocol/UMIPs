@@ -21,7 +21,7 @@ In this document, we'll closely mimic the methodology that Uniswap uses on their
 ## Intended Ancillary Data
 
 ```
-Metric:Uniswap v2 and v3 30 day average daily volume quoted in USD, Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/uniswap-volume-kpi.md", Key:kpi_volume, Interval:daily, Aggregation:30 day average of the sum of Uniswap v2 and Uniswap v3 daily volume for a preset list of liquidity pools, Rounding:0, Scaling:-6
+Metric:Uniswap v2 and v3 30 day average daily volume quoted in USD millions,Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/uniswap-volume-kpi.md",Key:kpi_volume,Interval:daily,Aggregation:30 day average of the sum of Uniswap v2 and Uniswap v3 daily volume for a preset list of liquidity pools,Rounding:0,Scaling:-6
 ```
 
 
@@ -71,8 +71,9 @@ For example:
 * If the total volume traded were 529,542,139 then, since this is below  voters would report `970`
 * If the total volume traded were 983,232,325 then voters would report `983`
 * If the total volume traded were 1,831,333,938 then voters would report `1831`
+* If the total volume traded were 2,322,387,021 then voters would report `2322`
 
-The value 970 million corresponds to the total volume (averaged over 30 days) that was being traded on Uniswap prior to the KPI options being issued (as of August 1, 2021). The goal of the KPI is to increase the volume being traded on Uniswap and incentivize people to use the protocol and so the payouts will increase as the volume increases. The upper-bound of the payout corresponds to an average trade volume of 1,940 million (i.e., double the current volume).
+The value 970 million corresponds to the total volume (averaged over 30 days) that was being traded on Uniswap prior to the KPI options being issued (as of August 1, 2021). The goal of the KPI is to increase the volume being traded on Uniswap and incentivize people to use the protocol and so the payouts will increase as the volume increases (up to a maximum of 1 UNI per KPI option).
 
 
 ## Appendix
@@ -82,6 +83,7 @@ The value 970 million corresponds to the total volume (averaged over 30 days) th
 The following Python script can be used to collect this data from The Graph
 
 ```python
+import json
 import os
 import requests
 import time
@@ -565,6 +567,8 @@ if __name__ == "__main__":
     current_ts = int(
         datetime.now(tz=TZUTC).replace(hour=0, minute=0, second=0, microsecond=0).timestamp()
     )
+    expiry_ts = 1648742400
+    eval_ts = min(current_ts, expiry_ts)
 
     # Evaluate KPI from pairs/pools or "from scratch"... Set to `False`
     # once this has been run at least once
@@ -595,10 +599,10 @@ if __name__ == "__main__":
 
     # Evaluate KPI
     v2_volume, v2_pairs_to_volume = evaluate_v2_volume(
-        pairs_and_pools["v2"]["pairs"], current_ts, 30
+        pairs_and_pools["v2"]["pairs"], eval_ts, 30
     )
     v3_volume, v3_pools_to_volume = evaluate_v3_volume(
-        pairs_and_pools["v3"]["pools"], current_ts, 30
+        pairs_and_pools["v3"]["pools"], eval_ts, 30
     )
 
     volume = {
@@ -607,12 +611,8 @@ if __name__ == "__main__":
         "total": v2_volume + v3_volume
     }
 
-    pprint({
-        'v2_eligible_volume': volume['v2'],
-        'v3_eligible_volume': volume['v3'],
-        'kpi_volume': volume['total']
-    })
-
+    print("The average volume over the last 30 days prior to {eval_ts} is")
+    print(int(round(v2_volume + v3_volume, 0)))
 ```
 
 **Approved v2 pools**
