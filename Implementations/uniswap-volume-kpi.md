@@ -83,6 +83,7 @@ The value 970 million corresponds to the total volume (averaged over 30 days) th
 The following Python script can be used to collect this data from The Graph
 
 ```python
+import json
 import os
 import requests
 import time
