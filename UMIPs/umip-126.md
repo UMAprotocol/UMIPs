@@ -1,13 +1,14 @@
-**UMIP #**  - tbd
+## Headers
+UMIP-126
 
--   **UMIP title:** Add **YEL** as collateral currency 
--   **Author**  Chandler (chandler@umaproject.org)
--   **Status: Draft**
--   **Created:**  24 August 2021
+-   UMIP title: Add YEL as collateral currency 
+-   Author: Chandler (chandler@umaproject.org)
+-   Status: Last Call
+-   Created:  24 August 2021
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding **YEL token** for use as collateral in UMA contracts.
+This UMIP proposes adding the YEL token for use as collateral in UMA contracts.
 
 ## Motivation
 
