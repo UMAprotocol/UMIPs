@@ -23,7 +23,9 @@ TVLCurrency:<TVL_CURRENCY>,
 TVLPriceFeed:<TVL_PRICE_FEED>
 ```
 ***Note 1:** <BARNBRIDGE_API_ENDPOINT> might not yet be available at the launch of test pilot, hence, `Endpoint` and `Key` parameters would be skipped. Voters would need to rely only on independent calculation based on this implementation document.*
+
 ***Note 2:** This is generic ancillary data template, thus <START_TIMESTAMP> and <ADDRESS_OF_SMART_ALPHA_POOL> should be specified upon deploying specific KPI options contract for an incentivized SMART Alpha pool.*
+
 ***Note 3:** `TVLCurrency` and `TVLPriceFeed` are optional parameters that should provide the currency and price feed in case TVL should be measured in different currency than pool price feed quote currency.*
 
 ## Implementation
