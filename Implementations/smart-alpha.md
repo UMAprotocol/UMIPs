@@ -4,7 +4,7 @@ BarnBridge SMART Alpha KPI Options Calculation
 
 ## Summary
 
-SMART Alpha allows users to calibrate their exposure to the performance of an underlying asset represented by junior- and senior-side proofs of liquidity.  When the price goes up, seniors give up some of their assets to the juniors, and vice versa. It is epoch-based, meaning that users deposit the underlying asset for a set period of time and cannot enter and exit until the subsequent epoch. The goal of the KPI options program is to a) bootstrap senior-side secondary liquidity, and b) compensate for junior-side risk.
+SMART Alpha allows users to calibrate their exposure to the performance of an underlying asset represented by junior- and senior-side proofs of liquidity.  When the price goes up, seniors give up some of their assets to the juniors, and vice versa. It is epoch-based, meaning that users deposit the underlying asset for a set period of time and cannot enter and exit until the subsequent epoch. The goal of the KPI options program is to bootstrap secondary liquidity for both senior and junior SMART Alpha positions.
 
 This document will detail the calculation method for senior/junior balance adjusted TVL in requested SMART Alpha pool.
 
