@@ -34,12 +34,9 @@ TVLPriceFeed:<TVL_PRICE_FEED>
 2. Determine the total value locked in terms of the underlying asset in the `Pool` contract at the request timestamp.
 3. Using the quote currency and price feed from Step 1 calculate the value of underlying asset balance from Step 2 expressed in terms of the quote currency at the request timestamp.
 4. Based on the SMART Alpha pool contract deployment timestamp and its epoch length identify all possible epoch periods that could fall in between the start timestamp (passed within the `Aggregation` parameter from the ancillary data) and the request timestamp. Even if there have been no user deposits/withdrawals and the epoch has not been manually advanced, this calculation should assume maximum available epoch periods. 
-5. For each identified SMART Alpha pool epoch period from Step 4 determine its junior side dominance and calculate epoch target points. In case the epoch has not been advanced junior side dominance for such epoch period should be taken from the last advanced epoch period.
-   * if junior dominance is lower or equal to 20% assign 0.5 target point;
-   * if junior dominance is higher than 20% and lower or equal to 40% assign 1 target point;
-   * if junior dominance is higher than 40% and lower or equal to 60% assign 2 target points;
-   * if junior dominance is higher than 60% and lower or equal to 80% assign 1 target point;
-   * if junior dominance is higher than 80% assign 0.5 target point.
+5. For each identified SMART Alpha pool epoch period from Step 4 determine its junior side dominance and calculate epoch target points. In case the epoch has not been advanced junior side dominance for such epoch period should be taken from the last advanced epoch period. Actual target points should be calculated using a simple step-wise linear function that increases from 0 to 2 as junior dominance rises from 0% to 50%, then decreases back to 0 as junior dominance rises to 100%:
+   * if junior dominance is lower or equal to 50% assign target points calculated by multiplying junior dominance share with coefficient 4;
+   * if junior dominance is higher than 50% assign target points calculated by multiplying senior dominance share (this is 1 minus junior dominance share) with coefficient 4.
 6. Calculate the arithmetic mean target points from Step 5.
 7. Multiply TVL from Step 3 with average target points from Step 6.
 8. Round the adjusted TVL from Step 7 to 2 decimals before returning it as a resolved price request.
