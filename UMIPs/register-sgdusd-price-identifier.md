@@ -5,7 +5,7 @@
 | Authors    | Iliyan Iliev (iliyan.iliev@jarvis.exchange)               |
 | Status     | Draft                                                 |
 | Created    | 06/09/21                                  |
-| Discourse link    |    
+| Discourse link    | https://discourse.umaproject.org/t/add-sgdusd-as-price-identifier/1320    
 
 ## Summary
 The DVM should support price requests for the SGDUSD price index.
