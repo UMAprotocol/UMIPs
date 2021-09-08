@@ -69,7 +69,7 @@ Example MarketStack request for a VIX historical price:
 ```
 http://api.marketstack.com/v1/eod
     ? access_key = YOUR_ACCESS_KEY
-    & symbols = VIX
+    & symbols = VIX.INDX
     & date_from = 2021-08-23
     & date_to = 2021-09-02
 ```
