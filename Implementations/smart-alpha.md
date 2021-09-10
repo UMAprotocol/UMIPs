@@ -17,15 +17,19 @@ Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/smart-a
 Key:<KEY>,
 Interval:based on pool epoch cycle,
 Aggregation:Last epoch TVL multiplied by average balance factor for all full epochs since <START_TIMESTAMP>,
-Rounding:2,
 Pool:<ADDRESS_OF_SMART_ALPHA_POOL>,
-TVLPriceFeed:<ADDRESS_OF_TVL_PRICE_FEED>
+TVLPriceFeed:<ADDRESS_OF_TVL_PRICE_FEED>,
+MaxTVL:<ONE_AT_THIS_TVL>,
+MinTVL:<ZERO_AT_THIS_TVL>,
+Rounding:<ROUNDING_DECIMALS>
 ```
 ***Note 1:** <BARNBRIDGE_API_ENDPOINT> might not yet be available at the launch of test pilot, hence, `Endpoint` and `Key` parameters would be skipped. Voters would need to rely only on independent calculation based on this implementation document.*
 
 ***Note 2:** This is generic ancillary data template, thus <START_TIMESTAMP>, <ADDRESS_OF_SMART_ALPHA_POOL> and <ADDRESS_OF_TVL_PRICE_FEED> should be specified upon deploying specific KPI options contract for an incentivized SMART Alpha pool.*
 
 ***Note 3:** `TVLPriceFeed` should point to the Chainlink aggregator contract that was used as `chainlinkAggregator` parameter when deploying the SMART Alpha pool. Alternatively, this can be any other Chainlink aggregator if the TVL should be measured in a different currency than the pool price feed quote currency. If this parameter is omitted TVL would be measured in terms of pool underlying currency.*
+
+***Note 4:** Due to the characteristics of logarithmic function in the post-processing evaluated metric needs to be bounded between `MinTVL` and `MaxTVL` parameters.*
 
 ## Rationale and usage
 
@@ -54,5 +58,46 @@ In case the TVL is measured in the pool price feed quote currency users of KPI o
     * if junior dominance is higher than 50% assign target points calculated by multiplying senior dominance share (this is 1 minus junior dominance share) with coefficient 4.
 12. Calculate the weighted mean target points from Step 11 applying epoch advancement weights from Step 7 (representing number of full epoch periods between advancements).
 13. Multiply TVL from Step 5 with weighted average target points from Step 12.
-14. Round the adjusted TVL from Step 13 to 2 decimals before returning it as a resolved price request.
 
+## Post processing
+
+Since BarnBridge has opted to incentivize SMART Alpha pools in a non-linear payout function, voters should perform post-processing on the adjusted TVL from Step 13 and return a value between 0 and 1 to the submitted price request based on the parameters and formula below:
+
+<img src="https://render.githubusercontent.com/render/math?math=\text{price} = 0.5 \left(1 - \log_{\frac{\text{MaxTVL}}{\text{MinTVL}}} \left(\frac{\text{MaxTVL}%2B\text{MinTVL}}{\text{BoundedTVL}} - 1 \right) \right)">
+
+where:
+
+`MaxTVL` is taken from ancillary data parameter and represents the upper metric bound that should return 1 as a price,
+
+`MinTVL` is taken from ancillary data parameter and represents the lower metric bound (it should be larger than zero) that should return 0 as a price,
+
+`BoundedTVL` makes sure that adjusted TVL from Step 13 is kept within the `MinTVL` and `MaxTVL` bounds with formula:
+
+<img src="https://render.githubusercontent.com/render/math?math=\text{BoundedTVL} = \min{(\text{MaxTVL}, \max{(\text{TVL}, \text{MinTVL})})}">
+
+Before returning the calculated price voters should round it leaving `Rounding` number of decimals based on the provided ancillary data parameter.
+
+## Intended Application
+
+It is intended to deploy the documented KPI options separately for each incentivized SMART Alpha pool using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 1.
+
+As an example, ETHUSD pool would have following ancillary data set:
+
+```
+
+Metric:SMART Alpha pool TVL adjusted by average senior/junior balance,
+Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/smart-alpha.md",
+Interval:based on pool epoch cycle,
+Aggregation:Last epoch TVL multiplied by average balance factor for all full epochs since <START_TIMESTAMP>,
+Pool:0x31f7Da25361AD99ca4DAa4E8709624660f324F48,
+TVLPriceFeed:0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419,
+MaxTVL:19900000,
+MinTVL:100000,
+Rounding:8
+```
+
+BarnBridge would be targeting USD 10 million TVL for this ETHUSD pool, hence, if it was balanced all the time the maximum targeted adjusted TVL would be USD 20 million. Since `MinTVL` is set at USD 100 thousand, `MaxTVL` would be set to USD 19.9 million just to keep symmetric payouts centered around USD 10 million adjusted TVL. Depending on achieved adjusted TVL (Step 13) the price response could be graphed below:
+
+![Price function](https://user-images.githubusercontent.com/77973553/132918369-04b24333-1e2b-4c57-a082-5a3eef4b832e.png)
+
+Actual payouts to KPI option recipients would depend on the resolved price (between 0 and 1) multiplied by `collateralPerPair` (set to 1) and number of issued KPI option tokens (amount depends on BarnBridge governance decision).
