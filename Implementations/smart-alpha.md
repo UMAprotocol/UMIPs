@@ -97,6 +97,6 @@ Rounding:8
 
 BarnBridge would be targeting USD 10 million TVL for this ETHUSD pool, hence, if it was balanced all the time the maximum targeted adjusted TVL would be USD 20 million. Since `MinTVL` is set at USD 100 thousand, `MaxTVL` would be set to USD 19.9 million just to keep symmetric payouts centered around USD 10 million adjusted TVL. Depending on achieved adjusted TVL (Step 13) the price response could be graphed below:
 
-![Price function](https://user-images.githubusercontent.com/77973553/132918369-04b24333-1e2b-4c57-a082-5a3eef4b832e.png)
+<img src="https://user-images.githubusercontent.com/77973553/132918369-04b24333-1e2b-4c57-a082-5a3eef4b832e.png" alt="Price function" width="500"/>
 
 Actual payouts to KPI option recipients would depend on the resolved price (between 0 and 1) multiplied by `collateralPerPair` (set to 1) and number of issued KPI option tokens (amount depends on BarnBridge governance decision).
