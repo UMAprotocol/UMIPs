@@ -88,7 +88,7 @@ As an example, ETHUSD pool would have following ancillary data set:
 Metric:SMART Alpha pool TVL adjusted by average senior/junior balance,
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/smart-alpha.md",
 Interval:based on pool epoch cycle,
-Aggregation:Last epoch TVL multiplied by average balance factor for all full epochs since <START_TIMESTAMP>,
+Aggregation:Last epoch TVL multiplied by average balance factor for all full epochs since 1631541600,
 Pool:0x31f7Da25361AD99ca4DAa4E8709624660f324F48,
 TVLPriceFeed:0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419,
 MaxTVL:19900000,
