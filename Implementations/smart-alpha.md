@@ -84,7 +84,6 @@ It is intended to deploy the documented KPI options separately for each incentiv
 As an example, ETHUSD pool would have following ancillary data set:
 
 ```
-
 Metric:SMART Alpha pool TVL adjusted by average senior/junior balance,
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/smart-alpha.md",
 Interval:based on pool epoch cycle,
