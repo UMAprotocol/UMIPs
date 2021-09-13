@@ -34,12 +34,9 @@ TVLCheckpoints:{"0":0,"500000":50,"1000000":120,"2000000":250}
 1. Identify the chain of the requesting contract (e.g. Ethereum or Polygon).
 2. Identify the YEL staking contract (on the chain from Step 1) passed as `yelFarmingContract` parameter in the ancillary data.
 3. Identify the incentivized LP token and its staked balance by calling `poolInfo(1)` method on the YEL staking contract from Step 2. Voters should make sure to call it at the latest available block at or before the request timestamp (access to archive node would be required). In case the `stakingTokenId` parameter passed in the ancillary data has any other value than 1 modify the `poolInfo` call to contain it as its parameter value. Take a note on the returned LP token contract address (index 0 `stakingToken` from output) and staked LP token balance (index 1 ` stakingTokenTotalAmount` from output).
-4. Identify LP contract reserve currencies by calling `token0()` and `token1()` methods on the LP contract from Step 3.
+4. Identify LP contract reserve currencies by calling `token0()` and `token1()` methods on the LP contract from Step 3 (`stakingToken`).
 5. Get total LP reserves by calling `getReserves()` method on the LP contract from Step 3 at the latest available block at or before the request timestamp. This should return `token0` and `token1` balances as index 0 `_reserve0` and index 1 `_reserve1` respectively.
-6. Get total LP token supply by calling `totalSupply()` method on the LP contract from Step 3 at the latest available block at or before the request timestamp.
-7. For each LP reserve currency from Step 4 calculate the underlying asset staked in YEL contract by multiplying its total reserve balance (Step 5) with staked LP token amount (Step 3) and dividing by total LP token supply (Step 6).
-8. Scale down staked balances from Step 7 with their respective decimals (call `decimals()` method on the token contracts from Step 4).
-9. For each LP reserve token from Step 4 get the latest available pricing before request timestamp from CoinGecko:
+6. For each LP reserve token from Step 4 get the latest available pricing before request timestamp from CoinGecko:
     * Based on CoinGecko [API documentation](https://www.coingecko.com/api/documentations/v3#/contract/get_coins__id__contract__contract_address__market_chart_) construct price API request with following parameters:
       * `id`: CoinGecko platform id - find the chain from Step 1 in https://api.coingecko.com/api/v3/asset_platforms endpoint (e.g. "ethereum" or "polygon-pos");
       * `contract_address`: reserve token address from Step 4;
@@ -49,8 +46,14 @@ TVLCheckpoints:{"0":0,"500000":50,"1000000":120,"2000000":250}
     * Example API request for YEL token pricing information: https://api.coingecko.com/api/v3/coins/ethereum/contract/0x7815bDa662050D84718B988735218CFfd32f75ea/market_chart?vs_currency=usd&days=4
     * Locate the `prices` key value from CoinGecko API response - it should contain a list of [ timestamp, price ] values. Choose the price at the latest timestamp before the price request (CoinGecko timestamps are in milliseconds);
     * Voters should verify that obtained price results agree with broad market consensus.
-10. Multiply each staked LP reserve token balance from Step 8 with its price from Step 9.
-11. Sum both staked LP token values from Step 10 to obtain chain specific LP TVL in terms of `TVLCurrency`.
+7. Scale down LP reserve balances from Step 5 with their respective decimals (call `decimals()` method on the token contracts from Step 4).
+8. Multiply each LP reserve token balance from Step 7 with its price from Step 6.
+9. Sum both LP reserve balance values from Step 8 to get total value of the pool.
+10. Get total LP token supply by calling `totalSupply()` method on the LP contract from Step 3 at the latest available block at or before the request timestamp.
+11. Scale down LP token supply from Step 10 with its decimals (call `decimals()` method on the LP contract from Step 3).
+12. Divide total LP pool value from Step 9 with the scaled down token supply from Step 11 to get the price per 1 LP token.
+13. Scale down staked LP token balance from Step 3 (`stakingTokenTotalAmount`) with its decimals (call `decimals()` method on the LP contract).
+14. Multiply staked LP token balance from Step 13 with its price from Step 12 to obtain chain specific staked LP TVL in terms of `TVLCurrency`.
 
 ## Post processing
 
