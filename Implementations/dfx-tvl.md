@@ -40,7 +40,7 @@ The list above can be amended once new pool contracts are developed by DFX proto
 
 ## Implementation
 
- 1. For each DFX pool contract listed above call the `liquidity()` method at the latest available block at or before the request timestamp (access to Ethereum and Polygon archive nodes would be required). Take a note on the returned index 0 `total_` values from the request output. 
+ 1. For each DFX pool contract listed above call the `liquidity()` method at the latest available block at or before the request timestamp (access to Ethereum and Polygon archive nodes would be required). Take a note on the returned index 0 `total_` values from the request output.
  2. Scale down values from Step 1 by 18 decimals to obtain USD reference value of each pool.
  3. Sum all DFX pool USD values from Step 2.
  4. Round the obtained TVL from Step 3 to 0 decimal places before returning it as resolved price request.
