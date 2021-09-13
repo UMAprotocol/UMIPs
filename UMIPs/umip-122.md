@@ -1,12 +1,12 @@
 # Headers
 
-|   |                                                                                                                                          |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add Polygon `DerivativeFactory` as `Creator` in DVM registry                                                                                                |
-| Authors    | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                 |
-| Status     | Last Call                                                |
-| Created    | 28/07/2021   
-| Discourse link    |  https://discourse.umaproject.org/t/register-polygon-derivativefactory-as-creator-in-dvm-registry/1267                               |
+|                |                                                                                                       |
+|----------------|-------------------------------------------------------------------------------------------------------|
+| UMIP Title     | Add Polygon `DerivativeFactory` as `Creator` in DVM registry                                          |
+| Authors        | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                                                           |
+| Status         | Approved                                                                                              |
+| Created        | 28/07/2021                                                                                            | 
+| Discourse link | https://discourse.umaproject.org/t/register-polygon-derivativefactory-as-creator-in-dvm-registry/1267 |
 
 # Summary
 
