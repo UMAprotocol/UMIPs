@@ -16,7 +16,8 @@ TVLCurrency:usd,
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/yel-lp.md",
 yelFarmingContract:0xe7c8477C0c7AAaD6106EBDbbED3a5a2665b273b9,
 stakingTokenId:1,
-Interval:latest block before price request,
+Interval:daily,
+Aggregation:Average end of day (midnight UTC) TVL since <START_TIMESTAMP>,
 Rounding:0,
 TVLCheckpoints:{"0":0,"500000":50,"1000000":120,"2000000":250}
 ```
@@ -31,35 +32,38 @@ TVLCheckpoints:{"0":0,"500000":50,"1000000":120,"2000000":250}
 
 ## Implementation
 
-1. Identify the chain of the requesting contract (e.g. Ethereum or Polygon).
-2. Identify the YEL staking contract (on the chain from Step 1) passed as `yelFarmingContract` parameter in the ancillary data.
-3. Identify the incentivized LP token and its staked balance by calling `poolInfo(1)` method on the YEL staking contract from Step 2. Voters should make sure to call it at the latest available block at or before the request timestamp (access to archive node would be required). In case the `stakingTokenId` parameter passed in the ancillary data has any other value than 1 modify the `poolInfo` call to contain it as its parameter value. Take a note on the returned LP token contract address (index 0 `stakingToken` from output) and staked LP token balance (index 1 ` stakingTokenTotalAmount` from output).
-4. Identify LP contract reserve currencies by calling `token0()` and `token1()` methods on the LP contract from Step 3 (`stakingToken`).
-5. Get total LP reserves by calling `getReserves()` method on the LP contract from Step 3 at the latest available block at or before the request timestamp. This should return `token0` and `token1` balances as index 0 `_reserve0` and index 1 `_reserve1` respectively.
-6. For each LP reserve token from Step 4 get the latest available pricing before request timestamp from CoinGecko:
-    * Based on CoinGecko [API documentation](https://www.coingecko.com/api/documentations/v3#/contract/get_coins__id__contract__contract_address__market_chart_) construct price API request with following parameters:
-      * `id`: CoinGecko platform id - find the chain from Step 1 in https://api.coingecko.com/api/v3/asset_platforms endpoint (e.g. "ethereum" or "polygon-pos");
-      * `contract_address`: reserve token address from Step 4;
+1. Identify all daily evaluation timestamps at the end of day (midnight UTC) that fall in between the start timestamp (passed within the `Aggregation` parameter from the ancillary data) and the request timestamp.
+2. Identify the chain of the requesting contract (e.g. Ethereum or Polygon).
+3. Identify the YEL staking contract (on the chain from Step 2) passed as `yelFarmingContract` parameter in the ancillary data.
+4. Identify the incentivized LP token and its staked balances by calling `poolInfo(1)` method on the YEL staking contract from Step 3. Voters should make sure to call it at the latest available block at or before each evaluation timestamp identified in Step 1 (access to archive node would be required). In case the `stakingTokenId` parameter passed in the ancillary data has any other value than 1 modify the `poolInfo` call to contain it as its parameter value. Take a note on the returned LP token contract address (index 0 `stakingToken` from output) and staked LP token balances (index 1 ` stakingTokenTotalAmount` from output).
+5. Identify LP contract reserve currencies by calling `token0()` and `token1()` methods on the LP contract from Step 4 (`stakingToken`).
+6. Get total LP reserves by calling `getReserves()` method on the LP contract from Step 4 at the latest available block at or before each of evaluation timestamps from Step 1. This should return `token0` and `token1` balances as index 0 `_reserve0` and index 1 `_reserve1` respectively for each evaluation timestamp.
+7. For both LP reserve tokens from Step 5 get the latest available pricing before each of evaluation timestamps from CoinGecko:
+    * Based on CoinGecko [API documentation](https://www.coingecko.com/api/documentations/v3#/contract/get_coins__id__contract__contract_address__market_chart_range) construct price API request with following parameters:
+      * `id`: CoinGecko platform id - find the chain from Step 2 in https://api.coingecko.com/api/v3/asset_platforms endpoint (e.g. "ethereum" or "polygon-pos");
+      * `contract_address`: reserve token address from Step 5;
       * `vs_currency`: TVL measurement currency based on the passed `TVLCurrency` parameter in the ancillary data (e.g. "usd");
-      * `days`: lookback period in days - generally this should be set to 4 days (to cover any potential DVM escalation) so that hourly data is returned. Avoid setting lower period as CoinGecko automatically adjusts granularity period and the results would not be reproducible by other voters;
+      * `from`: start timestamp (passed within the `Aggregation` parameter from the ancillary data);
+      * `to`: request timestamp;
     * Note that some tokens might not be supported by CoinGecko on all chains  - in such case consult supported currency/platform list at https://api.coingecko.com/api/v3/coins/list?include_platform=true and replace to supported `id`  and `contract_address` for the same reserve token. As of time of authorship of this document YEL is supported only on Ethereum chain, hence its Polygon address would need to be replaced with 0x7815bDa662050D84718B988735218CFfd32f75ea on Ethereum;
-    * Example API request for YEL token pricing information: https://api.coingecko.com/api/v3/coins/ethereum/contract/0x7815bDa662050D84718B988735218CFfd32f75ea/market_chart?vs_currency=usd&days=4
-    * Locate the `prices` key value from CoinGecko API response - it should contain a list of [ timestamp, price ] values. Choose the price at the latest timestamp before the price request (CoinGecko timestamps are in milliseconds);
+    * Example API request for YEL token pricing information: https://api.coingecko.com/api/v3/coins/ethereum/contract/0x7815bDa662050D84718B988735218CFfd32f75ea/market_chart/range?vs_currency=usd&from=1630454400&to=1631491200
+    * Locate the `prices` key value from CoinGecko API response - it should contain a list of [ timestamp, price ] values. For each evaluation period (Step 1) choose the price at the latest timestamp before the evaluation timestamp (CoinGecko timestamps are in milliseconds);
     * Voters should verify that obtained price results agree with broad market consensus.
-7. Scale down LP reserve balances from Step 5 with their respective decimals (call `decimals()` method on the token contracts from Step 4).
-8. Multiply each LP reserve token balance from Step 7 with its price from Step 6.
-9. Sum both LP reserve balance values from Step 8 to get total value of the pool.
-10. Get total LP token supply by calling `totalSupply()` method on the LP contract from Step 3 at the latest available block at or before the request timestamp.
-11. Scale down LP token supply from Step 10 with its decimals (call `decimals()` method on the LP contract from Step 3).
-12. Divide total LP pool value from Step 9 with the scaled down token supply from Step 11 to get the price per 1 LP token.
-13. Scale down staked LP token balance from Step 3 (`stakingTokenTotalAmount`) with its decimals (call `decimals()` method on the LP contract).
-14. Multiply staked LP token balance from Step 13 with its price from Step 12 to obtain chain specific staked LP TVL in terms of `TVLCurrency`.
+8. Scale down LP reserve balances from Step 6 with their respective decimals (call `decimals()` method on the token contracts from Step 5).
+9. Multiply each LP reserve token balance from Step 8 with its price from Step 7 for each evaluation timestamp.
+10. Sum both LP reserve balance values from Step 9 to get total value of the pool for each evaluation timestamp.
+11. Get total LP token supply by calling `totalSupply()` method on the LP contract from Step 4 at the latest available block at or before each evaluation timestamp.
+12. Scale down LP token supply series from Step 11 with its decimals (call `decimals()` method on the LP contract from Step 4).
+13. Divide total LP pool values from Step 10 with the corresponding timestamp token supply from Step 12 to get the price per 1 LP token for each evaluation timestamp.
+14. Scale down staked LP token balances from Step 4 (`stakingTokenTotalAmount`) with its decimals (call `decimals()` method on the LP contract) for each evaluation timestamp.
+15. Multiply staked LP token balances from Step 14 with their corresponding prices from Step 13 to obtain LP TVL in terms of `TVLCurrency` for each evaluation timestamp.
+16. Calculate average from the daily values in Step 15 to obtain chain specific staked LP TVL in terms of `TVLCurrency`.
 
 ## Post processing
 
-Based on the `TVLCheckpoints` parameter from ancillary data voters should transform the measured TVL from Step 14 to its corresponding price points. `TVLCheckpoints` contains key-value pairs where keys represent target TVL metric checkpoints and values indicate response price points. Voters should identify the largest TVL checkpoint (key) that is exceeded by the measured TVL and return its corresponding price point (value) as resolved price request.
+Based on the `TVLCheckpoints` parameter from ancillary data voters should transform the measured average TVL from Step 16 to its corresponding price points. `TVLCheckpoints` contains key-value pairs where keys represent target TVL metric checkpoints and values indicate response price points. Voters should identify the largest TVL checkpoint (key) that is exceeded by the average TVL and return its corresponding price point (value) as resolved price request.
 
-As an example, based on the intended ancillary data parameters above if the TVL of LP staked in YEL on Ethereum at KPI options expiration was USD 260,000 price should be resolved to 0 (TVL is exceeding only key "0" checkpoint). Alternatively, if the TVL of LP staked in YEL on Polygon was USD 510,000 price should be resolved to 50 (TVL is exceeding key "500000" checkpoint).
+As an example, based on the intended ancillary data parameters above if the average TVL of LP staked in YEL on Ethereum at KPI options expiration was USD 260,000 price should be resolved to 0 (TVL is exceeding only key "0" checkpoint). Alternatively, if the average TVL of LP staked in YEL on Polygon was USD 510,000 price should be resolved to 50 (TVL is exceeding key "500000" checkpoint).
 
 ## Intended Application
 
