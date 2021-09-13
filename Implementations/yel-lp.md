@@ -28,7 +28,9 @@ TVLCheckpoints:{"0":0,"500000":50,"1000000":120,"2000000":250}
 
 ***Note 3:** `stakingTokenId` represents incentivized LP token index in the YEL staking contract. Currently all YEL staking contracts have LP token index set at 1.*
 
-***Note 4:** `TVLCheckpoints` can be modified to any other JSON formatted object defining post-processing of target TVL's (keys) and returned prices (values).*
+***Note 4:** <START_TIMESTAMP> should be filled in upon contract deployment based on expected expiration and desired averaging period.*
+
+***Note 5:** `TVLCheckpoints` can be modified to any other JSON formatted object defining post-processing of target TVL's (keys) and returned prices (values).*
 
 ## Implementation
 
