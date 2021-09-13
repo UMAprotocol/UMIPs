@@ -57,7 +57,7 @@ TVLCheckpoints:{"0":0,"500000":50,"1000000":120,"2000000":250}
 
 ## Post processing
 
-Based on the `TVLCheckpoints` parameter from ancillary data voters should transform the measured TVL from Step 11 to its corresponding price points. `TVLCheckpoints` contains key-value pairs where keys represent target TVL metric checkpoints and values indicate response price points. Voters should identify the largest TVL checkpoint (key) that is exceeded by the measured TVL and return its corresponding price point (value) as resolved price request.
+Based on the `TVLCheckpoints` parameter from ancillary data voters should transform the measured TVL from Step 14 to its corresponding price points. `TVLCheckpoints` contains key-value pairs where keys represent target TVL metric checkpoints and values indicate response price points. Voters should identify the largest TVL checkpoint (key) that is exceeded by the measured TVL and return its corresponding price point (value) as resolved price request.
 
 As an example, based on the intended ancillary data parameters above if the TVL of LP staked in YEL on Ethereum at KPI options expiration was USD 260,000 price should be resolved to 0 (TVL is exceeding only key "0" checkpoint). Alternatively, if the TVL of LP staked in YEL on Polygon was USD 510,000 price should be resolved to 50 (TVL is exceeding key "500000" checkpoint).
 
