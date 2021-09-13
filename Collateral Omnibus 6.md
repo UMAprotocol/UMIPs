@@ -1,6 +1,6 @@
 **UMIP #**  - tbd
 
--   **UMIP title:** Add **miMATIC** as collateral currency 
+-   **UMIP title:** Add **miMATIC** and **VOL** as collateral currency 
 -   **Author**  Chandler (chandler@umaproject.org)
 -   **Status: Draft**
 -   **Created:**  13 September 2021
@@ -8,7 +8,7 @@
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding **miMATIC** for use as collateral in UMA contracts.
+This UMIP proposes adding **miMATIC**, **VOL** for use as collateral in UMA contracts.
 
 ## Motivation
 
@@ -20,13 +20,17 @@ miMATIC also known as MAI is a soft pegged stablecoin that is backed by other as
 
 To accomplish this upgrade, the following changes need to be made:
 
+### miMATIC
 -   The **miMATIC** Polygon [token address](https://polygonscan.com/token/0xa3fa99a148fa48d14ed51d610c367c61876997f1): 0xa3fa99a148fa48d14ed51d610c367c61876997f1 needs to be added to the collateral currency whitelist introduced in UMIP-8.
 -   A final fee of **400 MAI** needs to be added in the Store contract.
-    
+
+### VOL
+-   The **VOL** Ethereum [token address](https://etherscan.io/token/0x5166e09628b696285e3a151e84fb977736a83575): 0x5166e09628b696285e3a151e84fb977736a83575
+- A final fee of **850 VOL** needs to be added in the Store contract.
 
 ## Rationale
 
-This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by assuming that the MIA token will hold its peg to $1 per token.
+This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by assuming that the MIA token will hold its peg to $1 per token or by using CoinMarketCap and CoinGecko prices. 
 
 ## Implementation
 
