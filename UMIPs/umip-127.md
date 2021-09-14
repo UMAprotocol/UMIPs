@@ -69,7 +69,7 @@ Forex markets are usually open throughout business days from 10:00 PM UTC time o
 
 ### Price feed - liquidations and disputes
 
-Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found [here](https://marketdata.tradermade.com/documentation). A reference TraderMade implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/TraderMadePriceFeed.js).
+Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found [here](https://marketdata.tradermade.com/documentation). A reference TraderMade implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/TraderMadePriceFeed.ts).
 
 Our team has adjusted the original Liquidation and Dispute bots in order to fit the interfaces of our protocol. You can find our versions of the Liquidator and Dispute bots on the following GitLab links:
 
@@ -94,7 +94,7 @@ Documentation for the API can be found [here](https://fxmarketapi.com/documentat
 
 Example requests:
 
-- Live Rate for SGDUSD: `https://fxmarketapi.com/apiliveapi_key=api_key&currency=JPYUSD`
+- Live Rate for SGDUSD: `https://fxmarketapi.com/apiliveapi_key=api_key&currency=SGDUSD`
 - OHLC for a certain date on a currency pair: `https://fxmarketapi.com/apihistorical?api_key=api_key&currency=SGDUSD&date=2020-12-23&format=ohlc`
 - Request for SGDUSD price at a certain date and time: `https://fxmarketapi.com/apihistorical?api_key=api_key&currency=SGDUSD&date=2020-12-23-15:50` 
 
@@ -108,7 +108,7 @@ Documentation for the API can be found [here](https://fcsapi.com/document/forex-
 
 Example requests:
 
-- Live Rate for SGD/USD: `https://fcsapi.com/api-v3/forex/latest?symbol=JPY/USD&access_key=api_key`
+- Live Rate for SGD/USD: `https://fcsapi.com/api-v3/forex/latest?symbol=SGD/USD&access_key=api_key`
 - Historical price for a certain date for SGD/USD - gives back the OHLC: `https://fcsapi.com/api-v3/forex/history?symbol=SGD/USD&period=1D&from=2020-12-23&to=2020-12-24&access_key=api_key`
 - Price of SGD/USD between certain dates and times - gives a breakdown on the price each 1 minute between 12:00 and 12:30: `https://fcsapi.com/api-v3/forex/history?symbol=SGD/USD&period=1M&from=2020-12-23T12:00&to=2020-12-23T12:30&access_key=api_key`  
 
