@@ -1,9 +1,10 @@
-**UMIP #**  - tbd
+## Headers
+UMIP-128
 
--   **UMIP title:** Add **DFX** as a Polygon collateral currency 
--   **Author**  Chandler (chandler@umaproject.org)
--   **Status: Draft**
--   **Created:**  10 September 2021
+-   UMIP title: Add DFX as a Polygon collateral currency
+-   Author:  Chandler (chandler@umaproject.org)
+-   Status: Last Call
+-   Created:  10 September 2021
 
 ## Summary (2-5 sentences)
 
