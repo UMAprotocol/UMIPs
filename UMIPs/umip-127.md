@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-127          |                                                                        |
 |-------------------|------------------------------------------------------------------------|
-| UMIP Title        | Add SGDUSD as price identifiers                                        |
+| UMIP Title        | Add SGDUSD as price identifier                                         |
 | Authors           | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                            |
 | Status            | Last Call                                                              |
 | Created           | 06/09/21                                                               |
