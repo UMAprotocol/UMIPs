@@ -45,9 +45,9 @@ Apart from the weekend, there is little to no difference in prices on liquid maj
 ## Implementation
 Historical SGDUSD prices from TraderMade are available on minute increments. Price requests should use the minute price that is nearest and later than the price request timestamp. To do this, voters should use the open price of the OHLC period that the price request timestamp falls in. TraderMade endpoints are queried based on the OHLC period's close time.
 
-As an example, a request for a CADUSD price at 2020-11-11-01:52:16 should use query for the period ending at 2020-11-11-01:53:00 and use the open price. 
+As an example, a request for a SGDUSD price at 2020-11-11-01:52:16 should use query for the period ending at 2020-11-11-01:53:00 and use the open price. 
 
-The TraderMade endpoint used would be: https://marketdata.tradermade.com/api/v1/minute_historical?currency=CADUSD&date_time=2020-11-11-13:01&api_key=apikey
+The TraderMade endpoint used would be: https://marketdata.tradermade.com/api/v1/minute_historical?currency=SGDUSD&date_time=2020-11-11-13:01&api_key=apikey
 
 SGDUSD should then be rounded to 5 decimals.
 
@@ -94,9 +94,9 @@ Documentation for the API can be found [here](https://fxmarketapi.com/documentat
 
 Example requests:
 
-- Live Rate for JPYUSD: `https://fxmarketapi.com/apiliveapi_key=api_key&currency=JPYUSD`
-- OHLC for a certain date on a currency pair: `https://fxmarketapi.com/apihistorical?api_key=api_key&currency=JPYUSD&date=2020-12-23&format=ohlc`
-- Request for JPYUSD price at a certain date and time: `https://fxmarketapi.com/apihistorical?api_key=api_key&currency=JPYUSD&date=2020-12-23-15:50` 
+- Live Rate for SGDUSD: `https://fxmarketapi.com/apiliveapi_key=api_key&currency=JPYUSD`
+- OHLC for a certain date on a currency pair: `https://fxmarketapi.com/apihistorical?api_key=api_key&currency=SGDUSD&date=2020-12-23&format=ohlc`
+- Request for SGDUSD price at a certain date and time: `https://fxmarketapi.com/apihistorical?api_key=api_key&currency=SGDUSD&date=2020-12-23-15:50` 
 
 ### FCS API
 
@@ -108,9 +108,9 @@ Documentation for the API can be found [here](https://fcsapi.com/document/forex-
 
 Example requests:
 
-- Live Rate for JPY/USD: `https://fcsapi.com/api-v3/forex/latest?symbol=JPY/USD&access_key=api_key`
-- Historical price for a certain date for JPY/USD - gives back the OHLC: `https://fcsapi.com/api-v3/forex/history?symbol=JPY/USD&period=1D&from=2020-12-23&to=2020-12-24&access_key=api_key`
-- Price of JPY/USD between certain dates and times - gives a breakdown on the price each 1 minute between 12:00 and 12:30: `https://fcsapi.com/api-v3/forex/history?symbol=JPY/USD&period=1M&from=2020-12-23T12:00&to=2020-12-23T12:30&access_key=api_key`  
+- Live Rate for SGD/USD: `https://fcsapi.com/api-v3/forex/latest?symbol=JPY/USD&access_key=api_key`
+- Historical price for a certain date for SGD/USD - gives back the OHLC: `https://fcsapi.com/api-v3/forex/history?symbol=SGD/USD&period=1D&from=2020-12-23&to=2020-12-24&access_key=api_key`
+- Price of SGD/USD between certain dates and times - gives a breakdown on the price each 1 minute between 12:00 and 12:30: `https://fcsapi.com/api-v3/forex/history?symbol=SGD/USD&period=1M&from=2020-12-23T12:00&to=2020-12-23T12:30&access_key=api_key`  
 
 ## Security considerations
 Adding this new identifier by itself poses a little security risk to the DVM or priceless financial contract users. However, anyone deploying a new priceless token contract referencing this identifier should take care to parameterize the contract appropriately to avoid the loss of funds for synthetic token holders. Additionally, the contract deployer should ensure that there is a network of liquidators and disputers ready to perform the services necessary to keep the contract solvent.
