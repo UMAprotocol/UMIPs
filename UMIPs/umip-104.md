@@ -33,8 +33,6 @@ The DFX [Polygon token](https://polygonscan.com/address/0xe7804d91dfcde7f776c900
 ## Rationale
 Adding the DFX token as collateral (and thereby allowing the DFX community to take advantage of KPI options) advances the goal of further adoption of the UMA protocol.
 
-A final fee of 400 DFX was chosen, slightly higher than recommended, to account for price volatility of the token.
-
 ## Implementation
 
 This UMIP requires proposing the two governor transactions detailed in the above Technical Specification section.
