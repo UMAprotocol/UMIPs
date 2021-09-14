@@ -24,14 +24,14 @@ The DFX token has a circulating supply of about 10,000,000 with a max supply of 
 
 To accomplish this upgrade, the following changes need to be made:
 
-The DFX token [https://etherscan.io/token/0x888888435fde8e7d4c54cab67f206e4199454c60](https://etherscan.io/token/0x888888435fde8e7d4c54cab67f206e4199454c60) needs to be added to the collateral currency whitelist introduced in UMIP-8.
+The DFX  [Ethereum token](https://etherscan.io/token/0x888888435fde8e7d4c54cab67f206e4199454c60): 0x888888435fde8e7d4c54cab67f206e4199454c60
 
-A final fee of 400 DFX needs to be added for DFX in the Store contract.
+The DFX [Polygon token](https://polygonscan.com/address/0xe7804d91dfcde7f776c90043e03eaa6df87e6395): 0xe7804d91dfcde7f776c90043e03eaa6df87e6395
+
+ Needs to be added to the collateral currency whitelist introduced in UMIP-8. A final fee of **800 DFX** needs to be added for DFX in the Store contract.
 
 ## Rationale
 Adding the DFX token as collateral (and thereby allowing the DFX community to take advantage of KPI options) advances the goal of further adoption of the UMA protocol.
-
-A final fee of 400 DFX was chosen, slightly higher than recommended, to account for price volatility of the token.
 
 ## Implementation
 
