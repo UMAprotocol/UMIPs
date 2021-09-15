@@ -2,48 +2,40 @@
 
 | UMIP-xx             |                                                                           |
 | ------------------- | ------------------------------------------------------------------------- |
-| UMIP Title          | Update PUNKETH and PUNKETH_TWAP as price identifiers                         |
-| Authors             | Kevin Chan (kevin@umaproject.org), Chase Coleman (chase@umaproject.org)   |
+| UMIP Title          | Add PUNKETH-1221 as supported price identifier                       |
+| Authors             | Ross (ross@yam.finance), Chase Coleman (chase@umaproject.org)   |
 | Status              | Draft                                                                |
-| Created             | Sept. 13, 2021                                                            |
-| Discourse Link      | add                  |
+| Created             | Sept. 15, 2021                                                            |
+| Discourse Link      | https://discourse.umaproject.org/t/add-update-upunks-1221-price-identifier/1335                 |
 
 
 # Summary
 
-This UMIP introduces two new price identifiers for a token referred to as `uPUNK`. The token is a synthetic index based on the recent trading prices of CryptoPunks.
+This UMIP introduces a new price identifier called `PUNKETH-1221` for a token referred to as `uPUNKS`. The token is a synthetic index based on the recent trading prices of CryptoPunks. The previous price identifiers ```PUNKETH``` and ```PUNKETH_TWAP``` found in [UMIP 84](./umip-84.md) are not being re-used due to the fact that the EMP contract cannot use ancilliary data and without that we cannot create multiple overlapping uPUNK contracts. The logic of the previous price identifiers is being mostly re-used with variable timestamps instead of seperate price identifiers.
 
-The two price identifiers are `PUNKETH` and `PUNKETH_TWAP`.
+The structure of this price identifier mimics (in some ways) the ones created for `uGAS` ([UMIP 16](./UMIP-16.md), [UMIP 20](./UMIP-20.md), [UMIP 22](./UMIP-22.md))
 
-* `PUNKETH` will typically be used to measure the fair market value at expiration of `uPUNK` and is computed by taking the median most recent purchase price (in ETH) of each unique CryptoPunk traded in the last 30 days.
-* `PUNKETH_TWAP` will typically be used to measure the current value of `uPUNK` and is a "self-referential" price. It is computed from the 2-hour TWAP on the highest volume Uniswap ETH/uPUNK pool (for a specified iteration of uPUNK, i.e. uPUNK-0921)
+The DVM should support requests for a price that resolves to either the median most recent purchase price (in ETH) of each unique CryptoPunk traded in the last 30 days, or a 2-hour Time-Weighted Average Price (TWAP) of the highest volume Uniswap or sushiswap ETH/uPUNK pool (for a specified iteration of uPUNK, i.e. uPUNK-1221). The price resolution method to use will depend on the the timestamp the price request was made at.
 
-The structure of these price identifiers mimics (in some ways) the ones created for `uGAS` ([UMIP 16](./UMIP-16.md), [UMIP 20](./UMIP-20.md), [UMIP 22](./UMIP-22.md))
+For a price request made at or after the Unix timestamp `1640995200` (January 1, 2022 00:00:00 UTC), the price will be resolved with the median most recent purchase price (in ETH) of each unique CryptoPunk traded in the last 30 days. Full logic for this change is embedded in the Implementation section below.
 
+For a price request made before `1640995200` (January 1, 2022 00:00:00 UTC), the price will be resolved to a 2-hour TWAP for the highest volume Uniswap/Sushiswap price of the listed synthetic token in ETH. The synthetic token address will be listed in the Technical Specification section.
 
 # Motivation
 
-There are currently few synthetic non-fungible token (NFT) indexes available in the DeFi space. As NFTs continue to grow in popularity, collectors may find it useful to be able to hedge their investments and other investors may also want to gain NFT exposure without being required to purchase and maintain custody of a NFT.
-
-Creating a CryptoPunks index before branching into other NFTs makes sense because CryptoPunks were the original NFT. As the original NFT, CryptoPunks are highly valued and relatively liquid.
-
-1. What are the financial positions enabled by creating this synthetic that do not already exist?
-  - The DVM does not currently support any NFT based indexes. This token will be the first such index and provide a template for others to be created.
-2. Please provide an example of a person interacting with a contract that uses this price identifier.
-  - A collector wishing to hedge the risk of purchasing a CryptoPunk could mint `uPUNK` which would provide protection against downward price movements in the value of CryptoPunks.
-  - An investor who believes that the median trade price of CryptoPunks will increase could purchase `uPUNK` at its current trading price and then hold until the price appreciated.
-  - An investor who believes that the median trade price of CryptoPunks will decrease could mint `uPUNK` and sell the minted tokens.
-
+Refer to [UMIP 84](./umip-84.md)
 
 # Data Specifications
 
 All relevant price data is computed using information that can be found directly on the blockchain.
 
+
+The identifier requires updated timestamps.
+
 -----------------------------------------
 
-The `PUNKETH_TWAP` price identifier depends on prices drawn from the `PunkBought` events of the CryptoPunk market contract
+For a price request made at or after the Unix timestamp `1640995200` (January 1, 2022 00:00:00 UTC), the `PUNKETH-1221` price identifier depends on prices drawn from the `PunkBought` events of the CryptoPunk market contract
 
-- Price identifier name: `PUNKETH`
 - Markets & Pairs: CryptoPunk Market contract `PunkBought` events. The CryptoPunk contract address is `0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB` which you can see at https://etherscan.io/address/0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb
 - Example price providers: Infura and The Graph include information on CryptoPunk contract events
 - Cost to use: [Infura](https://infura.io/) supports up to 100,000 requests per day for free. Information also available on [The Graph](https://thegraph.com/)
@@ -54,11 +46,10 @@ _Note_: An important fact worth noting is that the original `CryptoPunkMarket` c
 
 -----------------------------------------
 
-The `PUNKETH_TWAP` price identifier depends on prices generated by the Sushiswap pools
+For a price request made before `1640995200` (January 1, 2022 00:00:00 UTC), The `PUNKETH-1221` price identifier depends on prices generated by the Uniswap/Sushiswap pools
 
-- Price identifier name: `PUNKETH_TWAP`
-- Markets & Pairs: Uniswap `uPUNK/ETH`
-- Example price providers: The Uniswap price data can be obtained directly from the blockchain
+- Markets & Pairs: Uniswap/Sushiswap `uPUNK/ETH`
+- Example price providers: The Uniswap/Sushiswap price data can be obtained directly from the blockchain
 - Cost to use: [Infura](https://infura.io/) supports up to 100,000 requests per day for free. This information should also available on [The Graph](https://thegraph.com/)
 - Real-time price update frequency: Updated every block
 - Historical price update frequency: Updated every block
@@ -66,8 +57,9 @@ The `PUNKETH_TWAP` price identifier depends on prices generated by the Sushiswap
 
 # Price Feed Implementation
 
-The `PUNKETH` price would require the creation of a new price feed. The pseudo-code for such an identifier is below:
+The price feed methodology is very similar to that of [UMIP-84](./umip-84.md). The Pseudocode for calculating the price after expiry has been updated and is shown below:
 
+***TO-DO: Update price feed pseudocode to exclude 0 value transfers and sales***
 ```
 # Get the PunkBought Events from the cryptopunk contract
 # for the last 30 days
@@ -129,10 +121,11 @@ for event in events_corrected:
 median([cryptopunk_blockprice[cryptopunk]["value"] for cryptopunk in cryptopunks])
 
 ```
+***TO-DO: Update Implementation***
 
-The `PUNKETH` price implementation can be found here in the [uPUNK price feed](https://github.com/UMAprotocol/protocol/pull/2917)
+An Implementation can be found here in the [uPUNK price feed](https://github.com/UMAprotocol/protocol/pull/2917)
 
-The `PUNKETH_TWAP` price can be determined using the existing [Uniswap price feed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js). The only required input would be determining which pool has the highest volume.
+The TWAP price queried prior to expiry can be determined using the existing [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js). The only required input would be determining which pool has the highest volume.
 
 An example configuration for the Uniswap feed is below
 
@@ -147,39 +140,25 @@ An example configuration for the Uniswap feed is below
 
 # Technical Specifications
 
------------------------------------------
-- Price identifier name: `PUNKETH`
-- Base Currency: CryptoPunk
+- Price identifier name: `PUNKETH-1221`
+- Base Currency: CryptoPunk NFTs
 - Quote Currency: ETH
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 0.022430 (as of 21 April 2021 19:34 UTC)
 
------------------------------------------
-- Price identifier name: `PUNKETH_TWAP`
-- Base Currency: CryptoPunk
-- Quote Currency: ETH
-- Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of price identifier: 0.022430 (as of 21 April 2021 19:34 UTC)
-
+***TO-DO Get updated price values from new script***
+- Estimated current value of post-expiry price identifier script: 
 
 
 # Rationale
 
-The `PUNKETH` price identifier had a few decisions that we believe were important to the design:
-
-* _CryptoPunks_: As mentioned earlier in this document, we chose to build an index using CryptoPunks because they were the original NFT. This originality has lead to them being highly valued and having consistent enough trade volume.
-* _30 day median_: The 30 day median allows for the index to reflect common trading prices across many CryptoPunks rather than to respond to particular transactions
-* _Unique CryptoPunks_: We only use the most recent trade price for each CryptoPunk. This is a security feature since if we used each transaction then a single person could trade one CryptoPunk amongst accounts they owned to manipulate the price.
-* _Median rather than the mean_: Calculating the mean incorporates the price of every single transaction which means that someone who owned a single CryptoPunk could have a small effect on the price. The median can still be manipulated but, given the uniqueness restriction above, it would require someone to own enough CryptoPunks to make up half of the monthly transactions.
-
-The `PUNKETH_TWAP` price is necessary to support a market in which people may disagree about the fundamental value of the asset going forward. At expiry, there is a clear way to value the `uPUNK`, i.e., the `PUNKETH` price, however, the value of uPUNK prior to that seems less obvious and we'd like to let the markets price the asset.
-
-This self-referential component was also used in uGAS, see [UMIP 22](./umip-22.md) and has proven successful in that context.
+Refer to [UMIP 84](./umip-84.md). All references to `PUNKETH` Refer to the price identifier at or after the expiry timestamp and all references to `PUNKETH_TWAP` refer to the price identifier before the expiry timestamp.
 
 
 # Implementation
 
-### PUNKETH
+### After Expiry 
+
+***TO-DO: Update to remove 0 price transfers***
 
 When a price request is made, the following process should be followed:
 
@@ -202,13 +181,13 @@ If the timestamp requested was `1619222400` then:
 * There are an even number of values, so there's no "median value" in the data -- Thus we find the number between the two values closest to the median `[20, 22]` to get a price of `21`
 * Divide by `1000` to get a price of `0.021`
 
-### PUNKETH_TWAP
+### Before Expiry
 
 When a price request that relies on this price identifier is made, the following process should be followed:
 
 1. The end TWAP timestamp equals the price request timestamp.
 2. The start TWAP timestamp is defined by the end TWAP timestamp - TWAP period (2 hours).
-3. A single Uniswap price is defined for each timestamp as the price that the ETH/uPUNK ppool returns at the end of the latest block whose timestamp is less than or equal to the timestamp that is queried for.
+3. A single Uniswap/Sushiswap price is defined for each timestamp as the price that the ETH/uPUNK pool returns at the end of the latest block whose timestamp is less than or equal to the timestamp that is queried for.
 4. The TWAP is an average of the prices for each timestamp between the start and end timestamps. Each price in this average will receive equal weight.
 5. The final price should be returned with ETH
 
@@ -225,7 +204,7 @@ If the timestamp requested was `1619222400` then:
 
 # Security Considerations
 
-### PUNKETH
+### After Expiry
 
 One of the main concerns is that someone with sufficient CryptoPunks chooses to manipulate the price.
 
@@ -235,7 +214,7 @@ One benefit to using an oracle with human intervention is that voters could reco
 
 The other main concern is if there were just insufficient CryptoPunk trades being made. If there were only 1-2 trades happening every 30 days, this index becomes much less useful because there's less information contained in its price.
 
-### PUNKETH_TWAP
+### Before Expiry
 
 The main concerns of the TWAP price are:
 
