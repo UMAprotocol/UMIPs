@@ -21,6 +21,7 @@ To accomplish this upgrade, the following changes need to be made:
 - The DFX [Polygon token](https://polygonscan.com/address/0xe7804d91dfcde7f776c90043e03eaa6df87e6395): 0xe7804d91dfcde7f776c90043e03eaa6df87e6395 needs to be added to the collateral currency whitelist introduced in UMIP-8.
 
 - A final fee of **800 DFX** needs to be added to the Store Contract.
+- The final fee for Ethereum mainnet DFX was previously set to 400. This will also be updated to 800 to match the polygon final fee.
 
 
 ## Rationale
