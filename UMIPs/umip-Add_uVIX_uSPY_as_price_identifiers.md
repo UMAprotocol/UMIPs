@@ -120,7 +120,7 @@ var options = {
   params: {q: 'VIX', region: 'US'},
   headers: {
     'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
-    'x-rapidapi-key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb'
+    'x-rapidapi-key': YOUR_ACCESS_KEY
   }
 };
 
@@ -146,7 +146,7 @@ var options = {
   url: 'https://stock-and-options-trading-data-provider.p.rapidapi.com/straddle/SPY',
   headers: {
     'x-rapidapi-host': 'stock-and-options-trading-data-provider.p.rapidapi.com',
-    'x-rapidapi-key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb'
+    'x-rapidapi-key': YOUR_ACCESS_KEY
   }
 };
 
