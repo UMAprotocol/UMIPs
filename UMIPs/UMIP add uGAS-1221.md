@@ -24,7 +24,7 @@ Please refer to [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs
 
 
 # PRICE FEED IMPLEMENTATION
-To further explain the price feed implementation beyond what is stated in [umip-22]: The price feed being used is the ```UniswapPriceFeed``` and only the Uniswap TWAP calculation will need to be queried in real-time. The ```UniswapPriceFeed``` is referenced [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js).
+To further explain the price feed implementation beyond what is stated in [umip-22]: The price feed being used is the ```UniswapPriceFeed``` and only the Uniswap TWAP calculation will need to be queried in real-time. The ```UniswapPriceFeed``` is referenced [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.ts).
 
 
 # TECHNICAL SPECIFICATIONS
