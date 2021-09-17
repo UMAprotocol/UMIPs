@@ -108,7 +108,7 @@ In the case of a MarketStack outage voters can turn to any other available price
 - Live price feed data
 - Historical prices based on date and time
 - Registration is free
-- Paid plans available
+- Paid plans available: https://rapidapi.com/apidojo/api/yahoo-finance1/pricing
 - OHLC request can be used to grab the last closing price before a weekend or a non-working day
 - Example requests:
 ```
@@ -135,7 +135,7 @@ axios.request(options).then(function (response) {
 - Live price feed data
 - Historical prices based on date and time
 - Registration is free
-- Paid plans available
+- Paid plans available: https://rapidapi.com/mpeng/api/stock-and-options-trading-data-provider/pricing
 - OHLC request can be used to grab the last closing price before a weekend or a non-working day
 - Example requests:
 ```
