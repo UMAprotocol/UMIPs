@@ -7,7 +7,8 @@
 - Discourse Link: https://discourse.umaproject.org/t/add-uvix-uspy-price-identifiers/1316?u=binomfx
 
 ## Summary (2-5 sentences)
-The DVM should support price requests for the uVIX, uSPY price index.
+The DVM should support price requests for uVIX, uSPY  UMA perpetual.
+The purpose of these price identifiers is to create synthetic tokens, price of which is linked to the quotes of the VIX volatility index and the ETF SPY. These synthetic tokens can be used both for creating speculative strategies and for hedging.
 
 ## Motivation
 Synthetic tokens that track the exchange quotes of the volatility index (VIX) and the S&P exchange traded fund (ETF SPY) can be used both for speculative purposes and for hedging. At the same time, the user gets the opportunity to use the price movement of exchange assets without the need to use such centralized structures as exchanges and brokerage companies. In addition, these tokens can be used as components associated with classical markets by other DeFi and DApp protocols, which makes it possible to scale.
@@ -98,10 +99,7 @@ Please note that this is different than the normal calculation process, which re
 ### Stock markets working hours
 Underlaying assets trade during exchange hours which leaves gaps in prices between 4:00PM EST close and 9:30AM EST open the next day and on weekends and market holidays.
 ### Price feed - liquidations and disputes
-Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found here: https://marketstack.com/documentation. A reference MarketStack implementation that is used by liquidator and dispute bots can be seen here: <____github reference_____>.
-Our team has adjusted the original Liquidation and Dispute bots in order to fit the interfaces of our protocol. You can find our versions of the Liquidator and Dispute bots on the following GitLab links:
-- Liquidator Bot: <____github reference_____>.
-- Dispute Bot: <____github reference_____>.
+Liquidation and dispute bots should have their own subscription to price feeds. Our price-feed provider’s API documentation can be found here: https://marketstack.com/documentation. A reference MarketStack implementation that is used by liquidator and dispute bots can be seen here: https://github.com/unisxapp/uma/commit/11db86a556098e2f71022c40ef3bb6d777e60f59.
 MarketStack is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.
 In the case of a MarketStack outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 ### Additional price feed providers
