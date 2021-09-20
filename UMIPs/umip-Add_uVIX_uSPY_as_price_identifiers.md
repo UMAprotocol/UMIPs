@@ -41,8 +41,7 @@ Synthetic tokens that track the exchange quotes of the volatility index (VIX) an
 - Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
 ## Rationale
-The choice of underlying assets for creating new price identifiers, the price of which is linked to the exchange quotes of the VIX volatility index and the SPY ETF, is determined by the opportunities for speculative trading and hedging that are created for users, as well as the DeFi industry development opportunities.
-Ticker	Description
+The choice of underlying assets for creating new price identifiers, the price of which is linked to the exchange quotes of the VIX volatility index and the SPY ETF, is determined by the opportunities for speculative trading and hedging that are created for users, as well as the DeFi industry development opportunities:
 
 - **SPY** - The SPDR S&P 500 Trust ETF, also known as the SPY ETF, is one of the most popular funds that aims to track the Standard & Poor's 500 Index, which comprises 500 large- and mid-cap U.S. stocks. These stocks are selected by a committee based on market size, liquidity, and industry. The S&P 500 serves as one of the main benchmarks of the U.S. equity market and indicates the financial health and stability of the economy.
 - **VIX** - The CBOE Volatility Index (VIX) is a real-time index that represents the market's expectations for the relative strength of near-term price changes of the S&P 500 index (SPX). Because it is derived from the prices of SPX index options with near-term expiration dates, it generates a 30-day forward projection of volatility. Volatility, or how fast prices change, is often seen as a way to gauge market sentiment, and in particular the degree of fear among market participants.
