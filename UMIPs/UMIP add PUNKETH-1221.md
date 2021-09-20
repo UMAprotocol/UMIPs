@@ -157,9 +157,7 @@ An example configuration for the Uniswap feed is below
 - Base Currency: CryptoPunk NFTs
 - Quote Currency: ETH
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-
-***TO-DO Get updated price values from new script***
-- Estimated current value of post-expiry price identifier script:
+- Estimated current value of post-expiry price identifier script: 0.105
 
 
 # Rationale
