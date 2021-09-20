@@ -14,7 +14,7 @@ Metric:TVL in BPRO financial contracts measured in USD,
 Endpoint:"https://api.llama.fi/protocol/B.Protocol",
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/bprotocol-tvl.md",
 Key:totalLiquidityUSD,
-Interval:Updated every 10 minutes,
+Interval:Daily,
 Rounding:0,
 Scaling:0
 ```
