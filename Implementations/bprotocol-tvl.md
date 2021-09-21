@@ -51,7 +51,7 @@ Without DeFiLlama:
 
 ### Liquity TVL
 
-1. Call `bamms()` on the bKeeperAddress contract (0xeaE019ef845A4Ffdb8829210De5D30aC6FbB5371). 
+1. Call `bamms()` on the bKeeperAddress contract (0xeaE019ef845A4Ffdb8829210De5D30aC6FbB5371) with index passed as argument (starts at 0 until an error is returned).
 2. Call `getCompoundedLUSDDeposit()` on the stabilityPoolAddress contract (0x66017D22b0f8556afDd19FC67041899Eb65a21bb) using each returned output from step 1 as an argument.
 3. Each pool should be priced in LUSD for the same timestamp. The value should use the timestamp that falls earlier but nearest to the price request timestamp. DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
 4. Sum the total of all returned values from step 2. This represents the total deposits as an LUSD value.
