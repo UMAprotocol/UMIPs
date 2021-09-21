@@ -35,10 +35,9 @@ Without DeFiLlama:
 1. Call `avatarList` on the Registry contract (0xbF698dF5591CaF546a7E087f5806E216aFED666A). This will query a list of all account addresses.
 2. Call `getAllMarkets()` on the Compound comptrollerAddress contract (0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B). This returns cToken supply and borrow asset addresses.
 3. For each cToken contract address returned in step 2, call `underlying` on the cToken contract address to determine the underlying token address. Since ETH does not have an underlying asset on Compound, for cETH (0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5) use WETH (0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2) as the underlying token.
-4. For each cToken returned in step 2, determine the cToken balances for each account address returned from the `avatarList` in step 1. At this point, you should have all cToken balances from the `avatarList` listed by its cToken address.
-5. Convert each account address balance from a cToken balance to its underlying token balance by calling `balanceOfUnderlying()` on the cToken contract using the account address as an argument.
-6. Sum the underlying token balances returned in step 5 for each individual cToken. Multiply the total balance for each cToken by the exchange rate of the underlying asset returned in step 3 at the timestamp being used. Each cToken balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the price request timestamp. DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
-7. Sum all cToken balances from step 6 which represents the total Compound TVL in USD.
+4. Convert each account address balance from a cToken balance to its underlying token balance by calling `balanceOfUnderlying()` on the cToken contract using the account address as an argument.
+5. Sum the underlying token balances returned in step 4 for each individual cToken. Multiply the total balance for each cToken by the exchange rate of the underlying asset returned in step 3 at the timestamp being used. Each cToken balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the price request timestamp. DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
+6. Sum all cToken balances from step 5 which represents the total Compound TVL in USD.
 
 ### Maker TVL
 
@@ -59,7 +58,7 @@ Without DeFiLlama:
 
 ### Total TVL
 
-1. Sum the values from step 7 for Compound TVL, step 4 for Maker TVL, and step 4 for Liquity TVL. This represents the TVL value calculated in USD for all assets locked across B.Protocol contracts on Ethereum.
+1. Sum the values from step 6 for Compound TVL, step 4 for Maker TVL, and step 4 for Liquity TVL. This represents the TVL value calculated in USD for all assets locked across B.Protocol contracts on Ethereum.
 2. If the returned value is equal to or greater than 150,000,000, voters should return 3.
 3. If the returned value is less than 150,000,000, voters should return 1.
 
