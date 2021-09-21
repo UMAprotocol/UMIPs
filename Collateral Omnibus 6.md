@@ -23,7 +23,7 @@ To accomplish this upgrade, the following changes needs to be added to the colla
 ## Ethereum
 ### VOL token
 -   The **VOL** Ethereum [token address](https://etherscan.io/token/0x5166e09628b696285e3a151e84fb977736a83575): 0x5166e09628b696285e3a151e84fb977736a83575
-- A final fee of **850 VOL** needs to be added in the Store contract.
+- A final fee of **1200 VOL** needs to be added in the Store contract.
 
 ## Polygon 
 ### miMATIC token
@@ -34,7 +34,7 @@ To accomplish this upgrade, the following changes needs to be added to the colla
 - The **BIFI** Polygon [token address](https://polygonscan.com/token/0xfbdd194376de19a88118e84e279b977f165d01b8): 0xfbdd194376de19a88118e84e279b977f165d01b8 
 - A final fee of **0.5 BIFI** needs to be added in the Store contract.
 
-### ICE token
+### ICE token (Iron Finance)
 - The **ICE** Polygon [token address](https://polygonscan.com/token/0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef): 0x4A81f8796e0c6Ad4877A51C86693B0dE8093F2ef
 -   A final fee of **23 000 ICE** needs to be added in the Store contract.
 
@@ -55,6 +55,8 @@ This change has no implementations other than the aforementioned governor transa
 ## Security considerations
 
 Adding a collateral currency introduces a level of risk into the UMA Ecosystem.  This collateral type should be monitored to ensure that the proposed collateral continues to have value.
+
+It is noted that the ICE token is a redeployment of the TITAN token from the Iron Finance team.
 
 Contract deployers considering using this collateral in an UMA contract should refer to the [guidelines on collateral type usage](https://docs.umaproject.org/uma-tokenholders/guidence-on-collateral-currency-addition) to ensure appropriate use.
 
