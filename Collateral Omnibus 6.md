@@ -1,6 +1,6 @@
 **UMIP #**  - tbd
 
--   **UMIP title:** Add **miMATIC**, **VOL**, **BIFI**, **ICE** and **IRON**  as collateral currency 
+-   **UMIP title:** Add **miMATIC**, **VOL**, **BIFI**, **ICE**, **IRON** and **IF** as supported collateral currencies. 
 -   **Author**  Chandler (chandler@umaproject.org)
 -   **Status: Draft**
 -   **Created:**  13 September 2021
@@ -8,7 +8,7 @@
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding **miMATIC**, **VOL**, **BIFI**, **ICE** and **IRON** for use as collateral in UMA contracts.
+This UMIP proposes adding **miMATIC**, **VOL**, **BIFI**, **ICE**, **IRON** and **IF** for use as collateral in UMA contracts.
 
 ## Motivation
 
@@ -42,6 +42,9 @@ To accomplish this upgrade, the following changes needs to be added to the colla
  - The **IRON** Polygon [token address](https://polygonscan.com/token/0xD86b5923F3AD7b585eD81B448170ae026c65ae9a): 0xD86b5923F3AD7b585eD81B448170ae026c65ae9a
  - A final fee of **400 IRON** needs to be added in the Store contract.
 
+### IF (Impossible Finance)
+ - The **IF** Ethereum [token address](https://etherscan.io/token/0xb0e1fc65c1a741b4662b813eb787d369b8614af1): 0xb0e1fc65c1a741b4662b813eb787d369b8614af1
+ - A final fee of **250 IF** needs to be added in the Store contract.
 
 ## Rationale
 
@@ -57,6 +60,8 @@ This change has no implementations other than the aforementioned governor transa
 Adding a collateral currency introduces a level of risk into the UMA Ecosystem.  This collateral type should be monitored to ensure that the proposed collateral continues to have value.
 
 It is noted that the ICE token is a redeployment of the TITAN token from the Iron Finance team.
+
+IF also has very low liquidity on Ethereum mainnet, because its home-chain is BSC. Because of this, it should likely only be used for non-liquidatable contracts.
 
 Contract deployers considering using this collateral in an UMA contract should refer to the [guidelines on collateral type usage](https://docs.umaproject.org/uma-tokenholders/guidence-on-collateral-currency-addition) to ensure appropriate use.
 
