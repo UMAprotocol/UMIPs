@@ -109,13 +109,13 @@ cryptopunk_blockprice = {}
 
 # Find the last PunkBought event for each CryptoPunk
 for event in events_corrected:
-    punk = event.cryptopunk
+    punk = event.punkIndex
 
     # Add punk to mapping if not previously added AND if price was
     # traded at is higher than 0
-    if punk not in cryptopunks and event.value > 0:
-        push(event.cryptopunk, cryptopunks)
-        cryptopunk_blockprice[event.cryptopunk] = {"block": event.block, "value": event.value}
+    if punk not in cryptopunks and event.price > 0:
+        push(cryptopunks, event.punkIndex)
+        cryptopunk_blockprice[event.punkIndex] = {"block": event.blockNumber, "price": event.price}
 
     else:
         # Find current values of block/value associated with a particular
@@ -125,13 +125,13 @@ for event in events_corrected:
             "value": cryptopunk_blockprice[punk]["value"]
         }
 
-        more_recent = event.block > current_value["block"]
-        price_gt_0 = event.value > 0
+        more_recent = event.blockNumber > current_value["block"]
+        price_gt_0 = event.price > 0
         if more_recent and price_gt_0:
-            cryptopunk_blockprice[event.cryptopunk] = {"block": event.block, "value": event.value}
+            cryptopunk_blockprice[event.punkIndex] = {"block": event.blockNumber, "price": event.price}
 
-# Take median of values
-median([cryptopunk_blockprice[cryptopunk]["value"] for cryptopunk in cryptopunks])
+# Take median of (most recent) prices
+median([cryptopunk_blockprice[cryptopunk]["price"] for cryptopunk in cryptopunks])
 
 ```
 ***TO-DO: Update Implementation***
