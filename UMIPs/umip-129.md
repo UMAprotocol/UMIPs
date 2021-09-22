@@ -1,11 +1,11 @@
 # Headers
-| UMIP-xx     |                                                                                                                                          |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add GASETH-1221 as a supported price identifier                                                                                             |
-| Authors    | Ross (ross@yam.finance)
-| Status     | Draft                                                                                                                               |
-| Created    | September 13th, 2021                                                                                                                              |
-| Link to Discourse| https://discourse.umaproject.org/t/ugas-1221-umip/1332
+| UMIP-129          |                                                        |
+|-------------------|--------------------------------------------------------|
+| UMIP Title        | Add GASETH-1221 as a supported price identifier        |
+| Authors           | Ross (ross@yam.finance)                                |
+| Status            | Last Call                                              |
+| Created           | September 13th, 2021                                   |
+| Link to Discourse | https://discourse.umaproject.org/t/ugas-1221-umip/1332 |
 
 # SUMMARY
 This UMIP will reference a synthetic token to be created with this price identifier. This token will be referred to as 'uGAS' and will represent the token that tracks this identifier with the most ETH volume on Sushiswap unless a different contract is determined by voters to be more legitimate.

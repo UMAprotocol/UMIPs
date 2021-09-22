@@ -1,9 +1,10 @@
-**UMIP #**  - tbd
+## Headers
+UMIP-131
 
--   **UMIP title:** Add **miMATIC**, **VOL**, **BIFI**, **ICE**, **IRON** and **IF** as supported collateral currencies. 
--   **Author**  Chandler (chandler@umaproject.org)
--   **Status: Draft**
--   **Created:**  13 September 2021
+-   UMIP title: Add miMATIC, VOL, BIFI, ICE, IRON and IF as supported collateral currencies 
+-   Author: Chandler (chandler@umaproject.org)
+-   Status: Last Call
+-   Created: 13 September 2021
 
 
 ## Summary (2-5 sentences)
@@ -25,6 +26,10 @@ To accomplish this upgrade, the following changes needs to be added to the colla
 -   The **VOL** Ethereum [token address](https://etherscan.io/token/0x5166e09628b696285e3a151e84fb977736a83575): 0x5166e09628b696285e3a151e84fb977736a83575
 - A final fee of **1200 VOL** needs to be added in the Store contract.
 
+### IF (Impossible Finance)
+ - The **IF** Ethereum [token address](https://etherscan.io/token/0xb0e1fc65c1a741b4662b813eb787d369b8614af1): 0xb0e1fc65c1a741b4662b813eb787d369b8614af1
+ - A final fee of **250 IF** needs to be added in the Store contract.
+
 ## Polygon 
 ### miMATIC token
 -   The **miMATIC** Polygon [token address](https://polygonscan.com/token/0xa3fa99a148fa48d14ed51d610c367c61876997f1): 0xa3fa99a148fa48d14ed51d610c367c61876997f1 
@@ -41,10 +46,6 @@ To accomplish this upgrade, the following changes needs to be added to the colla
 ### IRON stablecoin
  - The **IRON** Polygon [token address](https://polygonscan.com/token/0xD86b5923F3AD7b585eD81B448170ae026c65ae9a): 0xD86b5923F3AD7b585eD81B448170ae026c65ae9a
  - A final fee of **400 IRON** needs to be added in the Store contract.
-
-### IF (Impossible Finance)
- - The **IF** Ethereum [token address](https://etherscan.io/token/0xb0e1fc65c1a741b4662b813eb787d369b8614af1): 0xb0e1fc65c1a741b4662b813eb787d369b8614af1
- - A final fee of **250 IF** needs to be added in the Store contract.
 
 ## Rationale
 

@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP-xx             |                                                                           |
-| ------------------- | ------------------------------------------------------------------------- |
-| UMIP Title          | Add PUNKETH-1221 as supported price identifier                       |
-| Authors             | Ross (ross@yam.finance), Chase Coleman (chase@umaproject.org)   |
-| Status              | Draft                                                                |
-| Created             | Sept. 15, 2021                                                            |
-| Discourse Link      | https://discourse.umaproject.org/t/add-update-upunks-1221-price-identifier/1335                 |
+| UMIP-130            |                                                                                 |
+| ------------------- | ------------------------------------------------------------------------------- |
+| UMIP Title          | Add PUNKETH-1221 as supported price identifier                                  |
+| Authors             | Ross (ross@yam.finance), Chase Coleman (chase@umaproject.org)                   |
+| Status              | Last Call                                                                       |
+| Created             | Sept. 15, 2021                                                                  |
+| Discourse Link      | https://discourse.umaproject.org/t/add-update-upunks-1221-price-identifier/1335 |
 
 
 # Summary
