@@ -119,10 +119,10 @@ for event in events_corrected:
 
     else:
         # Find current values of block/value associated with a particular
-        # cryptopunk -- Defaults to {block: 0, value: 0} if they don't exist
+        # cryptopunk -- Defaults to {block: 0, price: 0} if they don't exist
         current_value = {
             "block": cryptopunk_blockprice[punk]["block"]
-            "value": cryptopunk_blockprice[punk]["value"]
+            "price": cryptopunk_blockprice[punk]["price"]
         }
 
         more_recent = event.blockNumber > current_value["block"]
