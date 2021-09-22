@@ -134,9 +134,8 @@ for event in events_corrected:
 median([cryptopunk_blockprice[cryptopunk]["price"] for cryptopunk in cryptopunks])
 
 ```
-***TO-DO: Update Implementation***
 
-An Implementation can be found here in the [uPUNK price feed](https://github.com/UMAprotocol/protocol/pull/2917)
+A Python implementation of this pseudo-code can be found [here](https://gist.github.com/cc7768/6fd4e97aa39a0a84ae2bb00085602c9e#file-upunk_index_price-py)
 
 The TWAP price queried prior to expiry can be determined using the existing [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.ts). The only required input would be determining which pool has the highest volume.
 
