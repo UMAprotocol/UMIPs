@@ -1,3 +1,9 @@
+# Disclaimer
+
+The USDBTC price identifier has been deprecated. It is highly recommended that contract deployers do not use this identifier in its current state for new contracts. Price requests for this identifier from contracts created after 02/26/21 00:00 UTC will likely not be resolved correctly. Price requests from contracts created before this time will not be impacted. 
+
+Reasoning: The new EMP template proposed in [UMIP-54](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-54.md) requires that all price identifiers be scaled to 18 decimals. There are live contracts using the old EMP template which require the USDBTC price identifier to be scaled equal the number of decimals in renBTC (8). Because of this, the DVM could return prices incorrectly for new contracts that use this identifier. 
+
 ## Headers
 | UMIP-7     |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -26,6 +32,7 @@ The definition of these identifiers should be:
 - Base Currency: BTC
 - Quote Currency: USD(T)
 - Result Processing: Median
+- Scaling Decimals: 18 (1e18)
 
 -----------------------------------------
 
@@ -33,12 +40,13 @@ The definition of these identifiers should be:
 - Base Currency: USD(T)
 - Quote Currency: BTC
 - Result Processing: 1 / Median BTCUSD
+- Scaling Decimals: 8 (1e8)
 
 -----------------------------------------
 
 - Exchanges: Binance, Coinbase, Bitstamp
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Price Steps: 0.00001 (5 decimals in more general trading format)
+- Price Steps: 0.00000001 (8 decimals in more general trading format)
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down

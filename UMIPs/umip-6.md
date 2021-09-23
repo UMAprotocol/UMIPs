@@ -34,10 +34,11 @@ The definition of these identifiers should be:
 
 - Exchanges: Binance, Coinbase, Kraken
 - Input Processing: None. Human intervention in extreme circumstances where the result differs from broad market consensus.
-- Price Steps: 0.00001 (5 decimals in more general trading format)
+- Price Steps: 0.00000001 (8 decimals in more general trading format)
 - Rounding: Closest, 0.5 up
 - Pricing Interval: 60 seconds
 - Dispute timestamp rounding: down
+- Scaling Decimals: 18 (1e18)
 
 ## Rationale
 Prices are primarily used by Priceless contracts to calculate a synthetic token’s redemptive value in case of liquidation or expiration. Contract counterparties also use the price index to ensure that sponsors are adequately collateralized. 
