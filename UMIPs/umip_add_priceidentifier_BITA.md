@@ -10,7 +10,8 @@
 
 # Summary 
 
-The DVM should support price requests from BITA (bitadata.com) that reflect the prices of a set of published fiat indices.
+The DVM should support price requests for three fiat carbon indices: CGLCAR, CKLCAR, and CNLCAR, issued by Confluence Analytics, and computed and published
+by BITA (bitadata.com).
 
 # Motivation
 
@@ -27,11 +28,14 @@ which are also accessible through an API.
 
 There is a rate-limited public API for current and historical index prices. The limit is 100 requests per minute per user.
 
+Prices are updated daily after market close ("EOD"). The EOD price is the official index close price, calculated with official exchange-issued close prices.
+It is calculated after the last exchange (for which constituents exist) has closed and issued a price confirmation (normally calculated around 00:00 GMT).
+They use official close prices coming directly from the exchanges. The index is open (calculated) as long as there is at least 1 constituent' exchange open.
+On early close days, they will still calculate the index EOD price at around 00:00 GMT.
+
 -----------------------------------------
 - Price identifier name: CGLCAR (Confluence Global ESG Low Carbon Index)
 - Base Currency: - USD
-- Quote Currency: - USD
-- Markets & Pairs: USD/CGLCAR
 - Example data providers: BITA
 - Cost to use: Free, rate-limited
 - Real-time data update frequency: daily
@@ -39,8 +43,6 @@ There is a rate-limited public API for current and historical index prices. The 
 -----------------------------------------
 - Price identifier name: CKLCAR (Confluence Analytics Korea ESG Low Carbon Index)
 - Base Currency: - USD
-- Quote Currency: - USD
-- Markets & Pairs: USD/CKLCAR
 - Example data providers: BITA
 - Cost to use: Free, rate-limited
 - Real-time data update frequency: daily
@@ -48,8 +50,6 @@ There is a rate-limited public API for current and historical index prices. The 
 -----------------------------------------
 - Price identifier name: CNLCAR (Confluence Analytics Norway ESG Low Carbon Index)
 - Base Currency: - USD
-- Quote Currency: - USD
-- Markets & Pairs: USD/CGLCAR
 - Example data providers: BITA
 - Cost to use: Free, rate-limited
 - Real-time data update frequency: daily
