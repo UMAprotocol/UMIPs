@@ -21,12 +21,11 @@ The first price identifiers are: CGLCAR, CKLCAR, and CNLCAR, corresponding to th
 Confluence Analytics proposes to create Perpetual Synthetics that track these indices, and then include them in liquidity pools.
 
 # Data Specifications
-
 BITA is an EU-registered [index administrator](https://www.bitadata.com/assets/files/index-services/BITA_Index_Administration_-_Service_One_Pager.pdf).
 They calculate indices in both fiat and crypto, adjusting for corporate actions, stock splits, etc., and produce daily detailed files for all holdings,
 which are also accessible through an API.
 
-There is a rate-limited public API for current and historical index prices.
+There is a rate-limited public API for current and historical index prices. The limit is 100 requests per minute per user.
 
 -----------------------------------------
 - Price identifier name: CGLCAR (Confluence Global ESG Low Carbon Index)
@@ -62,7 +61,6 @@ The price feed is a REST API hosted at api.bitadata.com. Users first "log in" (w
 The public credentials provide access to the three indices named above.
 
 # Rationale
-
 These are proprietary indices, and a feed should also become available on the Confluence site. The founders have a great track record: one is co-founder of Etho Capital, which published the
 best-performing ESG index in the US (ticker ETHO on NASDAQ), now with a 5+ year track record.
 
@@ -93,12 +91,12 @@ This should return a token:
 
 This token grants access to the "indexes_eod" and "index_value" endpoints.
 
-For the current price of one or more indices:
+For the current price of one or more indices, use the access token returned above:
 
 ```
 curl --location --request POST 'https://api.bitadata.com/v1/index_value/' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer {{token}}' \
+--header 'Authorization: Bearer eyJ0eXAiOiQiLCJhbGciOiJIUzI1NiJ9.eyJzd...' \
 --data-raw '{"indexes": ["CGLCAR","CNLCAR"]}'
 ```
 
@@ -114,12 +112,12 @@ Returns:
 }                                                
 ```
 
-For historical prices:
+For historical prices, use the access token returned above:
 
 ```
 curl --location --request POST 'https://api-test.bitadata.com/v1/indexes_eod/' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer {{token}}' \
+--header 'Authorization: Bearer eyJ0eXAiOiQiLCJhbGciOiJIUzI1NiJ9.eyJzd...' \
 --data-raw '{
 	"indexes": ["CGLCAR"],
 	"start_date": "2021-08-01",
