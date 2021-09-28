@@ -58,7 +58,8 @@ On early close days, they will still calculate the index EOD price at around 00:
 # Price Feed Implementation
 
 The price feed is a REST API hosted at api.bitadata.com. Users first "log in" (with public credentials) to obtain a token, then use standard token authentication for subsequent requests.
-The public credentials provide access to the three indices named above.
+The public credentials provide access to the three indices named above. The API returns high precision floating point numbers, but these are US currency values, so the price feed
+implementation will round them to 2 decimals.
 
 # Rationale
 These are proprietary indices, and a feed should also become available on the Confluence site. The founders have a great track record: one is co-founder of Etho Capital, which published the
@@ -134,17 +135,18 @@ Returns:
     "end_date":"2021-09-06",
     "data":
       {"CGLCAR":[
-          {"timestamp":"2021-08-01","value":"985.27"},
-          {"timestamp":"2021-08-02","value":"990.15"},
-          {"timestamp":"2021-08-03","value":"991.40"},
+          {"timestamp":"2021-08-01","value":"985.273234232"},
+          {"timestamp":"2021-08-02","value":"990.1532423214"},
+          {"timestamp":"2021-08-03","value":"991.4032342342"},
           ...
-          {"timestamp":"2021-09-03","value":"1023.52"}
+          {"timestamp":"2021-09-03","value":"1023.52324234234"}
         ]
       }
     }                                                                                             
 ```
 
-You can find full API documentation [here](https://docs.bitadata.com/).
+You can find full API documentation [here](https://docs.bitadata.com/). For dispute resolution, the floating point values should be rounded to 2 decimal
+currency values, to match the price feed implementation.
 
 # Security Considerations
 
