@@ -4,75 +4,93 @@
 
 | UMIP                |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add **Price Identifier Name** as a supported price identifier |
-| Authors             | **Name**                                                      |
+| UMIP Title          | Add **APT** as a supported price identifier |
+| Authors             | **AthleteX DAO**                                                      |
 | Status              | Draft                                                         |
-| Created             | **Today's Date**                                              |
-| Discourse Link      | **Create a post in [UMA's Discourse](https://discourse.umaproject.org/c/umips/18) and link here**            |
+| Created             | **9/28/2021**                                              |
+| Discourse Link      | **https://discourse.umaproject.org/t/add-athlete-performance-token-apt-price-identifier/1327**            |
 
 # Summary 
 
-The DVM should support price requests for **Price Identifier Name**. **Price Identifier Name** reflects the **Summary of Price Identifier**.
+The DVM should support price requests for **APT**. **APT** reflects the **price of an Athlete Performance Tokens (APT)**.
 
 
 # Motivation
 
-*Please explain why you want to add this price identifier. What types of synthetics are you intending to create with this?*
+Athlete Performance Tokens provide exposure to an athlete’s statistical performance.
+This has a range of advantages, including player specific hedging, long term athlete
+growth exposure, and less friction when adjusting positions (e.g. from Bitcoin and other
+cryptocurrencies to LBJ).
+
+APTs also unlock nascent markets in sports not currently available with traditional
+sportsbooks. Some examples include, umpire tokens that track correct balls and strikes
+percentage, and 1-game expiration tokens with high in-game volatility for live trading.
+
+Athlete Performance Tokens are cryptocurrencies that track the statistical performance
+of athletes. APTs are Long-Short Pairs collateralized by deposits in the Staking Contract.
+Each athlete has a Long token reflecting positive performance and Short token
+reflecting negative athlete performance. APTs can be bought and sold on the Trading
+Block or redeemed for $AX at expiration. Redemption prices are an aggregate of
+in-game performance statistics provided by SportsData.io.
 
 # Data Specifications
 
 *How should voters access the data necessary to calculate the value of this price identifier? What specific markets or data sources should be referenced?*
 
+**1. go to this link: http://146.59.10.118:9000/
+**2. run " select name, value, timestamp from nfl where name=‘T.Brady_4314’ ";**
+
+What specific markets or data sources should be referenced?*
+**T.Brady_4314**
+
 *If proposing multiple price identifiers, please add markets or other data sources for each.*
 
 -----------------------------------------
-- Price identifier name: **First Price ID Name** 
-- Base Currency: **BASE** - *ETH - May not apply if this is not a typical Base/Quote price*
-- Quote Currency: **QUOTE** - *USD - May not apply if this is not a typical Base/Quote price*
-- Markets & Pairs: **Markets & Pairs** - *Example: Binance ETH/USDT, Coinbase Pro ETH/USD. This might not apply to all price identifiers*
-- Example data providers: **Provider to use** - *Cryptowatch, TraderMade, Quandl, the Graph*
-- Cost to use: **Explanation or link to provider pricing plan**
-- Real-time data update frequency: **Frequency** - *60 seconds*
-- Historical data update frequency: **Frequency** - *5 minutes*
+- Price identifier name: **sLBJ** 
+- Base Currency: **AX** 
+- Quote Currency: **sLBJ** 
+- Markets & Pairs: **N/A** 
+- Example data providers: **Sportsdata.io** 
+- Cost to use: **Free Trial, Case-by-Case Pricing**
+- Real-time data update frequency: **3 seconds** 
+- Historical data update frequency: **2 minutes**
 
 # Price Feed Implementation
+To allow for the creation of bots that can programmatically calculate prices off-chain to liquidate and dispute transactions, you must create a price feed following the UMA Protocol format (outlined below). This price feed is also necessary to calculate developer mining rewards.
 
-*To allow for the creation of bots that can programmatically calculate prices off-chain to liquidate and dispute transactions, you must create a price feed following the UMA Protocol format (outlined below). This price feed is also necessary to calculate developer mining rewards.*
-
-*If using existing price feeds from the [UMA protocol repo](https://github.com/UMAprotocol/protocol/tree/master/packages/financial-templates-lib/src/price-feed), please list the price feeds used and write a price feed configuration following the examples [here](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js).*
-
-
-Existing price feeds include: (*Please remove before submission*)
-- [Balancer](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/BalancerPriceFeed.js)
-- [Uniswap/SushiSwap](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.js)
-- [CoinGecko](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CoinGeckoPriceFeed.js)
-- [CoinMarketCap](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CoinMarketCapPriceFeed.js)
-- [CryptoWatch](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.js)
-- [DefiPulse](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefiPulsePriceFeed.js)
-- [TraderMade Forex rates](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/TraderMadePriceFeed.js)
-- [ExchangeRate Forex rates](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ForexDailyPriceFeed.js)
-- [LP tokens](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/LPPriceFeed.js)
-- [Vault tokens](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/VaultPriceFeed.js)
-- [Quandl](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/QuandlPriceFeed.js)
-- [Any combination of these](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/ExpressionPriceFeed.js)
+If using existing price feeds from the UMA protocol repo, please list the price feeds used and write a price feed configuration following the examples here.
 
 ## Ancillary Data Specifications
 
-*This is an optional section. If your price identifier is not intended to use ancillary data, you can remove this section entirely. You can read a full explanation of the expected ancillary data format [here](https://docs.google.com/document/d/1vl1BcIMO3NTNxvR0u6fFQqdUgWtIY8XyjVtx8Hkl8Qk/edit?usp=sharing). An UMIP example of this section can be seen [here](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-83.md#technical-specifications).*
+**1. go to this link: http://146.59.10.118:9000/**
+**2. run " select name, value, timestamp from nfl where name=‘T.Brady_4314’ ";**
+
+This command returns the APT, price, and timestamp
 
 # Rationale
 
-*The section should describe why price identifier design decisions were made, as well as any alternative designs that were considered.*
+This method was chosen as a balance between efficiency and scale of athletic data. Capturing data in a Quest DB allows the system to consume several billion lines of data at once, which is necessary to accommodate several athletes across different sports. Other considerations included Chainlink integration to compute price calculations on-chain. This method was proved redundant as UMA’s DVM with appropriate ancillary data provides the necessary oracle solution.
 
 # Implementation
 
-*Describe how UMA tokenholders should arrive at the price in the case of a DVM price request. Document each step a voter should take to query for and return a price at a specific timestamp, including rounding instructions. This should include an example calculation where you pick a specific timestamp and calculate the price at that timestamp.*
+See ancillary data above for price requests
+
+To calculate prices from raw Sportsdata.io statistics; follow the Pricing Formula for each sport:
+NFL
 
 # Security Considerations
 
-Some optional questions to consider: (*Please remove before submission*)
-- How could pricing data manipulation occur?
-- How could this price ID be exploited?
-- Do the instructions for determining the price provide people with enough certainty?
-- What are current or future concern possibilities with the way the price identifier is defined?
-- Are there any concerns around if the price identifier implementation is deterministic?
+How could pricing data manipulation occur?
+**Quest DB security breach, LSP contract bug**
+
+How could this price ID be exploited?
+**Sportsdata.io fault API response generating false or stale statistics**
+
+Do the instructions for determining the price provide people with enough certainty?
+**Yes, the Pricing Formulas are indisputable**
+
+What are current or future concern possibilities with the way the price identifier is defined?
+**Current considerations include further decentralization of Pricing Formulas to generate community support of pricing mechanisms. This is moreso an optimization than a security concern. Future concerns include exceeding Quest DB request limit which would create a gap in APT pricing if statistics are not timely received from Sportsdata.io. This concern is mitigated by creating a new QuestDB for each sport, or migrating to DB server with higher request limit.**
+
+Are there any concerns around if the price identifier implementation is deterministic?
+**No, the Price ID returns a polynomial computation of values generated from Sportsdata.io**
