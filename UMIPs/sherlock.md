@@ -41,10 +41,12 @@ Example:
 Metric:Sherlock exploit claim arbitration,
 Protocol:UMA Protocol,
 ChainId:1,
-Value:1,000,000,
-StartBlock:13,207,345,
+Value:1000000,
+StartBlock:13207345,
 CoverageAgreement:Link to protocol specific coverage agreement with Sherlock
 ```
+
+For guidance on how to structure ancillary data correctly, refer [here](https://docs.umaproject.org/uma-tokenholders/guidance-on-adding-price-identifiers#ancillary-data-specification).
 
 ## Rationale and usage
 
