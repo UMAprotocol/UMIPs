@@ -1,13 +1,13 @@
 **UMIP #**  - tbd
 
--   **UMIP title:** Add **PERP**, **GRO** as collateral currency 
+-   **UMIP title:** Add **PERP**, **GRO** **POOL** as collateral currency 
 -   **Author**  Chandler (chandler@umaproject.org)
 -   **Status: Draft**
 -   **Created:**  28 September 2021
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding **PERP** and **GRO** for use as collateral in UMA contracts.
+This UMIP proposes adding **PERP**, **POOL** and **GRO** for use as collateral in UMA contracts.
 
 ## Motivation
 
@@ -17,7 +17,7 @@ The addition of this collateral currency offers additional functionality to the 
 
 To accomplish this upgrade, the following needs to be added to the collateral currency whitelist introduced in UMIP-8.
 
-### PERP
+### PERP 
 -   The **PERP** Ethereum [token address](https://etherscan.io/token/0xbc396689893d065f41bc2c6ecbee5e0085233447): 0xbc396689893d065f41bc2c6ecbee5e0085233447 
 -   A final fee of **28 PERP tokens** needs to be added in the Store contract.
 
@@ -25,6 +25,9 @@ To accomplish this upgrade, the following needs to be added to the collateral cu
 -   The **GRO** Ethereum [token address](https://etherscan.io/address/0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7): 0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7 
 -   A final fee of **10 000 GRO tokens** needs to be added in the Store contract. 
 
+### POOL
+-   The **POOL** Polygon [token address](https://polygonscan.com/address/0x25788a1a171ec66da6502f9975a15b609ff54cf6): 0x25788a1a171ec66da6502f9975a15b609ff54cf6 
+-   A final fee of **45** needs to be added in the Store contract. 
 ## Rationale
 
 This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by using the average price observed on Coinmarketcap. For the GRO token, the fee is set above the expected value of $400 since there is no live trading price. 
