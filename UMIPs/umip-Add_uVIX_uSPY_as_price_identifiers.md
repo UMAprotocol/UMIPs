@@ -40,6 +40,28 @@ Synthetic tokens that track the exchange quotes of the volatility index (VIX) an
 - Scaling Decimals: 18 (1e18)
 - Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
+- **Identifier Name: uVIXUSDC_FR**
+- Base asset: uVIXUSDC_FR
+- Quote currency: None. This is a percentage.
+- Scaling Decimals: 18
+- Rounding: Round to nearest 9 decimal places (10th decimal place digit >= 5 rounds up and < 5 rounds down)
+- Synthetic Name: uVIXUSDC
+- Synthetic Address: 0x___________________________________
+- Perpetual Contract Address: 0x_________________________________
+- Uniswap Pool Address: 0x________________________________
+- Uniswap Pair: uVIXUSDC/USDC
+
+- **Identifier Name: uSPYUSDC_FR**
+- Base asset: uSPYUSDC_FR
+- Quote currency: None. This is a percentage.
+- Scaling Decimals: 18
+- Rounding: Round to nearest 9 decimal places (10th decimal place digit >= 5 rounds up and < 5 rounds down)
+- Synthetic Name: uSPYUSDC
+- Synthetic Address: 0x___________________________________
+- Perpetual Contract Address: 0x_________________________________
+- Uniswap Pool Address: 0x________________________________
+- Uniswap Pair: uSPYUSDC/USDC
+
 ## Rationale
 The choice of underlying assets for creating new price identifiers, the price of which is linked to the exchange quotes of the VIX volatility index and the SPY ETF, is determined by the opportunities for speculative trading and hedging that are created for users, as well as the DeFi industry development opportunities:
 
