@@ -1,20 +1,20 @@
 ## Headers
 - UMIP <#> 
-- UMIP title: Add uVIX, uSPY as price identifiers
+- UMIP title: Add uVIXUSDC, uSPYUSDC as price identifiers and uVIXUSDC_FR, uSPYUSDC_FR as funding rate identifiers
 - Author BinomFX (binomfx@gmail.com)
 - Status: Draft 
 - Created: 07.09.2021
 - Discourse Link: https://discourse.umaproject.org/t/add-uvix-uspy-price-identifiers/1316?u=binomfx
 
 ## Summary (2-5 sentences)
-The DVM should support price requests for uVIX, uSPY  UMA perpetual.
+The DVM should support price requests for uVIXUSDC, uSPYUSDC UMA perpetual and corresponding uVIXUSDC_FR, uSPYUSDC_FR funding rate identifiers.
 The purpose of these price identifiers is to create synthetic tokens, price of which is linked to the quotes of the VIX volatility index and the ETF SPY. These synthetic tokens can be used both for creating speculative strategies and for hedging.
 
 ## Motivation
 Synthetic tokens that track the exchange quotes of the volatility index (VIX) and the S&P exchange traded fund (ETF SPY) can be used both for speculative purposes and for hedging. At the same time, the user gets the opportunity to use the price movement of exchange assets without the need to use such centralized structures as exchanges and brokerage companies. In addition, these tokens can be used as components associated with classical markets by other DeFi and DApp protocols, which makes it possible to scale.
 
 ## Technical Specification
-- **Identifier name: uVIX**
+- **Identifier name: uVIXUSDC**
 - Base asset: VIX
 - Quote Currency: USD
 - Intended Collateral Currency: USDC
@@ -27,7 +27,7 @@ Synthetic tokens that track the exchange quotes of the volatility index (VIX) an
 - Scaling Decimals: 18 (1e18)
 - Rounding: Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
-- **Identifier name: uSPY**
+- **Identifier name: uSPYUSDC**
 - Base asset: SPY
 - Quote Currency: USD 
 - Intended Collateral Currency: USDC
