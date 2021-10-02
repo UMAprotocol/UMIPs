@@ -11,7 +11,8 @@
 # Summary 
 
 The DVM should support price requests for three fiat carbon indices: CGLCAR, CKLCAR, and CNLCAR, issued by Confluence Analytics, and computed and published
-by BITA (bitadata.com).
+by BITA (bitadata.com). See the [index page](https://www.confluenceanalytics.com/indexes) for a description of CGLCAR. The others are similar, but focused
+regionally (Korea and Norway).
 
 # Motivation
 
