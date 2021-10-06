@@ -23,7 +23,7 @@ To accomplish this upgrade, the following needs to be added to the collateral cu
 
 ### GRO
 -   The **GRO** Ethereum [token address](https://etherscan.io/address/0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7): 0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7 
--   A final fee of **10 000 GRO tokens** needs to be added in the Store contract. 
+-   A final fee of **25 GRO tokens** needs to be added in the Store contract. 
 
 ### POOL
 -   The **POOL** Polygon [token address](https://polygonscan.com/address/0x25788a1a171ec66da6502f9975a15b609ff54cf6): 0x25788a1a171ec66da6502f9975a15b609ff54cf6 
