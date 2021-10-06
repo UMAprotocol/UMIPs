@@ -30,7 +30,7 @@ To accomplish this upgrade, the following needs to be added to the collateral cu
 -   A final fee of **45** needs to be added in the Store contract. 
 ## Rationale
 
-This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by using the average price observed on Coinmarketcap. For the GRO token, the fee is set above the expected value of $400 since there is no live trading price. 
+This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by using the average price observed on Coinmarketcap.
 
 ## Implementation
 
