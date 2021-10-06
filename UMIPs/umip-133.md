@@ -1,9 +1,10 @@
-**UMIP #**  - tbd
+## Headers
+UMIP-133
 
--   **UMIP title:** Add **PERP**, **GRO** **POOL** as collateral currency 
--   **Author**  Chandler (chandler@umaproject.org)
--   **Status: Draft**
--   **Created:**  28 September 2021
+-   UMIP title: Add PERP, GRO and POOL as collateral currency 
+-   Author:  Chandler (chandler@umaproject.org)
+-   Status: Last Call
+-   Created:  28 September 2021
 
 ## Summary (2-5 sentences)
 
