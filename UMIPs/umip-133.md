@@ -20,15 +20,15 @@ To accomplish this upgrade, the following needs to be added to the collateral cu
 
 ### PERP 
 -   The **PERP** Ethereum [token address](https://etherscan.io/token/0xbc396689893d065f41bc2c6ecbee5e0085233447): 0xbc396689893d065f41bc2c6ecbee5e0085233447 
--   A final fee of **28 PERP tokens** needs to be added in the Store contract.
+-   A final fee of **35 PERP tokens** needs to be added in the Store contract.
 
 ### GRO
 -   The **GRO** Ethereum [token address](https://etherscan.io/address/0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7): 0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7 
--   A final fee of **25 GRO tokens** needs to be added in the Store contract. 
+-   A final fee of **35 GRO tokens** needs to be added in the Store contract. 
 
 ### POOL
 -   The **POOL** Polygon [token address](https://polygonscan.com/address/0x25788a1a171ec66da6502f9975a15b609ff54cf6): 0x25788a1a171ec66da6502f9975a15b609ff54cf6 
--   A final fee of **45** needs to be added in the Store contract. 
+-   A final fee of **35** needs to be added in the Store contract. 
 ## Rationale
 
 This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by using the average price observed on Coinmarketcap.
