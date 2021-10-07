@@ -28,7 +28,7 @@ To accomplish this upgrade, the following needs to be added to the collateral cu
 
 ### POOL
 -   The **POOL** Polygon [token address](https://polygonscan.com/address/0x25788a1a171ec66da6502f9975a15b609ff54cf6): 0x25788a1a171ec66da6502f9975a15b609ff54cf6 
--   A final fee of **35** needs to be added in the Store contract. 
+-   A final fee of **45 POOL tokens** needs to be added in the Store contract. 
 ## Rationale
 
 This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by using the average price observed on Coinmarketcap.
