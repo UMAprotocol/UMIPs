@@ -1,4 +1,4 @@
-of## HEADERS
+## HEADERS
 |UMIP-<#>      | | 
 |:-------------|:-----------------------------------------------------------------------------|
 |UMIP title|Add uSPAC5 as price identifier and uSPAC5_FR as funding rate identifier|
