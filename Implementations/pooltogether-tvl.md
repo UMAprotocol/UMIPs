@@ -39,17 +39,15 @@ The below subgraph urls are used to return the prize pool and underlying collate
   * https://thegraph.com/legacy-explorer/subgraph/pooltogether/pooltogether-v3_3_2
   * https://thegraph.com/legacy-explorer/subgraph/pooltogether/pooltogether-v3_3_8
   * https://thegraph.com/legacy-explorer/subgraph/pooltogether/pooltogether-v3_4_3
-
 * Celo Subgraph URL:
   * https://thegraph.com/legacy-explorer/subgraph/pooltogether/celo-v3_4_5
-
 * BSC Subgraph URL:
   * https://thegraph.com/legacy-explorer/subgraph/pooltogether/bsc-v3_4_3
 
 ### General TVL Calculation:
 
 1. Construct subgraph query by making sure that the `block` parameter corresponds to the latest available block at or before the request timestamp, e.g.:
-
+```
 {
   prizePools(
     block: { number: 13366245 }
@@ -62,7 +60,7 @@ The below subgraph urls are used to return the prize pool and underlying collate
     }
   }
 }
-
+```
 2. Take a note of the prize pool contract addresses which are represented by `id`  and the `underlyingCollateralToken`. For networks that have multiple subgraph versions, remove duplicate query responses.
 3. Call the `accountedBalance` method on each prize pool contract from step 2 for the latest available block at or before the request timestamp. This will return the balance of controlled tokens (including timelocked) for each prize pool.
 4. Scale down the balances returned from Step 3 with the decimals of the respective underlying collateral token (call the `decimals()` method on the underlying collateral token contracts from Step 2).
