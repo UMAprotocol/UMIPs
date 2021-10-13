@@ -149,7 +149,7 @@ Usually, revision of the index basket is carried out quarterly. The revision of 
 In order to create new index bucket, you need to do the following:
 - Select the first 5 shares of SPAC by the link: [Most Active SPACs Yahoo Finance](https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-spacs);
 - Enter the tickers of these shares in the SPAC5.JSON file;
-- Calculate the value of correction factor K (see further point 4.2.) and enter it in the SPAC5.JSON;
+- Calculate the value of correction factor K (see further section 4.2.) and enter it in the SPAC5.JSON;
 - Put it in the SPAC5.JSON date of change.
 
 4.2. Correction factor (**K**), used to smooth the index values when the basket is changed.<br>
