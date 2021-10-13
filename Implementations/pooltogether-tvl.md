@@ -20,7 +20,7 @@ Interval:Daily,
 Rounding:0,
 Scaling:0
 ```
-***Note 1:** `totalLiquidityUSD` should be referenced for the timestamp that falls earlier but nearest to the price request timestamp.*  
+***Note:** `totalLiquidityUSD` should be referenced for the timestamp that falls earlier but nearest to the price request timestamp.*  
 
 ## Implementation
 
@@ -69,6 +69,8 @@ The below subgraph urls are used to return the prize pool and underlying collate
 7. Calculate the sum of all underlying collateral balances in USD from Step 5 for Ethereum Mainnet, Celo, and BSC and also add the Polygon TVL (see step 5 from the Polygon section below).
 
 ### Polygon TVL Calculation:
+
+***Note:** The below calculation uses the Polygon USDT/USDC contract addresses, while the DefiLlama TVL calculation uses the Ethereum contract addresses for USDT/USDC. This is due to Coingecko not recognizing the Polygon USDT/USDC addresses and will be updated if the issue is resolved.*  
 
 PoolTogether TVL KPI options track value locked in the following Polygon prize pool contracts:
 * YieldSourcePrizePool (USDT Pool): [0x887E17D791Dcb44BfdDa3023D26F7a04Ca9C7EF4](https://polygonscan.com/address/0x887E17D791Dcb44BfdDa3023D26F7a04Ca9C7EF4)
