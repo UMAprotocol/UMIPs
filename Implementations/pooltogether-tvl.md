@@ -26,7 +26,7 @@ Scaling:0
 
 With DeFiLlama:
 1. Voters should query the endpoint listed in Intended Ancillary Data.
-2. Voters should find the timestamp key in the `tvl` object that corresponds to the timestamp that is earlier but closest to the price request timestamp, and then use the corresponding `totalLiquidityUSD` value rounded to 0 decimal places.
+2. Voters should find the timestamp key in the `tvl` object that corresponds to the latest daily timestamp that is at or before the price request timestamp, and then use the corresponding `totalLiquidityUSD` value.
 3. If the `totalLiquidityUSD` is equal to or greater than 500,000,000, voters should return 1.4.
 4. If the `totalLiquidityUSD` is less than 500,000,000, voters should return a value between 0.9 and 1.4 based on the calculation: ( `totalLiquidityUSD` / 500,000,000 ) + 0.9.
 
