@@ -82,10 +82,10 @@ SPAC5.JSON file format (SPAC shares - TOP5 [Most Active SPACs Yahoo Finance](htt
     “Shares”: 
     [
       {"Symbol": “PSTH”, "Weight": "0.2"},
-      {“Share2”: “IPOF”, "Weight": "0.2"},
-      {“Share3”: “GGPI”, "Weight": "0.2"},
-      {“Share4”: “GSAH”, "Weight": "0.2"},
-      {“Share5”: “HZAC”, "Weight": "0.2"}
+      {“Symbol”: “IPOF”, "Weight": "0.2"},
+      {“Symbol”: “GGPI”, "Weight": "0.2"},
+      {“Symbol”: “GSAH”, "Weight": "0.2"},
+      {“Symbol”: “HZAC”, "Weight": "0.2"}
     ]
 ]
 ```
