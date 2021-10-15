@@ -137,7 +137,11 @@ API Response Objects:
 3.1. Sum up weighted quotes of all 5 SPAC shares. Weighted quote is a share quote multiplied by corresponding weihgt from SPAC5.JSON file.<br>
 3.2. Divide result by 5 (number of shares).<br>
 3.3. Multiply result by K (correction factor).
-
+```
+                SumUp (Qi * Wi)
+      INDEX = ------------------- * K
+                       N
+```
 #### 4. Revise index basket
 4.1. In order to index can reliably reflect the market picture, a periodic change of the basket of of stocks included in the index is required.<br>
 Usually, revision of the index basket is carried out quarterly. The revision of the uSPAC5 index basket is carried out on the following dates:
@@ -152,9 +156,13 @@ In order to create new index bucket, you need to do the following:
 - Calculate the value of correction factor K (see further section 4.2.) and enter it in the SPAC5.JSON;
 - Put it in the SPAC5.JSON date of change.
 
-4.2. Correction factor (**K**), used to smooth the index values when the basket is changed.<br>
-`The value of K calculated as quotient of division INDEXold by INDEXnew,`<br>
-
+4.2. Correction factor (**K**), used to smooth the index values when the basket is changed.<br><br>
+The value of K calculated as quotient of division INDEXold by INDEXnew:<br>
+```
+                INDEXold
+          K = ------------
+                INDEXnew
+```
 where:
 - INDEXold – the last index value calculated from the old basket;<br>
 - INDEXnew – the first index value calculated for the new basket at the same time as INDEXold;<br>
