@@ -15,9 +15,9 @@ The recommended querying methodology is to use DefiLlama’s TVL calculator. Thi
 Metric:TVL in PoolTogether financial contracts measured in USD,
 Endpoint:"https://api.llama.fi/protocol/pooltogether",
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/pooltogether-tvl.md",
-Key:totalLiquidityUSD,
-Interval:Daily,
-Rounding:8,
+Key:tvl[i].totalLiquidityUSD where tvl[i].date is the latest daily timestamp before the requested timestamp,
+Interval:"Daily 24:00 UTC",
+Rounding:6,
 Scaling:0
 ```
 ***Note:** `totalLiquidityUSD` should be referenced for the timestamp that falls earlier but nearest to the price request timestamp.*  
@@ -32,7 +32,7 @@ With DeFiLlama:
 
 Without DeFiLlama:
 
-***Note:** This implementation was designed under the assumption that the DeFiLlama TVL calculation continues to be made at the end of the day (midnight UTC). Please confirm DeFiLlama has not made any changes to their methodology when using this implementation.*
+***Note:** This implementation was designed under the assumption that the DeFiLlama TVL calculation continues to be made at the end of the day (24:00 UTC). Please confirm DeFiLlama has not made any changes to their methodology when using this implementation.*
 
 The below subgraph urls are used to return the prize pool and underlying collateral token addresses for each active network. Please note, there may be multiple subgraphs for different versions of deployed prize pool contracts.
 
@@ -48,7 +48,7 @@ The below subgraph urls are used to return the prize pool and underlying collate
 
 ### General TVL Calculation:
 
-1. Construct subgraph query by making sure that the `block` parameter corresponds to the latest available block at or before the end of the day (midnight UTC), e.g.:
+1. Construct subgraph query by making sure that the `block` parameter corresponds to the latest available block at or before the end of the day (24:00 UTC), e.g.:
 ```
 {
   prizePools(
@@ -64,10 +64,10 @@ The below subgraph urls are used to return the prize pool and underlying collate
 }
 ```
 2. Take a note of the prize pool contract addresses which are represented by `id`  and the `underlyingCollateralToken`. For networks that have multiple subgraph versions, remove duplicate query responses.
-3. Call the `accountedBalance` method on each prize pool contract from step 2 for the latest available block at or before the end of the day (midnight UTC). This will return the balance of controlled tokens (including timelocked) for each prize pool.
+3. Call the `accountedBalance` method on each prize pool contract from step 2 for the latest available block at or before the end of the day (24:00 UTC). This will return the balance of controlled tokens (including timelocked) for each prize pool.
 4. Scale down the balances returned from Step 3 with the decimals of the respective underlying collateral token (call the `decimals()` method on the underlying collateral token contracts from Step 2).
-5. Multiply each balance returned from step 4 by the exchange rate of its respective `underlyingCollateralToken` for the latest available block at or before the end of the day (midnight UTC). This returns the underlying collateral balance in USD.
-6. Each underlying collateral balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the end of the day (midnight UTC). DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
+5. Multiply each balance returned from step 4 by the exchange rate of its respective `underlyingCollateralToken` for the latest available block at or before the end of the day (24:00 UTC). This returns the underlying collateral balance in USD.
+6. Each underlying collateral balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the end of the day (24:00 UTC). DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
 7. Calculate the sum of all underlying collateral balances in USD from Step 5 for Ethereum Mainnet, Celo, and BSC and also add the Polygon TVL (see step 5 from the Polygon section below).
 
 ### Polygon TVL Calculation:
@@ -80,10 +80,10 @@ PoolTogether TVL KPI options track value locked in the following Polygon prize p
 * YieldSourcePrizePool (USDC Pool): [0xEE06AbE9e2Af61cabcb13170e01266Af2DEFa946](https://polygonscan.com/address/0xee06abe9e2af61cabcb13170e01266af2defa946)
   * Underlying Collateral Token: [0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174](https://polygonscan.com/address/0x2791bca1f2de4661ed88a30c99a7a9449aa84174)
 
-1. Call the `accountedBalance` method on each prize pool contract above for the latest available block at or before the end of the day (midnight UTC). This will return the balance of controlled tokens (including timelocked) for each prize pool.
+1. Call the `accountedBalance` method on each prize pool contract above for the latest available block at or before the end of the day (24:00 UTC). This will return the balance of controlled tokens (including timelocked) for each prize pool.
 2. Scale down the balances from Step 1 with the decimals of the respective underlying collateral token (call the `decimals()` method on the token contracts from the Underlying Collateral Token address above).
-3. Multiply each balance returned from step 2 by the exchange rate of the respective Underlying Collateral Token listed above for the latest available block at or before the end of the day (midnight UTC). This returns the underlying collateral balance in USD.
-4. Each underlying collateral balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the end of the day (midnight UTC). DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
+3. Multiply each balance returned from step 2 by the exchange rate of the respective Underlying Collateral Token listed above for the latest available block at or before the end of the day (24:00 UTC). This returns the underlying collateral balance in USD.
+4. Each underlying collateral balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the end of the day (24:00 UTC). DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
 5. Calculate the sum of all underlying collateral balances in USD from Step 3.
 
 ## Intended Application:
@@ -93,3 +93,5 @@ The use case is to use KPI options to incentivize TVL. The initial payout functi
 * If the returned value is less than 500,000,000, voters should return a value between 0.9 and 1.4 based on the (( TVL at expiry / 500,000,000 ) / 2 ) + 0.9.
 
 It is intended to deploy the documented KPI option on Polygon using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contract intends to use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0, the `upperBound` set to 1.4, and the `collateralPerPair` set to 1.4.
+
+As an illustration, a TVL value of 150,000,000 would result in 1.05 based on the calculation (( 150,000,000 / 500,000,000 ) / 2 ) + 0.9. At settlement, the `expiryPercentLong` would be calculated using `(expiryPrice - lowerBound) / (upperBound - lowerBound)`. With an `expiryPrice` of 1.05, `expiryPercentLong` would be calculated as (1.05 - 0) / (1.4 - 0) = 0.75. Therefore, 75% of collateral would be allocated to long tokens and 25% would be allocated to short tokens. With a `collateralPerPair` set to 1.4, 1.05 POOL would be allocated to each long token and 0.35 POOL would be allocated to each short token.
