@@ -181,7 +181,7 @@ The initial value of K is chosen arbitrarily, for example 1.
 When changing the composition of the index, the link to the new file is changed in the smart contract by voting. So, malicious modification of the index composition is impossible.
 
 ### Funding rate identifier
-1. To calculate uSPAC5-FR, the following steps should be performed:<br>
+1. To calculate uSPAC5_FR, the following steps should be performed:<br>
 1.1. Query for the SPAC5 value at the disputed funding rate proposal timestamp.<br>
 1.2. Query for the cumulative funding rate multiplier (CFRM) at the price request timestamp.<br>
 1.3. Then you should multiply the uSPAC5 value and CFRM - this result will be called uSPAC5-FV in future steps.<br>
