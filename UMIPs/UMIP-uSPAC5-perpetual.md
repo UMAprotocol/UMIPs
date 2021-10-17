@@ -224,13 +224,13 @@ A reference MarketStack implementation that is used by liquidator, dispute and f
 MarketStack is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
 In the case of a MarketStack outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 ### Additional price feed providers
-- Yahoo Finance – Rapidapi.com
--- Documentation for the API can be found here: https://rapidapi.com/apidojo/api/yahoo-finance1
--- Live price feed data
--- Historical prices based on date and time
--- Registration is free
--- Paid plans available
--- OHLC request can be used to grab the last closing price before a weekend or a non-working day
+- **Yahoo Finance – Rapidapi.com**<br>
+-- Documentation for the API can be found here: https://rapidapi.com/apidojo/api/yahoo-finance1<br>
+-- Live price feed data<br>
+-- Historical prices based on date and time<br>
+-- Registration is free<br>
+-- Paid plans available<br>
+-- OHLC request can be used to grab the last closing price before a weekend or a non-working day<br>
 -- Example (PSTH) requests:
 ```
 var axios = require("axios").default;
@@ -251,13 +251,13 @@ axios.request(options).then(function (response) {
 	console.error(error);
 });
 ```
-- Stock and Options Trading Data Provider API – Rapidapi.com
--- Documentation for the API can be found here: https://rapidapi.com/mpeng/api/stock-and-options-trading-data-provider
--- Live price feed data
--- Historical prices based on date and time
--- Registration is free
--- Paid plans available
--- OHLC request can be used to grab the last closing price before a weekend or a non-working day
+- **Stock and Options Trading Data Provider API – Rapidapi.com**<br>
+-- Documentation for the API can be found here: https://rapidapi.com/mpeng/api/stock-and-options-trading-data-provider<br>
+-- Live price feed data<br>
+-- Historical prices based on date and time<br>
+-- Registration is free<br>
+-- Paid plans available<br>
+-- OHLC request can be used to grab the last closing price before a weekend or a non-working day<br>
 -- Example (PSTH) requests:
 ```
 var axios = require("axios").default;
