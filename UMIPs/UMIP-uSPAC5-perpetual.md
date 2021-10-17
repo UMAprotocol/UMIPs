@@ -5,7 +5,7 @@
 |Author|BinomFX (binomfx@gmail.com)|
 |Status|Draft| 
 |Created|07.10.2021|
-|Discourse Link| |
+|Discourse Link|https://discourse.umaproject.org/t/add-uspac5-as-price-identifier-and-uspac5-fr-as-funding-rate-identifier/1316|
 
 ## SUMMARY
 The DVM should support price requests for uSPAC5 UMA perpetual price identifier and corresponding uSPAC5_FR funding rate identifiers.<br>
