@@ -223,7 +223,60 @@ Our price-feed provider’s API documentation can be found [here](https://market
 A reference MarketStack implementation that is used by liquidator, dispute and funding rate proposer bots can be seen [here]()<br>
 MarketStack is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
 In the case of a MarketStack outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
+### Additional price feed providers
+- Yahoo Finance – Rapidapi.com
+-- Documentation for the API can be found here: https://rapidapi.com/apidojo/api/yahoo-finance1
+-- Live price feed data
+-- Historical prices based on date and time
+-- Registration is free
+-- Paid plans available
+-- OHLC request can be used to grab the last closing price before a weekend or a non-working day
+-- Example (PSTH) requests:
+```
+var axios = require("axios").default;
 
+var options = {
+  method: 'GET',
+  url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete',
+  params: {q: 'PSTH', region: 'US'},
+  headers: {
+    'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
+    'x-rapidapi-key': ACCESS_KEY
+  }
+};
+
+axios.request(options).then(function (response) {
+	console.log(response.data);
+}).catch(function (error) {
+	console.error(error);
+});
+```
+- Stock and Options Trading Data Provider API – Rapidapi.com
+-- Documentation for the API can be found here: https://rapidapi.com/mpeng/api/stock-and-options-trading-data-provider
+-- Live price feed data
+-- Historical prices based on date and time
+-- Registration is free
+-- Paid plans available
+-- OHLC request can be used to grab the last closing price before a weekend or a non-working day
+-- Example (PSTH) requests:
+```
+var axios = require("axios").default;
+
+var options = {
+  method: 'GET',
+  url: 'https://stock-and-options-trading-data-provider.p.rapidapi.com/straddle/PSTH',
+  headers: {
+    'x-rapidapi-host': 'stock-and-options-trading-data-provider.p.rapidapi.com',
+    'x-rapidapi-key': ACCESS_KEY
+  }
+};
+
+axios.request(options).then(function (response) {
+	console.log(response.data);
+}).catch(function (error) {
+	console.error(error);
+});
+```
 ## SECURITY CONSIDERATIONS
 Security considerations are focused on the use of the token price for monitoring collateral ratios.
 
