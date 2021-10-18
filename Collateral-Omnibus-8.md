@@ -19,7 +19,7 @@ To accomplish this upgrade, the following changes need to be added to the collat
 
 ### AQUA
 -   The **AQUA** address [token address](https://etherscan.io/address/0xd34a24006b862f4e9936c506691539d6433ad297): 0xd34a24006b862f4e9936c506691539d6433ad297 
--   A final fee of **10 000 AQUA** needs to be added for the Store contract.
+-   A final fee of **700 000 AQUA** needs to be added for the Store contract.
     
 ### IDIA
 -   The **IDIA** address [token address](https://etherscan.io/address/0x0b15ddf19d47e6a86a56148fb4afffc6929bcb89): 0x0b15ddf19d47e6a86a56148fb4afffc6929bcb89 
