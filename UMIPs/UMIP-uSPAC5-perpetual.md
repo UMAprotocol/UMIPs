@@ -148,7 +148,7 @@ where:
 - K - Correction factor, used to smooth the index values when the basket is changed. The value of K for the current index bucket is taken from the SPAC5.JSON file. The value of K changes when the index basket changes and is calculated in accordance with Section 4.2.<br>
 - N - number of shares in index.<br>
 #### 4. Revise index basket
-4.1. In order to index can reliably reflect the market picture, a periodic change of the basket of of stocks included in the index is required.<br>
+4.1. In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required.<br>
 Usually, revision of the index basket is carried out quarterly. The revision of the uSPAC5 index basket is carried out on the following dates:
 - last 5 days of March;
 - last 5 days of June;
