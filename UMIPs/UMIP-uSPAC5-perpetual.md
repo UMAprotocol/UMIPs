@@ -182,7 +182,7 @@ When changing the composition of the index, the link to the new file is changed 
 
 ### Funding rate identifier
 1. To calculate uSPAC5_FR, the following steps should be performed:<br>
-1.1. Query for the SPAC5 value at the disputed funding rate proposal timestamp.<br>
+1.1. Query for the SPAC5 value at the disputed funding rate proposal timestamp. Voters should use the open price of the OHLC period that the price request timestamp falls in.<br>
 1.2. Query for the cumulative funding rate multiplier (CFRM) at the price request timestamp.<br>
 1.3. Then you should multiply the uSPAC5 value and CFRM - this result will be called uSPAC5-FV in future steps.<br>
 1.4. Query for the 1-hour TWAP uSPAC5-PERP from the listed AMM pool. This will return TWAP uSPAC5-PERP denominated in USDC. This rate should be left as is, without conversion between USDC and USD.<br>
