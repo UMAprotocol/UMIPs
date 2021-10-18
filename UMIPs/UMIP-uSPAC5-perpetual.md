@@ -55,7 +55,7 @@ The SPAC market is growing exponentially:
 |2016|       13|            3,499.2|                269.2|
 
 By their nature, SPAC shares are subject to impulsive growth at the moment of information or even just rumors that a target company for a merger has been found.<br>
-`A good way to capitalize on such momentum growth without having to analyze hundreds of SPAC is to invest in an index that includes stocks of the most active SPAC.`<br>
+`A good way to capitalize on such momentum growth without having to analyze hundreds of SPACs is to take advantage of the movement of the index value that includes stocks of the most active SPACs.`<br>
 
 The selection of 5 stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [yahoo.finance Most Active SPACs](<https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-spacs>).<br>
 These underlying assets are traded on the NYSE, but reliable sources of quotations are either paid or provide data with a delay.<br> 
