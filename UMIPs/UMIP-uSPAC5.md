@@ -5,7 +5,7 @@
 |Author|BinomFX (binomfx@gmail.com)|
 |Status|Draft| 
 |Created|18.10.2021|
-|Discourse Link| |
+|Discourse Link|https://discourse.umaproject.org/t/add-uspac5-as-price-identifier-for-emp-contract/1357?u=binomfx|
 
 ## SUMMARY
 The DVM should support price requests for uSPAC5 price identifier<br>
