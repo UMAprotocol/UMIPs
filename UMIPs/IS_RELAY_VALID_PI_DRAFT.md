@@ -30,28 +30,28 @@ The ancillary data should also contain the field `relayHash`. This should match 
 
 In the same event, the voter should see a `depositData` field containing `DepositData` struct. The `DepositData` struct should contain a `chainId` field. This field should be used to call `depositContracts(chainId)` on the `BridgeAdmin` contract and take the `depositContract` value in the struct (first element). This should be the deposit contract address on the chain specified by the chainId (arbitrum or optimism). The voter should query this contract for the [FundsDeposited](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/core/contracts-ovm/insured-bridge/implementation/BridgeDepositBox.sol#L73-L84) event to verify that its fields match the corresponding `DepositData` struct fields on mainnet exactly. If there is any difference, the relay is invalid.
 
-In the `RelayData` struct in the DepositRelayed event queried earlier, there is a field called `realizedLpFeePct`. Note: the `RelayData` struct is called `relay` in the event, and to decode the `realizedFeePct` field, one may need to decode with web3.js/ethers and extract the 4th field, since structs are sommetimes decoded as tuples rather than a struct with named fields. This field is specifified by the relayer and needs to be computed using the `quoteTimestamp` specified in the `depositData`. The algorithm for computing the `realizedLpFeePct` is specified here:
+In the `RelayData` struct in the DepositRelayed event queried earlier, there is a field called `realizedLpFeePct`. Note: the `RelayData` struct is called `relay` in the event, and to decode the `realizedFeePct` field, one may need to decode with web3.js/ethers and extract the 4th field, since structs are sommetimes decoded as tuples rather than a struct with named fields. This field is specifified by the relayer and needs to be computed using the `quoteTimestamp` specified in the `depositData`. The algorithm for computing the `realizedLpFeePct` is specified below where:
 
-```
-X := the size of a particular transaction someone is seeking to bridge
-Ut := the utilization of the liquidity providers' capital prior to the transaction, i.e. the amount of the liquidity providers' capital that is in use prior to the current transaction
-Uht := the utilization of the liquidity providers' capital after to the transaction, i.e. the amount of the liquidity providers' capital that would be in use if the user chose to execute their transaction
-Ub := the "kink utilization" where the slope on the interest rate changes
-R0 := the interest rate that would be charged at 0% utilization
-R0 + R1 := the interest rate that would be charged at utilization
-R0 + R1 + R2 := the interest rate that would be charged at 100% utilization
+* <img src="https://render.githubusercontent.com/render/math?math=X"> denotes the size of a particular transaction someone is seeking to bridge
+* <img src="https://render.githubusercontent.com/render/math?math=0 \leq U_t \leq 1"> denotes the utilization of the liquidity providers' capital prior to the transaction, i.e. the amount of the liquidity providers' capital that is in use prior to the current transaction
+* <img src="https://render.githubusercontent.com/render/math?math=0 \leq \hat{U}_t \leq 1"> denotes the utilization of the liquidity providers' capital after to the transaction, i.e. the amount of the liquidity providers' capital that would be in use if the user chose to execute their transaction
+* <img src="https://render.githubusercontent.com/render/math?math=\bar{U}"> denotes the "kink utilization" where the slope on the interest rate changes
+* <img src="https://render.githubusercontent.com/render/math?math=R_0, R_1, R_2"> denotes the parameters governing the interest rate model slopes:
+  * <img src="https://render.githubusercontent.com/render/math?math=R_0"> is the interest rate that would be charged at 0% utilization
+  * <img src="https://render.githubusercontent.com/render/math?math=R_0 %2b R_1"> is the interest rate that would be charged at <img src="https://render.githubusercontent.com/render/math?math=\bar{U}\%25"> utilization
+  * <img src="https://render.githubusercontent.com/render/math?math=R_0 %2b R_1 %2b R_2"> is the interest rate that would be charged at 100% utilization
 
-# An interest rate at any given amount of utilization would be given by the following equation
-R(Ut) = R0 + min(Ub,Ut) * R1 / Ub + max(0, Ut - Ub) * R2 / (1 - Ub)
+An interest rate at any given amount of utilization would be given by the following equation:
 
-# In our case for a loan, we must integrate over a range of utilizations because each
-# dollar of the loan pushes up the interest rate for the next dollar of the loan. This
-# effect is captured using an integral.
-Rta = integral_Ut_Ubt(R(u)du)
+<img src="https://render.githubusercontent.com/render/math?math=R(U_t) = R_0 %2b \frac{\min(\bar{U}, U_t)}{\bar{U}} R_1 %2b \frac{\max(0, U_t %2d \bar{U})}{1 %2d \bar{U}} R_2">
 
-# To get the true rate charged on these loans, we need to de-annualize it to get the percentage.
-Rtw = (1 + Rta)^(1/52) - 1
-```
+In our case for a loan, we must integrate over a range of utilizations because each dollar of the loan pushes up the interest rate for the next dollar of the loan. This effect is captured using an integral:
+
+<img src="https://render.githubusercontent.com/render/math?math=R^a_t = \int_{U_t}^{\hat{U}_t} R(u) du">
+
+To get the true rate charged on these loans, we need to de-annualize it to get the percentage:
+
+<img src="https://render.githubusercontent.com/render/math?math=R^w_t = (1 %2b R^a_t)^{\frac{1}{52}} %2d 1">
 
 Please see the example [implementation](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/sdk/src/across/feeCalculator.ts#L78-L82)) for more details.
 
