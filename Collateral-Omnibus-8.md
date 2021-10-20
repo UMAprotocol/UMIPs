@@ -41,4 +41,6 @@ Adding a collateral currency introduces a level of risk into the UMA Ecosystem. 
 
 Contract deployers considering using this collateral in an UMA contract should refer to the [guidelines on collateral type usage](https://docs.umaproject.org/uma-tokenholders/guidence-on-collateral-currency-addition) to ensure appropriate use.
 
+IDIA is currently primarily used on BSC and has minimal liquidity on Ethereum mainnet. Because of this, developers using mainnet IDIA should take care to create "safe" contracts with it. As an example, use of IDIA for a liquidatable and volatile synthetic would likely not be practical, as liquidators would not necessarily have immediate access to capital required for liquidations. Its intended use case is to be used with non-liquidatable UMA contracts. 
+
 
