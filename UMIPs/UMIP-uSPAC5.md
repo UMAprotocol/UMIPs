@@ -4,7 +4,7 @@
 |UMIP title|Add uSPAC5 as price identifier|
 |Author|BinomFX (binomfx@gmail.com)|
 |Status|Draft| 
-|Created|18.10.2021|
+|Created|20.10.2021|
 |Discourse Link|https://discourse.umaproject.org/t/add-uspac5-as-price-identifier-for-emp-contract/1357?u=binomfx|
 
 ## SUMMARY
