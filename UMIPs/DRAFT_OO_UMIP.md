@@ -18,11 +18,11 @@ To accomplish this upgrade, a few actions will need to be taken:
 - A transaction will need to be proposed to add this new address to the `Finder` contract under the name `“SkinnyOptimisticOracle”`. This is how other contracts will find the optimistic oracle and reference it.
 - The `SkinnyOptimisticOracle` will need to be registered with the `Registry` so that it can make requests to the DVM.
 
-Note: this change will only add the skinny optimistic oracle. New financial contracts that utilize the optimistic oracle will need to be deployed for it to become useful. Until all steps above are performed, the deployed the SkinnyOptimisticOracle _should not_ be used in production since it will not be able to raise disputes to the DVM.
+Note: this change will only add the skinny optimistic oracle. New financial contracts that utilize the optimistic oracle will need to be deployed for it to become useful. Until all steps above are performed, the deployed SkinnyOptimisticOracle _should not_ be used in production since it will not be able to raise disputes to the DVM.
 
 ## Implementation
 
-The `OptimisticOracle` contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/implementation/SkinnyOptimisticOracle.sol). It is in the process of being audited. If the audit requires changes, a follow-up proposal can remove this implementation and add the updated one with little-to-no risk to the DVM.
+The `SkinnyOptimisticOracle` contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/implementation/SkinnyOptimisticOracle.sol). It is in the process of being audited. If the audit requires changes, a follow-up proposal can remove this implementation and add the updated one with little-to-no risk to the DVM.
 
 The mainnet contract address:
 
