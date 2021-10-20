@@ -90,7 +90,7 @@ Price requests should use the dayly price that is nearest and later than the pri
 <br><br>
 Example MarketStack request for a PSTH real time **end-of-day** price (available on: All plans):
 ```
-https://api.marketstack.com/v1/eod
+http://api.marketstack.com/v1/eod
     ? access_key = YOUR_ACCESS_KEY
     & symbols = PSTH
 ```
