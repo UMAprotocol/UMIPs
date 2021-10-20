@@ -18,7 +18,7 @@ IS_RELAY_VALID will allow the DVM to validate relay requests coming from Optimis
 
 This system will allow users on L2 to quickly transfer their funds back to L1 and avoid the long withdrawal waiting periods associated with the rollups for a marginal fee that will be paid to LPs that are willing to wait for the funds to transfer over the canonical bridge.
 
-# Data Specifications
+# Data Specifications and Implementation
 
 Voters will need to use multiple contracts to assess the validity of a relay.
 
@@ -41,20 +41,12 @@ If the relay is invalid, the price should be `0`. If the relay is valid, it shou
 
 # Price Feed Implementation
 
-See the InsuredBridgePriceFeed.ts in the UMA price feeds directory.
+See the [InsuredBridgePriceFeed.ts](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/InsuredBridgePriceFeed.ts) in the UMA price feeds directory.
 
 ## Ancillary Data Specifications
 
-See Data Specifications.
-
-# Rationale
-
-TBD
-
-# Implementation
-
-TBD (see Data Specifications for now).
+The ancillary data should specify two values: `relayHash` and `requester`. The former is a hash used to identify a relay, and the latter is the [BridgePool contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/insured-bridge/BridgePool.sol) that initiated the request.
 
 # Security Considerations
 
-N/A.
+This is a new identifier, and as long as there is a definitive answer for all requests, this should have no security impact on the UMA DVM.
