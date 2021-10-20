@@ -32,10 +32,38 @@ In the same event, the voter should see a `depositData` field containing `Deposi
 
 In the `RelayData` struct in the DepositRelayed event queried earlier, there is a field called `realizedLpFeePct`. Note: the `RelayData` struct is called `relay` in the event, and to decode the `realizedFeePct` field, one may need to decode with web3.js/ethers and extract the 4th field, since structs are sommetimes decoded as tuples rather than a struct with named fields. This field is specifified by the relayer and needs to be computed using the `quoteTimestamp` specified in the `depositData`. The algorithm for computing the `realizedLpFeePct` is specified here:
 
-(TBD, [link to implementation](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/sdk/src/across/feeCalculator.ts#L78-L82) and uses AAVE interest rate models for each l1Token address).
+```
+X := the size of a particular transaction someone is seeking to bridge
+Ut := the utilization of the liquidity providers' capital prior to the transaction, i.e. the amount of the liquidity providers' capital that is in use prior to the current transaction
+Uht := the utilization of the liquidity providers' capital after to the transaction, i.e. the amount of the liquidity providers' capital that would be in use if the user chose to execute their transaction
+Ub := the "kink utilization" where the slope on the interest rate changes
+R0 := the interest rate that would be charged at 0% utilization
+R0 + R1 := the interest rate that would be charged at utilization
+R0 + R1 + R2 := the interest rate that would be charged at 100% utilization
 
-If the algorithm above doesn't produce a matching `realizedLPFeePct`, the relay is invalid.
+# An interest rate at any given amount of utilization would be given by the following equation
+R(Ut) = R0 + min(Ub,Ut) * R1 / Ub + max(0, Ut - Ub) * R2 / (1 - Ub)
 
+# In our case for a loan, we must integrate over a range of utilizations because each
+# dollar of the loan pushes up the interest rate for the next dollar of the loan. This
+# effect is captured using an integral.
+Rta = integral_Ut_Ubt(R(u)du)
+
+# To get the true rate charged on these loans, we need to de-annualize it to get the percentage.
+Rtw = (1 + Rta)^(1/52) - 1
+```
+
+Please see the example [implementation](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/sdk/src/across/feeCalculator.ts#L78-L82)) for more details.
+
+The rates used the above computation are drawn from Aave (where applicable):
+
+| Asset | Ub  | R0  | R1  |
+| ----- | --- | --- | --- |
+| ETH   | 65% | 0%  | 8%  |
+| USDC  | 80% | 0%  | 4%  |
+| UMA   | 50% | 0%  | 5%  |
+
+If the algorithm above doesn't produce a matching `realizedLPFeePct`, the relay is invalid. If the token is not listed in the table abvoe, the relay is invalid.
 
 If the relay is invalid, the price should be `0`. If the relay is valid, it should be `1`. Note: all price values should be scaled by `1e18`.
 
