@@ -28,16 +28,16 @@ A canonical [BridgeAdmin](https://github.com/UMAprotocol/protocol/blob/master/pa
 
 The ancillary data should also contain the field `relayAncillaryDataHash`. This should have been emitted by the `BridgePool` with the [DepositRelayed](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/core/contracts/insured-bridge/BridgePool.sol#L135-L141) event. If no event exists with that hash, the relay is invalid.
 
-In the same event, the voter should see a `depositData` field containing `DepositData` struct. The `DepositData` struct should contain a `chainId` field. This field should be used to call `whitelistedTokens(mainnetTokenAddress, chainId)` and take the first argument. This first argument should be the deposit contract address on the chain specified by the chainId (arbitrum or optimism). The voter should query this contract for the [FundsDeposited](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/core/contracts-ovm/insured-bridge/implementation/BridgeDepositBox.sol#L73-L84) event to verify that its fields match the corresponding `DepositData` struct fields on mainnet exactly. If there is any difference, the relay is invalid.
+In the same event, the voter should see a `depositData` field containing `DepositData` struct. The `DepositData` struct should contain a `chainId` field. This field should be used to call `depositContracts(chainId)` and take the `depositContract` value in the struct (first element). This should be the deposit contract address on the chain specified by the chainId (arbitrum or optimism). The voter should query this contract for the [FundsDeposited](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/core/contracts-ovm/insured-bridge/implementation/BridgeDepositBox.sol#L73-L84) event to verify that its fields match the corresponding `DepositData` struct fields on mainnet exactly. If there is any difference, the relay is invalid.
 
-In the `RelayData` struct in the DepositRelayed event queried earlier, there is a field called `realizedLpFeePct`. This field is specifified by the relayer and needs to be computed using the `quoteTimestamp` specified in the `depositData`. The algorithm for computing the `realizedLpFeePct` is specified here:
+In the `RelayData` struct in the DepositRelayed event queried earlier, there is a field called `realizedLpFeePct`. Note: the `RelayData` struct is called `relay` in the event, and to decode the `realizedFeePct` field, one may need to decode with web3.js/ethers and extract the 4th field, since structs are sommetimes decoded as tuples rather than a struct with named fields. This field is specifified by the relayer and needs to be computed using the `quoteTimestamp` specified in the `depositData`. The algorithm for computing the `realizedLpFeePct` is specified here:
 
 (TBD, [link to implementation](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/sdk/src/across/feeCalculator.ts#L78-L82) and uses AAVE interest rate models for each l1Token address).
 
 If the algorithm above doesn't produce a matching `realizedLPFeePct`, the relay is invalid.
 
 
-If the relay is invalid, the price should be `0`. If the relay is valid, it should be `1e18`.
+If the relay is invalid, the price should be `0`. If the relay is valid, it should be `1`. Note: all price values should be scaled by `1e18`.
 
 # Price Feed Implementation
 
