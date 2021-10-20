@@ -57,7 +57,7 @@ Please see the example [implementation](https://github.com/UMAprotocol/protocol/
 
 The rates used the above computation are drawn from Aave (where applicable):
 
-| Asset | Ub  | R0  | R1  |
+| Asset | <img src="https://render.githubusercontent.com/render/math?math=\bar{U}">  | <img src="https://render.githubusercontent.com/render/math?math=R_0">  | <img src="https://render.githubusercontent.com/render/math?math=R_1">  |
 | ----- | --- | --- | --- |
 | ETH   | 65% | 0%  | 8%  |
 | USDC  | 80% | 0%  | 4%  |
