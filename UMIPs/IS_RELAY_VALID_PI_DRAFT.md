@@ -33,7 +33,7 @@ The ancillary data should also contain the field `relayHash`. This should have b
 
 In the same event, the voter should see a depositData field. The depositData struct should contain a chainId field. This field should be used to call `whitelistedTokens(mainnetTokenAddress, chainId)` and take the first argument. This first argument should be the deposit contract address on the chain specified by the chainId (arbitrum or optimism). The voter should query this contract for the [FundsDeposited](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/core/contracts-ovm/insured-bridge/implementation/BridgeDepositBox.sol#L73-L84) event to verify that its fields match the corresponding depositData struct fields on mainnet exactly. If there is any difference, the relay is invalid.
 
-In the relayData struct in the DepositRelayed event queried earlier, there is a field called `realizedLpFeePct`. This field is specifified by the relayer and needs to be computed using the `quoteTimestamp` specified in the `depositData`. The algorithm for computing the `realizedLpFeePct` is specified here:
+In the `RelayData` struct in the DepositRelayed event queried earlier, there is a field called `realizedLpFeePct`. This field is specifified by the relayer and needs to be computed using the `quoteTimestamp` specified in the `depositData`. The algorithm for computing the `realizedLpFeePct` is specified here:
 
 (TBD, [link to implementation](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/sdk/src/across/feeCalculator.ts#L78-L82) and uses AAVE interest rate models for each l1Token address).
 
