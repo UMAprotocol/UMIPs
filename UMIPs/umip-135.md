@@ -1,10 +1,10 @@
 ## Headers
-| UMIP-52     |                                                                                                                                          |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Add Skinny Optimistic Oracle              |
+| UMIP-135   |                                 |
+|------------|---------------------------------|
+| UMIP Title | Add Skinny Optimistic Oracle    |
 | Authors    | Matt Rice (matt@umaproject.org) |
-| Status     | Draft                                                                                                                                    |
-| Created    | October 18, 2021                                                                                                                           |
+| Status     | Last Call                       |
+| Created    | October 18, 2021                |
 
 ## Summary (2-5 sentences)
 This UMIP will have the effect of introducing a new, slimmed down optimistic oracle contract that will allow optimistic settlement of prices with lower gas costs. This will reduce the cost for end-users of UMA's oracle infrastructure.

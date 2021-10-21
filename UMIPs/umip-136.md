@@ -1,11 +1,11 @@
 ## Headers
 
-| UMIP                |                                                               |
-| ------------------- | ------------------------------------------------------------- |
+| UMIP-136            |                                                    |
+| ------------------- | -------------------------------------------------- |
 | UMIP Title          | Add IS_RELAY_VALID as a supported price identifier |
-| Authors             | Matt Rice                                                      |
-| Status              | Draft                                                         |
-| Created             | 2021-10-18                                          |
+| Authors             | Matt Rice                                          |
+| Status              | Last Call                                          |
+| Created             | 2021-10-18                                         |
 
 # Summary 
 
