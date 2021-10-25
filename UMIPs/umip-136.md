@@ -60,8 +60,8 @@ The rates used the above computation are drawn from Aave (where applicable):
 | Asset | <img src="https://render.githubusercontent.com/render/math?math=\bar{U}">  | <img src="https://render.githubusercontent.com/render/math?math=R_0">  | <img src="https://render.githubusercontent.com/render/math?math=R_1">  | <img src="https://render.githubusercontent.com/render/math?math=R_2">  |
 | ----- | --- | --- | --- | ---- |
 | ETH   | 65% | 0%  | 8%  | 100% |
-| USDC  | 80% | 0%  | 4%  | 100% |
-| UMA   | 50% | 0%  | 5%  | 100% |
+| USDC  | 80% | 0%  | 4%  | 60%  |
+| UMA   | 50% | 0%  | 5%  | 200% |
 
 If the algorithm above doesn't produce a matching `realizedLPFeePct` (after rounding the result expressed as decimal to 18 decimals where less than 5 for the 19th decimal rounds down and 5 or above rounds up), the relay is invalid. If the token is not listed in the table above, the relay is invalid.
 
