@@ -63,7 +63,7 @@ The rates used the above computation are drawn from Aave (where applicable):
 | USDC  | 80% | 0%  | 4%  |
 | UMA   | 50% | 0%  | 5%  |
 
-If the algorithm above doesn't produce a matching `realizedLPFeePct`, the relay is invalid. If the token is not listed in the table above, the relay is invalid.
+If the algorithm above doesn't produce a matching `realizedLPFeePct` (after rounding the result expressed as decimal to 18 decimals where less than 5 for the 19th decimal rounds down and 5 or above rounds up), the relay is invalid. If the token is not listed in the table above, the relay is invalid.
 
 If the relay is invalid, the price should be `0`. If the relay is valid, it should be `1`. Note: all price values should be scaled by `1e18`.
 
