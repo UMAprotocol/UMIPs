@@ -10,7 +10,7 @@ Across Protocol is a new project that uses UMA's Optimistic Oracle for L2 to L1 
 ## Ancillary Data Specifications
 Metric:Total number of members in the Across community on the day before expiry,
 Endpoint:"https://statbot.net/dashboard/887426921892315137/overview",
-Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/across-kpi.md"
+Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/across-kpi.md",
 Key:Total Members,
 Rounding:0,
 Interval:Daily with the day before the day that the expiry timestamp falls on being used
