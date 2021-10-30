@@ -1,14 +1,9 @@
 
-
-  
-Add GYSR as a collateral type
-
-  
   
 **UMIP #** - tbd  
   
 
--  **UMIP title:** Add  RARI  as collateral currency  
+-  **UMIP title:** Add  RGT  as collateral currency  
 -  **Author** Mhairi McAlpine (mhairi@umaproject.org)  
 -  **Status: Draft**  
 -  **Created:** 30th October 2021  
@@ -18,7 +13,7 @@ Add GYSR as a collateral type
 ## Summary (2-5 sentences)  
   
 
-This UMIP proposes adding  RARI for use as collateral in UMA contracts.  
+This UMIP proposes adding RGT for use as collateral in UMA contracts.  RGT is the native token behind Rari Capital. Rari Capital is a non-custodial DeFi robo-advisor that autonomously earns users yield.
   
 
 ## Motivation  
@@ -33,9 +28,9 @@ The addition of this collateral currency offers additional functionality to the 
 To accomplish this upgrade, the following changes need to be made:  
   
 
-- The  RARI token  address 0xfca59cd816ab1ead66534d82bc21e7515ce441cf(https://etherscan.io/token/0xfca59cd816ab1ead66534d82bc21e7515ce441cf) needs to be added to the collateral currency whitelist introduced in UMIP-8.  
+- The  RGT token  address 0xD291E7a03283640FDc51b121aC401383A46cC623(https://etherscan.io/token/0xD291E7a03283640FDc51b121aC401383A46cC623) needs to be added to the collateral currency whitelist introduced in UMIP-8.  
 
--   A final fee of  20 RARI needs to be added for RARI  in the Store contract.  
+-   A final fee of  10 RGT needs to be added for RGT in the Store contract.  
   
 
 ## Rationale  
