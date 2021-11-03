@@ -56,7 +56,7 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 ## IMPLEMENTATION
 ### Price Identifier
 The list of stocks included in the index basket are stored in the INDEX5.JSON file.
-This file is safely hosted in a decentralized IPFS file storage. Files on IPFS are addressed by their [Content Identiier](https://docs.ipfs.io/concepts/content-addressing/). The Content Identifier (CID) for INDEX5.JSON file is stored in a special smart contract, called CIDStore [see contract instance deployed on Kovan](https://kovan.etherscan.io/address/0xbb1de4cC8a7f39c5C5A611CA2C2123e7D6756E9D).<br><br>
+This file is safely hosted in a decentralized IPFS file storage. Files on IPFS are addressed by their [Content Identifier](https://docs.ipfs.io/concepts/content-addressing/). The Content Identifier (CID) for INDEX5.JSON file is stored in a special smart contract, called CIDStore [see contract instance deployed on Kovan](https://kovan.etherscan.io/address/0xbb1de4cC8a7f39c5C5A611CA2C2123e7D6756E9D).<br><br>
 In order to determine the index value, the following steps are required:
 #### 1. Read index basket
 1.1. Get IPFS CID from CIDStore contract.<br>
