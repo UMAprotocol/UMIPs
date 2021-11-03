@@ -56,34 +56,59 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 ## IMPLEMENTATION
 ### Price Identifier
 The list of stocks included in the index basket are stored in the INDEX5.JSON file.
-This file is safely hosted in a decentralized IPFS file storage. The link to access the file is stored in a special smart contract, available at address `0x____________________`.<br><br>
+This file is safely hosted in a decentralized IPFS file storage. Files on IPFS are addressed by their [Content Identiier](https://docs.ipfs.io/concepts/content-addressing/). The Content Identifier (CID) for INDEX5.JSON file is stored in a special smart contract, called CIDStore [see contract instance deployed on Kovan](https://kovan.etherscan.io/address/0xbb1de4cC8a7f39c5C5A611CA2C2123e7D6756E9D).<br><br>
 In order to determine the index value, the following steps are required:
 #### 1. Read index basket
-1.1. Get IPFS address from smart contract.<br>
-In order to get a link to a file, the user must use the `indexBasketHash` method of a special smart contract, available at address `0x____________________`.<br>
-The method returns hash of INDEX5.JSON files. Hash can be used to lookup file on IPFS.<br>
+1.1. Get IPFS CID from CIDStore contract.<br>
+In order to get a link to a file, the user must use the `CID()` method of a special smart contract.<br>
+The method returns CID of INDEX5.JSON files. CID can be used to lookup file on IPFS.<br>
 1.2. Read SPAC5.JSON file from IPFS.<br>
 The file is extracted from IPFS and checked for unauthorized changes as shown [here]().<br>
 
-SPAC5.JSON file format (SPAC shares - TOP5 [Most Active SPACs Yahoo Finance](https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-spacs) at 08.10.2021):
+SPAC5.JSON file has the following format:
 ```
-[
-    “Date”: “08.10.2021”,  
-    “K”: “1”,  
-    “Shares”: 
-    [
-      {"Symbol": “PSTH”, "Weight": "0.2"},
-      {“Symbol”: “IPOF”, "Weight": "0.2"},
-      {“Symbol”: “GGPI”, "Weight": "0.2"},
-      {“Symbol”: “GSAH”, "Weight": "0.2"},
-      {“Symbol”: “HZAC”, "Weight": "0.2"}
-    ]
+{
+  baskets: [
+    {
+      startDate: "2021-10-01",
+      endDate: "2021-12-31",
+      "correctionFactor": "1",
+      "stocks": [
+          {
+             "symbol": "PSTH",
+             "weight" : "0.2"
+          },
+          {
+             "symbol": "IPOF",
+             "weight" : "0.2"
+          },
+          {
+             "symbol": "GGPI",
+             "weight" : "0.2"
+          },
+          {
+             "symbol": "GSAH",
+             "weight" : "0.2"
+          },
+          {
+             "symbol": "HZAC",
+             "weight" : "0.2"
+          }
+
+      ]
+    }
+  ],
+  ...
 ]
 ```
+It contains the list of baskets. Each basket has `startDate` and `endDate` (inclusive) denoting time period when the basket takes effect. Basket also has `correctionFactor` (see later) and list of stock symbols with corresponding weights for index calcualtion (see later).
+
+Baskets are immutable. Changing basket is performed by adding new basket to JSON file with new `endDate` and `startDate`. Baskets for older dates are preserved in SPAC5.JSON in order to price feed could get historical prices for any date in the past.
+
 
 #### 2. Get shares quotes
 Real time and historical share prices are available from MarketStack.com (API).<br> 
-Price requests should use the daily price that is nearest and later than the price request timestamp. In the future, it is planned to use hourly and minute prices. To do this, voters should use the open price of the OHLC period that the price request timestamp falls in. MarketStack endpoints are queried based on the OHLC period's close time.
+Price requests should use the daily price for the date corresponding to price request timestamp. In the future, it is planned to use hourly and minute prices. Close price should be used. If no close price is available (Marketstack returns `null`) then open price should be used.
 <br><br>
 Example MarketStack request for a PSTH real time **end-of-day** price (available on: All plans):
 ```
@@ -126,12 +151,9 @@ API Response Objects:
 
 #### 3. Evaluate index value
 3.1. Sum up weighted quotes of all 5 SPAC shares. Weighted quote is a share quote multiplied by corresponding weihgt from SPAC5.JSON file.<br>
-3.2. Divide result by 5 (number of shares).<br>
-3.3. Multiply result by K (correction factor).
+3.2. Multiply result by K (correction factor).<br>
 ```
-                SumUp (Qi * Wi)
-      INDEX = ------------------- * K
-                       N
+INDEX = (SumUp (Qi * Wi)) * K
 ```
 where:
 - Qi - quote of Share i in index;<br>
@@ -166,8 +188,8 @@ where:
 The initial value of K is chosen arbitrarily, for example 1.
 
 #### 5. Change index basket
-5.1. Upload a new SPAC5.JSON file in IPFS, get a link to the file.<br>
-5.2. Replace the link to the file in the smart contract by voting users.<br>
+5.1. Upload a new SPAC5.JSON file in IPFS, get the CID to the file.<br>
+5.2. Replace the CID in the smart contract by voting users.<br>
 
 When changing the composition of the index, the link to the new file is changed in the smart contract by voting. So, malicious modification of the index composition is impossible.
 
@@ -180,7 +202,7 @@ Please note that this is different than the normal calculation process, which re
 Underlaying assets trade during exchange hours which leaves gaps in prices between 4:00PM EST close and 9:30AM EST open the next day and on weekends and market holidays.
 ### Price feed
 Our price-feed provider’s API documentation can be found [here](https://marketstack.com/documentation).<br>
-A reference MarketStack implementation that is used by liquidator, dispute and funding rate proposer bots can be seen [here]()<br>
+A reference price feed implementation that is used by liquidator, dispute and funding rate proposer bots can be seen [here](https://github.com/unisxapp/uma/tree/USPAC5PriceFeed)<br>
 MarketStack is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
 In the case of a MarketStack outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 ### Additional price feed providers
