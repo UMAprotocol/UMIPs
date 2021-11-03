@@ -14,7 +14,7 @@ Prior to addition of this Optimistic Oracle, it could cost millions of gas to co
 
 ## Technical Specification
 To accomplish this upgrade, a few actions will need to be taken:
-- A new `SkinnyOptimisticOracle` contract has been deployed at [0xeE3Afe347D5C74317041E2618C49534dAf887c24](https://etherscan.io/address/0xeE3Afe347D5C74317041E2618C49534dAf887c24).
+- A new `SkinnyOptimisticOracle` contract has been deployed at [0x4060dba72344da74edaeeae51a71a57f7e96b6b4](https://etherscan.io/address/0x4060dba72344da74edaeeae51a71a57f7e96b6b4).
 - A transaction will need to be proposed to add this new address to the `Finder` contract under the name `SkinnyOptimisticOracle`. This is how other contracts will find the optimistic oracle and reference it.
 - The `SkinnyOptimisticOracle` will need to be registered with the `Registry` so that it can make requests to the DVM.
 
@@ -26,7 +26,7 @@ The `SkinnyOptimisticOracle` contract can be found [here](https://github.com/UMA
 
 The mainnet contract address:
 
-*SkinnyOptimisticOracle* - [0xeE3Afe347D5C74317041E2618C49534dAf887c24](https://etherscan.io/address/0xeE3Afe347D5C74317041E2618C49534dAf887c24)
+*SkinnyOptimisticOracle* - [0x4060dba72344da74edaeeae51a71a57f7e96b6b4](https://etherscan.io/address/0x4060dba72344da74edaeeae51a71a57f7e96b6b4)
 
 
 ## Security considerations
