@@ -63,7 +63,6 @@ In order to determine the index value, the following steps are required:
 In order to get a link to a file, the user must use the `CID()` method of a special smart contract.<br>
 The method returns CID of INDEX5.JSON files. CID can be used to lookup file on IPFS.<br>
 1.2. Read SPAC5.JSON file from IPFS.<br>
-The file is extracted from IPFS and checked for unauthorized changes as shown [here]().<br>
 
 SPAC5.JSON file has the following format:
 ```
