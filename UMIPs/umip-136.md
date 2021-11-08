@@ -53,6 +53,8 @@ To get the true rate charged on these loans, we need to de-annualize it to get t
 
 <img src="https://render.githubusercontent.com/render/math?math=R^w_t = (1 %2b R^a_t)^{\frac{1}{52}} %2d 1">
 
+<img src="https://render.githubusercontent.com/render/math?math=U_t"> can be fetched on-chain by calling `liquidityUtilizationCurrent` method on the `BridgePool` contract at the latest available block number at or before the `quoteTimestamp`. <img src="https://render.githubusercontent.com/render/math?math=\hat{U}_t"> can be fetched by calling `liquidityUtilizationPostRelay` method on the `BridgePool` contract at the same block number passing the `amount` field from the `DepositData` struct as `relayedAmount` parameter. Normally the `BridgePool` contract for calling these methods should be the same as the `requester`, but in the unlikely scenario when `BridgePool` gets migrated with pending deposits on L2 one should calculate the utilization ratio on the `BridgePool` contract that was active at the time of `quoteTimestamp`. In order to identify the previous `BridgePool` one should look up the last `WhitelistToken` event emitted by the deposit contract on L2 before the relayed transaction's `quoteTimestamp` and use the address from event's `bridgePool` field.
+
 Please see the example [implementation](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/sdk/src/across/feeCalculator.ts#L78-L82)) for more details.
 
 The rates used the above computation are drawn from Aave (where applicable):
