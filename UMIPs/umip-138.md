@@ -1,9 +1,9 @@
 ## Headers
-| UMIP-xx    |                                     |
+| UMIP-138   |                                     |
 |------------|-------------------------------------|
 | UMIP Title | Upgrade Skinny Optimistic Oracle    |
 | Authors    | Nick Pai (nick@umaproject.org)      |
-| Status     | Draft                               |
+| Status     | Last Call                           |
 | Created    | November 3, 2021                    |
 
 ## Summary (2-5 sentences)
