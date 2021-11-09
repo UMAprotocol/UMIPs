@@ -39,7 +39,7 @@ To accomplish this upgrade, the following changes need to be made:
 ## Rationale  
   
 
-This store fee for each token was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by  querying CoinGecko on <insert date> 
+This store fee for each token was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by  querying CoinGecko. 
   
 
 ## Implementation  
