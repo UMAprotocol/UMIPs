@@ -1,19 +1,19 @@
+## Headers
+| UMIP-xx    |                                     |
+|------------|-------------------------------------|
+| UMIP Title | Add  QUARTZ as collateral currency    |
+| Authors    | Mhairi McAlpine (mhairi@umaproject.org)       |
+| Status     | Draft                               |
+| Created    | November 2, 2021                    |
 
-**UMIP #** - tbd  
   
-
--  **UMIP title:** Add  QUARTZ as collateral currency  
--  **Author** Mhairi McAlpine (mhairi@umaproject.org)  
--  **Status: Draft**  
--  **Created:** 2nd November 2021  
--  **Discourse Link:**    
   
 
 ## Summary (2-5 sentences)  
   
 
 This UMIP proposes adding  QUARTZ and ibBTC for use as collateral in UMA contracts.  
-  IBBTC - https://etherscan.io/token/0xc4e15973e6ff2a35cc804c2cf9d2a1b817a8b40f
+
 
 ## Motivation  
   
@@ -39,7 +39,7 @@ To accomplish this upgrade, the following changes need to be made:
 ## Rationale  
   
 
-This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by  querying CoinGecko on <insert date> 
+This store fee for each token was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by  querying CoinGecko on <insert date> 
   
 
 ## Implementation  
@@ -53,7 +53,7 @@ This change has no implementations other than the aforementioned governor transa
 
 Adding a collateral currency introduces a level of risk into the UMA Ecosystem. These collateral type should be monitored to ensure that the proposed collateral continues to have value.  
   
-  
+It should be noted that there is limited liquidity for QUARTZ on the Ethereum mainnet, consequently the final fee was determined using the liquidity available on the BSC sidechain
 
 Contract deployers considering using these collateral in an UMA contract should refer to the guidelines on collateral type usage available here **https://docs.umaproject.org/uma-tokenholders/guidence-on-collateral-currency-addition** to ensure appropriate use.  
 
