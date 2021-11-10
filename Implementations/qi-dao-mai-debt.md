@@ -43,7 +43,7 @@ It is acknowledged that above instructions might require significant effort to f
      }
    }
    ```
-3. Perform `POST` request on the each of API endpoints identified in Step 1 As an illustration, `curl` request for the MATIC Vault on Polygon would look like:
+3. Perform `POST` request on each of API endpoints identified in Step 1. As an illustration, `curl` request for the MATIC Vault on Polygon would look like:
    ```
    curl -X POST \
      -d '{"query": "{protocols(first: 1, block: {number: 21215934}) {totalBorrowed}}"}' \
