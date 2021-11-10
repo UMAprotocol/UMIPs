@@ -18,8 +18,8 @@ In addition, that token can be used as components associated with classical mark
 ## TECHNICAL SPECIFICATION
 | | |
 |:---------------------------|:---------------------------------------------------|
-|**Identifier name**         |**uSPAC5**|
-|Base asset                  | Most active SPAC shares, enumerated in SPAC5.JSON file, stored in IPFS.|
+|**Identifier name**         |**uSPAC5-2021q4**|
+|Base asset                  | Most active SPAC shares.|
 |Quote Currency              | USD|
 |Intended Collateral Currency| USDC|
 |Market                      | NYSE|
@@ -55,57 +55,17 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 
 ## IMPLEMENTATION
 ### Price Identifier
-The list of stocks included in the index basket are stored in the INDEX5.JSON file.
-This file is safely hosted in a decentralized IPFS file storage. Files on IPFS are addressed by their [Content Identifier](https://docs.ipfs.io/concepts/content-addressing/). The Content Identifier (CID) for INDEX5.JSON file is stored in a special smart contract, called CIDStore [see contract instance deployed on Kovan](https://kovan.etherscan.io/address/0xbb1de4cC8a7f39c5C5A611CA2C2123e7D6756E9D).<br><br>
+The list of stocks included in the index basket are:
+|N|TICKER|MARKET|
+|:-:|:------:|:--------:|
+|1|PSTH|NYSE|
+|2|IPOF|NYSE|
+|3|GGPI|NYSE|
+|4|GSAH|NYSE|
+|5|HZAC|NYSE|
+<br>
 In order to determine the index value, the following steps are required:
-#### 1. Read index basket
-1.1. Get IPFS CID from CIDStore contract.<br>
-In order to get a link to a file, the user must use the `CID()` method of a special smart contract.<br>
-The method returns CID of INDEX5.JSON files. CID can be used to lookup file on IPFS.<br>
-1.2. Read SPAC5.JSON file from IPFS.<br>
-
-SPAC5.JSON file has the following format:
-```
-{
-  baskets: [
-    {
-      startDate: "2021-10-01",
-      endDate: "2021-12-31",
-      "correctionFactor": "1",
-      "stocks": [
-          {
-             "symbol": "PSTH",
-             "weight" : "0.2"
-          },
-          {
-             "symbol": "IPOF",
-             "weight" : "0.2"
-          },
-          {
-             "symbol": "GGPI",
-             "weight" : "0.2"
-          },
-          {
-             "symbol": "GSAH",
-             "weight" : "0.2"
-          },
-          {
-             "symbol": "HZAC",
-             "weight" : "0.2"
-          }
-
-      ]
-    }
-  ],
-  ...
-]
-```
-It contains the list of baskets. Each basket has `startDate` and `endDate` (inclusive) denoting time period when the basket takes effect. Basket also has `correctionFactor` (see later) and list of stock symbols with corresponding weights for index calcualtion (see later).
-
-Baskets are immutable. Changing basket is performed by adding new basket to JSON file with new `endDate` and `startDate`. Baskets for older dates are preserved in SPAC5.JSON in order to price feed could get historical prices for any date in the past.
-
-
-#### 2. Get shares quotes
+#### 1. Get shares quotes
 Real time and historical share prices are available from MarketStack.com (API).<br> 
 Price requests should use the daily price for the date corresponding to price request timestamp. In the future, it is planned to use hourly and minute prices. Close price should be used. If no close price is available (Marketstack returns `null`) then open price should be used.
 <br><br>
@@ -148,49 +108,19 @@ API Response Objects:
 |last|  Returns the last executed trade of the given symbol on its exchange.|
 |volume|  Returns the volume of the given stock ticker.|
 
-#### 3. Evaluate index value
-3.1. Sum up weighted quotes of all 5 SPAC shares. Weighted quote is a share quote multiplied by corresponding weihgt from SPAC5.JSON file.<br>
-3.2. Multiply result by K (correction factor).<br>
+#### 2. Evaluate index value
+2.1. Sum up quotes of all N SPAC shares included in index.<br>
+2.2. Divide result by N (number of shares in index basket).<br>
 ```
-INDEX = (SumUp (Qi * Wi)) * K
+           SumUp (Qi)
+INDEX = ------------------
+               N
 ```
 where:
 - Qi - quote of Share i in index;<br>
-- Wi - weight of Share i in index.<br>
-- K - Correction factor, used to smooth the index values when the basket is changed. The value of K for the current index bucket is taken from the SPAC5.JSON file. The value of K changes when the index basket changes and is calculated in accordance with Section 4.2.<br>
 - N - number of shares in index.<br>
-#### 4. Revise index basket
-4.1. In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required.<br>
-Usually, revision of the index basket is carried out quarterly. The revision of the uSPAC5 index basket is carried out on the following dates:
-- last 5 days of March;
-- last 5 days of June;
-- last 5 days of September;
-- last 5 days of December.
 
-In order to create new index bucket, you need to do the following:
-- Select the first 5 shares of SPAC by the link: [Most Active SPACs Yahoo Finance](https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-spacs);
-- Enter the tickers of these shares in the SPAC5.JSON file;
-- Calculate the value of correction factor K (see further section 4.2.) and enter it in the SPAC5.JSON;
-- Put it in the SPAC5.JSON date of change.
-
-4.2. Correction factor (**K**), used to smooth the index values when the basket is changed.<br><br>
-The value of K calculated as quotient of division INDEXold by INDEXnew:<br>
-```
-                INDEXold
-          K = ------------
-                INDEXnew
-```
-where:
-- INDEXold – the last index value calculated from the old basket;<br>
-- INDEXnew – the first index value calculated for the new basket at the same time as INDEXold;<br>
-
-The initial value of K is chosen arbitrarily, for example 1.
-
-#### 5. Change index basket
-5.1. Upload a new SPAC5.JSON file in IPFS, get the CID to the file.<br>
-5.2. Replace the CID in the smart contract by voting users.<br>
-
-When changing the composition of the index, the link to the new file is changed in the smart contract by voting. So, malicious modification of the index composition is impossible.
+> In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we will publish a new price identifier quarterly.
 
 ### Weekend timestamp
 Over the weekend or some official holidays the REST API does not return any price, but we can request the price of a certain moment before the market close (as ex: the closing price of Friday).
@@ -261,8 +191,7 @@ axios.request(options).then(function (response) {
 ## SECURITY CONSIDERATIONS
 Security considerations are focused on the use of the token price for monitoring collateral ratios.
 
-1) There is no risk of malicious modification of the index basket because the file with the list of stocks included in the index is stored in a decentralized IPFS file system and the link to it can be changed only as a result of user voting.
-2) The risk of manipulation of stock quotes included in the index is insignificant because a reliable source of quotes is used. In addition, users - wouters and disputers - have the opportunity to check the calculation of the index value based on independent sources of quotations themselves.
+The risk of manipulation of stock quotes included in the index is insignificant because a reliable source of quotes is used. In addition, users - wouters and disputers - have the opportunity to check the calculation of the index value based on independent sources of quotations themselves.
 
 ***
 Security considerations, like the ones above, have been contemplated and addressed, but there is potential for security holes to emerge due to the novelty of this price identifier.
