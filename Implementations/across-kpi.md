@@ -21,11 +21,11 @@ The intended recipients of these kpi options are limited to those that have alre
 
 The intention of this KPI option as an incentivization tool is to get people into the community during the early stages of our launch. Ultimately, the use case for this KPI option is to experiment with community bootstrapping.
 
-The day before is used because Discord does not have an easy way to query for members at a specific timestamp. The day of would not be fitting, as the value could change depending on when proposers/voters refer to the stats dashboard. The day before represents the number of members at the end of the day preceding the price request, and will remain static. 
+The day before is used because Discord does not have an easy way to query for members at a specific timestamp. The day of would not be fitting, as the value could change depending on when proposers/voters refer to the stats dashboard. The value at the end of the day before (midnight UTC) will remain static and should be used. As an example, a request for this price identifier that falls on November 2nd would use the membership count on November 2nd at 00:00 UTC. 
 
 ## Implementation
 
-1. Using the discord server statbot dashboard, proposers/voters should refer to the `Total member count` table and use the `Total Member` value from the day preceding the day that the price request timestamp fell in.
+1. Using the discord server statbot dashboard, proposers/voters should refer to the `Total member count` table and use the `Total Member` value from the end of the preceeding day or the beginning of the day that the price request falls in.
 2. The `Total Member` value should be returned as is with no rounding or transformation.
 
 
