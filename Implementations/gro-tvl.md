@@ -20,7 +20,7 @@ Rounding:0
 
 ## Implementation
 
-Total Gro Protocol TVL is determined by calculating the USD value of assets locked in Gro products fetching on-chain information from following contracts deployed on Ethereum (please confirm the canonical list of cotract addresses at [Gro Docs](https://docs.gro.xyz/gro-docs/developer-apis/contracts)):
+Total Gro Protocol TVL is determined by calculating the USD value of assets locked in Gro products fetching on-chain information from following contracts deployed on Ethereum (please confirm the canonical list of contract addresses at [Gro Docs](https://docs.gro.xyz/gro-docs/developer-apis/contracts)):
 
 * PWRD Stablecoin: 0xF0a93d4994B3d98Fb5e3A2F90dBc2d69073Cb86b
 * Gro Vault (GVT): 0x3ADb04E127b9C0a5D36094125669d4603AC52a0c
