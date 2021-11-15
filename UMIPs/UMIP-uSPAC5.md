@@ -43,7 +43,7 @@ The SPAC market is growing exponentially:
 By their nature, SPAC shares are subject to impulsive growth at the moment of information or even just rumors that a target company for a merger has been found.<br>
 `A good way to capitalize on such momentum growth without having to analyze hundreds of SPACs is to take advantage of the movement of the index value that includes stocks of the most active SPACs.`<br>
 
-The selection of 5 stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [yahoo.finance Most Active SPACs](<https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-spacs>).<br>
+The selection of **5** stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [yahoo.finance Most Active SPACs](<https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-spacs>).<br>
 These underlying assets are traded on the NYSE, but reliable sources of quotations are either paid or provide data with a delay.<br> 
 We suggest using the [MarketStack](https://marketstack.com/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
 
@@ -119,7 +119,7 @@ INDEX = ------------------
 ```
 where:
 - Qi - quote of Share i in index;<br>
-- N - number of shares in index.<br>
+- N - number of shares in index. **N = 5**<br>
 
 > In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we will publish a new price identifier quarterly.
 
@@ -141,7 +141,7 @@ In the case of a MarketStack outage voters can turn to any other available price
 -- Live price feed data<br>
 -- Historical prices based on date and time<br>
 -- Registration is free<br>
--- Paid plans available<br>
+-- Free and paid plans available: https://rapidapi.com/apidojo/api/yh-finance/pricing<br>
 -- OHLC request can be used to grab the last closing price before a weekend or a non-working day<br>
 -- Example (PSTH) requests:
 ```
@@ -168,7 +168,7 @@ axios.request(options).then(function (response) {
 -- Live price feed data<br>
 -- Historical prices based on date and time<br>
 -- Registration is free<br>
--- Paid plans available<br>
+-- Free and paid plans available: https://rapidapi.com/mpeng/api/stock-and-options-trading-data-provider/pricing<br>
 -- OHLC request can be used to grab the last closing price before a weekend or a non-working day<br>
 -- Example (PSTH) requests:
 ```
