@@ -53,7 +53,7 @@ The voters should also verify that the combined KPI score is returned correctly 
 | Key          | Interpretation                                            | Target | Weight |
 |--------------|-----------------------------------------------------------|--------|--------|
 | totalTVL     | TVL for all 2Pi products                                  | $10MM  | 40%    |
-| marketCap    | Market capitalization of 2Pi token                        | $15MM  | 40%    |
+| marketCap    | Fully diluted market capitalization of 2Pi token          | $15MM  | 40%    |
 | holders      | Number of users holding 2Pi and stk2Pi tokens             | 2,000  | 10%    |
 | transactions | Number of Deposit+Withdrawal transactions in 2Pi products | 5,000  | 10%    |
 
@@ -79,11 +79,11 @@ In order to determine USD price per staked token voters should follow the calcul
 
 ### Market capitalization
 
-Market capitalization should be obtained by multiplying 2Pi token price in USD (see TVL section above) with amount of issued tokens. Amount of issued tokens is fetched calling `totalSupply` method on 2Pi contract at the latest available block at or before the request timestamp and scaled down to 18 decimals.
+Fully diluted market capitalization should be obtained by multiplying 2Pi token price in USD (see TVL section above) with maximum amount of token supply. Maximum amount of token supply is fetched calling `MAX_SUPPLY` or `cap` method on 2Pi contract at the latest available block at or before the request timestamp and scaled down to 18 decimals.
 
 ### Number of users
 
-Voters should count number of unique account addresses holding either 2Pi or stk2Pi tokens with balance above 0 (except for zero address and 2Pi contract itself). This can be achieved by indexing all `Transfer` events on both contracts till the latest available block at or before the request timestamp and recalculating active user balances at the end of the period.
+Voters should count number of unique account addresses holding either 2Pi or stk2Pi tokens with balance above 0 (except for zero address, 2Pi contract itself, Distributor (timelock) and Archimedes contracts). This can be achieved by indexing all `Transfer` events on both contracts till the latest available block at or before the request timestamp and recalculating active user balances at the end of the period.
 
 ### Number of transactions
 
