@@ -1,24 +1,24 @@
 ## HEADERS
 |UMIP-<#>      | | 
 |:-------------|:-----------------------------------------------------------------------------|
-|UMIP title|Add uSPAC5 as price identifier|
+|UMIP title|Add uSPAC10 as price identifier|
 |Author|BinomFX (binomfx@gmail.com)|
 |Status|Draft| 
 |Created|20.10.2021|
-|Discourse Link|https://discourse.umaproject.org/t/add-uspac5-as-price-identifier-for-emp-contract/1357?u=binomfx|
+|Discourse Link|https://discourse.umaproject.org/t/add-uspac10-as-price-identifier-for-emp-contract/1357?u=binomfx|
 
 ## SUMMARY
-The DVM should support price requests for uSPAC5 price identifier<br>
+The DVM should support price requests for uSPAC10 price identifier<br>
 The purpose of these price identifier is to create synthetic token, price of which is linked to the value of index of 5 most active SPACs (Special Purpose Acquisition Companies) shares.<br> That synthetic token can be used for creating speculative strategies at IPO market.
 
 ## MOTIVATION
-A synthetic token that tracks the index of the 5 most active SPACs stocks can be used for speculative purposes and allows the user to earn on price movements in one of the most interesting markets without centralized intermediaries such as exchanges and brokers.<br> 
+A synthetic token that tracks the index of the 10 most active SPACs stocks can be used for speculative purposes and allows the user to earn on price movements in one of the most interesting markets without centralized intermediaries such as exchanges and brokers.<br> 
 In addition, that token can be used as components associated with classical markets by other DeFi and DApp protocols, which makes it possible to scale.
 
 ## TECHNICAL SPECIFICATION
 | | |
 |:---------------------------|:---------------------------------------------------|
-|**Identifier name**         |**uSPAC5-2021q4**|
+|**Identifier name**         |**uSPAC10-2021q4**|
 |Base asset                  | Most active SPAC shares.|
 |Quote Currency              | USD|
 |Intended Collateral Currency| USDC|
@@ -43,7 +43,7 @@ The SPAC market is growing exponentially:
 By their nature, SPAC shares are subject to impulsive growth at the moment of information or even just rumors that a target company for a merger has been found.<br>
 `A good way to capitalize on such momentum growth without having to analyze hundreds of SPACs is to take advantage of the movement of the index value that includes stocks of the most active SPACs.`<br>
 
-The selection of **5** stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [yahoo.finance Most Active SPACs](<https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-spacs>).<br>
+The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [yahoo.finance Most Active SPACs](<https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-spacs>).<br>
 These underlying assets are traded on the NYSE, but reliable sources of quotations are either paid or provide data with a delay.<br> 
 We suggest using the [MarketStack](https://marketstack.com/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
 
@@ -63,6 +63,11 @@ The list of stocks included in the index basket are:
 |3|GGPI|NYSE|
 |4|GSAH|NYSE|
 |5|HZAC|NYSE|
+|6|HZAC|NYSE|
+|7|HZAC|NYSE|
+|8|HZAC|NYSE|
+|9|HZAC|NYSE|
+|10|HZAC|NYSE|
 <br>
 In order to determine the index value, the following steps are required:
 
@@ -119,7 +124,7 @@ INDEX = ------------------
 ```
 where:
 - Qi - quote of Share i in index;<br>
-- N - number of shares in index. **N = 5**<br>
+- N - number of shares in index. **N = 10**<br>
 
 > In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we will publish a new price identifier quarterly.
 
