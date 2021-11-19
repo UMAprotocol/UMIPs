@@ -22,7 +22,7 @@ In addition, that token can be used as components associated with classical mark
 |Base asset                  | Most active SPAC shares.|
 |Quote Currency              | USD|
 |Intended Collateral Currency| USDC|
-|Market                      | NYSE|
+|Market                      | NYSE, NASDAQ|
 |Source                      |https://marketstack.com/, API - Cost to use: Free - End-of-Day Data; Paid – Intraday Data (https://marketstack.com/plan)|
 |Scaling Decimals            | 18 (1e18)|
 |Rounding                    | Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)|
@@ -43,7 +43,7 @@ The SPAC market is growing exponentially:
 By their nature, SPAC shares are subject to impulsive growth at the moment of information or even just rumors that a target company for a merger has been found.<br>
 `A good way to capitalize on such momentum growth without having to analyze hundreds of SPACs is to take advantage of the movement of the index value that includes stocks of the most active SPACs.`<br>
 
-The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [yahoo.finance Most Active SPACs](<https://finance.yahoo.com/u/yahoo-finance/watchlists/most-active-spacs>).<br>
+The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [SPAC Analytics Top Performing SPACs] (https://www.spacanalytics.com/).<br>
 These underlying assets are traded on the NYSE, but reliable sources of quotations are either paid or provide data with a delay.<br> 
 We suggest using the [MarketStack](https://marketstack.com/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
 
@@ -58,16 +58,16 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 The list of stocks included in the index basket are:
 |N|TICKER|MARKET|
 |:-:|:------:|:--------:|
-|1|PSTH|NYSE|
-|2|IPOF|NYSE|
-|3|GGPI|NYSE|
-|4|GSAH|NYSE|
-|5|HZAC|NYSE|
-|6|++++|NYSE|
-|7|++++|NYSE|
-|8|++++|NYSE|
-|9|++++|NYSE|
-|10|++++|NYSE|
+|1|DWAC|NASDAQ|
+|2|IRDM|NASDAQ|
+|3|PRIM|NASDAQ|
+|4|TGLS|NASDAQ|
+|5|MP|NYSE|
+|6|LCID|NASDAQ|
+|7|GDYN|NASDAQ|
+|8|SMPL|NASDAQ|
+|9|ENVX|NASDAQ|
+|10|QS|NYSE|
 <br>
 In order to determine the index value, the following steps are required:
 
