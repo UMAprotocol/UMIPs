@@ -43,7 +43,7 @@ The SPAC market is growing exponentially:
 By their nature, SPAC shares are subject to impulsive growth at the moment of information or even just rumors that a target company for a merger has been found.<br>
 `A good way to capitalize on such momentum growth without having to analyze hundreds of SPACs is to take advantage of the movement of the index value that includes stocks of the most active SPACs.`<br>
 
-The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [SPAC Analytics Top Performing SPACs] (https://www.spacanalytics.com/).<br>
+The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [SPAC Analytics Top Performing SPACs](https://www.spacanalytics.com/).<br>
 These underlying assets are traded on the NYSE, but reliable sources of quotations are either paid or provide data with a delay.<br> 
 We suggest using the [MarketStack](https://marketstack.com/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
 
@@ -55,6 +55,7 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 
 ## IMPLEMENTATION
 ### Price Identifier
+The index basket is formed by including the first 10 stocks from the Top Performing SPACs table from the website [SPACanalytics.com](https://www.spacanalytics.com/)
 The list of stocks included in the index basket are:
 |N|TICKER|MARKET|
 |:-:|:------:|:--------:|
