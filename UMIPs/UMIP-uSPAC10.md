@@ -63,17 +63,17 @@ The list of stocks included in the index basket are:
 |3|GGPI|NYSE|
 |4|GSAH|NYSE|
 |5|HZAC|NYSE|
-|6|HZAC|NYSE|
-|7|HZAC|NYSE|
-|8|HZAC|NYSE|
-|9|HZAC|NYSE|
-|10|HZAC|NYSE|
+|6|++++|NYSE|
+|7|++++|NYSE|
+|8|++++|NYSE|
+|9|++++|NYSE|
+|10|++++|NYSE|
 <br>
 In order to determine the index value, the following steps are required:
 
 #### 1. Get shares quotes
 Real time and historical share prices are available from MarketStack.com (API).<br> 
-Price requests should use the daily price for the date corresponding to price request timestamp. In the future, it is planned to use hourly and minute prices. Close price should be used. If no close price is available (Marketstack returns `null`) then open price should be used.
+Price requests should use the daily price for the date corresponding to price request timestamp. Close price should be used. If no close price is available (Marketstack returns `null`) then open price should be used.
 <br><br>
 Example MarketStack request for a PSTH real time **end-of-day** price (available on: All plans):
 ```
