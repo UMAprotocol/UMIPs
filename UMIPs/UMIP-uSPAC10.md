@@ -46,7 +46,7 @@ By their nature, SPAC shares are subject to impulsive growth at the moment of in
 The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [SPAC Analytics Top Performing SPACs](https://www.spacanalytics.com/).<br>
 >SPAC Analytics is the leading provider of SPAC data and research to portfolio managers and investment banks since 2007.
 
-These underlying assets are traded on the NYSE, but reliable sources of quotations are either paid or provide data with a delay.<br> 
+These underlying assets are traded on the NYSE and NASDAQ, but reliable sources of quotations are either paid or provide data with a delay.<br> 
 We suggest using the [MarketStack](https://marketstack.com/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
 
 >Back in early 2018, MarketStack was initially presented under a different name with the aim of providing a free and cost-effective market data alternative to Yahoo Finance. In the course of the years, MarketStack REST API has become one of the most popular one-stop shop solutions for real-time, intraday and historical stock data, supporting a total of 170,000+ stock tickers from 70 global stock exchanges, including NASDAQ, Australian Stock Exchange, London Stock Exchange, and many more.
