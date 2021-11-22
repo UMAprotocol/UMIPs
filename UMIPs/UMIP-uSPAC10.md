@@ -18,7 +18,7 @@ In addition, that token can be used as components associated with classical mark
 ## TECHNICAL SPECIFICATION
 | | |
 |:---------------------------|:---------------------------------------------------|
-|**Identifier name**         |**uSPAC10-2021q4**|
+|**Identifier name**         |**uSPAC10**|
 |Base asset                  | Most active SPAC shares.|
 |Quote Currency              | USD|
 |Intended Collateral Currency| USDC|
