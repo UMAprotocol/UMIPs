@@ -67,7 +67,6 @@ On Ethereum mainnet final fees in the Store contract should be set to:
 * DEXTF: [0x5f64ab1544d28732f0a24f4713c2c8ec0da089f0](https://etherscan.io/address/0x5f64ab1544d28732f0a24f4713c2c8ec0da089f0): 5000
 * ORN: [0x0258f474786ddfd37abce6df6bbb1dd5dfc4434a](https://etherscan.io/address/0x0258f474786ddfd37abce6df6bbb1dd5dfc4434a): 210
 * BOND: [0x0391d2021f89dc339f60fff84546ea23e337750f](https://etherscan.io/address/0x0391d2021f89dc339f60fff84546ea23e337750f): 55
-* PUNK-BASIC: [0x69bbe2fa02b4d90a944ff328663667dc32786385](https://etherscan.io/address/0x69bbe2fa02b4d90a944ff328663667dc32786385): [TBD]
 * LUSD: [0x5f98805a4e8be255a32880fdec7f6728c6568ba0](https://etherscan.io/address/0x5f98805a4e8be255a32880fdec7f6728c6568ba0): 1500
 * iFARM: [0x1571ed0bed4d987fe2b498ddbae7dfa19519f651](https://etherscan.io/address/0x1571ed0bed4d987fe2b498ddbae7dfa19519f651): 9
 * yvUSDC: [0x5f18c75abdae578b483e5f43f12a39cf75b973a9](https://etherscan.io/address/0x5f18c75abdae578b483e5f43f12a39cf75b973a9): 1400
@@ -136,4 +135,4 @@ On Polygon mainnet final fees in the Store contract should be set to:
 * IRON: [0xd86b5923f3ad7b585ed81b448170ae026c65ae9a](https://polygonscan.com/address/0xd86b5923f3ad7b585ed81b448170ae026c65ae9a): 1500
 * POOL: [0x25788a1a171ec66da6502f9975a15b609ff54cf6](https://polygonscan.com/address/0x25788a1a171ec66da6502f9975a15b609ff54cf6): 170
 
-Note that final fees fore RAI, DFX, APW and BADGER remain the same as they already are close to $1500 target.
+Note that final fees fore RAI, DFX, APW and BADGER remain the same as they already are close to $1500 target. Also, even though the current final fee of 0.015 for PUNK-BASIC can be valued above $3000 the liquidity on SushiSwap is almost non-existent, hence the fee is left unchanged due to security considerations.
