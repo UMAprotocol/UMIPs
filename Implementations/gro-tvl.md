@@ -25,6 +25,8 @@ Total Gro Protocol TVL is determined by calculating the USD value of assets lock
 * PWRD Stablecoin: 0xF0a93d4994B3d98Fb5e3A2F90dBc2d69073Cb86b
 * Gro Vault (GVT): 0x3ADb04E127b9C0a5D36094125669d4603AC52a0c
 
+In case Gro protocol is expanded with new contracts and this document is not up to date the voters should refer to the canonical list of addresses at [Gro Docs](https://docs.gro.xyz/gro-docs/developer-apis/contracts).
+
 1. Identify all midnight UTC timestamps and their corresponding latest available block numbers during the period provided in the `Aggregation` parameter from the ancillary data.
 2. Call the `totalAssets` method on each of Gro product token contracts listed above at each block number identified in the Step 1. The results should be scaled down by 18 decimals and it represents USD value locked in each of Gro products.
 3. For each identified block number sum USD values locked in all Gro products obtained from the Step 2.
