@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP-127          |                                                                        |
-|-------------------|------------------------------------------------------------------------|
-| UMIP Title        | Add AUDUSD, BRLUSD, MXNUSD, COPUSD, CZKUSD, SEKUSD, PLNUSD and TRYUSD as price identifier |
-| Authors           | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                            |
-| Status            | Draft                                                            |
-| Created           | 12/11/21                                                               |
-| Discourse link    |  https://discourse.umaproject.org/t/umip-139-audusd-brlusd-mxnusd-copusd-czkusd-sekusd-plnusd-as-price-identifier/1368 |
+| UMIP-139          |                                                                                                                       |
+|-------------------|-----------------------------------------------------------------------------------------------------------------------|
+| UMIP Title        | Add AUDUSD, BRLUSD, MXNUSD, COPUSD, CZKUSD, SEKUSD, PLNUSD and TRYUSD as price identifier                             |
+| Authors           | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                                                                           |
+| Status            | Last Call                                                                                                             |
+| Created           | 12/11/21                                                                                                              |
+| Discourse link    | https://discourse.umaproject.org/t/umip-139-audusd-brlusd-mxnusd-copusd-czkusd-sekusd-plnusd-as-price-identifier/1368 |
 
 ## Summary
 
