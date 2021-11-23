@@ -87,7 +87,7 @@ On Ethereum mainnet final fees in the Store contract should be set to:
 * NDX: [0x86772b1409b61c639eaac9ba0acfbb6e238e5f83](https://etherscan.io/address/0x86772b1409b61c639eaac9ba0acfbb6e238e5f83): 1000
 * BPRO: [0xbbbbbbb5aa847a2003fbc6b5c16df0bd1e725f61](https://etherscan.io/address/0xbbbbbbb5aa847a2003fbc6b5c16df0bd1e725f61): 270
 * OHM: [0x383518188c0c6d7730d91b2c03a03c837814a899](https://etherscan.io/address/0x383518188c0c6d7730d91b2c03a03c837814a899): 2
-* IDLE: [0x875773784af8135ea0ef43b5a374aad105c5d39e](https://etherscan.io/address/0x875773784af8135ea0ef43b5a374aad105c5d39e): 370
+* IDLE: [0x875773784af8135ea0ef43b5a374aad105c5d39e](https://etherscan.io/address/0x875773784af8135ea0ef43b5a374aad105c5d39e): 530
 * GNO: [0x6810e776880c02933d47db1b9fc05908e5386b96](https://etherscan.io/address/0x6810e776880c02933d47db1b9fc05908e5386b96): 4
 * POOL: [0x0cec1a9154ff802e7934fc916ed7ca50bde6844e](https://etherscan.io/address/0x0cec1a9154ff802e7934fc916ed7ca50bde6844e): 170
 * DOUGH: [0xad32a8e6220741182940c5abf610bde99e737b2d](https://etherscan.io/address/0xad32a8e6220741182940c5abf610bde99e737b2d): 2200
@@ -104,7 +104,7 @@ On Ethereum mainnet final fees in the Store contract should be set to:
 * IF: [0xb0e1fc65c1a741b4662b813eb787d369b8614af1](https://etherscan.io/address/0xb0e1fc65c1a741b4662b813eb787d369b8614af1): 980
 * PERP: [0xbc396689893d065f41bc2c6ecbee5e0085233447](https://etherscan.io/address/0xbc396689893d065f41bc2c6ecbee5e0085233447): 105
 * GRO: [0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7](https://etherscan.io/address/0x3ec8798b81485a254928b70cda1cf0a2bb0b74d7): 210
-* AQUA: [0xd34a24006b862f4e9936c506691539d6433ad297](https://etherscan.io/address/0xd34a24006b862f4e9936c506691539d6433ad297): 3650000
+* AQUA: [0xd34a24006b862f4e9936c506691539d6433ad297](https://etherscan.io/address/0xd34a24006b862f4e9936c506691539d6433ad297): 6600000
 * IDIA: [0x0b15ddf19d47e6a86a56148fb4afffc6929bcb89](https://etherscan.io/address/0x0b15ddf19d47e6a86a56148fb4afffc6929bcb89): 700
 * QUARTZ: [0xba8a621b4a54e61c442f5ec623687e2a942225ef](https://etherscan.io/address/0xba8a621b4a54e61c442f5ec623687e2a942225ef): 220
 * ibBTC: [0xc4e15973e6ff2a35cc804c2cf9d2a1b817a8b40f](https://etherscan.io/address/0xc4e15973e6ff2a35cc804c2cf9d2a1b817a8b40f): 0.025
