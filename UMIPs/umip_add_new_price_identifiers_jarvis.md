@@ -83,9 +83,9 @@ Apart from the weekend, there is little to no difference in prices on liquid maj
 
 Historical  AUDUSD, BRLUSD, MXNUSD, COPUSD, CZKUSD, SEKUSD, PLNUSD and TRYUSD prices from TraderMade are available in minute increments. Price requests should use the minute price that is nearest and later than the price request timestamp. To do this, voters should use the open price of the OHLC period that the price request timestamp falls in. TraderMade endpoints are queried based on the OHLC period's close time.
 
-As an example, a request for an AUDUSD price at 2020-11-11-01:52:16 should query for the period ending at 2020-11-11-01:53:00 and use the open price.
+As an example, a request for an AUDUSD price at 2020-11-11-01:52:16 should query for the period ending at 2020-11-11-01:53 and use the open price.
 
-The TraderMade endpoint used would be: https://marketdata.tradermade.com/api/v1/minute_historical?currency=AUDUSD&date_time=2020-11-11-13:01&api_key=apikey
+The TraderMade endpoint used would be: https://marketdata.tradermade.com/api/v1/minute_historical?currency=AUDUSD&date_time=2020-11-11-01:53&api_key=apikey
 
 AUDUSD, BRLUSD, MXNUSD, COPUSD, CZKUSD, SEKUSD, PLNUSD and TRYUSD should then be rounded to 5 decimals.
 
@@ -148,7 +148,7 @@ Documentation for the API can be found [here](https://fcsapi.com/document/forex-
 Example requests:
 
 - Live Rate for AUD/USD: `https://fcsapi.com/api-v3/forex/latest?symbol=AUD/USD&access_key=api_key`
-- Historical price for a certain date for SGD/USD - gives back the OHLC: `https://fcsapi.com/api-v3/forex/history?symbol=AUD/USD&period=1D&from=2020-12-23&to=2020-12-24&access_key=api_key`
+- Historical price for a certain date for AUD/USD - gives back the OHLC: `https://fcsapi.com/api-v3/forex/history?symbol=AUD/USD&period=1D&from=2020-12-23&to=2020-12-24&access_key=api_key`
 - Price of AUD/USD between certain dates and times - gives a breakdown on the price each 1 minute between 12:00 and 12:30: `https://fcsapi.com/api-v3/forex/history?symbol=AUD/USD&period=1M&from=2020-12-23T12:00&to=2020-12-23T12:30&access_key=api_key`  
 
 ## Security considerations
