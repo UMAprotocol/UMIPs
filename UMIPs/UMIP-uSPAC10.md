@@ -43,7 +43,7 @@ The SPAC market is growing exponentially:
 By their nature, SPAC shares are subject to impulsive growth at the moment of information or even just rumors that a target company for a merger has been found.<br>
 `A good way to capitalize on such momentum growth without having to analyze hundreds of SPACs is to take advantage of the movement of the index value that includes stocks of the most active SPACs.`<br>
 
-The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC5 index is made according to [SPAC Analytics Top Performing SPACs](https://www.spacanalytics.com/).<br>
+The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC10 index is made according to [SPAC Analytics Top Performing SPACs](https://www.spacanalytics.com/).<br>
 >SPAC Analytics is the leading provider of SPAC data and research to portfolio managers and investment banks since 2007.
 
 These underlying assets are traded on the NYSE and NASDAQ, but reliable sources of quotations are either paid or provide data with a delay.<br> 
@@ -140,7 +140,7 @@ Please note that this is different than the normal calculation process, which re
 Underlaying assets trade during exchange hours which leaves gaps in prices between 4:00PM EST close and 9:30AM EST open the next day and on weekends and market holidays.
 ### Price feed
 Our price-feed provider’s API documentation can be found [here](https://marketstack.com/documentation).<br>
-A reference price feed implementation that is used by liquidator, dispute and funding rate proposer bots can be seen [here](https://github.com/unisxapp/uma/tree/USPAC5PriceFeed)<br>
+A reference price feed implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/unisxapp/uma/tree/USPAC5PriceFeed)<br>
 MarketStack is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
 In the case of a MarketStack outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 ### Additional price feed providers
