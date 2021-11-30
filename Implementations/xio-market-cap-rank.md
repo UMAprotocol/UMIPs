@@ -25,17 +25,19 @@ XIO market cap is determined by comparing the market cap of XIO against other cr
 
 ```
 cmc_api_key = "YOUR_CMC_API_KEY"
+timestamp = "UNIX_timestamp" // uses UNIX format
 
 Query url:
-https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/historical?CMC_PRO_API_KEY={cmc_api_key}&date=1672603200&convert=XIO,USD
+https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/historical?CMC_PRO_API_KEY={cmc_api_key}&date={timestamp}&convert=XIO,USD
 ```
 2. Use the below URL to query the Cryptorank XIO market cap ranking. The query response sorts the results by market cap rank. Take a note of the index number for the element in the response where `symbol` is equal to `XIO`. Add 1 to this value and ensure that it corresponds to the latest timestamp that is at or before the price request timestamp. Please note, a Launch, Grow, or Business API plan is required. 
 
 ```
 cryptorank_api_key = "YOUR_CRYPTORANK_API_KEY"
+timestamp = "ISO_8601_timestamp" // uses ISO 8601 format
 
 Query url:
-https://api.cryptorank.io/v1/currencies/historical?time=2023-01-01T20:00:00Z&limit=2000&api_key={cryptorank_api_key}&sort=rank
+https://api.cryptorank.io/v1/currencies/historical?time={timestamp}&limit=2000&api_key={cryptorank_api_key}&sort=rank
 ```
 3. Add the result from steps 1 and 2 and divide by 2. Round the result to 0 decimal places. This value represents the market cap rank of XIO.
 
@@ -52,12 +54,12 @@ const cmc_api_key = "YOUR_CMC_API_KEY";
 const cryptorank_api_key = "YOUR_CRYPTORANK_API_KEY";
 
 /* Set CMC params */
-const cmc_date = "1637624697"; // uses UNIX format
+const cmc_date = "UNIX_timestamp"; // uses UNIX format
 const cmc_convert = "XIO,USD";
 
 /* Set Cryptorank params */
 const cryptorank_limit = "1500"; // needs to be greater than the expected market cap rank
-const cryptorank_time = "2021-11-28T21:08:19.826Z"; // uses ISO 8601 format
+const cryptorank_time = "ISO_8601_timestamp"; // uses ISO 8601 format
 
 // Collect cmc rank
 async function collectCmcRank(api_key, date, convert) {
@@ -108,12 +110,31 @@ async function collectCryptorankRank(api_key, limit, time) {
     return Math.round(xioRank);
   }
 
+// Provided by Blockzero Labs: This function will take in the ranking and spit out the KPI Value (XIO).
+function calculateKPIRedemption(xioAverageRank) {
+    let current_rank = parseInt(xioAverageRank);
+
+    const lowest_possible_rank = 1000;
+    const highest_possible_rank = 100;
+
+    if(current_rank < 100) {
+        return 100000;
+    } else if(current_rank > 1000) {
+        return 0
+    } else {
+        return Math.round(( 1 - ( current_rank / lowest_possible_rank - highest_possible_rank / lowest_possible_rank )) * 100000)
+    }
+}
+
 /**
  * Script runner
  */
- async function main() {
-  // Output XIO market cap rank to console
-    console.log("XIO Rank: " + (await calculateXioRank()));
+async function main() {
+    // Output XIO market cap rank to console
+    const xioRank = await calculateXioRank();
+
+    console.log("XIO Rank is", xioRank);
+    console.log("-> 1 KPI current =", calculateKPIRedemption(xioRank));
 }
 
 // Run script
