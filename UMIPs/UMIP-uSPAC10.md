@@ -23,7 +23,7 @@ In addition, that token can be used as components associated with classical mark
 |Quote Currency              | USD|
 |Intended Collateral Currency| USDC|
 |Market                      | NYSE, NASDAQ|
-|Source                      |https://marketstack.com/, API - Cost to use: Free - End-of-Day Data; Paid – Intraday Data (https://marketstack.com/plan)|
+|Source                      |["Stock Data  – Rapidapi.com"](https://rapidapi.com/principalapis/api/stock-data-yahoo-finance-alternative/), API - Cost to use: Free 1000 requests per month, [Pricing](https://rapidapi.com/principalapis/api/stock-data-yahoo-finance-alternative/pricing)|
 |Scaling Decimals            | 18 (1e18)|
 |Rounding                    | Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)|
 
@@ -47,7 +47,7 @@ The selection of **10** stocks of the most active SPACs included in the basket o
 >SPAC Analytics is the leading provider of SPAC data and research to portfolio managers and investment banks since 2007.
 
 These underlying assets are traded on the NYSE and NASDAQ, but reliable sources of quotations are either paid or provide data with a delay.<br> 
-We suggest using the [MarketStack](https://marketstack.com/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
+We suggest using the ["Stock Data  – Rapidapi.com"](https://rapidapi.com/principalapis/api/stock-data-yahoo-finance-alternative/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
 
 >Back in early 2018, MarketStack was initially presented under a different name with the aim of providing a free and cost-effective market data alternative to Yahoo Finance. In the course of the years, MarketStack REST API has become one of the most popular one-stop shop solutions for real-time, intraday and historical stock data, supporting a total of 170,000+ stock tickers from 70 global stock exchanges, including NASDAQ, Australian Stock Exchange, London Stock Exchange, and many more.
 
@@ -75,23 +75,17 @@ The list of stocks included in the index basket are:
 In order to determine the index value, the following steps are required:
 
 #### 1. Get shares quotes
-Real time and historical share prices are available from MarketStack.com (API).<br> 
+Real time and historical share prices are available from "Stock Data  – Rapidapi.com" (API).<br> 
 Price requests should use the daily price for the date corresponding to price request timestamp. Close price should be used. If no close price is available (Marketstack returns `null`) then open price should be used.
 <br><br>
-Example MarketStack request for a PSTH real time **end-of-day** price (available on: All plans):
+Example "Stock Data  – Rapidapi.com" request for a PSTH real time **end-of-day** price (available on: All plans):
 ```
 http://api.marketstack.com/v1/eod
     ? access_key = YOUR_ACCESS_KEY
     & symbols = PSTH
 ```
    
-Example MarketStack request for a PSTH real time **intraday** price (available on: Basic Plan and higher):
-```
-http://api.marketstack.com/v1/intraday
-    ? access_key = YOUR_ACCESS_KEY
-    & symbols = PSTH
-```
-Example MarketStack request for a PSTH **historical** price (Available on: All plans):
+Example "Stock Data  – Rapidapi.com" request for a PSTH **historical** price (Available on: All plans):
 ```
 http://api.marketstack.com/v1/eod
     ? access_key = YOUR_ACCESS_KEY
@@ -141,8 +135,8 @@ Underlaying assets trade during exchange hours which leaves gaps in prices betwe
 ### Price feed
 Our price-feed provider’s API documentation can be found [here](https://marketstack.com/documentation).<br>
 A reference price feed implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/unisxapp/uma/tree/USPAC5PriceFeed)<br>
-MarketStack is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
-In the case of a MarketStack outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
+"Stock Data  – Rapidapi.com" is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
+In the case of a "Stock Data  – Rapidapi.com" outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 ### Additional price feed providers
 - **Yahoo Finance – Rapidapi.com**<br>
 -- Documentation for the API can be found here: https://rapidapi.com/apidojo/api/yahoo-finance1<br>
