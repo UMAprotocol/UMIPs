@@ -144,7 +144,7 @@ The below parameters will be used to return a value between 0 and 100,000 to the
 - highest_possible_rank = 100
 - lowest_possible_rank = 1,000
 
-1. If the returned current_rank value is below 100, the resolved price should be capped at 100,000.
+1. If the returned current_rank value is below 100, the resolved price should be 100,000.
 2. If the returned current_rank is above 1,000, the resolved price should be 0.
 3. If the returned current_rank value is above 100 and below 1,000, the resolved price should be calculated using the below formula:
 
