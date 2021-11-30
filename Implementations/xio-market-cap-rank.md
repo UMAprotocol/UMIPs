@@ -126,6 +126,15 @@ function calculateKPIRedemption(xioAverageRank) {
     }
 }
 
+// Provided by Blockzero Labs: Examples that have been verified.
+function printExamples() {
+  const rankings = [2000, 1000, 950, 900, 800, 700, 600, 500, 400, 300, 200, 100, 99, 50, 1];
+
+  rankings.forEach((rank) => {
+      console.log("Rank", rank, "=", calculateKPIRedemption(rank), " XIO")
+  })
+}
+
 /**
  * Script runner
  */
@@ -135,6 +144,9 @@ async function main() {
 
     console.log("XIO Rank is", xioRank);
     console.log("-> 1 KPI current =", calculateKPIRedemption(xioRank));
+
+    console.log("\nExamples that have been verified by XIO - For reference only:") 
+    printExamples();
 }
 
 // Run script
@@ -169,7 +181,7 @@ The below parameters will be used to return a value between 0 and 100,000 to the
 2. If the returned current_rank is above 1,000, the resolved price should be 0.
 3. If the returned current_rank value is above 100 and below 1,000, the resolved price should be calculated using the below formula:
 
-( 1 - ( current_rank / lowest_possible_rank - highest_possible_rank / lowest_possible_rank )) * 10,000
+( 1 - ( current_rank / lowest_possible_rank - highest_possible_rank / lowest_possible_rank )) * 100,000
 
 ## Intended Application
 
@@ -177,4 +189,4 @@ It is intended to deploy the documented KPI options using [LSP contract](https:/
 
 `collateralPerPair` parameter for the LSP contract would be set to 100,000 so that with the intended 100 option token distribution maximum absolute payout to the recipients would be 10,000,000 XIO.
 
-As an illustration, a `current_rank` value of 200 would result in a calculation of 90,000 as shown with ( 1 - ( 200 / 100 - 1,000 / 100 )) * 10,000. At settlement, the `expiryPercentLong` would be calculated using `(expiryPrice - lowerBound) / (upperBound - lowerBound)`. With an `expiryPrice` of 90,000, `expiryPercentLong` would be calculated as (90,000 - 0) / (100,000 - 0) = 0.90. Therefore, 90% of collateral would be allocated to long tokens and 10% would be allocated to short tokens. With a `collateralPerPair` set to 100,000, 90,000 XIO would be allocated to each long token and 10,000 XIO would be allocated to each short token.
+As an illustration, a `current_rank` value of 200 would result in a calculation of 90,000 as shown with ( 1 - ( 200 / 1000 - 100 / 1000 )) * 100,000. At settlement, the `expiryPercentLong` would be calculated using `(expiryPrice - lowerBound) / (upperBound - lowerBound)`. With an `expiryPrice` of 90,000, `expiryPercentLong` would be calculated as (90,000 - 0) / (100,000 - 0) = 0.90. Therefore, 90% of collateral would be allocated to long tokens and 10% would be allocated to short tokens. With a `collateralPerPair` set to 100,000, 90,000 XIO would be allocated to each long token and 10,000 XIO would be allocated to each short token.
