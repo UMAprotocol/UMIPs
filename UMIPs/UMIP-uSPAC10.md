@@ -86,7 +86,7 @@ var options = {
   params: {symbols: 'DWAC,IRDM,PRIM,TGLS,MP,LCID,GDYN,SMPL,ENVX,QS'},
   headers: {
     'x-rapidapi-host': 'stock-data-yahoo-finance-alternative.p.rapidapi.com',
-    'x-rapidapi-key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb'
+    'x-rapidapi-key': ACCESS_KEY
   }
 };
 
@@ -205,7 +205,7 @@ var options = {
   },
   headers: {
     'x-rapidapi-host': 'stock-data-yahoo-finance-alternative.p.rapidapi.com',
-    'x-rapidapi-key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb'
+    'x-rapidapi-key': ACCESS_KEY
   }
 };
 
