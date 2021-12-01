@@ -75,41 +75,237 @@ The list of stocks included in the index basket are:
 In order to determine the index value, the following steps are required:
 
 #### 1. Get shares quotes
-Real time and historical share prices are available from "Stock Data  – Rapidapi.com" (API).<br> 
-Price requests should use the daily price for the date corresponding to price request timestamp. Close price should be used. If no close price is available (Marketstack returns `null`) then open price should be used.
+Real time and historical share prices are available from "Stock Data – Rapidapi.com" (API).<br> 
+Price requests should use the daily price for the date corresponding to price request timestamp. Close price should be used.
 <br><br>
-Example "Stock Data  – Rapidapi.com" request for a PSTH real time **end-of-day** price (available on: All plans):
+##### Example "Stock Data – Rapidapi.com" request for 10 shares listed above **realtime prices**:
 ```
-http://api.marketstack.com/v1/eod
-    ? access_key = YOUR_ACCESS_KEY
-    & symbols = PSTH
+var axios = require("axios").default;
+
+var options = {
+  method: 'GET',
+  url: 'https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v6/finance/quote',
+  params: {symbols: 'DWAC,IRDM,PRIM,TGLS,MP,LCID,GDYN,SMPL,ENVX,QS'},
+  headers: {
+    'x-rapidapi-host': 'stock-data-yahoo-finance-alternative.p.rapidapi.com',
+    'x-rapidapi-key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb'
+  }
+};
+
+axios.request(options).then(function (response) {
+	console.log(response.data);
+}).catch(function (error) {
+	console.error(error);
+});
 ```
-   
-Example "Stock Data  – Rapidapi.com" request for a PSTH **historical** price (Available on: All plans):
+
+API Response Object:
+
 ```
-http://api.marketstack.com/v1/eod
-    ? access_key = YOUR_ACCESS_KEY
-    & symbols = PSTH
-    & date_from = 2021-08-23
-    & date_to = 2021-09-02
+{1 item
+    "quoteResponse":{2 items
+        "result":[10 items
+            0:{63 items
+                "language":"en-US"
+                "region":"US"
+                "quoteType":"EQUITY"
+                "quoteSourceName":"Delayed Quote"
+                "triggerable":true
+                "currency":"USD"
+                "shortName":"Digital World Acquisition Corp."
+                "marketState":"POSTPOST"
+                "twoHundredDayAverageChangePercent":0.03635165
+                "priceToBook":-181.1017
+                "sourceInterval":15
+                "exchangeDataDelayedBy":0
+                "ipoExpectedDate":"2021-09-30"
+                "tradeable":false
+                "exchange":"NGM"
+                "longName":"Digital World Acquisition Corp."
+                "messageBoardId":"finmb_715145893"
+                "exchangeTimezoneName":"America/New_York"
+                "exchangeTimezoneShortName":"EST"
+                "gmtOffSetMilliseconds":-18000000
+                "market":"us_market"
+                "esgPopulated":false
+                "firstTradeDateMilliseconds":1633008600000
+                "priceHint":2
+                "postMarketChangePercent":-0.56153876
+                "postMarketTime":1638233985
+                "postMarketPrice":42.5
+                "postMarketChange":-0.24000168
+                "regularMarketChange":-0.3599968
+                "regularMarketChangePercent":-0.83525944
+                "regularMarketTime":1638219603
+                "regularMarketPrice":42.74
+                "regularMarketDayHigh":44.2
+                "regularMarketDayRange":"41.51 - 44.2"
+                "regularMarketDayLow":41.51
+                "regularMarketVolume":1393432
+                "regularMarketPreviousClose":43.1
+                "bid":42.41
+                "ask":42.69
+                "bidSize":8
+                "askSize":9
+                "fullExchangeName":"NasdaqGM"
+                "financialCurrency":"USD"
+                "regularMarketOpen":43.46
+                "averageDailyVolume3Month":23048800
+                "averageDailyVolume10Day":4166100
+                "fiftyTwoWeekLowChange":32.9
+                "fiftyTwoWeekLowChangePercent":3.343496
+                "fiftyTwoWeekRange":"9.84 - 175.0"
+                "fiftyTwoWeekHighChange":-132.26
+                "fiftyTwoWeekHighChangePercent":-0.7557714
+                "fiftyTwoWeekLow":9.84
+                "fiftyTwoWeekHigh":175
+                "sharesOutstanding":30027200
+                "bookValue":-0.236
+                "fiftyDayAverage":41.24083
+                "fiftyDayAverageChange":1.4991722
+                "fiftyDayAverageChangePercent":0.03635165
+                "twoHundredDayAverage":41.24083
+                "twoHundredDayAverageChange":1.4991722
+                "marketCap":1590556288
+                "displayName":"Digital World"
+                "symbol":"DWAC"
+            }
+            1:{...}71 items
+            2:{...}76 items
+            3:{...}76 items
+            4:{...}73 items
+            5:{...}73 items
+            6:{...}72 items
+            7:{...}73 items
+            8:{...}72 items
+            9:{...}72 items
+        ]
+        "error":NULL
+    }
+}
+```
+The most important fields are:
+- "exchangeDataDelayedBy":0 - means no delay in quotes
+- "regularMarketPrice":42.74 - current price, after closing (4:00 pm ET) equals current day close price
+- "regularMarketDayHigh":44.2 - high daily price
+- "regularMarketDayLow":41.51 - low daily price
+- "regularMarketPreviousClose":43.1 - previous day close price, changedat 0:00 am ET
+- "regularMarketOpen":43.46 - open daily price
+- "symbol":"DWAC" - share ticker
+
+##### Example "Stock Data – Rapidapi.com" request for 10 shares listed above **historical** price:
+```
+var axios = require("axios").default;
+
+var options = {
+  method: 'GET',
+  url: 'https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark',
+  params: {
+    symbols: 'DWAC,IRDM,PRIM,TGLS,MP,LCID,GDYN,SMPL,ENVX,QS',
+    range: '3mo',
+    interval: '1d'
+  },
+  headers: {
+    'x-rapidapi-host': 'stock-data-yahoo-finance-alternative.p.rapidapi.com',
+    'x-rapidapi-key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb'
+  }
+};
+
+axios.request(options).then(function (response) {
+	console.log(response.data);
+}).catch(function (error) {
+	console.error(error);
+});
 ```
 API Response Objects:
 
-|  Response Object  |Description                                                            |
-|:------------------|:----------------------------------------------------------------------|
-|pagination > limit|  Returns your pagination limit value.|
-|pagination > offset|  Returns your pagination offset value.|
-|pagination > count|  Returns the results count on the current page.|
-|pagination > total|  Returns the total count of results available.|
-|date|  Returns the exact UTC date/time the given data was collected in ISO-8601 format.|
-|symbol|  Returns the stock ticker symbol of the current data object.|
-|exchange|  Returns the exchange MIC identification associated with the current data object.|
-|open|  Returns the raw opening price of the given stock ticker.|
-|high|  Returns the raw high price of the given stock ticker.|
-|low|  Returns the raw low price of the given stock ticker.|
-|close|  Returns the raw closing price of the given stock ticker.|
-|last|  Returns the last executed trade of the given symbol on its exchange.|
-|volume|  Returns the volume of the given stock ticker.|
+```
+{10 items
+    "SMPL":{8 items
+        "previousClose":NULL
+        "chartPreviousClose":35.62
+        "symbol":"SMPL"
+        "timestamp":[...]63 items
+        "end":NULL
+        "start":NULL
+        "close":[63 items
+            0:35.69
+            1:35.82
+            2:35.56
+            3:34.75
+            4:35.71
+            5:34.65
+            6:35.17
+            7:35.1
+            8:34.73
+            9:34.95
+            10:34.98
+            11:34.61
+            12:34.27
+            13:34.91
+            14:35.74
+            15:35.73
+            16:35.01
+            17:35.13
+            18:34.44
+            19:35.28
+            20:34.49
+            21:35.5
+            22:35.33
+            23:35.17
+            24:35.89
+            25:36.21
+            26:35.49
+            27:35.41
+            28:35.43
+            29:34.45
+            30:34.63
+            31:35.01
+            32:35.23
+            33:34.5
+            34:34.15
+            35:34.31
+            36:37.27
+            37:38.82
+            38:39.7
+            39:38.86
+            40:40.15
+            41:39.65
+            42:39.55
+            43:40.05
+            44:39.88
+            45:39.5
+            46:41.02
+            47:40.88
+            48:40.4
+            49:39.74
+            50:39.22
+            51:39.51
+            52:39.75
+            53:40.47
+            54:39.62
+            55:39.38
+            56:39.01
+            57:39.09
+            58:39.45
+            59:39.67
+            60:37.93
+            61:37.77
+            62:36.97
+        ]
+        "dataGranularity":300
+    }
+    "IRDM":{...}8 items
+    "LCID":{...}8 items
+    "QS":{...}8 items
+    "MP":{...}8 items
+    "GDYN":{...}8 items
+    "PRIM":{...}8 items
+    "DWAC":{...}8 items
+    "ENVX":{...}8 items
+    "TGLS":{...}8 items
+}
+```
 
 #### 2. Evaluate index value
 2.1. Sum up quotes of all N SPAC shares included in index.<br>
@@ -133,7 +329,7 @@ Please note that this is different than the normal calculation process, which re
 ### Stock markets working hours
 Underlaying assets trade during exchange hours which leaves gaps in prices between 4:00PM EST close and 9:30AM EST open the next day and on weekends and market holidays.
 ### Price feed
-Our price-feed provider’s API documentation can be found [here](https://marketstack.com/documentation).<br>
+Our price-feed provider’s API documentation can be found [here](https://rapidapi.com/principalapis/api/stock-data-yahoo-finance-alternative/).<br>
 A reference price feed implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/unisxapp/uma/tree/USPAC5PriceFeed)<br>
 "Stock Data  – Rapidapi.com" is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
 In the case of a "Stock Data  – Rapidapi.com" outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
