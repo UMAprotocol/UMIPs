@@ -47,11 +47,9 @@ The selection of **10** stocks of the most active SPACs included in the basket o
 >SPAC Analytics is the leading provider of SPAC data and research to portfolio managers and investment banks since 2007.
 
 These underlying assets are traded on the NYSE and NASDAQ, but reliable sources of quotations are either paid or provide data with a delay.<br> 
-We suggest using the ["Stock Data  – Rapidapi.com"](https://rapidapi.com/principalapis/api/stock-data-yahoo-finance-alternative/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
+We suggest using the ["Stock Data – Rapidapi.com"](https://rapidapi.com/principalapis/api/stock-data-yahoo-finance-alternative/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
 
->Back in early 2018, MarketStack was initially presented under a different name with the aim of providing a free and cost-effective market data alternative to Yahoo Finance. In the course of the years, MarketStack REST API has become one of the most popular one-stop shop solutions for real-time, intraday and historical stock data, supporting a total of 170,000+ stock tickers from 70 global stock exchanges, including NASDAQ, Australian Stock Exchange, London Stock Exchange, and many more.
-
->The MarketStack API is built on top of scalable, cutting-edge cloud infrastructure, handling millions of concurrent API requests each day. Using the API customer will be able to obtain rate information as well as metadata about stock tickers, companies as well as stock exchanges.
+>Stock Data – Rapidapi.com is a decision for retrieving real time stock data. Alternative to the Yahoo Finance API. Rapidapi.com Finance APIs allow end-users a variety of service options for their accounts as well as to stay current on events and news that impact their portfolios and financial security. For example, a finance API could remotely connect them to their bank account to initiate deposits, transfers, or other transactions. Other financial APIs include stock market news and trading platforms, cryptocurrency markets, and more. A financial API provides a secure link from a consumer to the databases and transactional servers of the institutions with which they do business. Application programming interfaces, or APIs, are the digital links between data providers and end-users. In the financial sector, security is essential as sensitive information is transferred in real-time, so only the most robust protocols are utilized to protect the data transmitted on both ends.
 
 Underlying stocks are traded during exchange hours which leaves gaps in prices between 4:00PM EST close and 9:30AM EST open the next day and on weekends and market holidays. 
 
@@ -217,7 +215,7 @@ axios.request(options).then(function (response) {
 	console.error(error);
 });
 ```
-API Response Objects:
+API Response Object:
 
 ```
 {10 items
