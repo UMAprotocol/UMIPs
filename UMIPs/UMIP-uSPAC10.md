@@ -187,7 +187,7 @@ The most important fields are:
 - "regularMarketPrice":42.74 - current price, after closing (4:00 pm ET) equals current day close price
 - "regularMarketDayHigh":44.2 - high daily price
 - "regularMarketDayLow":41.51 - low daily price
-- "regularMarketPreviousClose":43.1 - previous day close price, changedat 0:00 am ET
+- "regularMarketPreviousClose":43.1 - previous day close price, changed at 0:00 am ET
 - "regularMarketOpen":43.46 - open daily price
 - "symbol":"DWAC" - share ticker
 
