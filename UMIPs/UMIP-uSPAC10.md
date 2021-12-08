@@ -310,12 +310,21 @@ API Response Object:
 2.2. Divide result by N (number of shares in index basket).<br>
 ```
            SumUp (Qi)
-INDEX = ------------------
+INDEX = ------------------ * K
                N
 ```
 where:
 - Qi - quote of Share i in index;<br>
 - N - number of shares in index. **N = 10**<br>
+- K - Correction factor, used to smooth the index values when the basket is changed. For the current index bucket **K = 1**. The value of K changes when the index basket changes and is calculated in accordance as quotient of division INDEXold by INDEXnew:<br>
+```
+                INDEXold
+          K = ------------
+                INDEXnew
+```
+where:
+- INDEXold – the last index value calculated from the old basket;<br>
+- INDEXnew – the first index value calculated for the new basket at the same time as INDEXold;<br>
 
 > In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we will publish a new price identifier quarterly.
 
