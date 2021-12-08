@@ -337,7 +337,7 @@ Please note that this is different than the normal calculation process, which re
 Underlaying assets trade during exchange hours which leaves gaps in prices between 4:00PM EST close and 9:30AM EST open the next day and on weekends and market holidays.
 ### Price feed
 Our price-feed provider’s API documentation can be found [here](https://rapidapi.com/principalapis/api/stock-data-yahoo-finance-alternative/).<br>
-A reference price feed implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/unisxapp/uma/tree/USPAC5PriceFeed)<br>
+A reference price feed implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/unisxapp/protocol/blob/USPAC5PriceFeed/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.ts)<br>
 "Stock Data  – Rapidapi.com" is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
 In the case of a "Stock Data  – Rapidapi.com" outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 ### Additional price feed providers
