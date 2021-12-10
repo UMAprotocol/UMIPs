@@ -1,6 +1,6 @@
 ## Headers
 
-| UMIP-140            |                                                               |
+| UMIP-CVX            |                                                               |
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add CVX/USD and USD/CVX as supported price identifiers |
 | Authors             | petro                    |
