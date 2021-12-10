@@ -2,7 +2,7 @@
 
 | UMIP-CVX            |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add CVX/USD and USD/CVX as supported price identifiers |
+| UMIP Title          | Add CVXUSD and USDCVX as supported price identifiers |
 | Authors             | petro                    |
 | Status              | Draft                                                     |
 | Created             | December 10, 2021                                                 |
@@ -13,11 +13,11 @@
 
 The DVM should support price requests for CVX/USD and USD/CVX pair.
 
-The canonical identifier should be `CVX/USD` and `USD/CVX`.
+The canonical identifier should be `CVXUSD` and `USDCVX`.
 
 # Motivation
 
-At the moment, DVM, does not support the requested price identifier.
+At the moment, DVM, does not support the requested price identifiers.
 
 CVX is the native token of Convex Finance with different utilities within the protocol:
 
@@ -30,7 +30,7 @@ At the broader ecosystem level, there is not available on-chain the price feed o
 
 # Data Specifications
 
-- Price identifier name: CVX/USD and USD/CVX
+- Price identifier name: CVXUSD and USDCVX
 
 - Market and pairs:
     - CVX/USDT: [Okex](https://www.okex.com/markets/spot-info/cvx-usdt)
@@ -40,7 +40,6 @@ At the broader ecosystem level, there is not available on-chain the price feed o
 
 - Example data providers:
     - CVX/USDT: CryptoWatch
-    - CVX/USD: Coingecko (ID: `convex-finance`)
 
 - Real-time data update frequency:
     - CryptoWatch: updated every trade
@@ -51,7 +50,7 @@ At the broader ecosystem level, there is not available on-chain the price feed o
 This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.ts) and [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.ts) with the example configuration below:
 
 ```
-  "CVX/USD": {
+  "CVXUSD": {
     type: "expression",
       convex_usd_sushi = ETHUSD * CVX_WETH_SUSHI;
       convex_usd_uni = ETHUSD * CVX_WETH_UNI;
@@ -71,24 +70,24 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
         uniswapAddress: "0x2E4784446A0a06dF3D1A040b03e1680Ee266c35a",
         twapLength: 300
       },
-      CVX_USD_OKEX: { type: "cryptowatch", exchange: "okex", pair: "cvxusdt" },
+      CVX_USD_OKEX: { type: "cryptowatch", exchange: "okex", pair: "cvxusdt", twapLength: 300 },
     },
   },
-  "USD/CVX": {
+  "USDCVX": {
     type: "expression",
-    expression: "1 / CVX\\/USD",
+    expression: "1 / CVXUSD",
   },
   ```
 
   # Technical Specifications
 
-- Price identifier name: CVX/USD
+- Price identifier name: CVXUSD
 - Base Currency: CVX
 - Quote Currency: USD
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
 - Estimated current value of price identifier: 26.63043060 (10 Dec 2021 15:00:00 UTC)
 -----------------------------------------
-- Price identifier name: USD/CVX
+- Price identifier name: USDCVX
 - Base Currency: USD
 - Quote Currency: CVX
 - Rounding: Round to 8 decimal places (ninth decimal place digit >= 5 rounds up and < 5 rounds down)
@@ -109,9 +108,9 @@ CVX has predominant liquidity and volume activity in the AMMs paired with WETH. 
 3. Multiply each of CVX/WETH prices in step 1 with ETH/USD price from step 2.
 4. Take the open CVX/USDT price of the 1 minute OHLC period that the timestamp falls in from Okex.
 5. Take the median of all results from step 3 and 4.
-6. Round result from step 5 to 8 decimals to get the CVX/USD price.
-7. (for USD/CVX) Take the inverse of the result of step 5.
-8. (for USD/CVX) Round result from step 7 to 8 decimals to get the USD/CVX price.
+6. Round result from step 5 to 8 decimals to get the CVXUSD price.
+7. (for USDCVX) Take the inverse of the result of step 5.
+8. (for USDCVX) Round result from step 7 to 8 decimals to get the USDCVX price.
 ```
 
 Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus.
