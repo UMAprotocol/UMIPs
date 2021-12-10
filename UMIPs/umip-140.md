@@ -55,8 +55,8 @@ This price identifier uses the with the example configuration below:
   "CVX/USD": {
     type: "expression",
       convex_usd_sushi = ETHUSD * CVX_WETH_SUSHI;
-      badger_usd_uni = ETHUSD * CVX_WETH_UNI;
-      median( badger_usd_sushi, badger_usd_uni, BADGER_USD_BINANCE )
+      convex_usd_uni = ETHUSD * CVX_WETH_UNI;
+      median( convex_usd_sushi, convex_usd_uni, CVX_USD_OKEX )
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
