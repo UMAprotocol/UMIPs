@@ -6,7 +6,6 @@
 | Authors             | petro                    |
 | Status              | Draft                                                     |
 | Created             | December 10, 2021                                                 |
-| Discourse Link      | [UMA's Discourse]() |
 
 
 
@@ -49,7 +48,7 @@ At the broader ecosystem level, there is not available on-chain the price feed o
 
 # Price feed implementation
 
-This price identifier uses the with the example configuration below:
+This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/CryptoWatchPriceFeed.ts) and [UniswapPriceFeed](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/UniswapPriceFeed.ts) with the example configuration below:
 
 ```
   "CVX/USD": {
