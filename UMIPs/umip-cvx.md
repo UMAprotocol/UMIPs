@@ -52,6 +52,7 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 ```
   "CVXUSD": {
     type: "expression",
+     expression: ` 
       convex_usd_sushi = ETHUSD * CVX_WETH_SUSHI;
       convex_usd_uni = ETHUSD * CVX_WETH_UNI;
       median( convex_usd_sushi, convex_usd_uni, CVX_USD_OKEX )
