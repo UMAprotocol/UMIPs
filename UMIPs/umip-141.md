@@ -1,11 +1,11 @@
 ## Headers
 
-| UMIP-CVX            |                                                               |
-| ------------------- | ------------------------------------------------------------- |
+| UMIP-141            |                                                      |
+| ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add CVXUSD and USDCVX as supported price identifiers |
-| Authors             | petro                    |
-| Status              | Draft                                                     |
-| Created             | December 10, 2021                                                 |
+| Authors             | petro                                                |
+| Status              | Last Call                                            |
+| Created             | December 10, 2021                                    |
 
 
 

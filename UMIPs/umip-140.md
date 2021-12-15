@@ -1,9 +1,9 @@
 ## HEADERS
-|UMIP-<#>      | | 
+|UMIP-140      | | 
 |:-------------|:-----------------------------------------------------------------------------|
 |UMIP title|Add uSPAC10 as price identifier|
 |Author|BinomFX (binomfx@gmail.com)|
-|Status|Draft| 
+|Status|Last Call| 
 |Created|20.10.2021|
 |Discourse Link|https://discourse.umaproject.org/t/add-uspac10-as-price-identifier-for-emp-contract/1357?u=binomfx|
 
