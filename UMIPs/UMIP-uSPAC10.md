@@ -74,7 +74,7 @@ In order to determine the index value, the following steps are required:
 
 #### 1. Get shares quotes
 Real time and historical share prices are available from "Stock Data – Rapidapi.com" (API).<br> 
-Price requests should use the daily price for the date corresponding to price request timestamp. Close price should be used.
+Price requests should use the 1 minute quotes for the date corresponding to price request timestamp. Close price should be used.
 <br><br>
 ##### Example "Stock Data – Rapidapi.com" request for 10 shares listed above **realtime prices**:
 ```
@@ -193,7 +193,7 @@ The most important fields are:
 
 ##### Retrieving historical price
 
-To retrieve historical price, the `Stock History` method should be used. It is available via `https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark` endpoint. Recommended interval is 1 minute.
+To retrieve historical price, the `Stock History` method should be used. It is available via `https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark` endpoint. 1 minute pricing interval should be used.
 
 For each symbol the method returns two arrays of the same length. The first is array of timestamps for interval open moment. The second is array of **closing** prices for the same intervals.
 
