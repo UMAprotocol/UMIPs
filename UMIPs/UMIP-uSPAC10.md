@@ -191,6 +191,19 @@ The most important fields are:
 - "regularMarketOpen":43.46 - open daily price
 - "symbol":"DWAC" - share ticker
 
+##### Retrieving historical price
+
+To retrieve historical price, the `Stock History` method should be used. It is available via `https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark` endpoint. Recommended interval is 1 minute.
+
+For each symbol the method returns two arrays of the same length. The first is array of timestamps for interval open moment. The second is array of **closing** prices for the same intervals.
+
+The price for the given timestamp is calculated like this:
+
+- Find the interval for the timestamp. The interval begin timestamp must be less or equal than given timestamp, and the interval end timestamp must be greater than given timestamp
+- Get the closing price for the interval found in the previous step
+- Evaluate index value (see later)
+
+
 ##### Example "Stock Data – Rapidapi.com" request for 10 shares listed above **historical** price:
 ```
 var axios = require("axios").default;
