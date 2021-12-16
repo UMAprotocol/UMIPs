@@ -34,9 +34,12 @@ DFX TVL KPI options track value locked in following pool contracts:
 * DFXv0.5 XSGD on Ethereum: [0x2baB29a12a9527a179Da88F422cDaaA223A90bD5](https://etherscan.io/address/0x2baB29a12a9527a179Da88F422cDaaA223A90bD5)
 * DFXv0.5 NZDS on Ethereum: [0xE9669516e09f5710023566458F329cCE6437AaaC](https://etherscan.io/address/0xE9669516e09f5710023566458F329cCE6437AaaC)
 * DFXv0.5 TRYB on Ethereum: [0xC574A613A3900e4314da13eB2287f13689A5b64D](https://etherscan.io/address/0xC574A613A3900e4314da13eB2287f13689A5b64D)
+* DFXv0.5 XIDR on Ethereum: [0xdD39379AB7C93b9bAAE29E6eC03795d0bC99a889](https://etherscan.io/address/0xdd39379ab7c93b9baae29e6ec03795d0bc99a889)
 * DFXv0.5 CADC on Polygon: [0x288Ab1b113C666Abb097BB2bA51B8f3759D7729e](https://polygonscan.com/address/0x288Ab1b113C666Abb097BB2bA51B8f3759D7729e)
 * DFXv0.5 EURS on Polygon: [0xB72d390E07F40D37D42dfCc43E954Ae7c738Ad44](https://polygonscan.com/address/0xB72d390E07F40D37D42dfCc43E954Ae7c738Ad44)
 * DFXv0.5 XSGD on Polygon: [0x8e3e9cB46E593Ec0CaF4a1Dcd6DF3A79a87b1fd7](https://polygonscan.com/address/0x8e3e9cB46E593Ec0CaF4a1Dcd6DF3A79a87b1fd7)
+* DFXv0.5 NZDS on Polygon: [0x931d6A6cC3F992beee80a1A14a6530d34104B000](https://polygonscan.com/address/0x931d6a6cc3f992beee80a1a14a6530d34104b000)
+* DFXv0.5 TRYB on Polygon: [0xeA75Cd0b12A8B48F5bDDaD37cEB15F8Cb3D2cC75](https://polygonscan.com/address/0xea75cd0b12a8b48f5bddad37ceb15f8cb3d2cc75)
 
 The list above is based on the canonical DFX protocol [contracts repository](https://github.com/dfx-finance/contracts/blob/main/README.md) and would be amended once new pool contracts are developed by DFX protocol.
 
