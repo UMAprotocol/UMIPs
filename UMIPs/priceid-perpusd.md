@@ -40,14 +40,14 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
   PERPUSD: {
     type: "expression",
     expression: `
-      median( POOL_USDT_BINANCE, POOL_USDT_OKEX, POOL_USD_CBPRO )
+      median( PERP_USDT_BINANCE, PERP_USDT_OKEX, PERP_USD_CBPRO )
     `,
     lookback: 7200,
     minTimeBetweenUpdates: 60,
     customFeeds: {
-      POOL_USDT_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "perpusdt" },
-      POOL_USDT_OKEX: { type: "cryptowatch", exchange: "okex", pair: "perpusdt" },
-      POOL_USD_CBPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "perpusd" },
+      PERP_USDT_BINANCE: { type: "cryptowatch", exchange: "binance", pair: "perpusdt" },
+      PERP_USDT_OKEX: { type: "cryptowatch", exchange: "okex", pair: "perpusdt" },
+      PERP_USD_CBPRO: { type: "cryptowatch", exchange: "coinbase-pro", pair: "perpusd" },
     },
   },
   USDPERP: {
