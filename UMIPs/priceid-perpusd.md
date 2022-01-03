@@ -93,7 +93,7 @@ The three most voluminous exchanges for the PERP token are Binance, OKEx and Coi
 2. Take the median of the PERP/USD results from step 1.
 3. Round result from step 2 to 8 decimals to get the PERP/USD price.
 4. (for USD/PERP) Take the inverse of the result of step 3.
-5. (for USD/PERP) Round result from step 6 to 8 decimals to get the USD/PERP price.
+5. (for USD/PERP) Round result from step 4 to 8 decimals to get the USD/PERP price.
 ```
 
 Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus.
