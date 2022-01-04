@@ -61,7 +61,7 @@ Please see the example [implementation](https://github.com/UMAprotocol/protocol/
 
 The rate model parameters used for the above computation should be fetched on-chain from the `RateModelStore` contract deployed on mainnet at [0xd18fFeb5fdd1F2e122251eA7Bf357D8Af0B60B50](https://etherscan.io/address/0xd18fFeb5fdd1F2e122251eA7Bf357D8Af0B60B50) and governed by Across protocol [multi-signature account](https://etherscan.io/address/0xb524735356985d2f267fa010d681f061dff03715). Rate model parameters should be fetched by calling `l1TokenRateModels` method on the `RateModelStore` contract passing `l1Token` address as its argument at the block whose timestamp corresponds or is the latest available relative to the `quoteTimestamp` field.
 
-The call to `l1TokenRateModels` should return a stringified JSON object containing following key-value pairs:
+The call to `l1TokenRateModels` should return a stringified JSON object containing the following key-value pairs:
 * `UBar` corresponds to the <img src="https://render.githubusercontent.com/render/math?math=\bar{U}"> rate model parameter;
 * `R0`, `R1` and `R2` correspond to <img src="https://render.githubusercontent.com/render/math?math=R_0">, <img src="https://render.githubusercontent.com/render/math?math=R_1"> and <img src="https://render.githubusercontent.com/render/math?math=R_2"> parameters respectively.
 
