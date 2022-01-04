@@ -67,7 +67,7 @@ The call to `l1TokenRateModels` should return a stringified JSON object containi
 
 Rate model parameter values obtained above should be scaled down by 18 decimals.
 
-In case the call to `l1TokenRateModels` returns anything other that cannot be parsed to exact key-value pairs mentioned above (e.g. missing or extra parameter included) the relay should be considered invalid.
+In case the call to `l1TokenRateModels` returns anything that cannot be parsed to the exact key-value pairs mentioned above (e.g. missing or extra parameter included) the relay should be considered invalid.
 
 If the algorithm above doesn't produce a matching `realizedLPFeePct` (after floor rounding the result expressed as decimal to 18 decimals), the relay is invalid. If the token is not listed in the table above, the relay is invalid.
 
