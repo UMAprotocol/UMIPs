@@ -1,8 +1,8 @@
-**UMIP #**  - tbd
+**UMIP-142**
 
 -   **UMIP title:** Add **AthleteX** as collateral currency 
--   **Author**  athletexmarkets@gmail.com
--   **Status: Draft**
+-   **Authori:**  athletexmarkets@gmail.com
+-   **Status: Last Call**
 -   **Created:**  12/31/2021
 -   **Discourse Link:**  https://discourse.umaproject.org/t/whitelist-ax-as-collateral/1250
 
