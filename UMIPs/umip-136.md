@@ -59,14 +59,13 @@ Since the notion of `block.timestamp` might be different on other L2 chains comp
 
 Please see the example [implementation](https://github.com/UMAprotocol/protocol/blob/b588e83ca548a2a0d59b36f02ec9800afce28dec/packages/sdk/src/across/feeCalculator.ts#L78-L82)) for more details.
 
-The rates used the above computation are drawn from Aave (where applicable):
+The rate model parameters used for the above computation should be fetched on-chain from the `RateModelStore` contract deployed on mainnet at [0xd18fFeb5fdd1F2e122251eA7Bf357D8Af0B60B50](https://etherscan.io/address/0xd18fFeb5fdd1F2e122251eA7Bf357D8Af0B60B50) and governed by Across protocol [multi-signature account](https://etherscan.io/address/0xb524735356985d2f267fa010d681f061dff03715). Rate model parameters should be fetched by calling `l1TokenRateModels` method on the `RateModelStore` contract passing `l1Token` address as its argument at the block whose timestamp corresponds or is the latest available relative to the `quoteTimestamp` field.
 
-| Asset | <img src="https://render.githubusercontent.com/render/math?math=\bar{U}">  | <img src="https://render.githubusercontent.com/render/math?math=R_0">  | <img src="https://render.githubusercontent.com/render/math?math=R_1">  | <img src="https://render.githubusercontent.com/render/math?math=R_2">  |
-| ------ | --- | ---- | ---- | ---- |
-| ETH    | 65% | 0%   | 8%   | 100% |
-| USDC   | 80% | 0%   | 4%   | 60%  |
-| UMA    | 50% | 0%   | 5%   | 200% |
-| BADGER | 50% | 2.5% | 2.5% | 200% |
+The call to `l1TokenRateModels` should return a stringified JSON object containing following key-value pairs:
+* `UBar` corresponds to the <img src="https://render.githubusercontent.com/render/math?math=\bar{U}"> rate model parameter;
+* `R0`, `R1` and `R2` correspond to <img src="https://render.githubusercontent.com/render/math?math=R_0">, <img src="https://render.githubusercontent.com/render/math?math=R_1"> and <img src="https://render.githubusercontent.com/render/math?math=R_2"> parameters respectively.
+
+Rate model parameter values obtained above should be scaled down by 18 decimals.
 
 If the algorithm above doesn't produce a matching `realizedLPFeePct` (after floor rounding the result expressed as decimal to 18 decimals), the relay is invalid. If the token is not listed in the table above, the relay is invalid.
 
