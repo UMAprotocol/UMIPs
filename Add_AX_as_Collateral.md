@@ -24,7 +24,7 @@ To accomplish this upgrade, the following changes need to be made:
 
 ## Rationale
 
-This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by **https://www.coingecko.com/en/coins/athletex**
+This store fee was chosen as it is approximately equivalent to $1500 in line with other collateral currencies as determined by **https://www.coingecko.com/en/coins/athletex**
 
 ## Implementation
 
