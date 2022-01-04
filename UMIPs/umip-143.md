@@ -1,11 +1,11 @@
 ## Headers
 
-| UMIP-x            |                                                               |
+| UMIP-143            |                                                               |
 | ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add PERPUSD and USDPERP as supported price identifiers |
-| Authors             | Sean Brown (@smb2796)                     |
-| Status              | Draft                                                     |
-| Created             | Dec 31, 2021                                                 |
+| UMIP Title          | Add PERPUSD and USDPERP as supported price identifiers        |
+| Authors             | Sean Brown (@smb2796)                                         |
+| Status              | Last Call                                                     |
+| Created             | Dec 31, 2021                                                  |
 
 # Summary 
 
@@ -100,4 +100,4 @@ Voters should ensure that their results do not differ from broad market consensu
 
 ## Security considerations
 
-Adding these new identifiers by themselves pose little security risk to the DVM or priceless financial contract users. However, anyone using these price identifiers should take care to parameterize their price requests appropriately for their use case. 
+Adding these new identifiers by themselves pose little security risk to the DVM or priceless financial contract users. However, anyone using these price identifiers should take care to parameterize their price requests appropriately for their use case.
