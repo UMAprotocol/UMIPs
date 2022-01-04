@@ -4,7 +4,7 @@
 -   **Author**  athletexmarkets@gmail.com
 -   **Status: Draft**
 -   **Created:**  12/31/2021
--   **Discourse Link:**  https://discourse.umaproject.org/t/add-athlete-performance-token-apt-price-identifier/1327
+-   **Discourse Link:**  https://discourse.umaproject.org/t/whitelist-ax-as-collateral/1250
 
 ## Summary (2-5 sentences)
 
@@ -19,7 +19,7 @@ The addition of this collateral currency offers additional functionality to the 
 To accomplish this upgrade, the following changes need to be made:
 
 -   The **AX** address **https://polygonscan.com/address/0x5617604BA0a30E0ff1d2163aB94E50d8b6D0B0Df** needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of **5500AX** needs to be added for **AthleteX** in the Store contract.
+-   A final fee of **22000AX** needs to be added for **AthleteX** in the Store contract.
     
 
 ## Rationale
