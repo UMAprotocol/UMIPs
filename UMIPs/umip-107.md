@@ -67,7 +67,9 @@ If there are no p1, p2, p3 or p4 values present, values should default to:
 
 This construction sacrifices assurances of determinism in favor of greater price identifier flexibility. The places the burden of correct construction on price requesters, but, in return, allows for quicker and easier development without needing to pass through  UMA governance for each additional distinct query. This will allow for quite bespoke and speedy contract construction.
 
-p4 is intended to be used for situations where it is not a given that the price request (or contract settlement) should even occur yet. An example of this would be the UMA event based expiry LSP. A request to settle an event-based expiry LSP can be submitted at any time but may want to effectively be ignored. The requirements to return p4 should also be contained within the `q` value in the ancillary data.
+p4 is intended to be used for situations where it is not a given that the price request (or contract settlement) should even occur yet. An example of this would be the UMA event-based expiry LSP. A request to settle an event-based expiry LSP can be submitted at any time but if the question can not be resolved yet it should be ignored.
+
+The default p4 value is the minimum int256 value, and is used as a "magic number" to indicate that an event-based expiry request is invalid and the contract should continue as normal. For example, if the question is related to a basketball game on January 6th and a settlement request comes in on January 5th, the question can not be resolved yet, and voters should return the p4 value with the magic number to reject the settlement request.
 
 # Implementation
 
