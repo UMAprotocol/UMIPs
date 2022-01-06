@@ -61,7 +61,7 @@ If there are no p1, p2, p3 or p4 values present, values should default to:
 - p1: 0
 - p2: 1
 - p3: 0.5
-- p4: -57896044618658097711785492504343953926634992332820282019728792003956564819968
+- p4: -57896044618658097711785492504343953926634992332820282019728.792003956564819968
 
 # Rationale
 
@@ -69,7 +69,7 @@ This construction sacrifices assurances of determinism in favor of greater price
 
 p4 is intended to be used for situations where it is not a given that the price request (or contract settlement) should even occur yet. An example of this would be the UMA event-based expiry LSP. A request to settle an event-based expiry LSP can be submitted at any time but if the question can not be resolved yet it should be ignored.
 
-The default p4 value is the minimum int256 value, and is used as a "magic number" to indicate that an event-based expiry request is invalid and the contract should continue as normal. For example, if the question is related to a basketball game on January 6th and a settlement request comes in on January 5th, the question can not be resolved yet, and voters should return the p4 value with the magic number to reject the settlement request.
+The default p4 value is the minimum int256 value and is used as a "magic number" to indicate that an event-based expiry request is invalid and the contract should continue as normal. For example, if the question is related to a basketball game on January 6th and a settlement request comes in on January 5th, the question can not be resolved yet, and voters should return the p4 value with the magic number to reject the settlement request. This value also moves the decimal place 18 spaces to the left, due to the default behavior of the UMA voting interface to scale input values to 18 decimals. After scaling by the interface, the value will be -57896044618658097711785492504343953926634992332820282019728792003956564819968
 
 Notice that a p3 value would never be returned earlier than the final price request time noted in the ancillary data or the requesting contract's expiration timestamp and a p4 value would never be returned after that point. Consider an unresolvable question like, "Was the weather nice on January 6th, 2022?" If the question was asked on January 7th, 2022, you would return the p3 value. If the same question was asked on January 5th, 2022, you would return the p4 value.
 
