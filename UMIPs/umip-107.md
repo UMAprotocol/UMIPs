@@ -12,7 +12,7 @@
 
 The DVM should support price requests for the `YES_OR_NO_QUERY` price identifier. `YES_OR_NO_QUERY` is intended to be used with ancillary data to allow anyone to request an answer to a "yes or no" question from UMA governance. This UMIP does not attempt to put any other restrictions on the content of the query, and instead leaves construction of the query up to the requester within ancillary data.
 
-Price settlement can happen in three ways:
+Price settlement can happen in four ways:
 - Return the `p1` value from ancillary data if the answer is "NO".
 - Return the `p2` value from ancillary data if the answer is "YES".
 - Return the `p3` value from ancillary data if the answer cannot be determined.
@@ -53,9 +53,9 @@ q:Did the Dallas Mavericks beat the Miami Heat January 6th, 2022?, earlyExpirati
 
 The q value should contain the question that UMA voters should answer with. 
 
-When this ancillary data dictionary is stored as bytes, the result would be: `0x713a446964207468652044616c6c6173204d6176657269636b732077696e20746865204e42412046696e616c7320696e20323032313f2c2070313a302c2070323a312c2070333a302e35`
+When this ancillary data dictionary is stored as bytes, the result would be: `0x713a446964207468652044616c6c6173204d6176657269636b73206265617420746865204d69616d692048656174204a616e75617279203674682c20323032323f2c206561726c7945787069726174696f6e436f6e646974696f6e3a4973207468652067616d65206f7665723f2c2070313a302c2070323a312c2070333a302e352c206561726c7945787069726174696f6e3a31`
 
-When returned, the `p1-p4` values should be scaled by 1e18. Typically voter dapps in the UMA ecosystem abstract this scaling away from voters, so, more often than not, voters should input the values as they appear in the ancillary data. Price requestors should be mindful of this, and not scale their ancillary data inputs.
+When returned, the `p1-p3` values should be scaled by 1e18. Typically voter dapps in the UMA ecosystem abstract this scaling away from voters, so, more often than not, voters should input the values as they appear in the ancillary data. Price requestors should be mindful of this, and not scale their ancillary data inputs.
 
 If there are no p1, p2, p3 or p4 values present, values should default to:
 - p1: 0
