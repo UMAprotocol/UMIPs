@@ -16,7 +16,7 @@ Price settlement can happen in four ways:
 - Return the `p1` value from ancillary data if the answer is "NO".
 - Return the `p2` value from ancillary data if the answer is "YES".
 - Return the `p3` value from ancillary data if the answer cannot be determined.
-- Return the `p4` value from ancillary data if the answer to the earlyExpirationCondition is no, and there is either an `earlyExpiration:1` key value pair present in ancillary data, or there is a specific last request timestamp listed in the ancillary data question and the active price request timestamp falls before that.
+- Return the `p4` value if the answer cannot be determined AND there is either an `earlyExpiration:1` key value pair present in ancillary data, or there is a specific last possible request timestamp listed in the ancillary data question and the active price request timestamp falls before that. 
 
 # Motivation
 
@@ -45,7 +45,7 @@ No price feed is needed (or possible) for this price identifier.
 
 ## Ancillary Data Specifications
 
-When converted from bytes to UTF-8, the ancillary data should be a dictionary object containing q (question), earlyExpirationCondition, p1, p2, p3 and p4 keys and values. p4 and earlyExpirationCondition are optional and only apply in certain situations.
+When converted from bytes to UTF-8, the ancillary data should be a dictionary object containing q (question), p1, p2, p3 and p4 keys and values. p4 is optional and will only apply in certain situations.
 
 ```
 q:Did the Dallas Mavericks beat the Miami Heat January 6th, 2022?, p1:0, p2:1, p3:0.5, earlyExpiration:1
