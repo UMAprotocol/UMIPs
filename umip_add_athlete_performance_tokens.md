@@ -35,8 +35,8 @@ in-game performance statistics provided by SportsData.io.
 -----------------------------------------
 - Price identifier name: **APT** 
 - Base Currency: **APT**
-- Quote Currency: **AX**
-- Markets & Pairs: **Markets & Pairs**
+- Quote Currency: **N/A**
+- Markets & Pairs: **AthleteX DEX: APT/AX, AthleteX DEX: APT/MATIC, SushiSwap: AX/WETH**
 - Example data providers: **SportsData**
 - Cost to use: **https://sportsdata.io/**
 
@@ -45,41 +45,16 @@ in-game performance statistics provided by SportsData.io.
 
 # Price Feed Implementation
 
-
+We are only starting with 5 APT EMP contracts so we likely do not need bots for price feed implementation
 
 ## Ancillary Data Specifications
+customancillarydata:
+athlete name:T.Brady,length:season,requester:0xabc
 
 **The key-value fields are:**
 _athlete Name - represents the name (First_Initial.Last_Name) of the player whose statistics are reflected by the APT's price
-token id - the unique identifier of an APT for a given athlete in a given season
+length - the duration of an APT contract; either game, season, or career
 timestamp - the timestamp for which the athlete's statistics are generated_
-**For NFL athletes, the following statistics make up price:**
-_passingYards, passingTouchdowns, reception, receiveYards, receiveTouch, rushingYards, snapsPlayed_
-
-**Key-Value Descriptions:**
-
-_passingYards_ - this is how many passing yards a player has since the start of the season
-_passingTouchdowns_ - this is how many passing touchdowns a player has since the start of the season
-_reception_ - this is how many receptions a player has since the start of the season
-_receiveYards_ - this is how many receiving yards a player has since the start of the season
-_receiveTouch_ - this is how many receiving touchdowns a player has since the start of the season
-_rushingYards_ - this is how many rushing yards a player has since the start of the season
-_snapsPlayed_ - this is how many snaps a player has been on the field for over the course of a season 
-
-Ex.
-At timestamp =2021-11-10T21:43:34.537465Z
-with athlete = T.Brady
-select , 2021-11-10 from nfl where name = 'T.Brady';
-passingYards - 2650.0
-passingTouchdowns - 25.0
-reception - 0
-receiveYards - 0
-receiveTouch - 0
-rushingYards - 39.0
-snaps played - 262
-
-therefore,
-price = [ (2650/25) + (425) + (39/10) ] / 262 = 2.04160305
 
 # Rationale
 
@@ -89,9 +64,23 @@ This method was chosen as a balance between efficiency and scale of athletic dat
 
 Generate values for each of the key-value fields by doing the following:
 1. Go to http://139.99.74.201:9000/
-2. Run the command to fetch player statistics for a given athlete & timestamp :: [select *  from (input sport (all lowercase)) where name = '(input athlete)]
+2. Run the command to fetch player statistics for a given athlete & timestamp: select * from nfl LATEST by name WHERE name = 'F.Last';
 Combine key-values into price with the following formula:
-3. [https://docs.google.com/document/d/17mSmFaglf5EMm6vd6zmBigIRE_f3tMb2ngohIa0U_y0/edit] 
+3. 
+rushing touchdown = 6pts
+receiving touchdown = 6pts
+passing touchdown = 6pts
+
+reception = .5pts
+
+10 receiving yards = 1pt
+10 rushing yards = 1pt
+25 passing yards = 1pt
+
+interception = -2pts
+fumble = -2pts
+
+pts / offensive snaps played = price
 
 Round price computations to 8 decimal places
 
