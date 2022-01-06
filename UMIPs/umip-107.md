@@ -16,7 +16,7 @@ Price settlement can happen in four ways:
 - Return the `p1` value from ancillary data if the answer is "NO".
 - Return the `p2` value from ancillary data if the answer is "YES".
 - Return the `p3` value from ancillary data if the answer cannot be determined.
-- Return the `p4` value if the answer cannot be determined AND there is either an `earlyExpiration:1` key value pair present in ancillary data, or there is a specific last possible request timestamp listed in the ancillary data question and the active price request timestamp falls before that. 
+- Return the `p4` value if the answer cannot be determined AND there is either an `earlyExpiration:1` key value pair present in ancillary data, or there is a specific last possible request timestamp listed or implied in the ancillary data question and the active price request timestamp falls before that. 
 
 # Motivation
 
@@ -78,7 +78,7 @@ Notice that a p3 value would never be returned earlier than the final price requ
 1. Voters should decode the ancillary data and attempt to interpret the UTF-8 question.
 2. Voters should first determine if this is an "early expiration" price request. This can either be designated in ancillary data by identifying that there is a key:value pair of `earlyExpiration:1` present, or by reading the question and determining that price request timestamp of the request is earlier than the final possible price request time noted in ancillary data.
 3. If this is an "early expiration" price request, voters should first determine if the question in the ancillary data can be resolved definitively at this point in time. If not, voters should return the p4 value. If yes, the voters should continue the process to assess the question.
-4. If UMA voters believes that the answer to the question is no, they should vote return the p1 value (in the example given, they would return `0`).
+4. If UMA voters believe that the answer to the question is no, they should vote return the p1 value (in the example given, they would return `0`).
 5. If UMA voters believe that the answer to the question is yes, they should return the p2 value (in the example given, they would return `1`).
 6. If a voter cannot make a determination about what the correct answer to the question is, or there is no question present, UMA voters should return the p3 value (in the example given, they would return `0.5`).
 7. If there are no p1, p2, p3, p4 values in the ancillary data, voters should use the default values listed in `Ancillary Data Specifications`.
