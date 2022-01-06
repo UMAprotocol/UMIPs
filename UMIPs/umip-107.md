@@ -48,12 +48,12 @@ No price feed is needed (or possible) for this price identifier.
 When converted from bytes to UTF-8, the ancillary data should be a dictionary object containing q (question), earlyExpirationCondition, p1, p2, p3 and p4 keys and values. p4 and earlyExpirationCondition are optional and only apply in certain situations.
 
 ```
-q:Did the Dallas Mavericks beat the Miami Heat January 6th, 2022?, earlyExpirationCondition:Is the game over?, p1:0, p2:1, p3:0.5, earlyExpiration:1
+q:Did the Dallas Mavericks beat the Miami Heat January 6th, 2022?, p1:0, p2:1, p3:0.5, earlyExpiration:1
 ```
 
 The q value should contain the question that UMA voters should answer with. 
 
-When this ancillary data dictionary is stored as bytes, the result would be: `0x713a446964207468652044616c6c6173204d6176657269636b73206265617420746865204d69616d692048656174204a616e75617279203674682c20323032323f2c206561726c7945787069726174696f6e436f6e646974696f6e3a4973207468652067616d65206f7665723f2c2070313a302c2070323a312c2070333a302e352c206561726c7945787069726174696f6e3a31`
+When this ancillary data dictionary is stored as bytes, the result would be: `0x713a446964207468652044616c6c6173204d6176657269636b73206265617420746865204d69616d692048656174204a616e75617279203674682c20323032323f2c2070313a302c2070323a312c2070333a302e352c206561726c7945787069726174696f6e3a31`
 
 When returned, the `p1-p3` values should be scaled by 1e18. Typically voter dapps in the UMA ecosystem abstract this scaling away from voters, so, more often than not, voters should input the values as they appear in the ancillary data. Price requestors should be mindful of this, and not scale their ancillary data inputs.
 
@@ -74,8 +74,8 @@ The default p4 value is the minimum int256 value, and is used as a "magic number
 # Implementation
 
 1. Voters should decode the ancillary data and attempt to interpret the UTF-8 question.
-2. Voters should first determine if this is an "early expiry" price request. This can either be designated in ancillary data by identifying that there is a key:value pair of `earlyExpiration:1` present, or by reading the question and determining that price request timestamp of the request is earlier than the final possible price request time noted in ancillary data.
-3. If this is an "early expiry" price request, voters should first answer the `earlyExpiryCondition` question. If the answer to this is no, voters should return the `p4` value. If the answer is yes, voters should continue the process to assess the `q` question.
+2. Voters should first determine if this is an "early expiration" price request. This can either be designated in ancillary data by identifying that there is a key:value pair of `earlyExpiration:1` present, or by reading the question and determining that price request timestamp of the request is earlier than the final possible price request time noted in ancillary data.
+3. If this is an "early expiration" price request, voters should first determine if the question in the ancillary data can be resolved definitively at this point in time. If not, voters should return the p4 value. If yes, the voters should continue the process to assess the question.
 4. If UMA voters believes that the answer to the question is no, they should vote return the p1 value (in the example given, they would return `0`).
 5. If UMA voters believe that the answer to the question is yes, they should return the p2 value (in the example given, they would return `1`).
 6. If a voter cannot make a determination about what the correct answer to the question is, or there is no question present, UMA voters should return the p3 value (in the example given, they would return `0.5`).
