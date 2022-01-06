@@ -71,6 +71,8 @@ p4 is intended to be used for situations where it is not a given that the price 
 
 The default p4 value is the minimum int256 value, and is used as a "magic number" to indicate that an event-based expiry request is invalid and the contract should continue as normal. For example, if the question is related to a basketball game on January 6th and a settlement request comes in on January 5th, the question can not be resolved yet, and voters should return the p4 value with the magic number to reject the settlement request.
 
+Notice that a p3 value would never be returned earlier than the final price request time noted in the ancillary data or the requesting contract's expiration timestamp and a p4 value would never be returned after that point. Consider an unresolvable question like, "Was the weather nice on January 6th, 2022?" If the question was asked on January 7th, 2022, you would return the p3 value. If the same question was asked on January 5th, 2022, you would return the p4 value.
+
 # Implementation
 
 1. Voters should decode the ancillary data and attempt to interpret the UTF-8 question.
