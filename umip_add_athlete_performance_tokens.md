@@ -53,8 +53,6 @@ athlete name:T.Brady,length:season,requester:0xabc
 
 **The key-value fields are:**
 _athlete Name - represents the name (First_Initial.Last_Name) of the player whose statistics are reflected by the APT's price
-length - the duration of an APT contract; either game, season, or career
-timestamp - the timestamp for which the athlete's statistics are generated_
 
 # Rationale
 
