@@ -97,13 +97,11 @@ The three most voluminous exchanges for the PERP token are Binance, OKEx and Coi
 
 ## Implementation
 
-```
 1. Query the PERP/USD price from Binance, OKEx and Coinbase Pro using whatever TWAP is defined for the ancillary data `twapLength` value. Note that `twapLength` should be defined in seconds. If there is no ancillary data or no `twapLength` key present, then the most recent price that falls before the price request timestamp should be used. If there is `ohlcPeriod` key present in the ancillary data voters should use price interval in seconds specified in the `ohlcPeriod` value, otherwise 1 minute price interval should be used.
 2. Take the median of the PERP/USD results from step 1.
 3. Round result from step 2 to 8 decimals to get the PERP/USD price.
 4. (for USD/PERP) Take the inverse of the result of step 3.
 5. (for USD/PERP) Round result from step 4 to 8 decimals to get the USD/PERP price.
-```
 
 Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus.
 
