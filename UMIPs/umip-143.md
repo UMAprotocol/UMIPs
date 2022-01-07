@@ -73,14 +73,23 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
 
 ## Ancillary Data Specifications
 
-This price identifiers can optionally include ancillary data to specify the twap length that these values should be computed using. When converted from bytes to UTF-8, the ancillary data should be a dictionary containing a period key:value pair like so:
+These price identifiers can optionally include ancillary data to specify the twap length that these values should be computed using. When converted from bytes to UTF-8, the ancillary data should be a dictionary containing a period key:value pair like so:
 
 ```twapLength:3600```
 
 `twapLength` should be specified in seconds. If a `twapLength` key value pair is not present, then the ancillary data should default to 0.
 
-When the ancillary data dictionary "twapLength:3600" is stored as bytes, the result would be: 0x747761704c656e6774683a33363030
+When the ancillary data dictionary "twapLength:3600" is stored as bytes, the result would be:
 
+```0x747761704c656e6774683a33363030```
+
+These price identifiers can also optionally include ancillary data `ohlcPeriod` parameter to specify alternative price interval in seconds. As an example, price request could specify daily TWAP over 30 days by passing following ancillary data:
+
+```twapLength:2592000,ohlcPeriod:86400```
+
+When above ancillary data is stored as bytes, the result would be:
+
+```0x747761704c656e6774683a323539323030302c6f686c63506572696f643a3836343030```
 
 ## Rationale
 
@@ -89,7 +98,7 @@ The three most voluminous exchanges for the PERP token are Binance, OKEx and Coi
 ## Implementation
 
 ```
-1. Query the PERP/USD price from Binance, OKEx and Coinbase Pro using whatever TWAP is defined for the ancillary data `twapLength` value. Note that `twapLength` should be defined in seconds. If there is no ancillary data or no `twapLength` key present, then the most recent price that falls before the price request timestamp should be used.
+1. Query the PERP/USD price from Binance, OKEx and Coinbase Pro using whatever TWAP is defined for the ancillary data `twapLength` value. Note that `twapLength` should be defined in seconds. If there is no ancillary data or no `twapLength` key present, then the most recent price that falls before the price request timestamp should be used. If there is `ohlcPeriod` key present in the ancillary data voters should use price interval in seconds specified in the `ohlcPeriod` value, otherwise 1 minute price interval should be used.
 2. Take the median of the PERP/USD results from step 1.
 3. Round result from step 2 to 8 decimals to get the PERP/USD price.
 4. (for USD/PERP) Take the inverse of the result of step 3.
