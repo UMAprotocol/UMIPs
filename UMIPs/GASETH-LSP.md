@@ -75,7 +75,7 @@ In the following quote, the wording is taken from UMIP-16 but the `gas_price` pa
 
 Updated table clarifying median price durations to use for this UMIP.
 
- | Identifier | Number of Hours Contained | Minimum number of mined blocks |
+ | Identifier | Number of Hours Contained (T) | Minimum number of mined blocks (N) |
  |-------------|--------------|----------------------------------|
  | GASETH-1HR | 1 | 200 |
  | GASETH-4HR | 4 | 800 |
