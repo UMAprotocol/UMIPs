@@ -8,7 +8,7 @@
 | Link to Discourse | insert                |
 
 # SUMMARY
-This UMIP is focused on updating the existing `uGAS` price identifiers to be used in the Long/Short Pair contracts and will reference a synthetic token to be created with this price identifier. This token will be referred to as 'uGAS' and will represent a weighted median gas price on Ethereum. The timeframe of this median value will depend on the value in the ancilliary data field of the contract.
+This UMIP is focused on updating the existing `uGAS` price identifiers to be used in the Long/Short Pair contracts and will reference a synthetic token to be created with this price identifier. This token will be referred to as 'uGAS' and will represent a weighted median gas price on Ethereum. The timeframe of this median value will depend on the value in the ancillary data field of the contract.
 
 The DVM should support requests for a price that resolves to the median monthly Ethereum gas price as specified in the implementation section, without needing the additional logic of previous UMIPs that contain EMP-specific AMM TWAP liquidation procedures. 
 
@@ -49,7 +49,7 @@ No price feed implementation is necessary for this price identifier as the price
 
 **7. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
-# ANCILLIARY DATA SPECIFICATIONS
+# ANCILLARY DATA SPECIFICATIONS
 
 When converted from bytes to UTF-8, the ancillary data should be a number `T`.
 
@@ -59,7 +59,7 @@ i.e. ``` T:720 ```
 
 When the above example ancillary data is stored as bytes, the result would be: `insert`
 
-if there is no ancilliary data present, this value should default to `720` which is 30 Days.
+if there is no ancillary data present, this value should default to `720` which is 30 Days.
 
 # RATIONALE
 
