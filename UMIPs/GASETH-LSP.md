@@ -3,14 +3,14 @@
 |-------------------|--------------------------------------------------------|
 | UMIP Title        | Add GASETH-LSP as a supported price identifier        |
 | Authors           | Ross (ross@yam.finance)                                |
-| Status            | Last Call                                              |
-| Created           | January xxth, 2022                                   |
-| Link to Discourse |insert                |
+| Status            | Draft                                             |
+| Created           | January 11th, 2022                                   |
+| Link to Discourse | insert                |
 
 # SUMMARY
-This UMIP is focused on updating the existing uGAS price identifiers to be used the the Long/Short Pair contracts and will reference a synthetic token to be created with this price identifier. This token will be referred to as 'uGAS' and will represent a median gas price on Ethereum. The timeframe of this median value will depend on the values in the ancilliary data field of the contract.
+This UMIP is focused on updating the existing `uGAS` price identifiers to be used in the Long/Short Pair contracts and will reference a synthetic token to be created with this price identifier. This token will be referred to as 'uGAS' and will represent a weighted median gas price on Ethereum. The timeframe of this median value will depend on the value in the ancilliary data field of the contract.
 
-The DVM should support requests for a price that resolves to the median monthly Ethereum gas price as specified in the implementation section, without needing the additional logic of previous UMIPs that contain EMP specific AMM TWAP liquidation procedures. 
+The DVM should support requests for a price that resolves to the median monthly Ethereum gas price as specified in the implementation section, without needing the additional logic of previous UMIPs that contain EMP-specific AMM TWAP liquidation procedures. 
 
 
 # MOTIVATION
@@ -49,30 +49,44 @@ No price feed implementation is necessary for this price identifier as the price
 
 **7. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
+# ANCILLIARY DATA SPECIFICATIONS
+
+When converted from bytes to UTF-8, the ancillary data should be a number `T`.
+
+i.e. ``` T:720 ```
+
+`T` is the total number of hours over which the median gas price is calculated. (The above number shows a 30 day median.) In order to work with the previous calculations, this number should be rounded to the nearest previously approved median time period (in whole hours) as seen in the *Rationale* section. This number is to then be used to determine the minimum number of blocks used to calculate the median gas price over that time period as described in that section and the *implementation* section.
+
+When the above example ancillary data is stored as bytes, the result would be: `insert`
+
 # RATIONALE
 
 From UMIP-16:
 
 > The volatility of gas prices on Ethereum is a well-recognized problem that is only made worse by the ever increasing network congestion in recent months. This creates an opportunity for options/futures underwriters to create financial products that help decentralized applications (dApps) and their users hedge against gas price variability and have a consistent risk-minimized experience. The UMA protocol is well-positioned to provide the necessary plumbing for such products to flourish. Such products will need to rely on the DVM as a settlement layer in case of disputes. Therefore, by supporting data feeds for gas prices, the DVM opens the door for a win-win-win situation between financial products, users/dAaps, and the Ethereum network at large.
-> 
+
+In the following quote, the wording is taken from UMIP-16 but the `gas_price` parameter was updated to `effective_gas_price` to account for EIP-1559 as described in [UMIP-129](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-129.md). 
+
 > Each transaction included in an Ethereum block pays an amount of Ether per 1 unit of gas consumed. That amount is (a) specified by a `effective_gas_price` parameter attached to a transaction, (b) is expressed in the smallest unit of the Ether currency which is `Wei`, and is set by the transaction submitter as a bid offered to the miners to have the transaction included. We therefore have a set of `effective_gas_price`s per block.
-> 
+>
 > There are two important factors to consider: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to proof against abnormalities whether due to extreme volatility or miner manipulation. We propose the median gas price over 1 hour (1HR), 4 hours (4HR), 1 day (1D), one week (1W), and 1 month (1M) periods _weighted by_ the gas used in a transaction. For safety and to proof against price manipulation and/or possible abnormal delays in block production, the DVM requires that a minimum number of blocks must have been mined within a given period. Otherwise, the DVM medianizes over a preset number of blocks defined in the following table:
-> 
-> | Identifier | Minimum number of mined blocks |
-> |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-> | GASETH-1HR | 200 |
-> | GASETH-4HR | 800 |
-> | GASETH-1D | 4800 |
-> | GASETH-1W | 33600 |
-> | GASETH-1M | 134400 |
+
+Updated table clarifying median price durations to use for this UMIP.
+
+ | Identifier | Number of Hours Contained | Minimum number of mined blocks |
+ |-------------|--------------|----------------------------------|
+ | GASETH-1HR | 1 | 200 |
+ | GASETH-4HR | 4 | 800 |
+ | GASETH-1D | 24 | 4800 |
+ | GASETH-7D | 168 | 33600 |
+ | GASETH-30D | 720 | 144000 |
 
 > For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined between `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1` regardless of how long (in wall clock time) it took for these blocks to be mined.
 
 # IMPLEMENTATION
 DVM voters should use the timestamp from the contract that is being voted on. This timestamp can either be queried from the `expirationTimestamp` field in the LSP contract or from the `timestamp` field in the data of the `requestPrice` price function when `expire` is called. 
 
-
+**The rest of this section is replicated from the *Implementation section* in [UMIP-129](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-129.md). **
 
 Updated rounding: 6 decimals
 
@@ -175,4 +189,8 @@ These implementations are provided for explanation purposes and as convenient wa
 
 # Security considerations
 
-Please reference the security considerations section in [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md)
+From UMIP-16
+
+>Anyone relying on this data point should take note of the fact that manipulating the gas prices in a **specific** block or a short range of blocks is achievable by miners whether to inflate or deflate them for their own self-interest or on behalf of an attacker that bribed them to do so. The longer the range the requested statistic covers, the less the risk of manipulation is. This risk will also be significantly inhibited once [fee burn](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1559.md) is introduced in the Ethereum blockchain, because stuffing/padding blocks will have a non-zero cost even to miners (PoW) or block-producers (PoS).
+>
+>A large enough number of UMA governers should be running their full node to ensure data integrity. Relying on third-party full nodes presents a risk of manipulation of data, however if at least **one** governer is relying on their own full node, such manipulation is easily detectable. Hence, the security model here is 1-of-N which is low-risk.
