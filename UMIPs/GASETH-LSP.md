@@ -59,6 +59,8 @@ i.e. ``` T:720 ```
 
 When the above example ancillary data is stored as bytes, the result would be: `insert`
 
+if there is no ancilliary data present, this value should default to `720` which is 30 Days.
+
 # RATIONALE
 
 From UMIP-16:
