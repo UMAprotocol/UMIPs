@@ -8,20 +8,22 @@
 | Link to Discourse |insert                |
 
 # SUMMARY
-This UMIP is focused on updating the existing uGAS price identifiers to be used the the Long/Short Pair contracts and will reference a synthetic token to be created with this price identifier. This token will be referred to as 'uGAS' and will represent a median gas price on Ethereum. The timeframe of this median value will depend on the `medianTime` field in ancilliary data.
+This UMIP is focused on updating the existing uGAS price identifiers to be used the the Long/Short Pair contracts and will reference a synthetic token to be created with this price identifier. This token will be referred to as 'uGAS' and will represent a median gas price on Ethereum. The timeframe of this median value will depend on the values in the ancilliary data field of the contract.
 
 The DVM should support requests for a price that resolves to the median monthly Ethereum gas price as specified in the implementation section, without needing the additional logic of previous UMIPs that contain EMP specific AMM TWAP liquidation procedures. 
 
 
 # MOTIVATION
-This UMIP updates the existing motiviations for uGAS as described in [umip-16](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-16.md) and [umip-20](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-20.md). It removes the motivation for [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md) which is no longer needed as there is no liquidation process for LSP contracts.
+This UMIP updates the existing motiviations for uGAS as described in [umip-16](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-16.md) and [umip-20](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-20.md). The motivation from [umip-22](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-22.md) is no longer needed as there is no liquidation process for LSP contracts.
 
-Cost: Calculating an aggregatory statistic of gas prices on a confirmed block or range of blocks on the Ethereum blockchain is easy by virtue of the fact that all needed data is readily available on any Ethereum full node, whether run locally or accessed remotely through well-known providers such as Infura or Alchemy. Additionally, this data can be accessed through querying publicly accessible Ethereum blockchain data sets.
-
-Opportunity: Gas options/futures can help users and developers hedge against gas volatility allowing them to budget their gas consumption efficiently. Providing a price feed for settlement is a prerequisite.
-
-For the creation of a tokenized gas price futures contract, it is desired that the DVM return the aggregatory gas price for 1 million units of gas. Using the gas price for a million units of gas is more suitable for a tokenized futures contract because tokens will actually represent a non-negligible amount of value. If a token was built with the identifiers defined in UMIP-16, participants would need to transact in millions/billions of tokens to capture any substantial value, as the price of each token would be somewhere in the range of 10-150 Gwei.
-
+From UMIP-16:
+ 
+> Cost: Calculating an aggregatory statistic of gas prices on a confirmed block or range of blocks on the Ethereum blockchain is easy by virtue of the fact that all needed data is readily available on any Ethereum full node, whether run locally or accessed remotely through well-known providers such as Infura or Alchemy. Additionally, this data can be accessed through querying publicly accessible Ethereum blockchain data sets.
+> 
+> Opportunity: Gas options/futures can help users and developers hedge against gas volatility allowing them to budget their gas consumption efficiently. Providing a price feed for settlement is a prerequisite. 
+ 
+From UMIP-20:
+> For the creation of a tokenized gas price futures contract, it is desired that the DVM return the aggregatory gas price for 1 million units of gas. Using the gas price for a million units of gas is more suitable for a tokenized futures contract because tokens will actually represent a non-negligible amount of value. If a token was built with the identifiers defined in UMIP-16, participants would need to transact in millions/billions of tokens to capture any substantial value, as the price of each token would be somewhere in the range of 10-150 Gwei.
 
 # MARKETS & DATA SOURCES
 
@@ -29,7 +31,7 @@ Information necessary to determine a price for this price identifier requres acc
 
 
 # PRICE FEED IMPLEMENTATION
-No price feed implementation is necessary for this price identifier
+No price feed implementation is necessary for this price identifier as the price is determined by on-chain ethereum data.
 
 # TECHNICAL SPECIFICATIONS
 
@@ -43,33 +45,34 @@ No price feed implementation is necessary for this price identifier
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+**6. Result Processing** - Exact. Multiply by a million.
+
+**7. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
 # RATIONALE
 
-The volatility of gas prices on Ethereum is a well-recognized problem that is only made worse by the ever increasing network congestion in recent months. This creates an opportunity for options/futures underwriters to create financial products that help decentralized applications (dApps) and their users hedge against gas price variability and have a consistent risk-minimized experience. The UMA protocol is well-positioned to provide the necessary plumbing for such products to flourish. Such products will need to rely on the DVM as a settlement layer in case of disputes. Therefore, by supporting data feeds for gas prices, the DVM opens the door for a win-win-win situation between financial products, users/dAaps, and the Ethereum network at large.
+From UMIP-16:
 
-Each transaction included in an Ethereum block pays an amount of Ether per 1 unit of gas consumed. That amount is (a) specified by a `effective_gas_price` parameter attached to a transaction, (b) is expressed in the smallest unit of the Ether currency which is `Wei`, and is set by the transaction submitter as a bid offered to the miners to have the transaction included. We therefore have a set of `effective_gas_price`s per block.
+> The volatility of gas prices on Ethereum is a well-recognized problem that is only made worse by the ever increasing network congestion in recent months. This creates an opportunity for options/futures underwriters to create financial products that help decentralized applications (dApps) and their users hedge against gas price variability and have a consistent risk-minimized experience. The UMA protocol is well-positioned to provide the necessary plumbing for such products to flourish. Such products will need to rely on the DVM as a settlement layer in case of disputes. Therefore, by supporting data feeds for gas prices, the DVM opens the door for a win-win-win situation between financial products, users/dAaps, and the Ethereum network at large.
+> 
+> Each transaction included in an Ethereum block pays an amount of Ether per 1 unit of gas consumed. That amount is (a) specified by a `effective_gas_price` parameter attached to a transaction, (b) is expressed in the smallest unit of the Ether currency which is `Wei`, and is set by the transaction submitter as a bid offered to the miners to have the transaction included. We therefore have a set of `effective_gas_price`s per block.
+> 
+> There are two important factors to consider: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to proof against abnormalities whether due to extreme volatility or miner manipulation. We propose the median gas price over 1 hour (1HR), 4 hours (4HR), 1 day (1D), one week (1W), and 1 month (1M) periods _weighted by_ the gas used in a transaction. For safety and to proof against price manipulation and/or possible abnormal delays in block production, the DVM requires that a minimum number of blocks must have been mined within a given period. Otherwise, the DVM medianizes over a preset number of blocks defined in the following table:
+> 
+> | Identifier | Minimum number of mined blocks |
+> |------------|------------------------------------------------------------------------------------------------------------------------------------------|
+> | GASETH-1HR | 200 |
+> | GASETH-4HR | 800 |
+> | GASETH-1D | 4800 |
+> | GASETH-1W | 33600 |
+> | GASETH-1M | 134400 |
 
-There are two important factors to consider: (1) there is a block each 12-15 seconds in the Ethereum blockchain, and spikes in gas prices are routinely observed, and (2) miners can easily manipulate gas prices in a given block (especially in absence of a fee burn). Therefore, an aggregatory statistic needs to be computed over a sufficiently long range of blocks to proof against abnormalities whether due to extreme volatility or miner manipulation. We propose the median gas price over 1 hour (1HR), 4 hours (4HR), 1 day (1D), one week (1W), and 1 month (1M) periods _weighted by_ the gas used in a transaction. For safety and to proof against price manipulation and/or possible abnormal delays in block production, the DVM requires that a minimum number of blocks must have been mined within a given period. Otherwise, the DVM medianizes over a preset number of blocks defined in the following table:
-
-| Identifier | Minimum number of mined blocks |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| GASETH-1HR | 200 |
-| GASETH-4HR | 800 |
-| GASETH-1D | 4800 |
-| GASETH-1W | 33600 |
-| GASETH-1M | 134400 |
-
-
-For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined between `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1` regardless of how long (in wall clock time) it took for these blocks to be mined.
+> For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined between `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1` regardless of how long (in wall clock time) it took for these blocks to be mined.
 
 # IMPLEMENTATION
-The identifier requires updated timestamps.
+DVM voters should use the timestamp from the contract that is being voted on. This timestamp can either be queried from the `expirationTimestamp` field in the LSP contract or from the `timestamp` field in the data of the `requestPrice` price function when `expire` is called. 
 
-For a price request made at or after the Unix timestamp `1640995200` (January 1, 2022 00:00:00 UTC), the price will be resolved with the median monthly gas price calculation defined for GASETH-1M-1M in UMIP-20 with the modification that it uses `effective_gas_price` instead of `gas_price` in order to account for EIP-1559. Full logic for this change is below
 
-For a price request made before `1640995200`, the price will be resolved to a 2-hour TWAP for the Uniswap price of the listed synthetic token in ETH. The synthetic token address will be listed in the Technical Specification section.
 
 Updated rounding: 6 decimals
 
