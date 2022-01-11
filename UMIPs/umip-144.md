@@ -1,10 +1,10 @@
 ## Headers
-| UMIP-PLACEHOLDER    |                                                                                                                                          |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Register Oracle Hub             |
+| UMIP-144   |                                |
+|------------|--------------------------------|
+| UMIP Title | Register Oracle Hub            |
 | Authors    | Nick Pai (nick@umaproject.org) |
-| Status     | Draft                                                                                                                                    |
-| Created    | January 10, 2022                                                                                                                           |
+| Status     | Last Call                      |
+| Created    | January 10, 2022               |
 
 # Summary (2-5 sentences)
 This UMIP will have the effect of registering an oracle hub contract that will enable the optimistic oracle deployed on non-mainnet EVM networks to make cross-chain price requests to the DVM on mainnet Ethereum.
