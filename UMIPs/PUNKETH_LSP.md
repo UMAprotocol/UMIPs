@@ -2,16 +2,16 @@
 
 | UMIP-xxx            |                                                                                 |
 | ------------------- | ------------------------------------------------------------------------------- |
-| UMIP Title          | update PUNKETH price identifier                                  |
+| UMIP Title          | Create new PUNKETH_LSP price identifier                                  |
 | Authors             | Ross (ross@yam.finance), Chase Coleman (chase@umaproject.org)                   |
-| Status              |                                                                       |
-| Created             | Jan. xx, 2022                                                                  |
+| Status              | Draft                                                                      |
+| Created             | Jan. 12, 2022                                                                  |
 | Discourse Link      | insert |
 
 
 # Summary
 
-This UMIP re-introduces the price identifier called `PUNKETH` for a token referred to as `uPUNKS`. The token is a synthetic index based on the recent trading prices of CryptoPunks. The previous price identifier ```PUNKETH-1221``` found in [UMIP 130](./umip-130.md) is not being re-used due to the fact that it was built for the EMP contract. This UMIP re-uses the logic of the previous ```PUNKETH``` price identifier from [UMIP 84](./umip-84.md) and uses the expiry timestamp per contract deployment to allow the creation of multiple overlapping uPUNK contracts. The ```PUNKETH_TWAP``` price identifier is being removed as the LSP is un-liquidatable and this logic is not necessary.
+This UMIP re-introduces the price identifier previously called `PUNKETH` and updates it for use in an Long/Short Pair token referred to as `uPUNKS`. The token is a synthetic index based on the recent trading prices of CryptoPunks. The previous price identifier ```PUNKETH-1221``` found in [UMIP 130](./umip-130.md) is not being re-used due to the fact that it was built for the EMP contract. This UMIP re-uses the logic of the previous ```PUNKETH``` price identifier from [UMIP 84](./umip-84.md) and uses the expiry timestamp per contract deployment to allow the creation of multiple overlapping uPUNK contracts. The ```PUNKETH_TWAP``` price identifier is ignored as the LSP is un-liquidatable and this logic is not necessary.
 
 The DVM should support requests for a price that resolves to the median most recent purchase price (in ETH) of each unique CryptoPunk traded in the last 30 days. The price resolution method to use will depend on the the timestamp the price request was made at.
 
@@ -34,9 +34,9 @@ All relevant price data is computed using information that can be found directly
 
 -----------------------------------------
 
-The `PUNKETH` price identifier depends on prices drawn from the `PunkBought` events of the CryptoPunk market contract
+The `PUNKETH_LSP` price identifier depends on prices drawn from the `PunkBought` events of the CryptoPunk market contract
 
-- Price identifier name: `PUNKETH`
+- Price identifier name: `PUNKETH_LSP`
 - Markets & Pairs: CryptoPunk Market contract `PunkBought` events. The CryptoPunk contract address is `0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB` which you can see at https://etherscan.io/address/0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb
 - Example price providers: Infura and The Graph include information on CryptoPunk contract events
 - Cost to use: [Infura](https://infura.io/) supports up to 100,000 requests per day for free. Information also available on [The Graph](https://thegraph.com/)
@@ -130,7 +130,7 @@ A Python implementation of this pseudo-code can be found [here](https://gist.git
 
 # Technical Specifications
 
-- Price identifier name: `PUNKETH`
+- Price identifier name: `PUNKETH_LSP`
 - Base Currency: CryptoPunk NFTs
 - Quote Currency: ETH
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
@@ -139,7 +139,7 @@ A Python implementation of this pseudo-code can be found [here](https://gist.git
 
 # Rationale
 
-The `PUNKETH` price identifier had a few decisions that we believe were important to the design:
+The `PUNKETH_LSP` price identifier had a few decisions that we believe were important to the design:
 
 * _CryptoPunks_: As mentioned earlier in this document, we chose to build an index using CryptoPunks because they were the original NFT. This originality has lead to them being highly valued and having consistent enough trade volume.
 * _30 day median_: The 30 day median allows for the index to reflect common trading prices across many CryptoPunks rather than to respond to particular transactions
