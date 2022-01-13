@@ -36,7 +36,7 @@ in-game performance statistics provided by SportsData.io.
 - Price identifier name: **APT** 
 - Base Currency: **APT**
 - Quote Currency: **N/A**
-- Markets & Pairs: **AthleteX DEX: APT/AX, AthleteX DEX: APT/MATIC, SushiSwap: AX/WETH**
+- Markets & Pairs: **AthleteX DEX: APT/AX, AthleteX DEX: APT/MATIC**
 - Example data providers: **SportsData**
 - Cost to use: **https://sportsdata.io/**
 
@@ -62,7 +62,12 @@ This method was chosen as a balance between efficiency and scale of athletic dat
 
 Generate values for each of the key-value fields by doing the following:
 1. Go to http://139.99.74.201:9000/
-2. Run the command to fetch player statistics for a given athlete & timestamp: select * from nfl LATEST by name WHERE name = 'F.Last';
+2. Run the command to fetch player statistics for a given athlete & timestamp: 
+select * from nfl WHERE name = 'F.Last' AND TIMESTAMP = 'timestamp';
+where F.Last = First_Initial.Last_Name
+and timestamp = contract expiration timestamp in the following syntax: YYYY-MM-DD HH:MM:SS
+example - select * from nfl WHERE name = 'T.Brady' AND TIMESTAMP = '2022-01-03 00:37:44.245391'; 
+
 Combine key-values into price with the following formula:
 3. 
 rushing touchdown = 6pts
@@ -78,7 +83,7 @@ reception = .5pts
 interception = -2pts
 fumble = -2pts
 
-pts / offensive snaps played = price
+sum(pts) / offensive snaps played = price
 
 Round price computations to 8 decimal places
 
