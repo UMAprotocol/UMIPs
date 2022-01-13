@@ -1,8 +1,8 @@
 **UMIP #**  - tbd
 
 -   **UMIP title:** Add **token** as collateral currency 
--   **Author**  Name (email)
--   **Status: Draft**
+-   **Author:**  Name (email)
+-   **Status:** Draft
 -   **Created:**  Date
 -   **Discourse Link:**  Insert link to discourse topic after it has been moved into draft UMIPs
 
