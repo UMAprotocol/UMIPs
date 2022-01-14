@@ -1,8 +1,8 @@
 **UMIP #**  - tbd
 
 -   **UMIP title:** Add **token** as collateral currency 
--   **Author**  Name (email)
--   **Status: Draft**
+-   **Author:**  Name (email)
+-   **Status:** Draft
 -   **Created:**  Date
 -   **Discourse Link:**  Insert link to discourse topic after it has been moved into draft UMIPs
 
@@ -24,7 +24,7 @@ To accomplish this upgrade, the following changes need to be made:
 
 ## Rationale
 
-This store fee was chosen as it is approximately equivalent to $400 in line with other collateral currencies as determined by **insert how the value of $400 was determined**
+This store fee was chosen as it is approximately equivalent to $1500 in line with other collateral currencies as determined by **insert how the value of $1500 was determined**
 
 ## Implementation
 
