@@ -18,11 +18,9 @@ Athlete Performance Tokens provide exposure to an athlete’s statistical perfor
 This has a range of advantages, including player specific hedging, long term athlete
 growth exposure, and less friction when adjusting positions (e.g. from Bitcoin and other
 cryptocurrencies to LBJ).
-
 APTs also unlock nascent markets in sports not currently available with traditional
 sportsbooks. Some examples include, umpire tokens that track correct balls and strikes
 percentage, and 1-game expiration tokens with high in-game volatility for live trading.
-
 Athlete Performance Tokens are cryptocurrencies that track the statistical performance
 of athletes. APTs are Long-Short Pairs collateralized by deposits in the Staking Contract.
 Each athlete has a Long token reflecting positive performance and Short token
@@ -38,7 +36,7 @@ in-game performance statistics provided by SportsData.io.
 - Quote Currency: **N/A**
 - Markets & Pairs: **AthleteX DEX: APT/AX, AthleteX DEX: APT/MATIC**
 - Example data providers: **SportsData**
-- Cost to use: **https://sportsdata.io/**
+- Cost to use: **https://sportsdata.io/developers/faq#free-trial**
 
 - Real-time data update frequency: **1min**
 - Historical data update frequency: **1min**
@@ -68,8 +66,8 @@ where F.Last = First_Initial.Last_Name
 and timestamp = contract expiration timestamp in the following syntax: YYYY-MM-DD HH:MM:SS
 example - select * from nfl WHERE name = 'T.Brady' AND TIMESTAMP = '2022-01-03 00:37:44.245391'; 
 
-Combine key-values into price with the following formula:
-3. 
+3. Combine key-values into price with the following formula:
+
 rushing touchdown = 6pts
 receiving touchdown = 6pts
 passing touchdown = 6pts
