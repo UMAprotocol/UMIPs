@@ -33,3 +33,9 @@ Potential prices to return will be discrete values between 0 and 100 and should 
 Additional information for UMA DVM participants:
 - Approved PIPs can be observed in the Volatility DAO [Github Repo](https://github.com/Volatility-DAO/PIPS/tree/main/Approved) in the “Approved” directory.
 - Within the Volatility DAO Discord is a channel called [#vol-kpi-metrics](https://discord.com/channels/807306992389062668/931235120269119488). This channel will be used to post and keep track of the above metric. Users will be able to verify products built on top of the DAOracle here and new partnerships that are created within the DeFi space.
+
+## Intended Application
+
+It is intended to deploy the documented KPI options on Ethereum network using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contract would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 100.
+
+`collateralPerPair` parameter for the LSP contract would be set to 100 so that the maximum payout per KPI option would reach 100 VOL if all the goals listed above are reached by the request timestamp.
