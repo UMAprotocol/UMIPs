@@ -1,6 +1,6 @@
 ## Title
 
-Volatilty DAO Batch Two KPI
+Volatility DAO Batch Two KPI
 
 ## Summary
 
