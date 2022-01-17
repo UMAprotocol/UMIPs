@@ -4,7 +4,7 @@ Volatility DAO Batch Two KPI
 
 ## Summary
 
-The Volatility DAO wishes to use KPI options to incentivize the community to complete future DAO projects. This implementation doc is intended to be used with the General_KPI price identifier, and its return value will be determined by UMA proposer/voterss assessment of the Volatility DAO's completion of its objectives. These objectives and corresponding payouts are detailed in the *Implementation* section. 
+The Volatility DAO wishes to use KPI options to incentivize the community to complete future DAO projects. This implementation doc is intended to be used with the General_KPI price identifier, and its return value will be determined by UMA proposer/voters assessment of the Volatility DAO's completion of its objectives. These objectives and corresponding payouts are detailed in the *Implementation* section. 
 
 ## Intended Ancillary Data
 
