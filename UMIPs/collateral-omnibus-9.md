@@ -28,7 +28,8 @@ To accomplish this upgrade, the following changes need to be made:
 
 - DOM token address 0xef5Fa9f3Dede72Ec306dfFf1A7eA0bB0A2F7046F on Ethereum (https://etherscan.io/address/0xef5Fa9f3Dede72Ec306dfFf1A7eA0bB0A2F7046F) needs to be added to the collateral currency whitelist introduced in UMIP-8.
 - DOM token address 0xc8aaeE7f1DEaC631259B8Bf2c65e71207cc53B0c on Polygon (https://polygonscan.com/address/0xc8aaeE7f1DEaC631259B8Bf2c65e71207cc53B0c) needs to be added to the collateral currency whitelist introduced in UMIP-8.
-- A final fee of 150000 DOM needs to be set in the Store contract for DOM token address on both Ethereum and Polygon.
+- DOM token address 0xb063fDCE9cF1c111a576Bff7Bf75C6cc7DB4Cc3f on Boba network (https://blockexplorer.boba.network/address/0xb063fDCE9cF1c111a576Bff7Bf75C6cc7DB4Cc3f) needs to be added to the collateral currency whitelist introduced in UMIP-8.
+- A final fee of 150000 DOM needs to be set in the Store contract for DOM token address on Ethereum, Polygon and Boba.
 
 ### JRT
 
@@ -39,7 +40,7 @@ To accomplish this upgrade, the following changes need to be made:
 
 Store fee for BOBA was chosen as it is approximately equivalent to $1500 in line with other collateral currencies as determined by using the current CoinGecko prices.
 
-Since there is no trading activity observed for DOM it was arbitrary assumed having $15 million market cap. Given the total supply of 1,500,000,000 DOM that would translate to $0.01 token price and 150000 DOM final fee targeting $1500 value.
+Since there is no trading activity observed for DOM it was arbitrary assumed having $15 million market cap. Given the total supply of 1,500,000,000 DOM that would translate to $0.01 token price and 150000 DOM final fee targeting $1500 value. Final fee for DOM could be updated in the forthcoming UPP once the token is listed for trading.
 
 ## Implementation
 
