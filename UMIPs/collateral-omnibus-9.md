@@ -4,7 +4,7 @@
 - **Author:** Reinis Martinsons (reinis@umaproject.org)
 - **Status:** Draft
 - **Created:** 13 January 2022
-- **Discourse Link:** Insert link to discourse topic after it has been moved into draft UMIPs
+- **Discourse Link:** https://discourse.umaproject.org/t/collateral-omnibus-9/1391
 
 ## Summary (2-5 sentences)
 
