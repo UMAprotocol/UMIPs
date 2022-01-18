@@ -1,8 +1,8 @@
-**UMIP #** - tbd
+**UMIP 145**
 
-- **UMIP title:** Add BOBA, YAM and JRT as collateral currency 
+- **UMIP title:** Add BOBA, YAM and JRT as supported collateral currencies
 - **Author:** Reinis Martinsons (reinis@umaproject.org)
-- **Status:** Draft
+- **Status:** Last Call
 - **Created:** 13 January 2022
 - **Discourse Link:** https://discourse.umaproject.org/t/collateral-omnibus-9/1391
 
