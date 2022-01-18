@@ -45,19 +45,17 @@ No price feed implementation is necessary for this price identifier as the price
 
 **5. Scaling Decimals** - 18 (1e18)
 
-**6. Result Processing** - Exact. Multiply by a million.
-
-**7. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
+**6. Rounding** - Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
 
 # ANCILLARY DATA SPECIFICATIONS
 
-When converted from bytes to UTF-8, the ancillary data should be a number `T`.
+When converted from bytes to UTF-8, the ancillary data should be a number `N`.
 
-i.e. ``` T:720 ```
+i.e. ``` N:720 ```
 
-`T` is the total number of hours over which the median gas price is calculated. (The above number shows a 30 day median.) In order to work with the previous calculations, this number should be rounded to the nearest previously approved median time period (in whole hours) as seen in the *Rationale* section. This number is to then be used to determine the minimum number of blocks used to calculate the median gas price over that time period as described in that section and the *implementation* section.
+`N` is the total number of hours over which the median gas price is calculated. (The above number shows a 30 day median.) In order to work with the previous calculations, this number should be rounded to the nearest previously approved median time period (in whole hours) as seen in the *Rationale* section. This number is to then be used to determine the minimum number of blocks used to calculate the median gas price over that time period as described in that section and the *implementation* section.
 
-When the above example ancillary data is stored as bytes, the result would be: `insert`
+When the above example ancillary data is stored as bytes, the result would be: `0x4e3a373230`
 
 if there is no ancillary data present, this value should default to `720` which is 30 Days.
 
@@ -75,7 +73,7 @@ In the following quote, the wording is taken from UMIP-16 but the `gas_price` pa
 
 Updated table clarifying median price durations to use for this UMIP.
 
- | Identifier | Number of Hours Contained (T) | Minimum number of mined blocks (N) |
+ | Identifier | Number of Hours Contained (N) | Minimum number of mined blocks (B) |
  |-------------|--------------|----------------------------------|
  | GASETH-1HR | 1 | 200 |
  | GASETH-4HR | 4 | 800 |
@@ -86,22 +84,20 @@ Updated table clarifying median price durations to use for this UMIP.
 > For example, if the GASETH-1HR is requested for `t1` = October 1st 2020 UTC 00:00:00, and the number of blocks mined between `t0` = September 30th 2020 UTC 23:00:00 and  `t1` is less than 200, then the DVM medianizes over the 200 blocks mined at time <= `t1` regardless of how long (in wall clock time) it took for these blocks to be mined.
 
 # IMPLEMENTATION
-DVM voters should use the timestamp from the contract that is being voted on. This timestamp can either be queried from the `expirationTimestamp` field in the LSP contract or from the `timestamp` field in the data of the `requestPrice` price function when `expire` is called. 
+DVM voters should use the timestamp from the contract that is being voted on. This timestamp can either be queried from the `expirationTimestamp` field in the LSP contract or from the `timestamp` field in the data of the `requestPrice` price function when `expire` is called. The time period to medianize over should be determined from the `N` variable in ancillary data, which should be rounded per the *Ancillary Data Specification*.
 
 **The rest of this section is replicated from the *Implementation section* in [UMIP-129](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-129.md). **
-
-Updated rounding: 6 decimals
 
 In order to account for the changes to the fee market included in EIP-1559, the following pseudo-algorithm is used to calculate the exact data point to report by a DVM reporter:
 
 ```python
 def return_median(t, N)
     assert N in [1, 4, 24, 168, 720]
-    minimum_ranges = {1: 200, 4: 800, 24: 4800, 168: 33600, 720: 134400} # a mapping between the durations 1HR, 4HR, 24HR (1D), 168HR (1W), 720HR(1M) and the corresponding mimimum number of blocks that must have been mined within the period.
+    minimum_ranges = {1: 200, 4: 800, 24: 4800, 168: 33600, 720: 144000} # a mapping between the durations 1HR, 4HR, 24HR (1D), 168HR (1W), 720HR(1M) and the corresponding mimimum number of blocks that must have been mined within the period.
     
     # `t` is number of seconds since the epoch (unix time)
     end_block = block.at(timestamp=t) # rounded down
-    offset = N - 3600*N # there are 3600 seconds/hour
+    offset = t - 3600*N # there are 3600 seconds/hour
     start_block = block.at(timestamp=(t-offset))  
     
     # the DVM imposes a minimum number of blocks within a given time period to ensure safety against price manipulation
