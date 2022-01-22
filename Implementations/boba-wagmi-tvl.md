@@ -73,7 +73,7 @@ An example implementation script is provided [here](https://github.com/Reinis-FR
 
 ### Fallback method
 
-1. Locate the Boba network statistics page on L2BEAT at the `Endpoint` passed as ancillary data.
+1. Locate the Boba network statistics page on [L2BEAT](https://l2beat.com/projects/bobanetwork/).
 2. Determine all dates that should be considered for averaging TVL values from the range (inclusive) passed in `StartTWAP` and `EndTWAP` parameters from the ancillary data.
 3. Hover over L2BEAT Boba network TVL chart and take a note on all TVL values for dates identified in Step 1. Use the denomination currency corresponding to the `TVLDenomination` parameter passed as ancillary data.
 4. Calculate average Boba network TVL over the `Aggregation` period expressed in `TVLDenomination` currency. This TVL should be further processed by voters following instructions in the Post processing section.
