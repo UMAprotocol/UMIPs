@@ -13,7 +13,6 @@ This document will detail the calculation method for Boba network TVL and payout
 ```
 Metric:Boba network TVL,
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/boba-wagmi-tvl.md",
-Interval:daily,
 Aggregation:TWAP TVL for the provided time range,
 StartTWAP: 1646092800,
 EndTWAP: 1648771200,
