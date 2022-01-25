@@ -1,11 +1,11 @@
 # Headers
-| UMIP-129          |                                                        |
+| UMIP-xxx         |                                                        |
 |-------------------|--------------------------------------------------------|
 | UMIP Title        | Add GASETH-LSP as a supported price identifier        |
 | Authors           | Ross (ross@yam.finance)                                |
 | Status            | Draft                                             |
 | Created           | January 11th, 2022                                   |
-| Link to Discourse | insert                |
+| Link to Discourse | https://discourse.umaproject.org/t/gaseth-lsp-price-identifier/1395              |
 
 # SUMMARY
 This UMIP is focused on updating the existing `uGAS` price identifiers to be used in the Long/Short Pair contracts and will reference a synthetic token to be created with this price identifier. This token will be referred to as 'uGAS' and will represent a weighted median gas price on Ethereum. The timeframe of this median value will depend on the value in the ancillary data field of the contract.
@@ -97,7 +97,7 @@ def return_median(t, N)
     
     # `t` is number of seconds since the epoch (unix time)
     end_block = block.at(timestamp=t) # rounded down
-    offset = t - 3600*N # there are 3600 seconds/hour
+    offset = 3600*N # there are 3600 seconds/hour
     start_block = block.at(timestamp=(t-offset))  
     
     # the DVM imposes a minimum number of blocks within a given time period to ensure safety against price manipulation
