@@ -47,7 +47,7 @@ Rounding:0
 It is intended to deploy the documented KPI options separately on each supported chain using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 2,300,000.
 
 As an illustration, based on the intended ancillary data above with `upperBound` set to 2,300,000, the following payouts would be implied:
-* TVL below USD 2,300,000 would return a value that corresponds with 1 JRT per dollar of liquidity. A returned value of 1,150,000 would provide long token holders with 1,150,000/2,300,000 = 50% of `collateralPerPair` for each token;
+* TVL below USD 2,300,000 would divide the returned value by the `upperBound` of 2,300,000. A returned value of 1,150,000 would provide long token holders with 1,150,000/2,300,000 = 50% of `collateralPerPair` for each token;
 * TVL above USD 2,300,000 would return 2,300,000/2,300,000 and long KPI option holders would receive 100% of `collateralPerPair` for each token;
 
 `collateralPerPair` above is the total locked collateral per KPI options token and it would be set by the deployer considering the available LP incentivization budget and intended KPI option token distribution amount.
