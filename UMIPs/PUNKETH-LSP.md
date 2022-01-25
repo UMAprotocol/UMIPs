@@ -6,7 +6,7 @@
 | Authors             | Ross (ross@yam.finance), Chase Coleman (chase@umaproject.org)                   |
 | Status              | Draft                                                                      |
 | Created             | Jan. 12, 2022                                                                  |
-| Discourse Link      | insert |
+| Discourse Link      | https://discourse.umaproject.org/t/punketh-lsp-price-identifier/1396|
 
 
 # Summary
@@ -154,7 +154,7 @@ A Python implementation of this pseudo-code can be found [here](https://gist.git
 The `PUNKETH_LSP` price identifier had a few decisions that we believe were important to the design:
 
 * _CryptoPunks_: As mentioned earlier in this document, we chose to build an index using CryptoPunks because they were the original NFT. This originality has lead to them being highly valued and having consistent enough trade volume.
-* _30 day median_: The 30 day median allows for the index to reflect common trading prices across many CryptoPunks rather than to respond to particular transactions. This is the default median timeframe, and can be changed by inputting a different `T` variable into the contract ancillary data.
+* _Median Price_: The median price allows for the index to reflect common trading prices across many CryptoPunks rather than to respond to particular transactions. The default median timeframe is 30 days, and may be changed per LSP contract using ancillary data.
 * _Unique CryptoPunks_: We only use the most recent trade price for each CryptoPunk. This is a security feature since if we used each transaction then a single person could trade one CryptoPunk amongst accounts they owned to manipulate the price.
 * _Median rather than the mean_: Calculating the mean incorporates the price of every single transaction which means that someone who owned a single CryptoPunk could have a small effect on the price. The median can still be manipulated but, given the uniqueness restriction above, it would require someone to own enough CryptoPunks to make up half of the monthly transactions.
 
@@ -163,7 +163,7 @@ The `PUNKETH_LSP` price identifier had a few decisions that we believe were impo
 
 When a price request is made, the following process should be followed:
 
-1. Determine the timeframe `T` used to calculate the price from Ancillary Data.
+1. Determine the timeframe `T` used to calculate the price from Ancillary Data. See the *Ancillary Data Specifications* section for more infomation on retrieving this data.
 2. Retrieve all CryptoPunk `PunkBought` events from `T` seconds prior to expiration
 3. Identify the last price that each CryptoPunk was traded at using the event data -- Only one price should be produced per CryptoPunk even if they had traded multiple times. Due to a [bug in the CryptoPunk Market](https://github.com/UMAprotocol/UMIPs/pull/261#discussion_r622282931), this isn't as straightforward as reading the most recent value from the `PunkBought` event. The process we use is:
     - Scan through all of the `PunkBought` events and identify the function call that generated the `PunkBought` event:
