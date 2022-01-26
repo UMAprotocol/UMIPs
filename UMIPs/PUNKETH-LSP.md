@@ -146,7 +146,7 @@ A Python implementation of this pseudo-code can be found [here](https://gist.git
 - Base Currency: CryptoPunk NFTs
 - Quote Currency: ETH
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-- Estimated current value of post-expiry price identifier script: `enter after running`
+- Value of post-expiry price identifier script at timestamp `1643228128`: `0.07599`
 
 
 # Rationale
