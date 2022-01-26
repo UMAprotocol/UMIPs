@@ -20,7 +20,7 @@ Rounding:0
 
 ## Implementation
 
-Change in UMA market cap rank is determined by comparing the market cap rank of UMA based on the <START_MARKET_CAP_RANK> parameter and the market cap rank of UMA at expiration. The sources used as a reference for the calculation are Coinmarketcap and Cryptorank but could be extended to use other API sources in the future.
+Change in UMA market cap rank is determined by calculating the difference between the market cap rank of UMA at the latest timestamp that is at or before the price request timestamp and the <START_MARKET_CAP_RANK> parameter set upon contract deployment. The sources used as a reference for the calculation are Coinmarketcap and Cryptorank but could be extended to use other API sources in the future.
 
 ## Manual method
 
@@ -44,7 +44,7 @@ https://api.cryptorank.io/v1/currencies/historical?time={timestamp}&limit=2000&a
 ```
 3. Add the result from steps 1 and 2 and divide by 2. Round the result to 0 decimal places. This value represents the average market cap rank of UMA.
 
-4. Use the UMA `StartingRank` from the ancillary data and subtract the output from step 3. This value represents the change in UMA market cap rank.
+4. Use the UMA `StartingRank` from the ancillary data and subtract the result from step 3. This value represents the change in UMA market cap rank.
 
 ## Script method
 
@@ -136,8 +136,8 @@ async function main() {
     // Output UMA market cap rank to console
     const umaRank = await calculateUmaRank();
 
-    console.log("UMA current rank: ", umaRank);
     console.log("UMA starting rank: ", starting_rank);
+    console.log("UMA current rank: ", umaRank);
 
     console.log("UMA Market Cap Rank increased by", calculateRankChange(umaRank));
 }
@@ -146,7 +146,7 @@ async function main() {
 main();
 ```
 
-2. Set the `starting_rank` variable from the ancillary data of the deployed contract.
+2. Set the `starting_rank` variable as the `StartingRank` value from the ancillary data of the deployed contract.
 
 3. Add your API keys to the `cmc_api_key` and `cryptorank_api_key` variables.
 
@@ -167,11 +167,11 @@ node uma-market-cap-rank.js
 
 ## Intended Application
 
-It is intended to deploy the documented KPI options separately on each supported chain using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 8.
+It is intended to deploy the documented KPI options on the Ethereum network using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 8.
 
-The change in market cap calculation is the `StartingRank` - current market cap = change in market cap rank. As an illustration, based on the intended ancillary data above, the `upperBound` would be set to 8 implying the following payouts:
-* If the current market cap rank is greater than the `StartingRank`, the resolved price should be 0. For example, if the current market cap rank is 170 and the `StartingRank` is 150, the returned value should be 0. Long KPI option holders would receive 0/8=0% of `collateralPerPair` for each token;
-* If the change in market cap rank value is between 1 and 8, the resolved price should be the change in market cap value. For example, if the `StartingRank` is 150 and the current market cap is 146, the returned value should be 4. Long KPI option holders would receive 4/8=50% of `collateralPerPair` for each token;
-* If the change in market cap rank value is greater than 8, the resolved price should be 8. For example, if the `StartingRank` is 150 and the current market cap is 140 (150-140=10), the returned value should be 8. Long KPI option holders would receive 8/8=100% of `collateralPerPair` for each token;
+The change in market cap rank calculation is the `StartingRank` less the market cap rank of UMA at the latest timestamp that is at or before the price request timestamp. As an illustration, based on the intended ancillary data above, the `upperBound` would be set to 8 implying the following payouts:
+* If the market cap rank at expiration is greater than the `StartingRank`, the resolved price should be 0. For example, if the market cap rank at expiration is 170 and the `StartingRank` is 150, the returned value should be 0. Long KPI option holders would receive 0/8=0% of `collateralPerPair` for each token;
+* If the change in market cap rank value is between 1 and 8, the resolved price should be the change in market cap value. For example, if the `StartingRank` is 150 and the market cap rank at expiration is 146, the returned value should be 4. Long KPI option holders would receive 4/8=50% of `collateralPerPair` for each token;
+* If the change in market cap rank value is greater than 8, the resolved price should be 8. For example, if the `StartingRank` is 150 and the market cap rank at expiration is 140 (150-140=10), the returned value should be 8. Long KPI option holders would receive 8/8=100% of `collateralPerPair` for each token;
 
 `collateralPerPair` above is the total locked collateral per KPI options token and it would be set by the deployer considering the available LP incentivization budget and intended KPI option token distribution amount.
