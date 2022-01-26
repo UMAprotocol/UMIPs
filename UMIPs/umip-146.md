@@ -1,10 +1,10 @@
 ## Headers
 
-| UMIP-xxx            |                                                                                 |
+| UMIP-146            |                                                                                 |
 | ------------------- | ------------------------------------------------------------------------------- |
 | UMIP Title          | Create new PUNKETH-LSP price identifier                                  |
 | Authors             | Ross (ross@yam.finance), Chase Coleman (chase@umaproject.org)                   |
-| Status              | Draft                                                                      |
+| Status              | Last Call                                                                      |
 | Created             | Jan. 12, 2022                                                                  |
 | Discourse Link      | https://discourse.umaproject.org/t/punketh-lsp-price-identifier/1396|
 
