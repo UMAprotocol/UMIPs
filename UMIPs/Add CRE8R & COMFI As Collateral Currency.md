@@ -1,4 +1,4 @@
--   **UMIP title:** Add CRE8R and COMFI as collateral currency.MD
+-   **UMIP title:** Add CRE8R and COMFI as collateral currency
 -   **Author:**  Geoff (stadnykgeoff1@gmail.com)
 -   **Status:** Draft
 -   **Created:**  19 January 2022
