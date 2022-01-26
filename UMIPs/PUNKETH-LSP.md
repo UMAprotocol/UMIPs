@@ -2,7 +2,7 @@
 
 | UMIP-xxx            |                                                                                 |
 | ------------------- | ------------------------------------------------------------------------------- |
-| UMIP Title          | Create new PUNKETH_LSP price identifier                                  |
+| UMIP Title          | Create new PUNKETH-LSP price identifier                                  |
 | Authors             | Ross (ross@yam.finance), Chase Coleman (chase@umaproject.org)                   |
 | Status              | Draft                                                                      |
 | Created             | Jan. 12, 2022                                                                  |
@@ -34,9 +34,9 @@ All relevant price data is computed using information that can be found directly
 
 -----------------------------------------
 
-The `PUNKETH_LSP` price identifier depends on prices drawn from the `PunkBought` events of the CryptoPunk market contract
+The `PUNKETH-LSP` price identifier depends on prices drawn from the `PunkBought` events of the CryptoPunk market contract
 
-- Price identifier name: `PUNKETH_LSP`
+- Price identifier name: `PUNKETH-LSP`
 - Markets & Pairs: CryptoPunk Market contract `PunkBought` events. The CryptoPunk contract address is `0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB` which you can see at https://etherscan.io/address/0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb
 - Example price providers: Infura and The Graph include information on CryptoPunk contract events
 - Cost to use: [Infura](https://infura.io/) supports up to 100,000 requests per day for free. Information also available on [The Graph](https://thegraph.com/)
@@ -142,7 +142,7 @@ A Python implementation of this pseudo-code can be found [here](https://gist.git
 
 # Technical Specifications
 
-- Price identifier name: `PUNKETH_LSP`
+- Price identifier name: `PUNKETH-LSP`
 - Base Currency: CryptoPunk NFTs
 - Quote Currency: ETH
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
@@ -151,7 +151,7 @@ A Python implementation of this pseudo-code can be found [here](https://gist.git
 
 # Rationale
 
-The `PUNKETH_LSP` price identifier had a few decisions that we believe were important to the design:
+The `PUNKETH-LSP` price identifier had a few decisions that we believe were important to the design:
 
 * _CryptoPunks_: As mentioned earlier in this document, we chose to build an index using CryptoPunks because they were the original NFT. This originality has lead to them being highly valued and having consistent enough trade volume.
 * _Median Price_: The median price allows for the index to reflect common trading prices across many CryptoPunks rather than to respond to particular transactions. The default median timeframe is 30 days, and may be changed per LSP contract using ancillary data.
