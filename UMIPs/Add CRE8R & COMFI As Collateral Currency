@@ -15,11 +15,18 @@ The addition of this collateral currency offers additional functionality to the 
 
 To accomplish this upgrade, the following changes need to be made:
 
+## Ethereum Mainnet
+
 -   The CRE8R address https://etherscan.io/token/0xaa61d5dec73971cd4a026ef2820bb87b4a4ed8d6 needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of 4,105 CRE8R needs to be added in the Store contract.
+-   A final fee of 5,280 CRE8R needs to be added in the Store contract.
     
 -   The COMFI address https://etherscan.io/token/0x752efadc0a7e05ad1bcccda22c141d01a75ef1e4 needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of 872 COMFI needs to be added in the Store contract.
+-   A final fee of 1,430 COMFI needs to be added in the Store contract.
+
+## Polygon
+
+-  The COMFI address https://polygonscan.com/token/0x72bba3aa59a1ccb1591d7cddb714d8e4d5597e96 needs to be added to the collateral currency whitelist introduced in UMIP-8.
+-  A final fee of 1,430 COMFI needs to be added in the Store contract.
 
 ## Rationale
 
