@@ -1,9 +1,9 @@
 # Headers
-| UMIP-xxx         |                                                        |
+| UMIP-147        |                                                        |
 |-------------------|--------------------------------------------------------|
 | UMIP Title        | Add GASETH-LSP as a supported price identifier        |
 | Authors           | Ross (ross@yam.finance)                                |
-| Status            | Draft                                             |
+| Status            | Last Call                                             |
 | Created           | January 11th, 2022                                   |
 | Link to Discourse | https://discourse.umaproject.org/t/gaseth-lsp-price-identifier/1395              |
 
