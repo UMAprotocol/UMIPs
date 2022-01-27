@@ -37,4 +37,3 @@ Adding a collateral currency introduces a level of risk into the UMA Ecosystem. 
 
 Contract deployers considering using this collateral in an UMA contract should refer to the [guidelines on collateral type usage](https://docs.umaproject.org/uma-tokenholders/guidence-on-collateral-currency-addition) to ensure appropriate use.
 
-
