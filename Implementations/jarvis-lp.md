@@ -15,8 +15,7 @@ Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/jarvis-
 jarvisLPContract:0xa769c6786C3717945438d4C4feb8494a1a6Ca443,
 Interval:daily,
 Aggregation:Average end of day (midnight UTC) LP TVL since <START_TIMESTAMP>,
-Rounding:0,
-TVLCheckpoints:{"0":0,"1000000":1000000,"2000000":2000000,"3000000":3000000,"4000000":4000000}
+Rounding:-6
 ```
 
 ***Note 1:** `TVLCurrency` represents the quote currency in which the TVL should be measured. This parameter can be set to any quote currency supported by CoinGecko (see full supported list in https://api.coingecko.com/api/v3/simple/supported_vs_currencies).*
@@ -24,8 +23,6 @@ TVLCheckpoints:{"0":0,"1000000":1000000,"2000000":2000000,"3000000":3000000,"400
 ***Note 2:** `jarvisLPContract` above is specific to Polygon network*
 
 ***Note 3:** <START_TIMESTAMP> should be filled in upon contract deployment based on expected expiration and desired averaging period.*
-
-***Note 4:** `TVLCheckpoints` can be modified to any other JSON formatted object defining post-processing of target TVL's (keys) and returned prices (values).*
 
 ## Implementation
 
@@ -48,13 +45,8 @@ TVLCheckpoints:{"0":0,"1000000":1000000,"2000000":2000000,"3000000":3000000,"400
 6. Scale down LP reserve balances from Step 4 with their respective decimals (call `decimals()` method on the token contracts from Step 3).
 7. Multiply each LP reserve token balance from Step 6 with its price from Step 5 for each evaluation timestamp.
 8. Sum both LP reserve balance values from Step 7 to get the total value of the pool in terms of `TVLCurrency` at the latest available block at or before each evaluation timestamp.
-9. Calculate the average from the daily values in Step 8 to obtain the LP TVL in terms of `TVLCurrency`.
-
-## Post processing
-
-Based on the `TVLCheckpoints` parameter from ancillary data voters should transform the measured average TVL from Step 9 to its corresponding `TVLCheckpoints`. `TVLCheckpoints` contain key-value pairs where keys represent target TVL metric checkpoints and values indicate response values. Voters should identify the largest TVL checkpoint (key) that is exceeded by the average TVL and return its corresponding value as the resolved price request.
-
-As an example, based on the intended ancillary data parameters above if the average TVL of LP staked in the LP pool on Polygon at expiration was USD 800,000, the price should be resolved to 0 (TVL is exceeding only key "0" checkpoint). Alternatively, if the TVL of the pool on Polygon was USD 1,200,000, the price should be resolved to 1,000,000 (TVL is exceeding the key "1000000" checkpoint).
+9. Calculate the average from the daily values in Step 8 to obtain the LP TVL in terms of `TVLCurrency`. 
+10. Use floor rounding to round the output from step 9 down to the nearest million. As an example, if the output from step 9 was USD 800,000, the value should be rounded down to 0. Alternatively, if the output from step 9 was USD 1,200,000, the value should be rounded down to 1,000,000.
 
 ## Intended Application
 
