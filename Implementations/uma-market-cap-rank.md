@@ -20,20 +20,11 @@ Rounding:0
 
 ## Implementation
 
-Change in UMA market cap rank is determined by calculating the difference between the market cap rank of UMA at the latest timestamp that is at or before the price request timestamp and the <START_MARKET_CAP_RANK> parameter set upon contract deployment. The sources used as a reference for the calculation are Coinmarketcap and Cryptorank but could be extended to use other API sources in the future.
+Change in UMA market cap rank is determined by calculating the difference between the market cap rank of UMA at the latest timestamp that is at or before the price request timestamp and the <START_MARKET_CAP_RANK> parameter set upon contract deployment. The source used as a reference for the calculation is Cryptorank but could be extended to use other API sources in the future.
 
 ## Manual method
 
-1. Use the below URL to query the Coinmarketcap UMA market cap ranking. Take a note of the `cmc_rank` parameter value that corresponds to the latest timestamp that is at or before the price request timestamp. Please note, a Standard, Professional, or Enterprise API plan is required.
-
-```
-cmc_api_key = "YOUR_CMC_API_KEY"
-timestamp = "UNIX_timestamp" // uses UNIX format
-
-Query url:
-https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/historical?CMC_PRO_API_KEY={cmc_api_key}&date={timestamp}&convert=UMA,USD
-```
-2. Use the below URL to query the Cryptorank UMA market cap ranking. The query response sorts the results by market cap rank. Take a note of the index number for the element in the response where `symbol` is equal to `UMA`. Add 1 to this value and ensure that it corresponds to the latest timestamp that is at or before the price request timestamp. Please note, a Launch, Grow, or Business API plan is required. 
+1. Use the below URL to query the Cryptorank UMA market cap ranking. The query response sorts the results by market cap rank. Take a note of the index number for the element in the response where `symbol` is equal to `UMA`. Add 1 to this value and ensure that it corresponds to the latest timestamp that is at or before the price request timestamp. Please note, a Launch, Grow, or Business API plan is required. 
 
 ```
 cryptorank_api_key = "YOUR_CRYPTORANK_API_KEY"
@@ -42,9 +33,8 @@ timestamp = "ISO_8601_timestamp" // uses ISO 8601 format
 Query url:
 https://api.cryptorank.io/v1/currencies/historical?time={timestamp}&limit=2000&api_key={cryptorank_api_key}&sort=rank
 ```
-3. Add the result from steps 1 and 2 and divide by 2. Round the result to 0 decimal places. This value represents the average market cap rank of UMA.
 
-4. Use the UMA `StartingRank` from the ancillary data and subtract the result from step 3. This value represents the change in UMA market cap rank.
+2. Apply the UMA `StartingRank` from the ancillary data and subtract the result from step 1. This value represents the change in UMA market cap rank.
 
 ## Script method
 
@@ -57,30 +47,12 @@ const axios = require("axios");
 /* Set the starting rank to perform the change in ranking calculation */
 const starting_rank = UMA_STARTING_RANK;
 
-/* Set CMC and Cryptorank APIs */
-const cmc_api_key = "YOUR_CMC_API_KEY";
+/* Set Cryptorank API */
 const cryptorank_api_key = "YOUR_CRYPTORANK_API_KEY";
 
-/* Set CMC params */
-const cmc_date = "UNIX_timestamp"; // uses UNIX format
-const cmc_convert = "UMA,USD";
-
 /* Set Cryptorank params */
-const cryptorank_limit = "1500"; // needs to be greater than the expected market cap rank
+const cryptorank_limit = "300"; // needs to be greater than the expected market cap rank
 const cryptorank_time = "ISO_8601_timestamp"; // uses ISO 8601 format
-
-// Collect cmc rank
-async function collectCmcRank(api_key, date, convert) {
-  const rank = 
-  (
-    await axios.get(
-      `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/historical?CMC_PRO_API_KEY=${api_key}&date=${date}&convert=${convert}`
-      // test with sandbox using https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/historical
-    )
-  ).data.data[0].cmc_rank;
-  console.log('CMC API: ' + rank); // Output CMC rank to console
-  return rank;
-}
 
 // Collect cryptorank rank
 async function collectCryptorankRank(api_key, limit, time) {
@@ -99,40 +71,31 @@ async function collectCryptorankRank(api_key, limit, time) {
   })
 
   const rank = reformattedArray.findIndex(umarank => umarank === 'UMA') + 1;
-  console.log('Cryptorank API: ' + rank); // Output Cryptorank rank to console
   return rank;
-}
-
- // Calculate average of array of ranks
- function calculateRankAverage(ranks) {
-  // Return reduced sum / length of ranks array
-  return ranks.reduce((a, b) => a + b) / ranks.length;
 }
 
  // Calculate UMA market cap rank
  async function calculateUmaRank() {
-    const umaRank = calculateRankAverage([
-      await collectCmcRank(cmc_api_key, cmc_date, cmc_convert),
-      await collectCryptorankRank(cryptorank_api_key, cryptorank_limit, cryptorank_time),
-    ]);
-    return Math.round(umaRank);
+    const umaRank = await collectCryptorankRank(cryptorank_api_key, cryptorank_limit, cryptorank_time);
+    
+    return umaRank;
   }
 
 // This function will take in the ranking and return the change in rank.
 function calculateRankChange(umaAverageRank) {
     let current_rank = parseInt(umaAverageRank);
 
-    if ( starting_rank - current_rank < 0 ) {
-        return Math.abs(starting_rank - current_rank);
-    } else if (starting_rank - current_rank > 0) {
-        return 0;
-    }   
+    if ( starting_rank - current_rank > 0 ) {
+      return Math.abs(starting_rank - current_rank);
+  } else if (starting_rank - current_rank <= 0) {
+      return 0;
+  }   
 }
 
 /**
  * Script runner
  */
-async function main() {
+ async function main() {
     // Output UMA market cap rank to console
     const umaRank = await calculateUmaRank();
 
@@ -148,7 +111,7 @@ main();
 
 2. Set the `starting_rank` variable as the `StartingRank` value from the ancillary data of the deployed contract.
 
-3. Add your API keys to the `cmc_api_key` and `cryptorank_api_key` variables.
+3. Add your API keys to the `cryptorank_api_key` variable.
 
 4. Install current versions of yarn and node.
 
