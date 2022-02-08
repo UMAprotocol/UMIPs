@@ -32,9 +32,23 @@ The canonical identifiers should be `POOLUSD`, `USDPOOL`, `BADGER/USD`, `USD/BAD
 
 # Motivation
 
-These price identifiers would allow the above listed assets to be used for the creation range tokens. These tokens are also being proposed to be used as collateral in UMA contracts. As showcased in [this article](https://medium.com/uma-project/uma-raises-2-6mm-in-the-pilot-of-the-range-token-de5be578fa5e), the range token is a new treasury primitive that enables DAOs to access funds and diversify their treasury without directly selling their native tokens.
+These price identifiers would allow the above listed assets to be used for the creation range or success tokens. These tokens are also being proposed to be used as collateral in UMA contracts. As showcased in [this article](https://medium.com/uma-project/uma-raises-2-6mm-in-the-pilot-of-the-range-token-de5be578fa5e), the range token is a new treasury primitive that enables DAOs to access funds and diversify their treasury without directly selling their native tokens.
 
 Proactively approving these price identifiers will make it easier for development teams and protocol treasuries to create new products using these ERC20 tokens and their price identifiers.
+
+# Ancillary Data Specifications
+
+All of the proposed price identifiers can optionally include ancillary data to specify the twap length that these values should be computed using, as well as an optional ohlcPeriod parameter to specify an alternative price interval in seconds. As an example, a price request could specify daily TWAP over 30 days by passing following ancillary data:
+
+```
+twapLength:2592000,ohlcPeriod:86400
+```
+
+When above ancillary data is stored as bytes, the result would be:
+
+`0x747761704c656e6774683a323539323030302c6f686c63506572696f643a3836343030`
+
+twapLength and ohlcPeriod should be specified in seconds. If a twapLength key value pair is not present, then voters should first default to the TWAP length(s) specified in `Implementation` or, if there is none, simply calculate the spot price and not a TWAP. If an ohlcPeriod key value pair is not present, voters should default to using 60 second ohlc intervals.
 
 # POOL
 
@@ -104,8 +118,8 @@ POOL token does not have any recognizable liquidity on CEXs, thus, the only viab
 ## Implementation
 
 ```
-1. Query POOL/ETH price from Uniswap v2 and SushiSwap using 5-minute TWAP.
-2. Query the ETH/USD price as per UMIP-6.
+1. Query POOL/ETH price from Uniswap v2 and SushiSwap using the TWAP length passed in ancillary data, and a 5-minute TWAP if none is specified.
+2. Query the ETH/USD price as per UMIP-6 using the TWAP length passed in ancillary data, or a 5-minute TWAP if none is specified.
 3. Multiply each of POOL/ETH prices in step 1 with ETH/USD price from step 2.
 4. Take the median of results from step 3.
 5. Round result from step 4 to 8 decimals to get the POOL/USD price.
@@ -204,10 +218,10 @@ BADGER has quite strong liquidity on Uniswap and Sushiswap pools paired with WBT
 ## Implementation
 
 ```
-1. Query BADGER/WBTC price from Uniswap v2 and SushiSwap using 5-minute TWAP.
-2. Query the BTC/USD price as per UMIP-7.
+1. Query BADGER/WBTC price from Uniswap v2 and SushiSwap using the TWAP length passed in ancillary data, or a 5-minute TWAP if none is present.
+2. Query the BTC/USD price as per UMIP-7 using the TWAP length passed in ancillary data, or a 5-minute TWAP if none is present.
 3. Multiply each of BADGER/WBTC prices in step 1 with BTC/USD price from step 2.
-4. Take the open BADGER/USDT price of the 1 minute OHLC period that the timestamp falls in from Binance.
+4. Take the open BADGER/USDT price from Binance using the TWAP length and ohlcPeriod parameters passed in ancillary data.
 5. Take the median of all results from step 3 and 4.
 6. Round result from step 5 to 8 decimals to get the BADGER/USD price.
 7. (for USD/BADGER) Take the inverse of the result of step 5.
@@ -307,10 +321,10 @@ GNO has quite strong liquidity on Uniswap and Balancer pools paired with WETH. I
 ## Implementation
 
 ```
-1. Query GNO/ETH price from Uniswap v3 and Balancer using 5-minute TWAP.
-2. Query the ETH/USD price as per UMIP-6.
+1. Query GNO/ETH price from Uniswap v3 and Balancer using the TWAP length passed in ancillary data, or a 5-minute TWAP if none is present.
+2. Query the ETH/USD price as per UMIP-6 using the TWAP length passed in ancillary data, or a 5-minute TWAP if none is present.
 3. Multiply each of GNO/ETH prices in step 1 with ETH/USD price from step 2.
-4. Take the open GNO/USD price of the 1 minute OHLC period that the timestamp falls in from Kraken.
+4. Take the open GNO/USD price from Kraken using the TWAP length and ohlcPeriod parameters passed in ancillary data.
 5. Take the median of all results from step 3 and 4.
 6. Round result from step 5 to 8 decimals to get the GNO/USD price.
 7. (for USD/GNO) Take the inverse of the result of step 5.
@@ -392,7 +406,7 @@ OHM token does not have any visible liquidity on CEXs, thus, the only viable alt
 ## Implementation
 
 ```
-1. Query OHM/USD price from Uniswap v2 and SushiSwap using 5-minute TWAP.
+1. Query OHM/USD price from Uniswap v2 and SushiSwap using the TWAP length passed in ancillary data, or a 5-minute TWAP if none is present.
 2. Take the median of results from step 1.
 3. Round result from step 2 to 8 decimals to get the OHM/USD price.
 4. (for USD/OHM) Take the inverse of the result of step 2.
@@ -470,8 +484,8 @@ IDLE token does not have any visible liquidity on CEXs, thus, the only viable al
 ## Implementation
 
 ```
-1. Query IDLE/ETH price from SushiSwap using 5-minute TWAP.
-2. Query the ETH/USD price as per UMIP-6.
+1. Query IDLE/ETH price from SushiSwap using the TWAP length passed in ancillary data, or a 5-minute TWAP if none is present.
+2. Query the ETH/USD price as per UMIP-6 using the TWAP length passed in ancillary data, or a 5-minute TWAP if none is present.
 3. Multiply IDLE/ETH price in step 1 with ETH/USD price from step 2.
 4. Round result from step 3 to 8 decimals to get the IDLE/USD price.
 5. (for USD/IDLE) Take the inverse of the result of step 3.
@@ -565,8 +579,8 @@ FEI token does not have any recognizable liquidity on CEXs, thus, the only viabl
 ## Implementation
 
 ```
-1. Query FEI/ETH price from Uniswap v2 using 5-minute TWAP.
-2. Query the ETH/USD price as per UMIP-6.
+1. Query FEI/ETH price from Uniswap v2 using the twapLength value specified in ancillary data, or a 5-minute TWAP if none is specified.
+2. Query the ETH/USD price as per UMIP-6 using the twapLength value specified in ancillary data, or a 5-minute TWAP if none is specified.
 3. Multiply FEI/ETH price in step 1 with ETH/USD price from step 2.
 4. Query FEI/USD(C/T) prices from Uniswap v3 using 5-minute TWAP.
 5. Take the median of results from step 3 and step 4.
@@ -647,7 +661,7 @@ TRIBE token does not have any recognizable liquidity on CEXs, thus, the only via
 ## Implementation
 
 ```
-1. Query TRIBE/FEI price from Uniswap v2 using 5-minute TWAP.
+1. Query TRIBE/FEI price from Uniswap v2 using the twapLength value specified in ancillary data, or a 5-minute TWAP if none is specified.
 2. Query the FEI/USD price as defined in this UMIP above.
 3. Multiply TRIBE/FEI price in step 1 with FEI/USD price from step 2.
 4. Round result from step 3 to 8 decimals to get the TRIBE/USD price.
@@ -685,17 +699,39 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
   FOXUSD: {
     type: "expression",
     expression: `
-      FOX_ETH_UNI * ETHUSD
+      FOX_USD_UNI = FOX_ETH_UNI * ETHUSD;
+      median(FOX_USD_UNI, FOX_USD_CBPRO, FOX_USD_HUOBI)
     `,
     lookback: 7200,
+    twapLength: 300,
+    ohlcPeriods: 60,
     minTimeBetweenUpdates: 60,
     customFeeds: {
       FOX_ETH_UNI: {
         type: "uniswap",
         uniswapAddress: "0x470e8de2ebaef52014a47cb5e6af86884947f08c",
-        twapLength: 300,
         invertPrice: true,
       },
+      FOX_USD_CBPRO: {
+        type: "cryptowatch",
+        exchange: "coinbase-pro",
+        pair: "foxusd",
+      },
+      FOX_USD_HUOBI: {
+        type: "cryptowatch",
+        exchange: "huobi",
+        pair: "foxusdt",
+      },
+      ETHUSD: {
+        type: "medianizer",
+        invertPrice: false,
+        minTimeBetweenUpdates: 60,
+        medianizedFeeds: [
+          { type: "cryptowatch", exchange: "coinbase-pro", pair: "ethusd" },
+          { type: "cryptowatch", exchange: "binance", pair: "ethusdt" },
+          { type: "cryptowatch", exchange: "kraken", pair: "ethusd" },
+        ],
+      }
     },
   },
   USDFOX: {
@@ -727,12 +763,14 @@ FOX token does not have any visible liquidity on CEXs, thus, the only viable alt
 ## Implementation
 
 ```
-1. Query FOX/ETH price from Uniswap v2 using 5-minute TWAP.
-2. Query the ETH/USD price as per UMIP-6.
-3. Multiply FOX/ETH price in step 1 with ETH/USD price from step 2.
-4. Round result from step 3 to 8 decimals to get the FOX/USD price.
-5. (for USD/FOX) Take the inverse of the result of step 3.
-6. (for USD/FOX) Round result from step 5 to 8 decimals to get the USD/FOX price.
+1. Query FOX/ETH price from Uniswap v2 using the twapLength value specified in ancillary data, or a 5-minute TWAP if none is specified.
+2. Query FOX/USD and FOX/USDT prices from Coinbase pro and Huobi respectively. This should be done using the twapLength and ohlcPeriod parameters passed in ancillary data, or defaulting to 300 and 60 seconds respectively if none are present.
+3. Query the ETH/USD price as per UMIP-6 using the twapLength value specified in ancillary data, or a 5-minute TWAP if none is specified.
+4. Multiply FOX/ETH price in step 1 with ETH/USD price from step 2.
+5. Take the median of the converted FOX/USD uniswap price, FOX/USD from Coinbase Pro and FOX/USDT from Huobi.
+6. Round result from step 5 to 8 decimals to get the FOX/USD price.
+7. (for USD/FOX) Take the inverse of the result of step 3 without rounding.
+8. (for USD/FOX) Round result from step 7 to 8 decimals to get the USD/FOX price.
 ```
 
 Voters should ensure that their results do not differ from broad market consensus. This is meant to be vague as the token-holders are responsible for defining broad market consensus. Considering limited liquidity of FOX token voters should watch out for any attempted price manipulation.
