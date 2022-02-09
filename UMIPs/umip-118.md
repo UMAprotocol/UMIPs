@@ -104,7 +104,6 @@ This price identifier uses the [CryptoWatchPriceFeed](https://github.com/UMAprot
     expression: "1 / POOLUSD",
   },
 ```
-***Note**: this assumes `ETHUSD` defined in [default price feed configuration](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js)*
 
 ## Technical Specifications
 
