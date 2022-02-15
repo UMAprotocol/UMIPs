@@ -1,10 +1,10 @@
-**UMIP #**  - tbd
+**UMIP-150**
 
 -   **UMIP title:** Add UMA as collateral currency on Polygon 
 -   **Author:**  Geoff (stadnykgeoff1@gmail.com)
--   **Status:** Draft
+-   **Status:** Last Call
 -   **Created:**  15 February 2022
--   **Discourse Link:**  Insert link to discourse topic after it has been moved into draft UMIPs
+-   **Discourse Link:** https://discourse.umaproject.org/t/create-add-uma-as-collateral-currency-to-polygon-md/1408 
 
 ## Summary (2-5 sentences)
 
