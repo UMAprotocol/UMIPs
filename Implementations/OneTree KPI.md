@@ -5,7 +5,7 @@ Plant One Tree Per Tweet KPI
 This KPI Option is designed to pay off based on the number of retweets that a single, specific tweet gets on Twitter before an expiry date.
 
 # Ancillary Data Specifications
-Metric: Total number of Retweets the original One Tree Tweet can attain before expiry, Endpoint: "https://discord.com/channels/718590743446290492/719352532354465833/941823902575910963", Method: "https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/OneTree-KPI", Key: Total retweets, Rounding: 2, Interval: Average of the first three screenshots provided by pre-designated SuperUMAns posted after the request timestamp
+Metric: Total number of Retweets the original One Tree Tweet can attain before expiry, Endpoint: "https://discord.com/channels/718590743446290492/719352532354465833/941823902575910963", Method: "https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/OneTree-KPI.md", Key: Total retweets, Rounding: 2, Interval: Average of the first three screenshots provided by pre-designated SuperUMAns posted after the request timestamp
 
 # Rationale
 This design is not intended to avoid “gaming” in any sense. Rather, it is just to demonstrate the effectiveness of KPI options, as well as to create a game whereby people are excited to participate for good. This design should not be used for something highly sensitive or critical, as it relies on a social measure on a gameable social network. It is possible to “buy RTs” for quite cheap through different sources online, so an interested party could trick this measure pretty easily.
@@ -14,7 +14,7 @@ This design is not intended to avoid “gaming” in any sense. Rather, it is ju
 1. Proposers/voters should check the tweet at the expirationTimestamp for the number of RTs the tweet has.
 2. There is some ambiguity about how to do this, because a tweet could receive more RTs after expiry. An increase in the value is not the problem, but rather, a lack of clarity for voters on what is the correct value.
 3. For this reason, the authors would suggest that the source used as a reference for the calculation is the average of the first three screenshots provided by pre-designated SuperUMAns posted after the request timestamp in the voting channel of the UMA discord, but could be changed to use another data source in the future.
-4. Possible disputers would only dispute if the value of RTs proposed actually exceeded the value shown during the liveness period.
+4. Possible disputers would only dispute the validity of the results returned by the proposer during the liveness period.
 
 # Intended Application
 This is intended to be used as a way to incentivize RTs. In its first iteration, this is for a charitable benefit. One could design it merely for marketing purposes, and even make the recipient be one of the RTers - Which while distributing the tokens to them would not be trustless, the value of the tokens themselves would be based on the number of RTs.
