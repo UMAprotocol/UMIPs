@@ -4,7 +4,7 @@ SuperUMAn DAO Epoch One KPI
 ## Summary:
 The SuperUMAn DAO wishes to use KPI Options to incentivize the community to continue the pursuit of cross-DAO integrations with UMA financial products. This implementation doc is intended to be used with the General_KPI price identifier, and its return value will be determined by UMA proposer/voters assessment of the SuperUMAn DAO's completion of its objectives. These objectives and corresponding payouts are detailed in the Implementation section.
 
-##Intended Ancillary Data:
+## Intended Ancillary Data:
 Metric:Completion of cross-DAO integrations,
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/suINT-KPI.md",
 Rounding:0
