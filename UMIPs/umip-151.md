@@ -73,7 +73,31 @@ The following example demonstrates how this system works:
 2. Use the `timestamp` and `ancillaryData` to look up the following:
     * MFIV matches the methodology directory [here](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/DAOracle). This is where you get the open-source code to validate the index.
     * `timestamp / window / targetAsset` are all used to query the IPFS data of the calculations. Instructions for doing this are required within the README of every PIP. You can see the MFIV README [here](https://github.com/Volatility-DAO/PIPS/tree/MFIV/Proposed/Adding_An_Index/Step_2/MFIV#readme).
-        * NOTE: In some instances the `timestamp` will need to be in a human-readable date time. You can use the following free tool to convert: [https://www.epochconverter.com/](https://www.epochconverter.com/)
+    * NOTE: Every timestamp will need to be rounded down to the nearest `dataPeriod`. Each PIP will define the frequency of the dataPeriod. For example, if the `dataPeriod`is set to 300 seconds (i.e. 5 minutes) that would mean that data is posted every 5 minutes on the hour (e.g. 1:00, 1:05). You would need to round down to the closest five minute period.  You can use the following logic to round down and remove the milliseconds (`dataPeriod` timestamps are in second resolution):
+
+```
+const now = new Date()
+console.info("now", now)
+
+const utcMin = now.getUTCMinutes()
+const dataPeriod = 300 / 60    // Note that 300 is the param in seconds set by the DAO. We normalize for minutes. You will need to lookup this param in the PIP.
+const ipfsTimestamp = now.setUTCMinutes(Math.trunc(utcMin / dataPeriod) * dataPeriod, 0, 0)
+
+const millisecondsRegex = /\.\d{3}?Z$/
+const toIsoNoMillis = (date) => date.toISOString().replace(millisecondsRegex, "Z")
+
+console.info("ipfsTimestamp", ipfsTimestamp)
+console.info("rounded", toIsoNoMillis(new Date(ipfsTimestamp)))
+```
+Returning a date time that looks like the following:
+```
+$ node timestamp_rounding.js
+now 2022-02-22T18:31:03.773Z
+ipfsTimestamp 1645554600000
+rounded 2022-02-22T18:30:00Z
+```
+
+   * NOTE: In some instances the `timestamp` will need to be in a human-readable date time. You can use the following free tool to convert and then round down (make sure to remove milliseconds): [https://www.epochconverter.com/](https://www.epochconverter.com/)
 
 
 ## Security considerations
