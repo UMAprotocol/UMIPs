@@ -43,14 +43,14 @@ in-game performance statistics provided by SportsData.io.
 
 # Price Feed Implementation
 
-We are only starting with 5 APT EMP contracts so we likely do not need bots for price feed implementation
+Linear LSP contracts
 
 ## Ancillary Data Specifications
 customancillarydata:
-athlete name:T.Brady,length:season,requester:0xabc
+athlete name:T.Brady,length:season,timestamp:YYYY-MM-DD
 
-**The key-value fields are:**
 _athlete Name - represents the name (First_Initial.Last_Name) of the player whose statistics are reflected by the APT's price
+timestamp: returns last record of target day (YYYY-MM-DD)
 
 # Rationale
 
@@ -59,12 +59,13 @@ This method was chosen as a balance between efficiency and scale of athletic dat
 # Implementation
 
 Generate values for each of the key-value fields by doing the following:
-1. Go to http://139.99.74.201:9000/
-2. Run the command to fetch player statistics for a given athlete & timestamp: 
-select * from nfl WHERE name = 'F.Last' AND TIMESTAMP = 'timestamp';
-where F.Last = First_Initial.Last_Name
-and timestamp = contract expiration timestamp in the following syntax: YYYY-MM-DD HH:MM:SS
-example - select * from nfl WHERE name = 'T.Brady' AND TIMESTAMP = '2022-01-03 00:37:44.245391'; 
+1. http://139.99.74.201:8080/[sport]/players/[id]?at_day=[YYY-MM-DD]
+ 
+Fill in the sport, id, and timestamp and go to the above URL
+sport = sport of the athlete performance token eg. nfl
+id = collect the 5 digit athlete id from app.athletex.io 
+timestamp = contract expiration timestamp in the following syntax: YYYY-MM-DD
+example - http://139.99.74.201:8080/nfl/players/22575?at_day=2022-02-11
 
 3. Combine key-values into price with the following formula:
 
@@ -88,7 +89,7 @@ Round price computations to 8 decimal places
 # Security Considerations
 
 - How could pricing data manipulation occur?
-**QuestDB is secured by a server with ssh key login. QuestDB can only be edited by admins of AthleteX who hold ssh credentials. Alternative to QuestDB is manual computation until Chainlink releases their Sports Data Oracles.**
+**The Database is secured by a server with ssh key login. The Database can only be edited by admins of AthleteX who hold ssh credentials. Data in the database is secured via API through https://www.postman.com/. Read more about Postman API security here: https://www.postman.com/trust/security/**
 - How could this price ID be exploited?
 **Sportsdata.io fault API response generating false or stale statistics**
 
