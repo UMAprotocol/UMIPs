@@ -45,7 +45,7 @@ in-game performance statistics provided by SportsData.io.
 
 Linear LSP contracts
 
-
+Initially manual settlement is expected and UMIP could be updated to include price feed implementation once it is developed
 
 ## Ancillary Data Specifications
 customancillarydata:
