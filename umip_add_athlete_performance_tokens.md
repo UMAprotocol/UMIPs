@@ -45,11 +45,15 @@ in-game performance statistics provided by SportsData.io.
 
 Linear LSP contracts
 
+
+
 ## Ancillary Data Specifications
 customancillarydata:
-athlete name:T.Brady,length:season,timestamp:YYYY-MM-DD
+athlete name:T.Brady,sport:nfl, id:,length:season,timestamp:YYYY-MM-DD
 
 _athlete Name - represents the name (First_Initial.Last_Name) of the player whose statistics are reflected by the APT's price
+sport: the sport the athlete plays
+id: 5-digit unique identifier given to athletes by SportsData and used to query our API
 timestamp: returns last record of target day (YYYY-MM-DD)
 
 # Rationale
@@ -59,12 +63,11 @@ This method was chosen as a balance between efficiency and scale of athletic dat
 # Implementation
 
 Generate values for each of the key-value fields by doing the following:
-1. http://139.99.74.201:8080/[sport]/players/[id]?at_day=[YYY-MM-DD]
- 
-Fill in the sport, id, and timestamp and go to the above URL
-sport = sport of the athlete performance token eg. nfl
-id = collect the 5 digit athlete id from app.athletex.io 
-timestamp = contract expiration timestamp in the following syntax: YYYY-MM-DD
+
+1. Collect the sport, id, and timestamp parameters from the ancillary data
+
+2. http://139.99.74.201:8080/[sport]/players/[id]?at_day=[YYY-MM-DD]
+Fill in the athlete details and go to the above URL
 example - http://139.99.74.201:8080/nfl/players/22575?at_day=2022-02-11
 
 3. Combine key-values into price with the following formula:
