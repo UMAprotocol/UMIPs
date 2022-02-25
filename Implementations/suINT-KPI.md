@@ -25,11 +25,12 @@ If 10 or more integrations have been completed, the maximum value returned would
 Within the UMA Discord is a channel called [#voting](https://discord.com/channels/718590743446290492/719352532354465833). This channel will be used to post and keep track of the above metric. Users will be able to verify integrations here.
 Approved integrations can be observed in the [Green Light List](https://docs.google.com/spreadsheets/d/1cEvNGCGlzRzxNMwHsIk2Cq3MsEWM583JJQhxKSdzQUY/edit?usp=drivesdk) for qualified uDAO integrations. The "green light" list will include details that voters need to assess the validity of the integration (e.g. launch and funding date of the contract so that voters can verify it is within the specified timeframe of the current KPI option). Anyone can propose adding an integration to the list. Each integration will be added one at a time, after it has been discussed in the #voting channel in UMA Discord. UMA token holders are encouraged to participate in these discussions in preparation for the formal proposed settlement.
 An integration will have been achieved when a DAO or other organisation funds an LSP contract which includes but is not limited to:
-      * KPI options
-      * Call/Put options
-      * Range Bonds
-      * Success Tokens
-      * Protected Tokens
+
+- KPI options
+- Call/Put options
+- Range Bonds
+- Success Tokens
+- Protected Tokens
       
 ## Intended Application:
 It is intended to deploy the documented KPI Options on Polygon network using [LSP Contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with 'General_KPI' price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). This contract would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the 'lowerBound' set to 0 and the 'upperBound' set to 12. 
