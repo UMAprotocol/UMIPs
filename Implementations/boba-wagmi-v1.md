@@ -78,9 +78,9 @@ An example implementation script is provided [here](https://github.com/Reinis-FR
 
 Voters should perform post-processing on the Boba network TVL and return a value between 0.5 and 10 to the submitted price request:
 
-- If average Boba network TVL is less than 75,000 ETH return 0.5 as resolved price;
-- If average Boba network TVL is equal or higher than 75,000 ETH and lower or equal to 375,000 ETH return value between 1 and 10 linearly based on following formula:
-  (TVL - 75,000) * 9 / 300,000 + 1
+- If average Boba network TVL is less than 70,000 ETH return 0.5 as resolved price;
+- If average Boba network TVL is equal or higher than 70,000 ETH and lower or equal to 375,000 ETH return value between 1 and 10 linearly based on following formula:
+  (TVL - 70,000) * 9 / 305,000 + 1
 - If average Boba network TVL is higher than 375,000 ETH return 10 as resolved price;
 
 Round the resolved BOBA payout above to 6 decimals before returning it as resolved price request.
