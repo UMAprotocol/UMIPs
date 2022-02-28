@@ -34,7 +34,7 @@ in-game performance statistics provided by SportsData.io.
 - Price identifier name: **APT** 
 - Base Currency: **APT**
 - Quote Currency: **N/A**
-- Markets & Pairs: **AthleteX DEX: APT/AX, AthleteX DEX: APT/MATIC**
+- Markets & Pairs: **N/A**
 - Example data providers: **SportsData**
 - Cost to use: **https://sportsdata.io/developers/faq#free-trial**
 
@@ -54,6 +54,7 @@ athlete name:T.Brady,sport:nfl, id:,length:season,timestamp:YYYY-MM-DD
 _athlete Name - represents the name (First_Initial.Last_Name) of the player whose statistics are reflected by the APT's price
 sport: the sport the athlete plays
 id: 5-digit unique identifier given to athletes by SportsData and used to query our API
+length: the length of the token contract until expiration (game, season, or career)
 timestamp: returns last record of target day (YYYY-MM-DD)
 
 # Rationale
@@ -87,22 +88,24 @@ Note the following key-variables:
 
 3. Combine key-values into price with the following formula:
 
-rushing touchdown = 6pts
-receiving touchdown = 6pts
-passing touchdown = 6pts
+  "RushingTouchdowns": each rushing touchdown = 6pts
+  "receiveTouch": each receiving touchdown = 6pts
+  "passingTouchDowns": each passing touchdown = 6pts
 
-reception = .5pts
+  "reception": reception = .5pts
 
-10 receiving yards = 1pt
-10 rushing yards = 1pt
-25 passing yards = 1pt
+  "receiveYards": every 10 receiving yards = 1pt
+  "rushingYards": every 10 rushing yards = 1pt
+  "passingYards": every 25 passing yards = 1pt
 
-interception = -2pts
-fumble = -2pts
+  "PassingInterceptions": each interception = -2pts
+  "FumblesLost": each fumble = -2pts
 
-sum(pts) / offensive snaps played = "price"
+  sum(pts) / offensive snaps played = "price"
 
-Round price computations to 8 decimal places
+  pts = the sum based on metrics indicated in the pricing formula
+
+  Round price computations to 8 decimal places
 
 # Security Considerations
 
