@@ -70,6 +70,21 @@ Generate values for each of the key-value fields by doing the following:
 Fill in the athlete details and go to the above URL
 example - http://139.99.74.201:8080/nfl/players/22575?at_day=2022-02-26
 
+Note the following key-variables:
+"passingYards"
+"passingTouchDowns"
+"reception"
+"receiveYards"
+"receiveTouch"
+"rushingYards"
+"OffensiveSnapsPlayed"
+"DefensiveSnapsPlayed"
+"price"
+"PassingInterceptions"
+"FumblesLost"
+"RushingTouchdowns"
+"timestamp"
+
 3. Combine key-values into price with the following formula:
 
 rushing touchdown = 6pts
@@ -85,7 +100,7 @@ reception = .5pts
 interception = -2pts
 fumble = -2pts
 
-sum(pts) / offensive snaps played = price
+sum(pts) / offensive snaps played = "price"
 
 Round price computations to 8 decimal places
 
