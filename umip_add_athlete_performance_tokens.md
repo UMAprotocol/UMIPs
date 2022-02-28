@@ -68,7 +68,7 @@ Generate values for each of the key-value fields by doing the following:
 
 2. http://139.99.74.201:8080/[sport]/players/[id]?at_day=[YYY-MM-DD]
 Fill in the athlete details and go to the above URL
-example - http://139.99.74.201:8080/nfl/players/22575?at_day=2022-02-11
+example - http://139.99.74.201:8080/nfl/players/22575?at_day=2022-02-26
 
 3. Combine key-values into price with the following formula:
 
