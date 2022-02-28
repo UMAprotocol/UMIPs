@@ -79,7 +79,6 @@ Note the following key-variables:
 "receiveTouch"
 "rushingYards"
 "OffensiveSnapsPlayed"
-"DefensiveSnapsPlayed"
 "price"
 "PassingInterceptions"
 "FumblesLost"
@@ -90,7 +89,7 @@ Note the following key-variables:
 
   "RushingTouchdowns": each rushing touchdown = 6pts
   "receiveTouch": each receiving touchdown = 6pts
-  "passingTouchDowns": each passing touchdown = 6pts
+  "passingTouchDowns": each passing touchdown = 4pts
 
   "reception": reception = .5pts
 
@@ -101,7 +100,7 @@ Note the following key-variables:
   "PassingInterceptions": each interception = -2pts
   "FumblesLost": each fumble = -2pts
 
-  sum(pts) / offensive snaps played = "price"
+  sum(pts) / "OffensiveSnapsPlayed" = "price"
 
   pts = the sum based on metrics indicated in the pricing formula
 
