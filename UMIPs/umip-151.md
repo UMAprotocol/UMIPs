@@ -60,7 +60,7 @@ Using the `timestamp` and `ancillaryData`  from a `proposePrice` for this UMIP y
     * `s` = seconds
     * `m` = minutes
     * `h` = hours
-    * `d` = Days
+    * `D` = Days
     * `W` = Weeks
     * `M` = Months
     * `Y` = Year
