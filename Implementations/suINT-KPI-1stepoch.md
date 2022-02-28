@@ -6,7 +6,7 @@ The SuperUMAn DAO wishes to use KPI Options to incentivize the community to cont
 
 ## Intended Ancillary Data:
 Metric:Completion of cross-DAO integrations,
-Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/suINT-KPI.md", startTimeStamp: 1640995200, Rounding: 0
+Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/suINT-KPI-1stepoch.md", startTimeStamp: 1640995200, Rounding: 0
 
 ## Implementation:
 At the time of voting, Voters should add up all values for each integration that have been met by the SuperUMAn DAO at the price request timestamp. The value returned will be between 0 and 12 and should be informed by the completion of cross-DAO integrations listed in this document.
