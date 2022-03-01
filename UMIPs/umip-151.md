@@ -8,7 +8,11 @@
 
 
 ## Summary (2-5 sentences)
-The Volatility DAOracle is a collection of methodologies and implementations for indices and benchmarks. Each index can be verified by decentralized users through its data endpoint, open-source code, and methodology paper. This information can be looked up through the `timestamp` and `ancillaryData` of the `proposePrice` for each call to the Optimistic Oracle.
+The Volatility DAOracle is a collection of methodologies and implementations for indices and benchmarks. Each index can be verified by decentralized users through its data endpoint, open-source code, and methodology paper. This information can be looked up through the `requestAndProposePriceFor` call to the [SkinnyOO](https://docs-git-doc-updates-uma.vercel.app/contracts/oracle/implementation/SkinnyOptimisticOracle#parameters-4) where the following parameters can be used to query any of the indices in the Volatility DAOracle:
+
+* `identifier`: price identifier to identify the existing request.
+* `timestamp`: timestamp to identify the existing request.
+* `ancillaryData`: ancillary data of the price being requested.
 
 ## Motivation
 In traditional finance, there are many indices and benchmarks derived from complex calculations. In the U.S. these are typically regulated through enforcement.
@@ -24,7 +28,7 @@ This is what the Volatility DAOracle does. It creates an audit trail of benchmar
 ## Technical Specification
 Each index has a data endpoint, open-source code, and methodology paper which are approved by the Volatility DAO. The Volatility DAO approves an index/benchmark through the Protocol Improvement Process which can be found on the [Volatility DAO Github](https://github.com/Volatility-DAO/PIPS). The approved PIP directory contains all necessary steps, software, and endpoints to validate an index.
 
-The index can be looked up and validated by participants of the DVM and/or disputers through the `timestamp` and `ancillaryData` passed into the Optimistic Oracle's `proposePrice` function. The ancillaryData consists of the methodology, time window, and target asset concatenated into a single parameter: `id:{methodology}-{window}-{targetAsset}`. This parameter can be deconstructed and used to access data sources. If `ancillaryData` does not comply with these standards, DVM participants should return the "magic number": `-3735928559` which equals . We understand that this is a non-traditional format for `ancillaryData` but it is necessary to optimize storage within The DAOracle smart contracts.
+The index can be looked up and validated by participants of the DVM and/or disputers through the `timestamp` and `ancillaryData` passed into the Skinny Optimistic Oracle's `requestAndProposePriceFor` function. The `ancillaryData` consists of the methodology, time window, and target asset concatenated into a single parameter: `id:{methodology}-{window}-{targetAsset}`. This parameter can be deconstructed and used to access data sources. If `ancillaryData` does not comply with these standards, DVM participants should return the "magic number": `-3735928559` which equals . We understand that this is a non-traditional format for `ancillaryData` but it is necessary to optimize storage within The DAOracle smart contracts.
 
 For an example of how to use the `ancillaryData` to recreate an index please see Implementation below.
 
@@ -53,7 +57,7 @@ Having all Volatility DAO indices and benchmarks under one UMIP is important bec
 
 
 ## Implementation
-Using the `timestamp` and `ancillaryData`  from a `proposePrice` for this UMIP you can query all necessary tools to recreate any index within the Volatility DAOracle. The `timestamp` is seconds since the Unix epoch. The `ancillaryData` consists of three data points concatenated into a single parameter: `id:{methodology}-{window}-{targetAsset}`.
+Using the `timestamp` and `ancillaryData` from a `requestAndProposePriceFor` for this UMIP you can query all necessary tools to recreate any index within the Volatility DAOracle. The `timestamp` is seconds since the Unix epoch. The `ancillaryData` consists of three data points concatenated into a single parameter: `id:{methodology}-{window}-{targetAsset}`.
 
 * `methodology` - This is the identifier for the methodology. This four-character identifier can be used to look up the methodology in the [Volatility DAO Github](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/DAOracle).
 * `window` - This is the time window to which the methodology is applied. Window uses standardized time formats, where lower-denomination units are lowercase and higher-denominations are uppercase:
@@ -64,12 +68,12 @@ Using the `timestamp` and `ancillaryData`  from a `proposePrice` for this UMIP y
     * `W` = Weeks
     * `M` = Months
     * `Y` = Year
-    * For example, 14d means 14 Day volatility.
+    * For example, 14D means 14 Day volatility.
 `targetAsset` - This is the asset to which volatility is applied. For example, ETH means Ethereum and BTC means Bitcoin.
    * Note: Each methodology that is approved within the Volatility DAO PIP repository has an Index_PIPs directory. That directory contains all of the parameters for the indices of the methodology as MD files. The naming convention of the MD file is the same as the `ancillaryData`. This file whitelists the `targetAsset`to remove the possibility of collision.
 
 The following example demonstrates how this system works:
-1. Use `ancillaryData` and `timeStamp` from `proposePrice`:
+1. Use `ancillaryData` and `timeStamp` from `requestAndProposePriceFor`:
     * ancillaryData: `MFIV-14D-ETH`
     * timeStamp: `1643288400`
 2. Use the `timestamp` and `ancillaryData` to look up the following:
