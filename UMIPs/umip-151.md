@@ -74,7 +74,7 @@ Using the `timestamp` and `ancillaryData` from a `requestAndProposePriceFor` for
 
 The following example demonstrates how this system works:
 1. Use `ancillaryData` and `timeStamp` from `requestAndProposePriceFor`:
-    * ancillaryData: `MFIV-14D-ETH`
+    * ancillaryData: `id:MFIV-14D-ETH`
     * timeStamp: `1643288400`
 2. Use the `timestamp` and `ancillaryData` to look up the following:
     * MFIV matches the methodology directory [here](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/DAOracle). This is where you get the open-source code to validate the index.
