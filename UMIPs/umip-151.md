@@ -65,7 +65,8 @@ Using the `timestamp` and `ancillaryData`  from a `proposePrice` for this UMIP y
     * `M` = Months
     * `Y` = Year
     * For example, 14d means 14 Day volatility.
-targetAsset - This is the asset to which volatility is applied. For example, ETH means Ethereum and BTC means Bitcoin.
+`targetAsset` - This is the asset to which volatility is applied. For example, ETH means Ethereum and BTC means Bitcoin.
+   * Note: Each methodology that is approved within the Volatility DAO PIP repository has an Index_PIPs directory. That directory contains all of the parameters for the indices of the methodology as MD files. The naming convention of the MD file is the same as the `ancillaryData`. This file whitelists the `targetAsset`to remove the possibility of collision.
 
 The following example demonstrates how this system works:
 1. Use `ancillaryData` and `timeStamp` from `proposePrice`:
