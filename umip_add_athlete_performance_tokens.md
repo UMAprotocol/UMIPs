@@ -55,7 +55,8 @@ _athlete Name - represents the name (First_Initial.Last_Name) of the player whos
 sport: the sport the athlete plays
 id: 5-digit unique identifier given to athletes by SportsData and used to query our API
 length: the length of the token contract until expiration (game, season, or career)
-timestamp: returns last record of target day (YYYY-MM-DD)
+timestamp: returns last record of target day in UTC timezone (YYYY-MM-DD)
+(expiration timestamp set at 24hr after start of last game of the season to allow for delays) 
 
 # Rationale
 
