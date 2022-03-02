@@ -11,7 +11,7 @@
 The Volatility DAOracle is a collection of methodologies and implementations for indices and benchmarks. Each index can be verified by decentralized users through its data endpoint, open-source code, and methodology paper. This information can be looked up through the `requestAndProposePriceFor` call to the [SkinnyOO](https://docs-git-doc-updates-uma.vercel.app/contracts/oracle/implementation/SkinnyOptimisticOracle#parameters-4) where the following parameters can be used to query any of the indices in the Volatility DAOracle:
 
 * `identifier`: price identifier to identify the existing request.
-* `timestamp`: timestamp to identify the existing request.
+* `timestamp`: timestamp of the data snapshot to identify the existing request.
 * `ancillaryData`: ancillary data of the price being requested.
 
 ## Motivation
@@ -41,7 +41,18 @@ Each PIP contains information on how to access raw data. In general there are tw
 * One based on the IPFS hash.
 2. In cases where the IPFS data is completely lost or broken, the PIP directory of the methodology will outline alternate ways of accessing the data in the README.md (e.g. it may list the exchanges or other third-party data provider from which the data originated and any special processing needed for aggregating the feed(s) for input to the open-source implementation).
 
-As part of the PIP process The Volatility DAO sets a parameter called `dataPeriod`. This represents the time period at which snapshots of input data & index values are saved to IPFS. Only the most recent snapshot can be relayed to The Volatility Oracle for audit and it can only be audited once, subsequent submissions of the same snapshot to The Volatility Oracle are denied by our smart contracts. DVM participants should also deny repeat submissions of the same snapshot. While the Skinny Optimistic Oracle already enforces unique combinations of msg.sender, identifier, timestamp, ancillaryData by requiring that such combination has never been requested, there is still the potential for repeat submissions to be sent to the DVM. Specifially, timestamp can change but still represent the snapshot. To ensure that repeat submissions do not happen, DVM participants will need to round down the timestamp to the last `dataPeriod` (See **Implementation** below for how to round). `dataPeriod` can be set to any time resolution (e.g. 1 second or 1 hour) but should never be greater than the desired amount of time between audits.
+As part of the PIP process The Volatility DAO sets a parameter called `dataPeriod`. This represents the time period at which snapshots of input data & index values are saved to IPFS (or another open immutable database). `dataPeriod` can be set to any time resolution (e.g. 1 second or 1 hour) but should never be greater than the desired amount of time between audits.  Only recent snapshots can be relayed to The Volatility Oracle. DVM participants should also deny submissions of "old data." DVM participants can use the following logic to determine if data is considered old:
+
+```
+submissionBlockTime = the UTC time of the tx to the Skinny OO
+timestamp = the UTC timestamp of the snapshot data
+disputePeriod = the amount of time where a user can dispute a value within the Volatility Oracle
+
+Data is old if the following is TRUE:
+
+submissionBlockTime > timestamp + disputePeriod
+
+```
 
 
 
@@ -70,7 +81,7 @@ Using the `timestamp` and `ancillaryData` from a `requestAndProposePriceFor` for
     * `Y` = Year
     * For example, 14D means 14 Day volatility.
 `targetAsset` - This is the asset to which volatility is applied. For example, ETH means Ethereum and BTC means Bitcoin.
-   * Note: Each methodology that is approved within the Volatility DAO PIP repository has an Index_PIPs directory. That directory contains all of the parameters for the indices of the methodology as MD files. The naming convention of the MD file is the same as the `ancillaryData`. This file whitelists the `targetAsset`to remove the possibility of collision.
+   * Note: Each methodology that is approved within the Volatility DAO PIP repository has an Index_PIPs directory. That directory contains all of the parameters for the indices of the methodology as MD files. The naming convention of the MD file is the same as the `ancillaryData`. These files whitelist the `targetAsset`to remove the possibility of collision.
 
 The following example demonstrates how this system works:
 1. Use `ancillaryData` and `timeStamp` from `requestAndProposePriceFor`:
@@ -79,31 +90,8 @@ The following example demonstrates how this system works:
 2. Use the `timestamp` and `ancillaryData` to look up the following:
     * MFIV matches the methodology directory [here](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/DAOracle). This is where you get the open-source code to validate the index.
     * `timestamp / window / targetAsset` are all used to query the IPFS data of the calculations. Instructions for doing this are required within the README of every PIP. You can see the MFIV README [here](https://github.com/Volatility-DAO/PIPS/tree/MFIV/Proposed/Adding_An_Index/Step_2/MFIV#readme).
-    * NOTE: Every timestamp will need to be rounded down to the nearest `dataPeriod`. Each PIP will define the frequency of the dataPeriod. For example, if the `dataPeriod`is set to 300 seconds (i.e. 5 minutes) that would mean that data is posted every 5 minutes on the hour (e.g. 1:00, 1:05). You would need to round down to the closest five minute period.  You can use the following logic to round down and remove the milliseconds (`dataPeriod` timestamps are in second resolution):
-
-```
-const now = new Date()
-console.info("now", now)
-
-const utcMin = now.getUTCMinutes()
-const dataPeriod = 300 / 60    // Note that 300 is the param in seconds set by the DAO. We normalize for minutes. You will need to lookup this param in the PIP.
-const ipfsTimestamp = now.setUTCMinutes(Math.trunc(utcMin / dataPeriod) * dataPeriod, 0, 0)
-
-const millisecondsRegex = /\.\d{3}?Z$/
-const toIsoNoMillis = (date) => date.toISOString().replace(millisecondsRegex, "Z")
-
-console.info("ipfsTimestamp", ipfsTimestamp)
-console.info("rounded", toIsoNoMillis(new Date(ipfsTimestamp)))
-```
-Returning a date time that looks like the following:
-```
-$ node timestamp_rounding.js
-now 2022-02-22T18:31:03.773Z
-ipfsTimestamp 1645554600000
-rounded 2022-02-22T18:30:00Z
-```
-
-   * NOTE: In some instances the `timestamp` will need to be in a human-readable date time. You can use the following free tool to convert and then round down (make sure to remove milliseconds): [https://www.epochconverter.com/](https://www.epochconverter.com/)
+    * NOTE: `timestamp` is the timestamp of the post of data to IPFS. This IPFS data file includes the input and output data for an index. An index can only be queried as often as this data is posted to IPFS.
+    * NOTE: The Volatility Oracle or other requestor should send the `timestamp` used to query the IPFS file. If this `timestamp` does not allow for a query, then DVM participants should return the "magic number" (described above).
 
 
 ## Security considerations
