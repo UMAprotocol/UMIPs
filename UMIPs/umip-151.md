@@ -28,7 +28,7 @@ This is what the Volatility DAOracle does. It creates an audit trail of benchmar
 ## Technical Specification
 Each index has a data endpoint, open-source code, and methodology paper which are approved by the Volatility DAO. The Volatility DAO approves an index/benchmark through the Protocol Improvement Process which can be found on the [Volatility DAO Github](https://github.com/Volatility-DAO/PIPS). The approved PIP directory contains all necessary steps, software, and endpoints to validate an index.
 
-The index can be looked up and validated by participants of the DVM and/or disputers through the `timestamp` and `ancillaryData` passed into the Skinny Optimistic Oracle's `requestAndProposePriceFor` function. The `ancillaryData` consists of the methodology, time period, and target asset concatenated into a single parameter: `id:{methodology}-{timePeriod}-{targetAsset}`. This parameter can be deconstructed and used to access data sources. If `ancillaryData` does not comply with these standards, DVM participants should return the "magic number": `-3735928559`. The "magic number" should also be returned for instances where the `ancillaryData` is formatted correctly but where the methdology, time period, and/or targetAsset are not defined/whitelisted within the Volatility DAO's PIP approved repository. We understand that this is a non-traditional format for `ancillaryData` but it is necessary to optimize storage within The DAOracle smart contracts.
+The index can be looked up and validated by participants of the DVM and/or disputers through the `timestamp` and `ancillaryData` passed into the Skinny Optimistic Oracle's `requestAndProposePriceFor` function. The `ancillaryData` consists of the methodology, time period, and target asset concatenated into a single parameter: `id:{METHODOLOGY}-{TIMEPERIOD}-{ASSET}`. This parameter can be deconstructed and used to access data sources. If `ancillaryData` does not comply with these standards, DVM participants should return the "magic number": `-3735928559`. The "magic number" should also be returned for instances where the `ancillaryData` is formatted correctly but where the methdology, time period, and/or targetAsset are not defined/whitelisted within the Volatility DAO's PIP approved repository. We understand that this is a non-traditional format for `ancillaryData` but it is necessary to optimize storage within The DAOracle smart contracts.
 
 For an example of how to use the `ancillaryData` to recreate an index please see Implementation below.
 
@@ -68,10 +68,10 @@ Having all Volatility DAO indices and benchmarks under one UMIP is important bec
 
 
 ## Implementation
-Using the `timestamp` and `ancillaryData` from a `requestAndProposePriceFor` for this UMIP you can query all necessary tools to recreate any index within the Volatility DAOracle. The `timestamp` is seconds since the Unix epoch. The `ancillaryData` consists of three data points concatenated into a single parameter: `id:{methodology}-{timePeriod}-{targetAsset}`.
+Using the `timestamp` and `ancillaryData` from a `requestAndProposePriceFor` for this UMIP you can query all necessary tools to recreate any index within the Volatility DAOracle. The `timestamp` is seconds since the Unix epoch. The `ancillaryData` consists of three data points concatenated into a single parameter: `id:{METHODOLOGY}-{TIMEPERIOD}-{ASSET}`.
 
-* `methodology` - This is the identifier for the methodology. This four-character identifier can be used to look up the methodology in the [Volatility DAO Github](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/DAOracle).
-* `timePeriod` - This is the time period to which the methodology is applied. Time period uses standardized time formats, where lower-denomination units are lowercase and higher-denominations are uppercase:
+* `METHODOLOGY` - This is the identifier for the methodology. This four-character identifier can be used to look up the methodology in the [Volatility DAO Github](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/DAOracle).
+* `TIMEPERIOD` - This is the time period to which the methodology is applied. Time period uses standardized time formats, where lower-denomination units are lowercase and higher-denominations are uppercase:
     * `s` = seconds
     * `m` = minutes
     * `h` = hours
@@ -80,7 +80,7 @@ Using the `timestamp` and `ancillaryData` from a `requestAndProposePriceFor` for
     * `M` = Months
     * `Y` = Year
     * For example, 14D means 14 Day volatility.
-`targetAsset` - This is the asset to which volatility is applied. For example, ETH means Ethereum and BTC means Bitcoin.
+`ASSET` - This is the asset to which volatility is applied. For example, ETH means Ethereum and BTC means Bitcoin.
    * Note: Each methodology that is approved within the Volatility DAO PIP repository has an Index_PIPs directory. That directory contains all of the parameters for the indices of the methodology as MD files. The naming convention of the MD file is the same as the `ancillaryData`. These files whitelist the `targetAsset`to remove the possibility of collision.
 
 The following example demonstrates how this system works:
@@ -89,7 +89,7 @@ The following example demonstrates how this system works:
     * timeStamp: `1643288400`
 2. Use the `timestamp` and `ancillaryData` to look up the following:
     * MFIV matches the methodology directory [here](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/DAOracle). This is where you get the open-source code to validate the index.
-    * `timestamp / timePeriod / targetAsset` are all used to query the IPFS data of the calculations. Instructions for doing this are required within the README of every PIP. You can see the MFIV README [here](https://github.com/Volatility-DAO/PIPS/tree/MFIV/Proposed/Adding_An_Index/Step_2/MFIV#readme).
+    * `timestamp / TIMEPERIOD / ASSET` are all used to query the IPFS data of the calculations. Instructions for doing this are required within the README of every PIP. You can see the MFIV README [here](https://github.com/Volatility-DAO/PIPS/tree/MFIV/Proposed/Adding_An_Index/Step_2/MFIV#readme).
     * NOTE: `timestamp` is the timestamp of the post of data to IPFS. This IPFS data file includes the input and output data for an index. An index can only be queried as often as this data is posted to IPFS.
     * NOTE: The Volatility Oracle or other requestor should send the `timestamp` used to query the IPFS file. If this `timestamp` does not allow for a query, then DVM participants should return the "magic number" (described above).
 
