@@ -1,10 +1,3 @@
-This is the suggested template for new UMIPs.
-
-Note that an UMIP number will be assigned by an editor. 
-When opening a pull request to submit your UMIP, please use an abbreviated title in the filename, umip-draft_title_abbrev.md.
-
-The title should be 44 characters or less.
-
 ## Headers
 - UMIP <#> 
 - UMIP title: Add ZODIAC as a supported price identifier
