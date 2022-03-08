@@ -68,9 +68,16 @@ Generate values for each of the key-value fields by doing the following:
 
 1. Collect the sport, id, and timestamp parameters from the ancillary data
 
+The timestamp parameter is formatted for UTC time. To convert from UNIX epoch to UTC time follow these instructions:
+Input the UNIX epoch number into cell A1 of a bank Excel sheet
+Input =(A1 / 86400) + 25569 into cell A2
+Format A2 for date/time, the result will be in UTC time.
+
+The timestamp parameter is the resulting date in cell A2 minus 24hours
+
 2. http://139.99.74.201:8080/[sport]/players/[id]?at_day=[YYY-MM-DD]
 Fill in the athlete details and go to the above URL
-example - http://139.99.74.201:8080/nfl/players/22575?at_day=2022-02-26
+example - http://139.99.74.201:8080/nfl/players/22575?at_day=2022-03-07
 
 Note the following key-variables:
 "passingYards"
