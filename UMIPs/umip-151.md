@@ -88,8 +88,9 @@ The following example demonstrates how this system works:
     * ancillaryData: `id:MFIV-14D-ETH`
     * timeStamp: `1643288400`
 2. Use the `timestamp` and `ancillaryData` to look up the following:
-    * MFIV matches the methodology directory [here](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/DAOracle). This is where you get the open-source code to validate the index.
-    * `timestamp / TIMEPERIOD / ASSET` are all used to query the IPFS data of the calculations. Instructions for doing this are required within the README of every PIP. You can see the MFIV README [here](https://github.com/Volatility-DAO/PIPS/tree/MFIV/Proposed/Adding_An_Index/Step_2/MFIV#readme).
+    * MFIV matches the methodology directory [here](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/Volatility_Oracle_PIPs). This is where you get the open-source code to validate the index. The README.md of the methodology directory will have clear instructions on how to validate an index.
+    * Within the methodology directory is an Index_Pips directory. This must contain an md file named the same as the 'ancillaryData' (i.e. MFIV-14D-ETH.md).
+    * `timestamp / TIMEPERIOD / ASSET` are all used to query the IPFS data of the calculations. Instructions for doing this are required within the README of every PIP. You can see the MFIV README [here](https://github.com/Volatility-DAO/PIPS/blob/main/Approved/Volatility_Oracle_PIPs/MFIV/README.md).
     * NOTE: `timestamp` is the timestamp of the post of data to IPFS. This IPFS data file includes the input and output data for an index. An index can only be queried as often as this data is posted to IPFS.
     * NOTE: The Volatility Oracle or other requestor should send the `timestamp` used to query the IPFS file. If this `timestamp` does not allow for a query, then DVM participants should return the "magic number" (described above).
 
