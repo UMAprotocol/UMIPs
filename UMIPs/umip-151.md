@@ -70,7 +70,7 @@ Having all Volatility DAO indices and benchmarks under one UMIP is important bec
 ## Implementation
 Using the `timestamp` and `ancillaryData` from a `requestAndProposePriceFor` for this UMIP you can query all necessary tools to recreate any index within the Volatility DAOracle. The `timestamp` is seconds since the Unix epoch. The `ancillaryData` consists of three data points concatenated into a single parameter: `id:{METHODOLOGY}-{TIMEPERIOD}-{ASSET}`.
 
-* `METHODOLOGY` - This is the identifier for the methodology. This four-character identifier can be used to look up the methodology in the [Volatility DAO Github](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/DAOracle).
+* `METHODOLOGY` - This is the identifier for the methodology. This four-character identifier can be used to look up the methodology in the [Volatility DAO Github](https://github.com/Volatility-DAO/PIPS/tree/main/Approved/Volatility_Oracle_PIPs).
 * `TIMEPERIOD` - This is the time period to which the methodology is applied. Time period uses standardized time formats, where lower-denomination units are lowercase and higher-denominations are uppercase:
     * `s` = seconds
     * `m` = minutes
