@@ -166,6 +166,66 @@ This methodology allows for a huge amount of flexibility for DAOs to manage thei
 ## Implementation
 The implementation of the Zodiac module is currently in a draft state [viewable here](https://github.com/UMAprotocol/protocol/pull/3843/files).
 
+TODO: Script that can decode transactions for voters.
+
+### Example Rules
+The `ZODIAC` identifier is designed to allow rules to be as flexible as possible while still being clear to UMA voters called in to resolve disputes. These examples are meant to inspire creativity in users creating their own rules and demonstrate the legalistic approach they should take.
+
+The actual rules for a given module will depend entirely on the intended use of the Gnosis Safe governed by that module and the community dynamics of the DAO in charge.
+
+As a reminder, these rules should be published publicly and referenced in a string stored in the module contract, as an IPFS hash, a website URI, or some other format.
+
+```
+EXAMPLE RULES
+
+ABC DAO was formed to bring our token holders to the moon, Mars, and beyond.
+
+To that end, we have established the following rules governing our treasury, contained in the Gnosis Safe at Ethereum address 0xbcd...234. This Gnosis Safe also has the ability to change certain parameters in our other smart contracts.
+
+1. Transactions proposed by 0xabc...123 are valid unless they violate other rules. This address is a multi-signature wallet controlled by the core development team.
+
+2. No more than 10% of the value contained in the Gnosis Safe at address 0xbcd...234, which is governed by the Zodiac module 0xcde...345, may be transferred out of the Gnosis Safe during a single 24-hour period.
+
+3. Proposals including transactions that call functions on the smart contract 0xdef...456 must be approved by a Snapshot vote backed by more than 50% of the total supply of $ABC ERC-20 tokens and must be proposed by 0xabc...123.
+
+4. Proposals that have been approved by a Snapshot vote backed by more than 50% of the total supply of $ABC ERC-20 tokens are valid.
+
+5. Transactions proposed by an address owned by Elon Musk are valid unless they violate other rules. Elon Musk can prove ownership of an address through a post on the @elonmusk Twitter account combined with a public press release.
+
+6. These rules may be changed at any time by a transaction approved by a Snapshot vote backed by more than 50% of the token supply of $ABC ERC-20 tokens, or by Elon Musk.
+
+7. Elon Musk may not propose transactions when it is the second Tuesday of the month, Pacific Time Zone.
+```
+
+### Successful Execution Flow
+1. DAO member Alice has a great idea for utilizing the DAO treasury and writes some Ethereum transactions that would execute her idea.
+2. Alice holds a Snapshot vote to approve their idea and associated transactions.
+3. The majority of $ABC tokens back Alice's proposal in the Snapshot vote.
+4. Alice submits the proposal to the Zodiac module governing the Gnosis Safe and notes in the ancillary data that the proposal was approved on Snapshot and includes a link to the Snapshot results. Alice includes a bond with her proposal.
+5. The proposal is not disputed within the challenge window and can be executed by any address.
+6. Bob, another member of the DAO, executes Alice's proposal since Alice is out watching a movie.
+7. Alice's transactions are executed and the treasury funds are spent according to her plan, which was approved by a Snapshot vote.
+
+### Disputed Execution Flow
+Starting after step 4 from the Successful Execution Flow:
+
+1. Bob, who is jealous of Alice's popularity in the DAO, disputes her proposal even though it has been approved by a Snapshot vote. Bob includes a bond with his dispute and rages against the proposal on Twitter.
+2. The dispute is escalated to UMA's data verification mechanism where UMA tokenholders analyze the proposal, the arguments from Alice and Bob, and the rules published by the DAO and referenced in the Zodiac module.
+3. After reading the rules, the vast majority of UMA token holders conclude that the proposal followed the rules and should be executed, and commit a value of `1` during the commit period.
+4. UMA token holders reveal their votes during the reveal period.
+5. After the reveal period, the settlement value is `1`. The Zodiac module receives the settlement value and allows any user to execute the proposal.
+6. Bob loses his bond and Alice gets her bond back and a portion of Bob's bond.
+7. Alice, vindicated, executes her proposal.
+
+### Blocked Execution Flow
+1. Elon Musk proposes to spend some DAO treasury funds, and includes a bond with his proposal, but it is the second Tuesday of the month, Pacific Time Zone.
+2. Alice disputes Elon's proposal and includes a bond with her dispute.
+3. The dispute is escalated to UMA's data verification mechanism where UMA tokenholders analyze the proposal and the rules published by the DAO and referenced in the Zodiac module.
+4. After reading the rules, the vast majority of UMA token holders conclude that the proposal did NOT follow the rules and should not be executed, and commit a value of `0` during the commit period.
+5. UMA token holders reveal their votes during the reveal period.
+6. After the reveal period, the settlement value is `0`. The Zodiac module receives the settlement value and deletes the invalid proposal.
+7. Elon loses his bond and Alice receives her bond back and a portion of Elon's bond.
+
 ## Security considerations
 
 ### Ambiguity
