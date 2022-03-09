@@ -3,7 +3,7 @@
 |---|--|
 |UMIP Title|Add Price Identifier VolatilityDAOracle as a supported price identifier|
 | Author| Volatility Group Inc.|
-|Status| Draft|
+|Status| Last call|
 |Created| February 16th 2022|
 
 
