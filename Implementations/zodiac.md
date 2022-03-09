@@ -7,7 +7,7 @@
 - Discourse Link: TBD
 
 ## Summary (2-5 sentences)
-The ZODIAC identifier is intended to be used with a [Zodiac module](https://gnosis.github.io/zodiac/docs/intro) that allows you to control a [Gnosis Safe](https://gnosis-safe.io/) according to a set of rules defined off-chain and enforced with UMA's [Optimistic Oracle](https://umaproject.org/optimistic-oracle.html). Any address can propose transactions that follow the rules and any address can dispute a proposal to UMA's Optimistic Oracle within a challenge window.
+The ZODIAC identifier is intended to be used with a [Zodiac module](https://gnosis.github.io/zodiac/docs/intro) that allows you to control a [Gnosis Safe](https://gnosis-safe.io/) according to a set of rules defined off-chain and enforced with UMA's [Optimistic Oracle](https://umaproject.org/optimistic-oracle.html). Unless the module contract has extra restrictions, any address can propose transactions that follow the rules and any address can dispute a proposal to UMA's Optimistic Oracle within a challenge window.
 
 ## Motivation
 The ZODIAC identifier, coupled with the Optimistic Oracle Zodiac module, will allow for a new era of flexible "optimistic governance," where management of DAO treasuries and other multi-signature wallets can be managed more effectively, without being limited to X-of-Y signing schemes or tokenholder votes, although the Zodiac module can enforce those things, too.
@@ -66,8 +66,6 @@ emit TransactionsProposed(id, proposer, time);
 
 At the same time, a price request and price proposal are submitted to the Optimistic Oracle, including the timestamp, proposer, and ancillary data. These details are enough to find the event with the proposal ID.
 
-[NOTE: To make life easier for voters, we should prepend the ID to the ancillary data. Expect a UMIP update when this is implemented.]
-
 ```
 optimisticOracle.requestAndProposePriceFor(
     identifier,
@@ -85,7 +83,15 @@ optimisticOracle.requestAndProposePriceFor(
 
 The requester in the `RequestPrice` event will be the Zodiac module itself, where voters can find the `rules` identified in the Zodiac module.
 
-[NOTE: Should the rules also be prepended to the ancillary data? Maybe. But consider the Important Special Case and the fact that we want voters to consider only the most up-to-date set of rules.]
+### Ancillary Data Format
+
+The `ancillaryData` submitted with proposals should consist of:
+
+- `id`, which is automatically prepended to the ancillary data and used to find the proposal details in the module
+- `rules`, which is a reference to the rules for the module, for example, an IPFS hash or a website URI
+- `explanation`, which is written in natural language by the proposer and explains the nature of the transactions and how they follow the module's rules
+
+`id:123,rules:QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j,explanation:These transactions were approved by the majority of tokenholders in a Snapshot vote on March 8, 2022.`
 
 ### Resolving Disputes
 
@@ -103,6 +109,8 @@ If a proposal follows the rules, an UMA voter should return a value of `1`.
 If a proposal doesn't follow the rules, an UMA voter should return a value of `0`.
 
 If a voter is unsure if a proposal follows the rules, an UMA voter should return a value of `0`.
+
+If the rules are unclear or malformed, or the ancillary data is malformed, an UMA voter should return a value of `0`.
 
 It is the responsibility of the DAO users of the `ZODIAC` identifier to write clear and unambiguous rules. If their rules are unclear, they should expect proposals that get disputed to be rejected by UMA's oracle.
 
@@ -198,3 +206,13 @@ It is possible that transactions in a proposal may not match the intent of the p
 This can be prevented by adding extra checks for complex proposals. Some examples are given in the "Short Challenge Windows" section above.
 
 It may be worthwhile to add extra checks even for theoretically simple proposals, since mistakes can happen in simple proposals, too. As an example, token transfers may require a public signature from at least one member of a committee or core team, so they can take accountability for any errors in the transaction.
+
+### Unclear, Incomplete, or Malformed Rules
+
+If the initial rules set in the module are unclear, incomplete, or malformed, there may not be a clean way to upgrade to a new set of rules, since it may be unclear if a proposal to change the rules is valid or not according to the (bad) old rules.
+
+It is important that the users of this identifier publish clear rules and that the rule change process, if any, be clearly specified.
+
+If the rules explicitly specified in the module are broken, but the DAO or other user(s) of the identifier have signaled clearly somewhere else what rules should be followed and why the process of selecting those rules is valid, UMA voters should use their best judgment for whether or not to consider those rules to be valid and, if valid, whether or not a disputed proposal follows those rules.
+
+This injection of UMA voter subjectivity into the system is messy and undesirable and should not be relied upon by users of this identifier. Poorly specified rules could result in disputed proposals and frozen governance for an indefinite period of time.
