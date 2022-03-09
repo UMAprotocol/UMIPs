@@ -43,7 +43,7 @@ Proposal[] public proposals;
 string public rules;
 ```
 
-When a user creates a proposal, they submit an array of transactions along with optional ancillary data that explains the intent and purpose of the transactions, which is useful for voters trying to understand the transactions and whether or not they follow the publisehd rules.
+When a user creates a proposal, they submit an array of transactions along with optional ancillary data that explains the intent and purpose of the transactions, which is useful for voters trying to understand the transactions and whether or not they follow the published rules.
 
 ```
 function proposeTransactions(Transaction[] memory transactions, bytes memory ancillaryData) public {
