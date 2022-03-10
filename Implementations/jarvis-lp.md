@@ -46,15 +46,14 @@ Rounding:-6
 7. Multiply each LP reserve token balance from Step 6 with its price from Step 5 for each evaluation timestamp.
 8. Sum both LP reserve balance values from Step 7 to get the total value of the pool in terms of `TVLCurrency` at the latest available block at or before each evaluation timestamp.
 9. Calculate the average from the daily values in Step 8 to obtain the LP TVL in terms of `TVLCurrency`. 
-10. Apply floor rounding on the output from step 9 using instructions from [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md) and `Rounding` parameter passed in ancillary data. As an example, if `Rounding` parameter was -6 and the output from step 9 was USD 800,000, the value should be rounded down to 0. Alternatively, if the output from step 9 was USD 1,200,000, the value should be rounded down to 1,000,000.
+10. Apply floor rounding on the output from step 9 using instructions from [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md) and `Rounding` parameter passed in ancillary data. As an example, if `Rounding` parameter was -6 and the output from step 9 was USD 3,800,000, the value should be rounded down to 3,000,000. Alternatively, if the output from step 9 was USD 2,200,000, the value should be rounded down to 2,000,000.
 
-## Intended Application
+## Post-Processing
 
 It is intended to deploy the documented KPI options on Polygon using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 4,000,000. 
 
-As an illustration, based on the intended ancillary data above, `upperBound` would be set to 4,000,000 implying the following payouts:
-* LP TVL below or equal to USD 1,000,000 would have returned 0 and long KPI option holders would receive 0 payout;
-* LP TVL above USD 1,000,000 and below or equal to USD 2,000,000 would have returned 1,000,000 and long KPI option holders would receive 1,000,000/4,000,000=25% of `collateralPerPair` for each token;
+With the intention of providing a minimum payout, if the LP TVL is below or equal to USD 2,000,000 after the necessary rounding is applied, voters should return 1,000,000. For values greater than USD 2,000,000, floor rounding should be used to calculate the returned value. As an illustration, based on the intended ancillary data above, `upperBound` would be set to 4,000,000 implying the following payouts:
+* LP TVL below or equal to USD 2,000,000 would have returned 1,000,000 and long KPI option holders would receive 1,000,000/4,000,000=25% of `collateralPerPair` for each token;
 * LP TVL above USD 2,000,000 and below or equal to USD 3,000,000 would have returned 2,000,000 and long KPI option holders would receive 2,000,000/4,000,000=50% of `collateralPerPair` for each token;
 * LP TVL above USD 3,000,000 and below or equal to USD 4,000,000 would have returned 3,000,000 and long KPI option holders would receive 3,000,000/4,000,000=75% of `collateralPerPair` for each token;
 * LP TVL above USD 4,000,000 would have returned 4,000,000 and long KPI option holders would receive 4,000,000/4,000,000=100% of `collateralPerPair` for each token;
