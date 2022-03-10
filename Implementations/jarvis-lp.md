@@ -48,7 +48,7 @@ Rounding:-6
 9. Calculate the average from the daily values in Step 8 to obtain the LP TVL in terms of `TVLCurrency`. 
 10. Apply floor rounding on the output from step 9 using instructions from [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md) and `Rounding` parameter passed in ancillary data. As an example, if `Rounding` parameter was -6 and the output from step 9 was USD 3,800,000, the value should be rounded down to 3,000,000. Alternatively, if the output from step 9 was USD 2,200,000, the value should be rounded down to 2,000,000.
 
-## Intended Application
+## Post-Processing
 
 It is intended to deploy the documented KPI options on Polygon using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 4,000,000. 
 
