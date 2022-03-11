@@ -232,7 +232,7 @@ Starting after step 4 from the Successful Execution Flow:
 Ambiguous or incomplete rules could put contracts using the `ZODIAC` identifier at risk of loss of funds. The rule that UMA voters should reject proposals that they are not certain follow the rules should help mitigate this.
 
 ### Complexity
-Complex bundles of transactions may be difficult for a layman voter to analyze, leading to reliance on statements made by experts in support of or against a proposal. The rule that UMA voters should reject proposals they are not certain about means that complex proposals that actually do follow the rules may be blocked for some time.
+Complex bundles of transactions may be difficult for a layperson voter to analyze, leading to reliance on statements made by experts in support of or against a proposal. The rule that UMA voters should reject proposals they are not certain about means that complex proposals that actually do follow the rules may be blocked for some time.
 
 The DAO can resolve this issue by having alternative and less ambiguous mechanisms for expressing approval of complex proposals. For instance, the DAO's rules may state that a proposal whose transactions received XX% approval through a Snapshot vote, or were signed off on by 3 of 4 experts, should be approved.
 
