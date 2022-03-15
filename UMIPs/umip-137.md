@@ -3,7 +3,7 @@
 |------------|---------------------------------------------|
 | UMIP Title | Add QUARTZ and ibBTC as collateral currency |
 | Authors    | Mhairi McAlpine (mhairi@umaproject.org)     |
-| Status     | Last Call                                   |
+| Status     | Approved                                   |
 | Created    | November 2, 2021                            |
 
   

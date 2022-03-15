@@ -3,7 +3,7 @@ UMIP-131
 
 -   UMIP title: Add miMATIC, VOL, BIFI, ICE, IRON and IF as supported collateral currencies 
 -   Author: Chandler (chandler@umaproject.org)
--   Status: Last Call
+-   Status: Approved
 -   Created: 13 September 2021
 
 

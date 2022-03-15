@@ -4,7 +4,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add PERPUSD and USDPERP as supported price identifiers        |
 | Authors             | Sean Brown (@smb2796)                                         |
-| Status              | Last Call                                                     |
+| Status              | Approved                                                     |
 | Created             | Dec 31, 2021                                                  |
 
 # Summary 

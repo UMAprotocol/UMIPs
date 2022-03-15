@@ -3,7 +3,7 @@ UMIP-126
 
 -   UMIP title: Add YEL as collateral currency 
 -   Author: Chandler (chandler@umaproject.org)
--   Status: Last Call
+-   Status: Approved
 -   Created:  24 August 2021
 
 ## Summary (2-5 sentences)

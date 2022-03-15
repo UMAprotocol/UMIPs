@@ -3,7 +3,7 @@ UMIP-133
 
 -   UMIP title: Add PERP, GRO and POOL as collateral currency 
 -   Author:  Chandler (chandler@umaproject.org)
--   Status: Last Call
+-   Status: Approved
 -   Created:  28 September 2021
 
 ## Summary (2-5 sentences)

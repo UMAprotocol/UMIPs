@@ -1,10 +1,9 @@
 ## Headers
-- UMIP <#> 
+- UMIP-152
 - UMIP title: Add ZODIAC as a supported price identifier
 - Author: John Shutt (john@umaproject.org)
-- Status: DRAFT
+- Status: Last Call
 - Created: March 7, 2022
-- Discourse Link: TBD
 
 ## Summary (2-5 sentences)
 The ZODIAC identifier is intended to be used with a [Zodiac module](https://gnosis.github.io/zodiac/docs/intro) that allows you to control a [Gnosis Safe](https://gnosis-safe.io/) according to a set of rules defined off-chain and enforced with UMA's [Optimistic Oracle](https://umaproject.org/optimistic-oracle.html). Unless the module contract has extra restrictions, any address can propose transactions that follow the rules and any address can dispute a proposal to UMA's Optimistic Oracle within a challenge window.
