@@ -13,7 +13,7 @@ This design is not intended to avoid “gaming” in any sense. Rather, it is ju
 # Implementation
 1. Proposers/voters should check the tweet provided as Ancillary data at the expirationTimestamp for the number of RTs the tweet has.
 2. There is some ambiguity about how to do this, because a tweet could receive more RTs after expiry. An increase in the value is not the problem, but rather, a lack of clarity for voters on what is the correct value.
-3. For this reason, the authors would suggest that the source used as a reference for the calculation is the median of the first three screenshots provided by pre-designated SuperUMAns posted after the request timestamp in the onetree-screencapture channel of the SuperUMAn discord, but could be changed to use another data source in the future. The specific SuperUMAns taking the expiry screenshots will be @inalittlewhile#4712, @deadcoin#0901, @PVmilihache#8517, @Heruvim78#6876, and @PennyPanda#4443.
+3. For this reason, the authors would suggest that the source used as a reference for the calculation is the median of the first three screenshots provided by pre-designated SuperUMAns posted after the request timestamp in the [onetree-screencapture](https://discord.com/channels/909933079181799524/953369451573690428) channel of the SuperUMAn discord, but could be changed to use another data source in the future. The specific SuperUMAns taking the expiry screenshots will be @inalittlewhile#4712, @deadcoin#0901, @PVmilihache#8517, @Heruvim78#6876, and @PennyPanda#4443.
 4. Round to 2 decimal places (third decimal place digit >= 5 rounds up and < 5 rounds down).
 
 # Intended Application
