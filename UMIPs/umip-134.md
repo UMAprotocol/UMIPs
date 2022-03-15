@@ -3,7 +3,7 @@ UMIP-134
 
 -   UMIP title: Add AQUA and IDIA as collateral currency 
 -   Author:  Chandler (chandler@umaproject.org)
--   Status: Last Call
+-   Status: Approved
 -   Created:  12 October 2021
 
 ## Summary (2-5 sentences)

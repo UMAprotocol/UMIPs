@@ -2,7 +2,7 @@
 
 -   **UMIP title:** Add UMA as collateral currency on Polygon 
 -   **Author:**  Geoff (stadnykgeoff1@gmail.com)
--   **Status:** Last Call
+-   **Status:** Approved
 -   **Created:**  15 February 2022
 -   **Discourse Link:** https://discourse.umaproject.org/t/create-add-uma-as-collateral-currency-to-polygon-md/1408 
 

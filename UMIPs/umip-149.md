@@ -2,7 +2,7 @@
 | ------------------- | -------------------------------------------------- |
 | UMIP Title          | Give Proposer DVM request permissions              |
 | Authors             | Matt Rice                                          |
-| Status              | Last Call                                          |
+| Status              | Approved                                          |
 | Created             | 2022-01-27                                         |
 
 # Summary 

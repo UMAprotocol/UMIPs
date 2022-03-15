@@ -4,7 +4,7 @@
 | ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add CVXUSD and USDCVX as supported price identifiers |
 | Authors             | petro                                                |
-| Status              | Last Call                                            |
+| Status              | Approved                                            |
 | Created             | December 10, 2021                                    |
 
 

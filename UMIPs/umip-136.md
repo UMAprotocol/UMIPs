@@ -4,7 +4,7 @@
 | ------------------- | -------------------------------------------------- |
 | UMIP Title          | Add IS_RELAY_VALID as a supported price identifier |
 | Authors             | Matt Rice                                          |
-| Status              | Last Call                                          |
+| Status              | Approved                                          |
 | Created             | 2021-10-18                                         |
 
 # Summary 

@@ -3,7 +3,7 @@ UMIP-128
 
 -   UMIP title: Add DFX as a Polygon collateral currency
 -   Author:  Chandler (chandler@umaproject.org)
--   Status: Last Call
+-   Status: Approved
 -   Created:  10 September 2021
 
 ## Summary (2-5 sentences)

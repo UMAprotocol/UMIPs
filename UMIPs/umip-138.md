@@ -3,7 +3,7 @@
 |------------|-------------------------------------|
 | UMIP Title | Upgrade Skinny Optimistic Oracle    |
 | Authors    | Nick Pai (nick@umaproject.org)      |
-| Status     | Last Call                           |
+| Status     | Approved                           |
 | Created    | November 3, 2021                    |
 
 ## Summary (2-5 sentences)

@@ -3,7 +3,7 @@
 |-------------------|------------------------------------------------------------------------|
 | UMIP Title        | Add SGDUSD as price identifier                                         |
 | Authors           | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                            |
-| Status            | Last Call                                                              |
+| Status            | Approved                                                              |
 | Created           | 06/09/21                                                               |
 | Discourse link    | https://discourse.umaproject.org/t/add-sgdusd-as-price-identifier/1320 |
 

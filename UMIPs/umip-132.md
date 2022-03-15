@@ -3,7 +3,7 @@
 |-------------------|--------------------------------------------------------------------------|
 | UMIP Title        | Add SHERLOCK_CLAIM as a price identifier                                 |
 | Authors           | Jack Sanford, Sean Brown                                                 |
-| Status            | Last Call                                                                |
+| Status            | Approved                                                                |
 | Created           | 09/28/21                                                                 |
 | Discourse Link    | https://discourse.umaproject.org/t/sherlock-exploit-protection-umip/1344 |
 

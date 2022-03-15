@@ -3,7 +3,7 @@
 |------------|---------------------------------|
 | UMIP Title | Add Skinny Optimistic Oracle    |
 | Authors    | Matt Rice (matt@umaproject.org) |
-| Status     | Last Call                       |
+| Status     | Approved                       |
 | Created    | October 18, 2021                |
 
 ## Summary (2-5 sentences)

@@ -3,7 +3,7 @@
 |------------|--------------------------------|
 | UMIP Title | Register Oracle Hub            |
 | Authors    | Nick Pai (nick@umaproject.org) |
-| Status     | Last Call                      |
+| Status     | Approved                      |
 | Created    | January 10, 2022               |
 
 # Summary (2-5 sentences)

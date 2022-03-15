@@ -2,7 +2,7 @@
 
 - **UMIP title:** DOM, CRE8R and COMFI as approved collateral currencies 
 - **Author:** Reinis Martinsons (reinis@umaproject.org), Geoff (stadnykgeoff1@gmail.com)
-- **Status:** Last Call
+- **Status:** Approved
 - **Created:** 26 January 2022
 - **Discourse Link:**
 
