@@ -42,10 +42,10 @@ Proposal[] public proposals;
 string public rules;
 ```
 
-When a user creates a proposal, they submit an array of transactions along with optional ancillary data that explains the intent and purpose of the transactions, which is useful for voters trying to understand the transactions and whether or not they follow the published rules.
+When a user creates a proposal, they submit an array of transactions along with an optional explanation that explains the intent and purpose of the transactions, which is useful for voters trying to understand the transactions and whether or not they follow the published rules.
 
 ```
-function proposeTransactions(Transaction[] memory transactions, bytes memory ancillaryData) public {
+function proposeTransactions(Transaction[] memory transactions, bytes memory explanation) public {
     ...
 }
 ```
@@ -63,7 +63,7 @@ After a proposal is created, an event is emitted which includes the proposal id,
 emit TransactionsProposed(id, proposer, time);
 ```
 
-At the same time, a price request and price proposal are submitted to the Optimistic Oracle, including the timestamp, proposer, and ancillary data. These details are enough to find the event with the proposal ID.
+At the same time, a price request and price proposal are submitted to the Optimistic Oracle, including the timestamp, the proposer, and `ancillaryData`, which includes the explanation, proposal ID, and module contract address.
 
 ```
 optimisticOracle.requestAndProposePriceFor(
@@ -80,17 +80,17 @@ optimisticOracle.requestAndProposePriceFor(
 );
 ```
 
-The requester in the `RequestPrice` event will be the Zodiac module itself, where voters can find the `rules` identified in the Zodiac module.
+Voters can find the `rules` in the module contract at the address specified in `ancillaryData`.
 
 ### Ancillary Data Format
 
 The `ancillaryData` submitted with proposals should consist of:
 
-- `id`, which is automatically prepended to the ancillary data and used to find the proposal details in the module
-- `rules`, which is a reference to the rules for the module, for example, an IPFS hash or a website URI
 - `explanation`, which is written in natural language by the proposer and explains the nature of the transactions and how they follow the module's rules
+- `id`, which is automatically appended to the ancillary data and used to find the proposal details in the module
+- `module`, which is the address of the module contract
 
-`id:123,rules:QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j,explanation:These transactions were approved by the majority of tokenholders in a Snapshot vote on March 8, 2022.`
+`explanation:These transactions were approved by the majority of tokenholders in a Snapshot vote on March 8, 2022.,id:123,module:0xabc...123`
 
 ### Resolving Disputes
 
