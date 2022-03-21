@@ -4,7 +4,7 @@
 -   **Author:**  Geoff (stadnykgeoff1@gmail.com)
 -   **Status:** Draft
 -   **Created:**  14 March 2022
--   **Discourse Link:**  Insert link to discourse topic after it has been moved into draft UMIPs
+-   **Discourse Link:**  https://discourse.umaproject.org/t/umip-proposal-create-vsq-and-fdt-collateral-adds/1571
 
 ## Summary (2-5 sentences)
 
@@ -18,11 +18,11 @@ The addition of these collateral currencies offers additional functionality to t
 
 To accomplish this upgrade, the following changes need to be made:
 
--   The **VSQ** address **https://polygonscan.com/token/0x29F1e986FCa02B7E54138c04C4F503DdDD250558** needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of **257 VSQ** needs to be added in the Store contract.
+-   The **VSQ** address on Polygon **https://polygonscan.com/token/0x29F1e986FCa02B7E54138c04C4F503DdDD250558** needs to be added to the collateral currency whitelist introduced in UMIP-8.
+-   A final fee of **250 VSQ** needs to be added in the Store contract.
 
--   The **FDT** address **https://etherscan.io/token/0xed1480d12be41d92f36f5f7bdd88212e381a3677** needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of **9,375 FDT** needs to be added in the Store contract.
+-   The **FDT** address on Ethereum **https://etherscan.io/token/0xed1480d12be41d92f36f5f7bdd88212e381a3677** needs to be added to the collateral currency whitelist introduced in UMIP-8.
+-   A final fee of **9,000 FDT** needs to be added in the Store contract.
     
 ## Rationale
 
