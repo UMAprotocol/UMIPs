@@ -1,6 +1,6 @@
 **UMIP #**  - tbd
 
--   **UMIP title:** Add VESQ (VSQ) & Fiat DAO (FDT) as collateral currencies. 
+-   **UMIP title:** Add Fiat DAO (FDT) as a collateral currency. 
 -   **Author:**  Geoff (stadnykgeoff1@gmail.com)
 -   **Status:** Draft
 -   **Created:**  14 March 2022
@@ -8,25 +8,22 @@
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding VSQ & FDT for use as collateral in UMA contracts.
+This UMIP proposes adding FDT for use as collateral in UMA contracts.
 
 ## Motivation
 
-The addition of these collateral currencies offers additional functionality to the UMA protocol and increases the range of contracts that can be built.
+The addition of this collateral currency offers additional functionality to the UMA protocol and increases the range of contracts that can be built.
 
 ## Technical Specification
 
 To accomplish this upgrade, the following changes need to be made:
-
--   The **VSQ** address on Polygon **https://polygonscan.com/token/0x29F1e986FCa02B7E54138c04C4F503DdDD250558** needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of **250 VSQ** needs to be added in the Store contract.
 
 -   The **FDT** address on Ethereum **https://etherscan.io/token/0xed1480d12be41d92f36f5f7bdd88212e381a3677** needs to be added to the collateral currency whitelist introduced in UMIP-8.
 -   A final fee of **9,000 FDT** needs to be added in the Store contract.
     
 ## Rationale
 
-These store fees were chosen as they are approximately equivalent to $1500 in line with other collateral currencies as determined by **[VSQ](https://www.coingecko.com/en/coins/vesq) & [FDT](https://www.coingecko.com/en/coins/fiat-dao-token)** values from **CoinGecko**
+This store fee was chosen as it is approximately equivalent to $1500 in line with other collateral currencies as determined by **[FDT](https://www.coingecko.com/en/coins/fiat-dao-token)** values from **CoinGecko**
 
 ## Implementation
 
