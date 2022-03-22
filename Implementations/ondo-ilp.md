@@ -31,106 +31,11 @@ All relevant price data is computed using information that can be found directly
 - Base Currency: Determined by the `VaultId`
 - Quote Currency: NA
 - Rounding: Round to 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)
-- Example price providers: Infura and Alchemy include information on Ondo vault contract events. The Ondo_ILP price identifier depends on values drawn from the `Invested` and `Redeemed` events of the Ondo vault.
+- Example price providers: Infura and Alchemy include information on Ondo vault contract events.
 - Cost to use: [Infura](https://infura.io/) supports up to 100,000 requests per day for free and [Alchemy](https://www.alchemy.com/) allows 300,000,000 compute units/month for free along with archive data. You will need an archive node to perform the calculation using the script from the Price Feed Implementation below.
 - Real-time price update frequency: Updated every block
 - Historical price update frequency: Updated every block
 
-# Price Feed Implementation
-
-```
-// Step 1: Copy the allPairVault contract abi and paste it in a json file named 'abi.json'
-// Step 2: Prepare the deployment script and arguments. A sample script is: node ondo_ilp.js --fromBlock 11937674 --vaultContractAddress 0x2bb8de958134afd7543d4063cafad0b7c6de08bc --vaultId 0x02b9d144d64e12baa6b8f0ce82763fcef25c5b403c24eb299958bc077b7d9573 --url wss://eth-mainnet.alchemyapi.io/v2/{project_id}
-
-const Web3 = require('web3')
-const abi = require("./abi");
-
-const argv = require("minimist")(process.argv.slice(), {
-    string: [
-      "url",
-      "vaultContractAddress",
-      "vaultId",
-      "fromBlock"
-    ]
-  });
-
-const fromBlock = argv.fromBlock;
-const vaultContractAddress = argv.vaultContractAddress;
-const vaultId = argv.vaultId;
-const url = argv.url;
-const web3 = new Web3(url);
-
-async function calcIL() {
-    const investArray = [];
-    const redeemArray = [];
-
-    var myContract = new web3.eth.Contract(abi, vaultContractAddress);
-    
-    // Pulls all of the Invested events. Make sure your fromBlock is before the event.
-    const investEvents = await myContract.getPastEvents('Invested', {
-        fromBlock: fromBlock,
-        toBlock: 'latest'
-    }, function(error, events){ (events) })
-    .then(function(events){
-        for (i = 0; i < events.length; i++) {
-            if (events[i].raw.topics[1] === vaultId) {
-                const seniorValue = events[i].returnValues.seniorAmount
-                const juniorValue = events[i].returnValues.juniorAmount
-                investArray.push({
-                    seniorValue,
-                    juniorValue
-                })
-                return investArray
-            }
-        }
-    });
-
-    // Pulls all of the Redeemed events. Make sure your vaultId has a Redeemed event and your fromBlock is before the event.
-    const redeemEvents = await myContract.getPastEvents('Redeemed', {
-        fromBlock: fromBlock,
-        toBlock: 'latest'
-    }, function(error, events){ (events) })
-    .then(function(events){
-        for (i = 0; i < events.length; i++) {
-            if (events[i].raw.topics[1] === vaultId) {
-                const seniorRedeem = events[i].returnValues.seniorReceived
-                const juniorRedeem = events[i].returnValues.juniorReceived
-                redeemArray.push({
-                    seniorRedeem,
-                    juniorRedeem
-                })
-                return redeemArray
-            }
-        }
-    });
-
-    // Pulls the junior and senior quantities from the Invested event
-    const juniorInvest = parseFloat(Web3.utils.fromWei(investArray[0].juniorValue))
-    const seniorInvest = parseFloat(Web3.utils.fromWei(investArray[0].seniorValue))
-
-    // Pulls the junior and senior quantities from the Redeemed event
-    const juniorRedeem = parseFloat(Web3.utils.fromWei(redeemArray[0].juniorRedeem))
-    const seniorRedeem = parseFloat(Web3.utils.fromWei(redeemArray[0].seniorRedeem))
-
-    // Calculates the price ratio at the Redeemed event and the product constant
-    const redeemPriceRatio = juniorRedeem / seniorRedeem
-    const productConstant = juniorInvest * seniorInvest;
-
-    // Calculates the stragety to compare providing liquidity vs holding the assets
-    const nonLpStrategy = ((seniorInvest * redeemPriceRatio) + juniorInvest);
-
-    const lpStrategy = ((Math.sqrt(productConstant / redeemPriceRatio)) * redeemPriceRatio) + (Math.sqrt(productConstant * redeemPriceRatio));
-
-    // Calculates IL
-    const impermanentLoss = (nonLpStrategy - lpStrategy) / nonLpStrategy * 100;
-
-    console.log("IL = " + impermanentLoss.toFixed(6) + "%")
-}
-
-// Runs the script
-calcIL()
-
-```
 
 # Ancillary Data Specifications
 
@@ -140,13 +45,15 @@ calcIL()
 
 ```
 VaultID:0x02b9d144d64e12baa6b8f0ce82763fcef25c5b403c24eb299958bc077b7d9573,
-VaultContractAddress:0x2bb8de958134afd7543d4063cafad0b7c6de08bc
+VaultContractAddress:0x2bb8de958134afd7543d4063cafad0b7c6de08bc,
+StartTimestamp:1644858900,
+EndTimestamp:1647450900
 ```
 
 Key-value pairs above are separated by newlines just for readability, but no newlines should be used in real application. When this ancillary data dictionary (without newlines) is stored as bytes, the result would be:
 
 ```
-5661756c7449443a3078303262396431343464363465313262616136623866306365383237363366636566323563356234303363323465623239393935386263303737623764393537332c5661756c74436f6e7472616374416464726573733a307832626238646539353831333461666437353433643430363363616661643062376336646530386263
+5661756c7449443a3078303262396431343464363465313262616136623866306365383237363366636566323563356234303363323465623239393935386263303737623764393537332c5661756c74436f6e7472616374416464726573733a3078326262386465393538313334616664373534336434303633636166616430623763366465303862632c537461727454696d657374616d703a313634343835383930302c456e6454696d657374616d703a31363437343530393030
 ```
 
 A resource for finding the `VaultID` and `VaultContractAddress` is using the Ondo API. The API should only be used as a helpful resource with all data should be confirmed on the blockchain:
@@ -163,67 +70,28 @@ The user of this UMIP accepts responsibility to provide the information passed t
 
 When a price request is made, the following process should be followed:
 
-1. Identify the `VaultId` and `VaultContractAddress` from the contracts ancillary data which will be used used to identify the Ondo vault impermanent loss is being calculated for. See the Ancillary Data Specifications section for more information on retrieving this data.
-2. Scan the `Invested` events from the `VaultContractAddress` and retrieve the event that matches the Vault ID for the second element of the topics array.
-    - In the `returnValues` response, note the `seniorAmount` and `juniorAmount` and confirm the values are associated with your `VaultId` from the contracts ancillary data. Scale both values 18 decimals.
-3. Scan the `Redeemed` events from the `VaultContractAddress` and retrieve the event that matches the Vault ID for the second element of the topics array.
-    - In the `returnValues` response, note the `seniorReceived` and `juniorReceived` and confirm the values are associated with your `VaultId` from the contracts ancillary data. Scale both values 18 decimals.
-4. Calculate the price ratio at the `Redeemed` event using values from step 3:
-```
-redeemPriceRatio = juniorReceived / seniorReceived
-```
-5. Calculate the product constant at the `Invested` event using values from step 2: 
-```
-productConstant = juniorAmount * seniorAmount
-```
-6. Calculate the performance if the holder had exposure to the assets and did not provide liquidity. The `seniorAmount` and `juniorAmount` values are from step 2 and the redeemPriceRatio is the returned value from step 4: 
-```
-nonLpStrategy = ((seniorAmount * redeemPriceRatio) + juniorAmount);
-```
-7. Calculate the performance if the holder provided liquidity to the Ondo vault. ProductConstant is from step 5 and redeemPriceRatio is from step 4:
-```
-The square root of ((productConstant / redeemPriceRatio) * redeemPriceRatio) plus the square root of (productConstant * redeemPriceRatio)
-```
-8. Calculate the IL value. The nonLpStrategy is from step 6 and the lpStrategy is the returned value from step 7:
-```
-IL = (nonLpStrategy - lpStrategy) / nonLpStrategy
-```
-9. Multiply the returned value from step 8 by 100, and then round to 6 decimals to arrive at the final value.
-
-Please note, the `Invested` and `Redeemed` events must have occurred before the Ondo_ILP price identifier can be expired.
-
-**Example**
-
-If the `VaultID` requested was `0x02b9d144d64e12baa6b8f0ce82763fcef25c5b403c24eb299958bc077b7d9573` and the `VaultContractAddress` was `0x2bb8de958134afd7543d4063cafad0b7c6de08bc` then:
-
-We would need to identify the `Invested` events from the `vaultContractAddress` and retrieve the event that matches the Vault ID for the second element of the topics array. Scaling both values 18 decimals would give us:
--  seniorAmount: `3091789.318519653533374476` 
--  juniorAmount: `1406.163726066937016719`
-
-We would need to identify the `Redeemed` events from the `vaultContractAddress` and retrieve the event that matches the Vault ID for the second element of the topics array. Scaling both values 18 decimals would give us:
--  seniorReceived: `3159190.325663381980402039` 
--  juniorReceived: `1556.948663245455287184`
-
-The redeemPriceRatio would be calculated as: 
-```
-1556.948663245455287184 / 3159190.325663381980402039 = 0.0004928315494630794
-```
-The productConstant would be calculated as: 
-```
-1406.163726066937016719 / 3091789.318519653533374476 = 0.0004928315494630794 = 4347561988.343553
-```
-The strategy that did not provide liquidity would be calculated as: 
-```
-((3091789.3185196538 * 0.0004928315494630794) + 1406.163726066937) = 2929.895046526376
-```
-The strategy that did provide liquidity would be calculated as: 
-```
-((square root of (4347561988.343553 / 0.0004928315494630794)) * 0.0004928315494630794) + (square root of (4347561988.343553 * 0.0004928315494630794)) = 2927.5352849126443
-```
-IL would be calculated as (rounded to 6 decimals): 
-```
-(2929.895046526376 - 2927.5352849126443) / 2929.895046526376 * 100 = 0.080541
-```
+1. Identify the `VaultId`, `VaultContractAddress`, `StartTimestamp` and `EndTimestamp` from the contracts ancillary data which will be used used to identify which Ondo vault impermanent loss is being calculated for. See the Ancillary Data Specifications section for more information on retrieving this data.
+2. Use the `VaultContractAddress` from step 1 to call the `getVaultById` method with the `VaultId` as the argument and retrieve the `vaultStrategy` contract address and the `token` address for each tranche.
+3. Identify the `poolAddress` by calling the `getVaultInfo` method on the `vaultStrategy` contract from step 2 using the `VaultId` as the argument.
+4. Get total LP reserves by calling `getReserves()` method on the LP contract from Step 3 at the latest available block at or before each of the evaluation timestamps. This should return `token0` and `token1` balances as index 0 `_reserve0` and index 1 `_reserve1` respectively for each evaluation timestamp. Confirm these addresses match the `token` address for each tranche from step 2.
+5. For both LP reserve tokens from Step 4 use the latest available pricing for each reserve currency before each of the evaluation timestamps from CoinGecko:
+    * Based on CoinGecko [API documentation](https://www.coingecko.com/api/documentations/v3#/contract/get_coins__id__contract__contract_address__market_chart_range) construct price API request with following parameters:
+      * `id`: CoinGecko platform id - Ondo vaults currently only use "ethereum";
+      * `contract_address`: reserve token address from Step 4;
+      * `vs_currency`: TVL measurement currency based on the passed `TVLCurrency` parameter in the ancillary data (e.g. "usd");
+      * `from`: start timestamp (`StartTimestamp` parameter from the ancillary data);
+      * `to`: end timestamp (`EndTimestamp` parameter from the ancillary data);
+    * Note that some tokens might not be supported by CoinGecko on all chains  - in such case consult supported currency/platform list at https://api.coingecko.com/api/v3/coins/list?include_platform=true and replace to supported `id`  and `contract_address` for the same reserve token.
+    * Locate the `prices` key value from CoinGecko API response - it should contain a list of [ timestamp, price ] values. For each evaluation period (Step 1) choose the price at the latest timestamp before the evaluation timestamp (CoinGecko timestamps are in milliseconds);
+    * Voters should verify that obtained price results agree with broad market consensus.
+6. Scale down LP reserve balances from Step 4 with their respective decimals (call `decimals()` method on the token contracts from Step 2).
+7. Multiply each LP reserve token balance from Step 6 with its price from Step 5 for each evaluation timestamp.
+8. Sum both LP reserve balances returned from Step 7 to get the total value of the pool for each evaluation timestamp.
+9. Get the total LP token supply by calling `totalSupply()` method on the LP contract from Step 3 at the latest available block at or before each evaluation timestamp. Get the portion of the pool balance owned by the vault by calling the `balanceOf()` method on the `poolAddress` using the `vaultStrategy` from step 2 as the argument. 
+10. Divide the balance of the vault strategy by the total supply of the pool from step 9 to get the percentage of the pool owned by the vault.
+11. Multiply the total reserve balances from step 8 by the percentage of the pool owned by the vault from step 10 to get the value of the vault for each evaluation timestamp.
+12. Identify the value of the two reserve currencies from step 2 if liquidity had not been provided to the pool by using the `StartTimestamp` reserve balances from step 4 multiplied by the CoinGecko `EndTimestamp` prices from step 5. Sum these values together to get the total value of the pool for each evaluation timestamp.
+13. Calculate impermanent loss by dividing the returned value from step 11 by the returned value from step 12 and subtracting 1. Multiply by 100 to get the impermanent loss value as a percentage.
 
 # Security Considerations
 
