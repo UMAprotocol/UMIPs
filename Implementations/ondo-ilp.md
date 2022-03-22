@@ -91,7 +91,7 @@ When a price request is made, the following process should be followed:
 10. Divide the balance of the vault strategy by the total supply of the pool from step 9 to get the percentage of the pool owned by the vault.
 11. Multiply the total reserve balances from step 8 by the percentage of the pool owned by the vault from step 10 to get the value of the vault for each evaluation timestamp.
 12. Identify the value of the two reserve currencies from step 2 if liquidity had not been provided to the pool by using the `StartTimestamp` reserve balances from step 4 multiplied by the CoinGecko `EndTimestamp` prices from step 5. Sum these values together to get the total value of the pool for each evaluation timestamp.
-13. Calculate impermanent loss by dividing the returned value from step 11 by the returned value from step 12 and subtracting 1. Multiply by 100 to get the impermanent loss value as a percentage.
+13. Calculate impermanent loss by dividing the returned value from step 11 by the returned value from step 12 and subtracting 1. Multiply by 100 and round the returned value to 6 decimals to arrive at the final value as a percentage.
 
 # Security Considerations
 
