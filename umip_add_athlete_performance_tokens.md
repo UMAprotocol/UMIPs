@@ -49,7 +49,7 @@ Initially manual settlement is expected and UMIP could be updated to include pri
 
 ## Ancillary Data Specifications
 customancillarydata:
-athlete name:T.Brady,sport:nfl, id:,length:season,timestamp:YYYY-MM-DD
+athlete name:T.Brady,sport:nfl, id:,length:season,timestamp:YYYY-MM-DD,price logic:https://ipfs.io/ipfs/QmWjuSBRboueGLeRdRKqQdmPdPq8EQHfqh1CXsGnrMWSrJ?filename=NFLpricelogic.htm
 
 _athlete Name - represents the name (First_Initial.Last_Name) of the player whose statistics are reflected by the APT's price
 sport: the sport the athlete plays
@@ -57,6 +57,7 @@ id: 5-digit unique identifier given to athletes by SportsData and used to query 
 length: the length of the token contract until expiration (game, season, or career)
 timestamp: returns last record of target day in UTC timezone (YYYY-MM-DD)
 (expiration timestamp set at 24hr after start of last game of the season to allow for delays) 
+price logic: IPFS file providing pricing logic based on sport
 
 # Rationale
 
