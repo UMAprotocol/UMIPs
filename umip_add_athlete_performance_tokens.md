@@ -68,7 +68,7 @@ Collect the sport, id, timestamp, and price logic parameters from the ancillary 
 
 Fill the ancillary data parameters into the below price logic to generate the APT price
 
-AthleteX price logic: https://ipfs.io/ipfs/QmQwGDVQG2JJ8YeXTGLrswwWuhTPxsjucnqCqsYkgELMnM?filename=AthleteXpricelogic.htm
+AthleteX price logic: [https://ipfs.io/ipfs/Qmeb1BKZQ3nUn1Uy3nxMHSfYPFRUM83QmtqcWnnKm2fwyu?filename=AthleteXpricelogic.htm]
 
 # Security Considerations
 
