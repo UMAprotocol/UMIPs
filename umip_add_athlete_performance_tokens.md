@@ -67,9 +67,9 @@ This method was chosen as a balance between efficiency and scale of athletic dat
 
 Collect the sport, id, timestamp, and price logic parameters from the ancillary data
 
-Fill the ancillary data parameters into the below price logic to generate the APT price
+Go to the IPFS file containing the pricing logic
 
-AthleteX price logic: [https://ipfs.io/ipfs/Qmeb1BKZQ3nUn1Uy3nxMHSfYPFRUM83QmtqcWnnKm2fwyu?filename=AthleteXpricelogic.htm]
+Follow steps 1-3 to calcaulte the price of the Athlete Performance Token 
 
 # Security Considerations
 
