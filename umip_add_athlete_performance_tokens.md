@@ -64,55 +64,11 @@ This method was chosen as a balance between efficiency and scale of athletic dat
 
 # Implementation
 
-Generate values for each of the key-value fields by doing the following:
+Collect the sport, id, timestamp, and price logic parameters from the ancillary data
 
-1. Collect the sport, id, and timestamp parameters from the ancillary data
+Fill the ancillary data parameters into the below price logic to generate the APT price
 
-The timestamp parameter is formatted for UTC time. To convert from UNIX epoch to UTC time follow these instructions:
-Input the UNIX epoch number into cell A1 of a bank Excel sheet
-Input =(A1 / 86400) + 25569 into cell A2
-Format A2 for date/time, the result will be in UTC time.
-
-The timestamp parameter is the resulting date in cell A2 minus 24hours
-
-2. http://139.99.74.201:8080/[sport]/players/[id]?at_day=[YYY-MM-DD]
-Fill in the athlete details and go to the above URL
-example - http://139.99.74.201:8080/nfl/players/22575?at_day=2022-03-07
-
-Note the following key-variables:
-"passingYards"
-"passingTouchDowns"
-"reception"
-"receiveYards"
-"receiveTouch"
-"rushingYards"
-"OffensiveSnapsPlayed"
-"price"
-"PassingInterceptions"
-"FumblesLost"
-"RushingTouchdowns"
-"timestamp"
-
-3. Combine key-values into price with the following formula:
-
-  "RushingTouchdowns": each rushing touchdown = 6pts
-  "receiveTouch": each receiving touchdown = 6pts
-  "passingTouchDowns": each passing touchdown = 4pts
-
-  "reception": reception = .5pts
-
-  "receiveYards": every 10 receiving yards = 1pt
-  "rushingYards": every 10 rushing yards = 1pt
-  "passingYards": every 25 passing yards = 1pt
-
-  "PassingInterceptions": each interception = -2pts
-  "FumblesLost": each fumble = -2pts
-
-  sum(pts) / "OffensiveSnapsPlayed" = "price"
-
-  pts = the sum based on metrics indicated in the pricing formula
-
-  Round price computations to 8 decimal places
+AthleteX price logic: https://ipfs.io/ipfs/QmQwGDVQG2JJ8YeXTGLrswwWuhTPxsjucnqCqsYkgELMnM?filename=AthleteXpricelogic.htm
 
 # Security Considerations
 
