@@ -3,7 +3,7 @@ PoolTogether TVL-2 Calculation:
 
 ## Summary
 PoolTogether is a protocol for no-loss prize games. The protocol enables developers to build their own no-loss prize games and offers governance-managed no-loss prize games.
-This calculation is intended to track the TVL of PoolTogether user deposits in various pools and will be used with the General_KPI price identifier. At the time of authorship, the networks included are Ethereum Mainnet, Polygon, Celo, and BSC but could be extended depending on PoolTogether governance and development.
+This calculation is intended to track the TVL of PoolTogether user deposits in various pools and will be used with the General_KPI price identifier. At the time of authorship, the networks included are Ethereum Mainnet, Polygon, Celo, Avalanche, and BSC but could be extended depending on PoolTogether governance and development.
 The recommended querying methodology is to use DefiLlama’s TVL calculator. This implementation doc will also describe how the TVL calculation works behind the scenes so that it could be reproduced by voters querying for on-chain data only.
 
 ## Intended Ancillary Data
@@ -83,6 +83,19 @@ PoolTogether TVL KPI options track value locked in the following Polygon prize p
   4. Each underlying collateral balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the end of the day (24:00 UTC). DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
   5. Calculate the sum of all underlying collateral balances in USD from Step 3.
 
+## Avalanche TVL Calculation:
+
+**Note:** The below calculation uses the Avalanche USDC.e contract address, while the DefiLlama TVL calculation uses the Ethereum contract addresses for USDC. This is due to Coingecko not recognizing the Avalanche USDC.e address and will be updated if the issue is resolved.
+
+PoolTogether TVL KPI options track value locked in the following Avalanche prize pool contracts:
+  - YieldSourcePrizePool (USDC.e Pool): 0xF830F5Cb2422d555EC34178E27094a816c8F95EC
+    - Underlying Collateral Token: 0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664
+   
+   1. Call the `accountedBalance` method on the prize pool contract above for the latest available block at or before the end of the day (24:00 UTC). This will return the balance of controlled tokens (including timelocked) for the prize pool.
+   2. Scale down the balance from Step 1 with the decimals of the respective underlying collateral token (call the `decimals()` method on the token contracts from the Underlying Collateral Token address above).
+  3. Multiply the balance returned from step 2 by the exchange rate of the respective Underlying Collateral Token listed above for the latest available block at or before the end of the day (24:00 UTC). This returns the underlying collateral balance in USD.
+  4. The underlying collateral balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the end of the day (24:00 UTC). DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
+  
 ## Intended Application:
 
 The use case is to use KPI options to incentivize TVL. The initial payout function is:
