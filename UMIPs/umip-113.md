@@ -10,7 +10,7 @@
 This UMIP will have the effect of registering an oracle root tunnel contract that will enable the optimistic oracle deployed on Polygon to make cross-chain price requests to the DVM on mainnet Ethereum.
 
 ## Motivation
-[This document](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/polygon/README.md) describes a two way tunnel architecture that is built on top of the [canonical state transfer mechanism](https://docs.matic.network/docs/develop/l1-l2-communication/state-transfer) between Polygon and Ethereum. Data is sent between the networks through the tunnel using the same public infrastructure that you use to deposit ERC20 tokens from Ethereum to Polygon and vice versa. The only trusted third parties are the Polygon validators.
+[This document](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/polygon/README.md) describes a two way tunnel architecture that is built on top of the [canonical state transfer mechanism](https://docs.polygon.technology/docs/develop/l1-l2-communication/state-transfer) between Polygon and Ethereum. Data is sent between the networks through the tunnel using the same public infrastructure that you use to deposit ERC20 tokens from Ethereum to Polygon and vice versa. The only trusted third parties are the Polygon validators.
 
 In order for price requests to be relayed from Polygon to Ethereum, there must be a "root tunnel" contract deployed to Ethereum which can make price requests to the DVM. This UMIP registers such a contract.
 
@@ -46,7 +46,7 @@ Contract addresses can be found here:
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. This repo has been audited by OpenZeppelin and the audit feedback can be found in this [PR](https://github.com/UMAprotocol/protocol/pull/3188) specifically in the section on PRs #3054, #3082, and #3092.
 
-This tunnel system relies on the [Polygon consensus mechanism](https://docs.matic.network/docs/home/architecture/security-models/#proof-of-stake-security) secured by validators in a Proof of Stake system. The validator set enforces the integrity of data passed between networks (i.e. downstream users need to trust that the validators are not modifying the arbitrary messages that are being sent between networks).
+This tunnel system relies on the [Polygon consensus mechanism](https://docs.polygon.technology/docs/home/architecture/security-models#proof-of-stake-security) secured by validators in a Proof of Stake system. The validator set enforces the integrity of data passed between networks (i.e. downstream users need to trust that the validators are not modifying the arbitrary messages that are being sent between networks).
 
 Moreover, downstream users also rely on off-chain actors to relay messages in a timely fashion. Historically messages are sent once per hour.
 
