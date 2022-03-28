@@ -49,7 +49,7 @@ Initially manual settlement is expected and UMIP could be updated to include pri
 
 ## Ancillary Data Specifications
 customancillarydata:
-athlete name:T.Brady,sport:nfl, id:,length:season,timestamp:YYYY-MM-DD,price logic:https://ipfs.io/ipfs/QmWjuSBRboueGLeRdRKqQdmPdPq8EQHfqh1CXsGnrMWSrJ?filename=NFLpricelogic.htm
+athlete name:T.Brady,sport:nfl, id:,length:season,timestamp:YYYY-MM-DD,price logic:https://gateway.pinata.cloud/ipfs/QmWrmQeWc5y47UDdtjjWsFB7nsRHZXxnAd24uvJ94i2Ddq
 
 _athlete Name - represents the name (First_Initial.Last_Name) of the player whose statistics are reflected by the APT's price
 sport: the sport the athlete plays
@@ -66,10 +66,16 @@ This method was chosen as a balance between efficiency and scale of athletic dat
 # Implementation
 
 Collect the sport, id, timestamp, and price logic parameters from the ancillary data
-
 Go to the IPFS file containing the pricing logic
+Follow the price logic to calcaulte the price of the Athlete Performance Token
+Round price computations to 8 decimal places
 
-Follow steps 1-3 to calcaulte the price of the Athlete Performance Token 
+Note:
+The timestamp parameter is formatted for UTC time. To convert from UNIX epoch to UTC time follow these instructions:
+Input the UNIX epoch number into cell A1 of a bank Excel sheet
+Input =(A1 / 86400) + 25569 into cell A2
+Format A2 for date/time, the result will be in UTC time.
+The timestamp parameter is the resulting date in cell A2 minus 24hours
 
 # Security Considerations
 
