@@ -4,7 +4,7 @@
 |UMIP title|Add uSPAC10_JUN22 as price identifier|
 |Author|BinomFX (binomfx@gmail.com)|
 |Status|Draft| 
-|Created|03.01.2022|
+|Created|28.03.2022|
 |Discourse Link|https://discourse.umaproject.org/t/add-uspac10-as-price-identifier-for-emp-contract/1357?u=binomfx|
 
 ## SUMMARY
