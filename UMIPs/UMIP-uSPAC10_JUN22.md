@@ -1,7 +1,7 @@
 ## HEADERS
 |UMIP-      | | 
 |:-------------|:-----------------------------------------------------------------------------|
-|UMIP title|Add uSPAC10_MAR22 as price identifier|
+|UMIP title|Add uSPAC10_JUN22 as price identifier|
 |Author|BinomFX (binomfx@gmail.com)|
 |Status|Draft| 
 |Created|03.01.2022|
