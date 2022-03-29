@@ -30,7 +30,7 @@ This UMIP will enable type 1 transactions on Polygon to be able to relay message
 The changes to the root tunnel contract can be found [here](https://github.com/UMAprotocol/protocol/pull/3863) and they have not been audited. 
 
 Contract addresses can be found here:
-- [OracleRootTunnel](TODO)
+- [OracleRootTunnel](https://etherscan.io/address/0x34dF79AB1F3Cb70445834e71D725f83A6d3e03eb)
 
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. 

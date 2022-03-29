@@ -28,7 +28,7 @@ This UMIP will enable type 1 transactions on Polygon to be able to relay message
 The changes to the root tunnel contract can be found [here](https://github.com/UMAprotocol/protocol/pull/3863) and they have not been audited. The child tunnel is not changed.
 
 Contract addresses can be found here:
-- [OracleChildTunnel](TODO)
+- [OracleChildTunnel](https://polygonscan.com/address/0xbed4c1fc0fd95a2020ec351379b22d8582b904e3)
 
 ## Security considerations
 Please see the individual PRs for details on how each affects the security of the UMA ecosystem. 
