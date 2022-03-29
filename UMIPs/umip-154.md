@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP                |                                                               |
-| ------------------- | ------------------------------------------------------------- |
-| UMIP Title          | Add **APT** as a supported price identifier |
-| Authors             | **AthleteX DAO**                                                      |
-| Status              | Draft                                                         |
-| Created             | **12/18/2021**                                              |
-| Discourse Link      | **https://discourse.umaproject.org/t/add-athlete-performance-token-apt-price-identifier/1327**            |
+| UMIP-154            |                                                                                               |
+| ------------------- | --------------------------------------------------------------------------------------------- |
+| UMIP Title          | Add **APT** as a supported price identifier                                                   |
+| Authors             | **AthleteX DAO**                                                                              |
+| Status              | Last Call                                                                                     |
+| Created             | 12/18/2021                                                                                    |
+| Discourse Link      | https://discourse.umaproject.org/t/umip-proposal-add-apt-as-a-supported-price-identifier/1566 |
 
 # Summary 
 

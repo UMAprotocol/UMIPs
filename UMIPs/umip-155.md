@@ -1,10 +1,10 @@
-**UMIP #**  - tbd
-
--   **UMIP title:** Add **VSQ** as collateral currency 
--   **Author:**  Geoff (stadnykgeoff1@gmail.com)
--   **Status:** Draft
--   **Created:**  24 March 2022
--   **Discourse Link:**  Insert link to discourse topic after it has been moved into draft UMIPs
+## Headers
+- UMIP-155
+- UMIP title: Add **VSQ** as collateral currency
+- Author: Geoff (stadnykgeoff1@gmail.com)
+- Status: Last Call
+- Created: 24 March 2022
+- Discourse Link: https://discourse.umaproject.org/t/umip-proposal-create-add-vsq-as-collateral-on-polygon/1576
 
 ## Summary (2-5 sentences)
 
