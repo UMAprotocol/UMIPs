@@ -49,7 +49,7 @@ Initially manual settlement is expected and UMIP could be updated to include pri
 
 ## Ancillary Data Specifications
 customancillarydata:
-athlete name:T.Brady,sport:nfl, id:,length:season,timestamp:YYYY-MM-DD,price logic:https://gateway.pinata.cloud/ipfs/QmWrmQeWc5y47UDdtjjWsFB7nsRHZXxnAd24uvJ94i2Ddq
+athlete name:T.Brady,sport:nfl, id:,length:season,timestamp:YYYY-MM-DD,price logic:https://gateway.pinata.cloud/ipfs/QmUhbRTNJuxmpMEyp39SmAn8hTNArWrM838oNnK2h3XiGg
 
 _athlete Name - represents the name (First_Initial.Last_Name) of the player whose statistics are reflected by the APT's price
 sport: the sport the athlete plays
@@ -67,7 +67,8 @@ This method was chosen as a balance between efficiency and scale of athletic dat
 
 Collect the sport, id, timestamp, and price logic parameters from the ancillary data
 Go to the IPFS file containing the pricing logic
-Follow the price logic to calcaulte the price of the Athlete Performance Token
+Follow the price logic to calcaulte the WAR of the Athlete Performance Token
+Use the WAR value to settle APT price
 Round price computations to 8 decimal places
 
 Note:
