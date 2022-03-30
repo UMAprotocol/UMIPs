@@ -65,7 +65,7 @@ The below subgraph urls are used to return the prize pool and underlying collate
   4. Scale down the balances returned from Step 3 with the decimals of the respective underlying collateral token (call the `decimals()` method on the underlying collateral token contracts from Step 2).
   5. Multiply each balance returned from step 4 by the exchange rate of its respective `underlyingCollateralToken` for the latest available block at or before the end of the day (24:00 UTC). This returns the underlying collateral balance in USD.
   6. Each underlying collateral balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the end of the day (24:00 UTC). DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
-  7. Calculate the sum of all underlying collateral balances in USD from Step 5 for Ethereum Mainnet, Celo, and BSC and also add the Polygon TVL (see step 5 from the Polygon section below).
+  7. Calculate the sum of all underlying collateral balances in USD from Step 5 for Ethereum Mainnet, Celo, BSC and also add the Polygon TVL (see step 5 from the Polygon section below) as well as Avalanche TVL (result from step 4 in the Avalanche section below).
 
 ## Polygon TVL Calculation:
 
@@ -91,7 +91,7 @@ PoolTogether TVL KPI options track value locked in the following Avalanche prize
   - YieldSourcePrizePool (USDC.e Pool): 0xF830F5Cb2422d555EC34178E27094a816c8F95EC
     - Underlying Collateral Token: 0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664
    
-   1. Call the `accountedBalance` method on the prize pool contract above for the latest available block at or before the end of the day (24:00 UTC). This will return the balance of controlled tokens (including timelocked) for the prize pool.
+   1. Call the `getAccountedBalance` method on the prize pool contract above for the latest available block at or before the end of the day (24:00 UTC). This will return the balance of controlled tokens (including timelocked) for the prize pool.
    2. Scale down the balance from Step 1 with the decimals of the respective underlying collateral token (call the `decimals()` method on the token contracts from the Underlying Collateral Token address above).
   3. Multiply the balance returned from step 2 by the exchange rate of the respective Underlying Collateral Token listed above for the latest available block at or before the end of the day (24:00 UTC). This returns the underlying collateral balance in USD.
   4. The underlying collateral balance should be priced in USD for the same timestamp and the value should use the timestamp that falls earlier but nearest to the end of the day (24:00 UTC). DeFiLlama estimates this by using aggregated CoinGecko prices, but all voters should verify that results agree with broad market consensus.
