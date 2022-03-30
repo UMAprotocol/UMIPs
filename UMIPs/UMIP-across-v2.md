@@ -104,3 +104,8 @@ event should be found in one of the spoke pools for the originChainId where the 
 - `depositor`
 
 
+TODO: map origin token to destination token
+
+TODO: map quote timestamp to lpFeePct
+
+TODO: construct merkle roots
