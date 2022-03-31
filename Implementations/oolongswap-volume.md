@@ -12,8 +12,8 @@ Oolong is an AMM built on the Boba L2 Network. Oolong was an early adopter of WA
 Metric:Oolong monthly volume,
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/oolongswap-volume.md",
 Aggregation:Increase in cumulative volume for the provided time range,
-StartTimestamp:1648785600,
-EndTimestamp:1651377600,
+StartTimestamp:1648771200,
+EndTimestamp:1651363200,
 ThresholdVolume:25000000,
 Rounding:0
 ```
