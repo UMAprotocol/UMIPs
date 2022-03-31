@@ -23,7 +23,7 @@ More information on the Ocean Protocol can be found on the website: https://ocea
 
 ## Markets and Data Sources
 
-Binance, Kraken, and BitZ should be used to construct the price.T hese 3 exchanges comprise a significant amount of OCEAN trade volume and have available pricefeeds on Cryptowatch. 
+Binance & Gate.io should be used to construct the price. These 3 exchanges comprise a significant amount of OCEAN trade volume and have available pricefeeds on Cryptowatch. 
 
 
 Which specific pairs should be queried from each market?
@@ -46,7 +46,7 @@ Do these sources allow for querying up to 74 hours of historical data?
 - Yes
 
 How often is the provided price updated?
-- The lower bound on the price update frequency is a minute for Binance, BitZ and Kraken
+- The lower bound on the price update frequency is a minute for Binance & Gate.io
 
 Is an API key required to query these sources?
 - No
@@ -96,7 +96,7 @@ In the current setting, there will need to be a significant event that erodes co
 
 ## Implementation
 
-Voters should query for the price of OCEAN/USDT at the price request timestamp on Binance, Kraken and BitZ. Recommended endpoints are provided in the markets and data sources section.
+Voters should query for the price of OCEAN/USDT at the price request timestamp on Binance and Gate.io. Recommended endpoints are provided in the markets and data sources section.
 
 1) When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
 2) The median of these results should be taken
