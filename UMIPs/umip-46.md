@@ -23,27 +23,24 @@ More information on the Ocean Protocol can be found on the website: https://ocea
 
 ## Markets and Data Sources
 
-Binance, Kraken, and BitZ should be used to construct the price.These 3 exchanges comprise a significant amount of OCEAN trade volume and have available pricefeeds on Cryptowatch. 
+Binance, Kraken, and BitZ should be used to construct the price.T hese 3 exchanges comprise a significant amount of OCEAN trade volume and have available pricefeeds on Cryptowatch. 
 
 
 Which specific pairs should be queried from each market?
 - Binance: OCEAN/USDT
-- Kraken: OCEAN/USD
-- BitZ: OCEAN/USDT
+- Gate.io: OCEAN/USDT
 
 
 Provide recommended endpoints to query for real-time prices from each market listed.
 - Binance OCEAN/USDT: https://api.cryptowat.ch/markets/binance/oceanusdt/price
-- Kraken OCEAN/USD: https://api.cryptowat.ch/markets/kraken/oceanusd/price
-- BitZ OCEAN/USDT: https://api.cryptowat.ch/markets/bitz/oceanusdt/price
+- Gate.io OCEAN/USDT: https://api.cryptowat.ch/markets/gateio/oceanusdt/price
 
 How often is the provided price updated?
 - The lower bound on the price update frequency is a minute.
 
 Provide recommended endpoints to query for historical prices from each market listed.
 - Binance: https://api.cryptowat.ch/markets/binance/oceanusdt/ohlc?after=1612880040&before=1612880040&periods=60
-- Kraken: https://api.cryptowat.ch/markets/kraken/oceanusd/ohlc?after=1612880460&before=1612880460&periods=60
-- BitZ: https://api.cryptowat.ch/markets/bitz/oceanusdt/ohlc?after=1612880040&before=1612880040&periods=60
+- Gate.io: https://api.cryptowat.ch/markets/gateio/oceanusdt/ohlc?after=1612880460&before=1612880460&periods=60
 
 Do these sources allow for querying up to 74 hours of historical data?
 - Yes
@@ -99,7 +96,7 @@ In the current setting, there will need to be a significant event that erodes co
 
 ## Implementation
 
-Voters should query for the price of OCEAN/USDT at the price request timestamp on Binance, Kraken and BitZ. Recommended endpoints are provided in the markets and data sources  section.
+Voters should query for the price of OCEAN/USDT at the price request timestamp on Binance, Kraken and BitZ. Recommended endpoints are provided in the markets and data sources section.
 
 1) When using the recommended endpoints, voters should use the open price of the OHLC period that the timestamp falls in.
 2) The median of these results should be taken
