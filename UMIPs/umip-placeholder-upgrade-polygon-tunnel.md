@@ -1,7 +1,7 @@
 ## Headers
 | UMIP-PLACEHOLDER    |                                                                                                                                          |
 |------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Upgrade Polygon Oracle Root Tunnel             |
+| UMIP Title | Upgrade Polygon Root Tunnel System            |
 | Authors    | Nick Pai (nick@umaproject.org) |
 | Status     | Draft                                                                                                                                    |
 | Created    | March 28, 2022                                                                                                                           |
