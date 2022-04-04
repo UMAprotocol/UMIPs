@@ -10,7 +10,7 @@
 ## SUMMARY
 The DVM should support price requests for uSPAC10_JUN22 price identifier<br>
 The purpose of this price identifier is to create synthetic token, price of which is linked to the value of index of **10** most active SPACs (Special Purpose Acquisition Companies) shares.<br> That synthetic token can be used for creating speculative strategies at IPO market.
-The uSPAC10_JUN22 price list is based on the uSPAC10 price list and differs from it only by the list of stocks included in the index basket.
+The uSPAC10_JUN22 pricefeed is based on the uSPAC10 pricefed and differs from it only by the list of stocks included in the index basket.
 
 ## MOTIVATION
 A synthetic token that tracks the index of the 10 most active SPACs stocks can be used for speculative purposes and allows the user to earn on price movements in one of the most interesting markets without centralized intermediaries such as exchanges and brokers.<br> 
