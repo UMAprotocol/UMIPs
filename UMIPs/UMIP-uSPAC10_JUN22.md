@@ -8,7 +8,7 @@
 |Discourse Link|https://discourse.umaproject.org/t/add-uspac10-as-price-identifier-for-emp-contract/1357?u=binomfx|
 
 ## SUMMARY
-The DVM should support price requests for uSPAC10_MAR22 price identifier<br>
+The DVM should support price requests for uSPAC10_JUN22 price identifier<br>
 The purpose of this price identifier is to create synthetic token, price of which is linked to the value of index of **10** most active SPACs (Special Purpose Acquisition Companies) shares.<br> That synthetic token can be used for creating speculative strategies at IPO market.
 
 ## MOTIVATION
