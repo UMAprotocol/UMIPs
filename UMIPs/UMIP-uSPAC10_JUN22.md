@@ -44,7 +44,7 @@ The SPAC market is growing exponentially:
 By their nature, SPAC shares are subject to impulsive growth at the moment of information or even just rumors that a target company for a merger has been found.<br>
 `A good way to capitalize on such momentum growth without having to analyze hundreds of SPACs is to take advantage of the movement of the index value that includes stocks of the most active SPACs.`<br>
 
-The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC10 index is made according to [SPAC Analytics Top Performing SPACs](https://www.spacanalytics.com/).<br>
+The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC10_JUN22 index is made according to [SPAC Analytics Top Performing SPACs](https://www.spacanalytics.com/).<br>
 >SPAC Analytics is the leading provider of SPAC data and research to portfolio managers and investment banks since 2007.
 
 These underlying assets are traded on the NYSE and NASDAQ, but reliable sources of quotations are either paid or provide data with a delay.<br> 
