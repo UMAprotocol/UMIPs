@@ -5,7 +5,7 @@
 |Author|BinomFX (binomfx@gmail.com)|
 |Status|Draft| 
 |Created|28.03.2022|
-|Discourse Link|https://discourse.umaproject.org/t/add-uspac10-as-price-identifier-for-emp-contract/1357?u=binomfx|
+|Discourse Link|https://discourse.umaproject.org/t/umip-proposal-add-uspac10-jun22-price-identifier/1586|
 
 ## SUMMARY
 The DVM should support price requests for uSPAC10_JUN22 price identifier<br>
