@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP-127       |                                             |
-| -------------- | ------------------------------------------- |
-| UMIP Title     | Add NZUSD as price identifier on Polygon    |
-| Authors        | Iliyan Iliev (iliyan.iliev@jarvis.exchange) |
-| Status         | Draft                                       |
-| Created        | 04/05/22                                    |
-| Discourse link | none                                        |
+| UMIP-127       |                                                                                              |
+| -------------- | -------------------------------------------------------------------------------------------- |
+| UMIP Title     | Add NZUSD as price identifier on Polygon                                                     |
+| Authors        | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                                                  |
+| Status         | Draft                                                                                        |
+| Created        | 04/05/22                                                                                     |
+| Discourse link | https://discourse.umaproject.org/t/umip-proposal-add-nzdusd-price-identifier-on-polygon/1603 |
 
 ## Summary
 
