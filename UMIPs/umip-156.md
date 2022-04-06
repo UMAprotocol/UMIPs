@@ -1,10 +1,10 @@
 ## Headers
-| UMIP-PLACEHOLDER    |                                                                                                                                          |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| UMIP Title | Upgrade Polygon Root Tunnel System            |
-| Authors    | Nick Pai (nick@umaproject.org) |
-| Status     | Draft                                                                                                                                    |
-| Created    | March 28, 2022                                                                                                                           |
+| UMIP-156   |                                    |
+|------------|------------------------------------|
+| UMIP Title | Upgrade Polygon Root Tunnel System |
+| Authors    | Nick Pai (nick@umaproject.org)     |
+| Status     | Last Call                          |
+| Created    | March 28, 2022                     |
 
 ## Summary (2-5 sentences)
 This UMIP will have the effect of upgrading the oracle root tunnel contract that will enable the optimistic oracle deployed on Polygon to make cross-chain price requests to the DVM on mainnet Ethereum. `OracleRootTunnel`s are permanently linked to `OracleChildTunnel`s deployed on Polygon so this UMIP will atomically set up a new `OracleChildTunnel` on Polygon by setting it as the "Oracle" in the Polygon `Finder`, and register the linked `OracleRootTunnel` on Ethereum to make price requests to the DVM.
