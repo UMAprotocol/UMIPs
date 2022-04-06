@@ -441,7 +441,7 @@ axios.request(options).then(function (response) {
 ## SECURITY CONSIDERATIONS
 Security considerations are focused on the use of the token price for monitoring collateral ratios.
 
-The risk of manipulation of stock quotes included in the index is insignificant because a reliable source of quotes is used. In addition, users - vouters and disputers - have the opportunity to check the calculation of the index value based on independent sources of quotations themselves.
+The risk of manipulation of stock quotes included in the index is insignificant because a reliable source of quotes is used. In addition, users - voters and disputers - have the opportunity to check the calculation of the index value based on independent sources of quotations themselves.
 
 ***
 Security considerations, like the ones above, have been contemplated and addressed, but there is potential for security holes to emerge due to the novelty of this price identifier.
