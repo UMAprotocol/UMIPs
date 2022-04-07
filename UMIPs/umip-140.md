@@ -9,7 +9,7 @@
 
 ## SUMMARY
 The DVM should support price requests for uSPAC10 price identifier<br>
-The purpose of these price identifier is to create synthetic token, price of which is linked to the value of index of **10** most active SPACs (Special Purpose Acquisition Companies) shares.<br> That synthetic token can be used for creating speculative strategies at IPO market.
+The purpose of this price identifier is to create synthetic token, price of which is linked to the value of index of **10** most active SPACs (Special Purpose Acquisition Companies) shares.<br> That synthetic token can be used for creating speculative strategies at IPO market.
 
 ## MOTIVATION
 A synthetic token that tracks the index of the 10 most active SPACs stocks can be used for speculative purposes and allows the user to earn on price movements in one of the most interesting markets without centralized intermediaries such as exchanges and brokers.<br> 
@@ -58,17 +58,17 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 The index basket is formed by including the first 10 stocks from the Top Performing SPACs table from the website [SPACanalytics.com](https://www.spacanalytics.com/)
 The list of stocks included in the index basket are:
 |N|TICKER|MARKET|
-|:-:|:------:|:--------:|
-|1|DWAC|NASDAQ|
-|2|IRDM|NASDAQ|
-|3|PRIM|NASDAQ|
-|4|TGLS|NASDAQ|
-|5|MP|NYSE|
-|6|LCID|NASDAQ|
-|7|GDYN|NASDAQ|
-|8|SMPL|NASDAQ|
-|9|ENVX|NASDAQ|
-|10|QS|NYSE|
+|:--:|:------:|:--------:|
+| 1|DWAC|NASDAQ|
+| 2|IRDM|NASDAQ|
+| 3|MP  |NYSE  |
+| 4|PRIM|NASDAQ|
+| 5|WSC |NASDAQ|
+| 6|SMPL|NASDAQ|
+| 7|TGLS|NASDAQ|
+| 8|CERE|NASDAQ|
+| 9|KW  |NYSE  |
+|10|ROIC|NASDAQ|
 <br>
 In order to determine the index value, the following steps are required:
 
@@ -83,7 +83,7 @@ var axios = require("axios").default;
 var options = {
   method: 'GET',
   url: 'https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v6/finance/quote',
-  params: {symbols: 'DWAC,IRDM,PRIM,TGLS,MP,LCID,GDYN,SMPL,ENVX,QS'},
+  params: {symbols: 'DWAC,IRDM,MP,PRIM,WSC,SMPL,TGLS,CERE,KW,ROIC'},
   headers: {
     'x-rapidapi-host': 'stock-data-yahoo-finance-alternative.p.rapidapi.com',
     'x-rapidapi-key': ACCESS_KEY
@@ -91,9 +91,9 @@ var options = {
 };
 
 axios.request(options).then(function (response) {
-	console.log(response.data);
+  console.log(response.data);
 }).catch(function (error) {
-	console.error(error);
+  console.error(error);
 });
 ```
 
@@ -212,7 +212,7 @@ var options = {
   method: 'GET',
   url: 'https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark',
   params: {
-    symbols: 'DWAC,IRDM,PRIM,TGLS,MP,LCID,GDYN,SMPL,ENVX,QS',
+    symbols: 'DWAC,IRDM,MP,PRIM,WSC,SMPL,TGLS,CERE,KW,ROIC',
     interval: '1m'
   },
   headers: {
@@ -222,130 +222,130 @@ var options = {
 };
 
 axios.request(options).then(function (response) {
-	console.log(response.data);
+  console.log(response.data);
 }).catch(function (error) {
-	console.error(error);
+  console.error(error);
 });
 ```
 API Response Object:
 
 ```
 {10 items
-	"SMPL":{8 items
-		"symbol":"SMPL"
-		"timestamp":[...]95 items
-		"previousClose":37.92
-		"chartPreviousClose":37.92
-		"end":1639602000
-		"start":1639578600
-		"close":[95 items
-			0:38
-			1:37.73
-			2:37.73
-			3:37.74
-			4:37.63
-			5:37.59
-			6:37.5
-			7:37.635
-			8:37.65
-			9:37.645
-			10:37.69
-			11:37.6
-			12:37.6
-			13:37.59
-			14:37.55
-			15:37.475
-			16:37.59
-			17:37.54
-			18:37.59
-			19:37.67
-			20:37.655
-			21:37.719
-			22:37.7
-			23:37.81
-			24:37.76
-			25:37.76
-			26:37.655
-			27:37.74
-			28:37.72
-			29:37.8
-			30:37.77
-			31:37.78
-			32:37.685
-			33:37.69
-			34:37.76
-			35:37.57
-			36:37.6
-			37:37.59
-			38:37.62
-			39:37.6
-			40:37.64
-			41:37.53
-			42:37.58
-			43:37.53
-			44:37.451
-			45:37.41
-			46:37.36
-			47:37.36
-			48:37.33
-			49:37.28
-			50:37.31
-			51:37.28
-			52:37.285
-			53:37.36
-			54:37.305
-			55:37.31
-			56:37.34
-			57:37.36
-			58:37.38
-			59:37.35
-			60:37.315
-			61:37.345
-			62:37.32
-			63:37.39
-			64:37.36
-			65:37.36
-			66:37.27
-			67:37.39
-			68:37.395
-			69:37.43
-			70:37.45
-			71:37.5
-			72:37.44
-			73:37.58
-			74:37.51
-			75:37.445
-			76:37.49
-			77:37.469
-			78:37.41
-			79:37.41
-			80:37.42
-			81:37.41
-			82:37.42
-			83:37.39
-			84:37.345
-			85:37.32
-			86:37.305
-			87:37.339
-			88:37.36
-			89:37.36
-			90:37.39
-			91:37.35
-			92:37.35
-			93:37.33
-			94:NULL
-		]
-		"dataGranularity":300
-	}
-	"IRDM":{...}8 items
-	"LCID":{...}8 items
-	"QS":{...}8 items
-	"GDYN":{...}8 items
-	"PRIM":{...}8 items
-	"MP":{...}8 items
-	"DWAC":{...}8 items
-	"ENVX":{...}8 items
-	"TGLS":{...}8 items
+  "DWAC":{8 items
+    "symbol":"DWAC"
+    "timestamp":[...]95 items
+    "previousClose":37.92
+    "chartPreviousClose":37.92
+    "end":1639602000
+    "start":1639578600
+    "close":[95 items
+      0:38
+      1:37.73
+      2:37.73
+      3:37.74
+      4:37.63
+      5:37.59
+      6:37.5
+      7:37.635
+      8:37.65
+      9:37.645
+      10:37.69
+      11:37.6
+      12:37.6
+      13:37.59
+      14:37.55
+      15:37.475
+      16:37.59
+      17:37.54
+      18:37.59
+      19:37.67
+      20:37.655
+      21:37.719
+      22:37.7
+      23:37.81
+      24:37.76
+      25:37.76
+      26:37.655
+      27:37.74
+      28:37.72
+      29:37.8
+      30:37.77
+      31:37.78
+      32:37.685
+      33:37.69
+      34:37.76
+      35:37.57
+      36:37.6
+      37:37.59
+      38:37.62
+      39:37.6
+      40:37.64
+      41:37.53
+      42:37.58
+      43:37.53
+      44:37.451
+      45:37.41
+      46:37.36
+      47:37.36
+      48:37.33
+      49:37.28
+      50:37.31
+      51:37.28
+      52:37.285
+      53:37.36
+      54:37.305
+      55:37.31
+      56:37.34
+      57:37.36
+      58:37.38
+      59:37.35
+      60:37.315
+      61:37.345
+      62:37.32
+      63:37.39
+      64:37.36
+      65:37.36
+      66:37.27
+      67:37.39
+      68:37.395
+      69:37.43
+      70:37.45
+      71:37.5
+      72:37.44
+      73:37.58
+      74:37.51
+      75:37.445
+      76:37.49
+      77:37.469
+      78:37.41
+      79:37.41
+      80:37.42
+      81:37.41
+      82:37.42
+      83:37.39
+      84:37.345
+      85:37.32
+      86:37.305
+      87:37.339
+      88:37.36
+      89:37.36
+      90:37.39
+      91:37.35
+      92:37.35
+      93:37.33
+      94:NULL
+    ]
+    "dataGranularity":300
+  }     
+  "IRDM":{...}8 items
+  "MP":{...}8 items
+  "PRIM":{...}8 items
+  "WSC":{...}8 items
+  "SMPL":{...}8 items
+  "TGLS":{...}8 items
+  "CERE":{...}8 items
+  "KW":{...}8 items
+  "ROIC":{...}8 items
 }
 ```
 
@@ -441,7 +441,7 @@ axios.request(options).then(function (response) {
 ## SECURITY CONSIDERATIONS
 Security considerations are focused on the use of the token price for monitoring collateral ratios.
 
-The risk of manipulation of stock quotes included in the index is insignificant because a reliable source of quotes is used. In addition, users - wouters and disputers - have the opportunity to check the calculation of the index value based on independent sources of quotations themselves.
+The risk of manipulation of stock quotes included in the index is insignificant because a reliable source of quotes is used. In addition, users - voters and disputers - have the opportunity to check the calculation of the index value based on independent sources of quotations themselves.
 
 ***
 Security considerations, like the ones above, have been contemplated and addressed, but there is potential for security holes to emerge due to the novelty of this price identifier.
