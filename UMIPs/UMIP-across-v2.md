@@ -40,6 +40,16 @@ depending on a changing repository.
 Note 2: when referencing "later" or "earlier" events, the primary sort should be on the block number, the secondary
 sort should be on the transactionIndex, and the tertiary sort should be on the logIndex.
 
+Note 3: wherever unspecified, sorting should be ascending by default, not descending.
+
+## Constants
+
+The following constants are currently specified in this UMIP directly, but should be moved to an on-chain
+configuration in the future. Once that happens, this UMIP can be amended to specify where to pull them from.
+
+MAX_LEAF_ARRAY_SIZE = 25
+TOKEN_TRANSFER_THRESHOLD = 1%
+
 ## Preliminary Information
 
 The ooRequester address is expected to be an instance of the
@@ -91,14 +101,14 @@ for each destination chain.
 
 For each destination chain, find all
 [FilledRelay events](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/SpokePool.sol#L84-L100)
-on its SpokePool between the starting block number and ending block number for that chain. For this query, exclude
+on its `SpokePool` between the starting block number and ending block number for that chain. For this query, exclude
 any `FilledRelay` events that have `isSlowRelay` set to true.
 
-For all FilledRelay events, you can find the SpokePool for the origin chain by querying
+For all FilledRelay events, you can find the `SpokePool` for the origin chain by querying
 [CrossChainContractsSet](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/HubPool.sol#L120)
-and finding all matching events where the l2ChainId matches the `originChainId` value in the FilledRelay event. The
+and finding all matching events where the `l2ChainId` matches the `originChainId` value in the FilledRelay event. The
 `spokePool` values in these events are all possible spoke pools that this deposit could have been from. Note: old
-SpokePools must be considered so upgrades don't block old deposits from being relayed.
+`SpokePool`s must be considered so upgrades don't block old deposits from being relayed.
 
 Note: in the sections below, if the relay is considered to be invalid at any point, that relay must not be considered
 when constructing the bundle.
@@ -165,7 +175,7 @@ To determine the amount to modify the running balances:
 
 1. For each `FilledRelay` group above, initialize a running balance value at 0 and add the total relay repayments to
    it. Each running balance value is defined by its `chainId` and `l1Token`.
-2. Find all `FundsDeposited` events on all SpokePools from earlier within each SpokePool's block range. Using the
+2. Find all `FundsDeposited` events on all `SpokePool`s from earlier within each `SpokePool`'s block range. Using the
    `originChainId`, `originToken`, the `quoteTimestamp`, and the `SetPoolRebalanceRoute` event on the HubPool, use a
    similar process as the 3 step one above to map this back to an `l1Token`. For that `l1Token` and `originChainId`,
    initialize a running balance value if one doesn't exist already and subtract the `amount` from it.
@@ -181,11 +191,11 @@ should be queried to find a matching element for the `chainId` and `l1Token` (th
 in the array). Once these values are found at matching indices, that index can be used to find the associated running
 balance value. That most recent running balance value should be added to the one computed above.
 
-For each tuple of `l1Token` and `chainId`, we should have computed a total running balance value. Determine if the absolute
-value of this running balance is > 1% of the total value of all LP tokens for this `l1Token` at the
-`ProposeRootBundle` event that came before the one being evaluated (process described above). Note: this UMIP should be
-amended in the future to change this 1% to a configured value. If this passes the threshold, then set net send amount
-to the running balance value and set the running balance value to 0.
+For each tuple of `l1Token` and `chainId`, we should have computed a total running balance value. Determine if the
+absolute value of this running balance is > `TOKEN_TRANSFER_THRESHOLD` of the total value of all LP tokens for this
+`l1Token` at the `ProposeRootBundle` event that came before the one being evaluated (process described above).
+If this passes the threshold, then set net send amount to the running balance value and set the running balance value
+to 0.
 
 Find all `FilledRelay` events in the block range that have `isSlowRelay` set to true. For each, use a similar method
 as above to map this event back to an `l1Token` at the `quoteTimestamp`. Use the `destinationChainId` as the `chainId`
@@ -195,8 +205,9 @@ this value to it. If there is no historical running balance, initialize it to 0.
 balance value.
 
 Take the above running balances and net send amounts and group them by only `chainId` and sort by `chainId`. Within
-each group, sort by `l1Token`. If there are more than 25 `l1Tokens`, a particular chain's leaf will need to be broken
-up into multiple leaves, starting at `groupIndex` 0 and each subsequent leaf incrementing the `groupIndex` value by 1.
+each group, sort by `l1Token`. If there are more than `MAX_LEAF_ARRAY_SIZE` `l1Tokens`, a particular chain's leaf will
+need to be broken up into multiple leaves, starting at `groupIndex` 0 and each subsequent leaf incrementing the
+`groupIndex` value by 1.
 
 Now that we have ordered leaves, we can assign each one a unique `leafId` starting from 0.
 
@@ -225,16 +236,16 @@ sections for how to map L1 and L2 tokens via events on L1. This mapping should b
 
 `refundAmounts` and `refundAddresses` are just computed by grouping the relays in this group by the `relayer` and
 summing the `amount - (amount * lpFeePct / 1e18)` for each relay. These should be sorted in descending order of
-`refundAmounts`. If two `refundAmounts` are equal, then they should be sorted by ascending `relayer` address.
+`refundAmounts`. If two `refundAmounts` are equal, then they should be sorted by `relayer` address.
 
-If there are more than 25 `refundAddresses` for a particular `l2TokenAddress` then these should be split up into 25
-element leaves (sorted as described above) with only the first leaf for a particular `l2TokenAddress` able to contain a
-nonzero amountToReturn.
+If there are more than `MAX_LEAF_ARRAY_SIZE` `refundAddresses` for a particular `l2TokenAddress` then these should be
+split up into `MAX_LEAF_ARRAY_SIZE` element leaves (sorted as described above) with only the first leaf for a
+particular `l2TokenAddress` able to contain a nonzero amountToReturn.
 
 Once these are computed for all relays, the leaves (or groups of leaves for > 25 elements) should be sorted by
-`chainId` as the primary index, then `l2TokenAddress` as the secondary index, and then the individual sorting of > 25
-element groups as the tertiary sorting. Once these are sorted, each leaf can be given a `leafId` based on its
-index in the group, starting at 0.
+`chainId` as the primary index, then `l2TokenAddress` as the secondary index, and then the individual sorting
+of > `MAX_LEAF_ARRAY_SIZE` element groups as the tertiary sorting. Once these are sorted, each leaf can be given a
+`leafId` based on its index in the group, starting at 0.
 
 Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
