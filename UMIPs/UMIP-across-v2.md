@@ -74,7 +74,7 @@ To determine the start block number for each chainId, search for the latest
 with a matching chainId while still being earlier than the timestamp of the request. Once that event is found, search
 for the
 [ProposeRootBundle](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/HubPool.sol#L149-L157)
-event that is as late as possible, but earlier than the RootBundleExecuted event. Once this proposal event is found, determine its
+event that is as late as possible, but earlier than the RootBundleExecuted event we just identified. Once this proposal event is found, determine its
 mapping of indices to chainId in its `bundleEvaluationBlockNumbers` array using TBD config at its block number. For
 each chainId, their starting block number is that chain's bundleEvaluationBlockNumber + 1 in this past proposal event.
 Use this mechanism to determine the starting block numbers for each chainId represented in the original
@@ -100,10 +100,10 @@ and finding all matching events where the l2ChainId matches the `originChainId` 
 `spokePool` values in these events are all possible spoke pools that this deposit could have been from. Note: old
 SpokePools must be considered so upgrades don't block old deposits from being relayed.
 
-Note: in the sections below, if the relay is considered to be invalid at any point, that relay will not be considered
+Note: in the sections below, if the relay is considered to be invalid at any point, that relay must not be considered
 when constructing the bundle.
 
-For each FilledRelay event found earlier, a
+For each `FilledRelay` event found earlier, a
 [FundsDeposited](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/SpokePool.sol#L67-L77)
 event should be found in one of the spoke pools for the originChainId where the following parameters match:
 
@@ -206,7 +206,7 @@ With all of that information, each leaf should be possible to construct in the f
 Once the leaves are constructed, the merkle root can be constructed by hashing each leaf data structure using
 Solidity's standard process of `keccak256(abi.encode(poolRebalanceLeaf))`. Once the leaves are hashed, the tree should
 be constructed in the standard way such that it is verifyable using
-[OpenZeppelin's MerkleProof](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/MerkleProof.sol)
+[OpenZeppelin's MerkleProof](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/contracts/utils/cryptography/MerkleProof.sol)
 library. See examples [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/test/utils/cryptography/MerkleProof.test.js)
 for how to construct these types of trees.
 
@@ -232,8 +232,8 @@ element leaves (sorted as described above) with only the first leaf for a partic
 nonzero amountToReturn.
 
 Once these are computed for all relays, the leaves (or groups of leaves for > 25 elements) should be sorted by
-`chainId` as the primary index, then `l2TokenAddress` as the secondary index, and then the individual sorting of
-> 25 element groups as the tertiary sorting. Once these are sorted, each leaf can be given a `leafId` based on its
+`chainId` as the primary index, then `l2TokenAddress` as the secondary index, and then the individual sorting of > 25
+element groups as the tertiary sorting. Once these are sorted, each leaf can be given a `leafId` based on its
 index in the group, starting at 0.
 
 Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
