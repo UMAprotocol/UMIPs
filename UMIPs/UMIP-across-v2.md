@@ -12,23 +12,10 @@
 
 The DVM should support the ACROSS-V2 price identifier.
 
-
 # Motivation
 
 The ACROSS-V2 price identifier is intended to be used by the Across v2 contracts to verify whether a bundle of bridge
 transactions submitted to mainnet is valid.
-
-## Ancillary Data Specifications
-
-The ancillary data only needs a single field: ooRequester, which should be the contract requesting the price from the
-OO. Because that contract should contain enough information about the request for voters to resolve the validity of the
-relay, no additional ancillary data is needed.
-
-Example:
-
-```
-ooRequester:0x69CA24D3084a2eea77E061E2D7aF9b76D107b4f6
-```
 
 
 # Data Specifications and Implementation
@@ -42,13 +29,29 @@ sort should be on the transactionIndex, and the tertiary sort should be on the l
 
 Note 3: wherever unspecified, sorting should be ascending by default, not descending.
 
+## Ancillary Data Specifications
+
+The ancillary data only needs a single field: ooRequester, which should be the contract requesting the price from the
+OO. Because that contract should contain enough information about the request for voters to resolve the validity of the
+relay, no additional ancillary data is needed.
+
+Example:
+
+```
+ooRequester:0x69CA24D3084a2eea77E061E2D7aF9b76D107b4f6
+```
+
 ## Constants
 
 The following constants are currently specified in this UMIP directly, but should be moved to an on-chain
 configuration in the future. Once that happens, this UMIP can be amended to specify where to pull them from.
 
-MAX_LEAF_ARRAY_SIZE = 25
+```
+MAX_POOL_REBALANCE_LEAF_SIZE = 25
+MAX_RELAYER_REPAYMENT_LEAF_SIZE = 25
 TOKEN_TRANSFER_THRESHOLD = 1%
+CHAIN_ID_LIST=[1,10,137,288,42161] # Mainnet, Optimism, Polygon, Boba, Arbitrum
+```
 
 ## Preliminary Information
 
@@ -76,8 +79,7 @@ From the selected event, one should be able to glean the following information:
 - `slowRelayRoot`
 
 The `bundleEvaluationBlockNumbers` is an ordered array of block numbers for each destination chain. Which index
-corresponds to which chain is denoted by the config stored at TBD. From this, one should be able to determine a list
-of chainIds and ending block numbers.
+corresponds to which chain is denoted by the `CHAIN_ID_LIST` above.
 
 To determine the start block number for each chainId, search for the latest
 [RootBundleExecuted event](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/HubPool.sol#L158-L167)
