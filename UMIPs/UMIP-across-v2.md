@@ -12,6 +12,21 @@
 
 The DVM should support the ACROSS-V2 price identifier.
 
+## Across V2 Architecture
+
+The basic architecture of Across V2 is a single LP pool sitting on Ethereum mainnet, while many "spokes" are used on
+various chains to facilitate user "deposits" where a cross-chain transfer is initiated and "withdrawals" where a user
+is relayed the funds they transferred from another chain.
+
+This process works by having relayers provide capital to users quickly via the spokes and later be repaid by the
+LP pool that uses the Optimistic Oracle to verify bundles of relays and repay relayers by sending funds to where they
+are needed (and pulling funds from where they were deposited).
+
+If there is no relayer who can provide all the capital, a slow relay is performed where the funds are sent from the
+LP pool via the bundling process and anyone can use those funds to provide the remaining required capital to the user.
+
+![](./images/across-architecture.png?raw=true "Across V2 Architecture)
+
 # Motivation
 
 The ACROSS-V2 price identifier is intended to be used by the Across v2 contracts to verify whether a bundle of bridge
@@ -87,7 +102,7 @@ with a matching chainId while still being earlier than the timestamp of the requ
 for the
 [ProposeRootBundle](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/HubPool.sol#L149-L157)
 event that is as late as possible, but earlier than the RootBundleExecuted event we just identified. Once this proposal event is found, determine its
-mapping of indices to chainId in its `bundleEvaluationBlockNumbers` array using TBD config at its block number. For
+mapping of indices to chainId in its `bundleEvaluationBlockNumbers` array using `CHAIN_ID_LIST`. For
 each chainId, their starting block number is that chain's bundleEvaluationBlockNumber + 1 in this past proposal event.
 Use this mechanism to determine the starting block numbers for each chainId represented in the original
 `bundleEvaluationBlockNumbers`.
@@ -225,10 +240,18 @@ for how to construct these types of trees.
 
 ## Constructing RelayerRefundRoot
 
-For each grouping in the section above that either a) has relayer refunds or b) has a negative net send amount, a
-RelayerRefundRoot must be constructed.
+In the previous section, groups of relays were found for each `destinationChainId` and `l1Token`. Then, the rebalance
+parameters were determined for each group. All `FillRelay` events found for a particular `destinationChainId` and
+`l1Token` that were found in the previous section that also have `isSlowRelay` set to false will be referred to as
+"fast relays" in this section. For each `destinationChainId` and `l1Token` grouping in the previous section, a net send
+amount was found. This value will be used in this section as well.
 
-The data structure is shown [here](https://github.com/across-protocol/contracts-v2/blob/3676377398714bd8f734485deead75afbcd8e8c4/contracts/SpokePoolInterface.sol#L9-L23).
+For each group from the previous section defined by a `destinationChainId` and `l1Token` that either a) has fast relays
+or b) has a negative net send amount, a RelayerRefundRoot must be constructed. The data structure is shown
+[here](https://github.com/across-protocol/contracts-v2/blob/3676377398714bd8f734485deead75afbcd8e8c4/contracts/SpokePoolInterface.sol#L9-L23).
+One or more (in the case of leafs with more than `MAX_RELAYER_REPAYMENT_LEAF_SIZE` refunds) `RelayerRefundLeaf` will be
+constructed for each of these applicable groups. The following defines how to construct each of these leaves given the
+information about each group determined in the previous section.
 
 The `amountToReturn` should be set to `max(-netSendAmount, 0)`.
 
@@ -240,14 +263,14 @@ sections for how to map L1 and L2 tokens via events on L1. This mapping should b
 summing the `amount - (amount * lpFeePct / 1e18)` for each relay. These should be sorted in descending order of
 `refundAmounts`. If two `refundAmounts` are equal, then they should be sorted by `relayer` address.
 
-If there are more than `MAX_LEAF_ARRAY_SIZE` `refundAddresses` for a particular `l2TokenAddress` then these should be
-split up into `MAX_LEAF_ARRAY_SIZE` element leaves (sorted as described above) with only the first leaf for a
-particular `l2TokenAddress` able to contain a nonzero amountToReturn.
+If there are more than `MAX_RELAYER_REPAYMENT_LEAF_SIZE` `refundAddresses` for a particular `l2TokenAddress` then
+these should be split up into `MAX_RELAYER_REPAYMENT_LEAF_SIZE` element leaves (sorted as described above) with only
+the first leaf for a particular `l2TokenAddress` able to contain a nonzero amountToReturn.
 
 Once these are computed for all relays, the leaves (or groups of leaves for > 25 elements) should be sorted by
 `chainId` as the primary index, then `l2TokenAddress` as the secondary index, and then the individual sorting
-of > `MAX_LEAF_ARRAY_SIZE` element groups as the tertiary sorting. Once these are sorted, each leaf can be given a
-`leafId` based on its index in the group, starting at 0.
+of > `MAX_RELAYER_REPAYMENT_LEAF_SIZE` element groups as the tertiary sorting. Once these are sorted, each leaf can be
+given a `leafId` based on its index in the group, starting at 0.
 
 Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
