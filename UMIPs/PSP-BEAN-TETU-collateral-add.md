@@ -23,8 +23,6 @@ To accomplish this upgrade, the following changes need to be made:
 -   A final fee of **15,000** needs to be added for **PSP** in the Store contract.
 -   The **PSP** address on Polygon **https://polygonscan.com/token/0x42d61D766B85431666B39B89C43011f24451bFf6** needs to be added to the collateral currency whitelist introduced in UMIP-8.
 -   A final fee of **15,000** needs to be added for **PSP** in the Store contract.
--   The **dePSP** address on Arbitrum **https://arbiscan.io/token/0x090b575f274d00dff18e7387e7fbd622794db427** needs to be added to the collateral currency whitelist introduced in UMIP-8.
--   A final fee of **15,000** needs to be added for **PSP** in the Store contract.
 
 ### BEAN
 -   The **BEAN** address on Ethereum **https://etherscan.io/token/0xDC59ac4FeFa32293A95889Dc396682858d52e5Db** needs to be added to the collateral currency whitelist introduced in UMIP-8.
