@@ -222,7 +222,7 @@ this value to it. If there is no historical running balance, initialize it to 0.
 balance value.
 
 Take the above running balances and net send amounts and group them by only `chainId` and sort by `chainId`. Within
-each group, sort by `l1Token`. If there are more than `MAX_LEAF_ARRAY_SIZE` `l1Tokens`, a particular chain's leaf will
+each group, sort by `l1Token`. If there are more than `MAX_POOL_REBALANCE_LEAF_SIZE` `l1Tokens`, a particular chain's leaf will
 need to be broken up into multiple leaves, starting at `groupIndex` 0 and each subsequent leaf incrementing the
 `groupIndex` value by 1.
 
