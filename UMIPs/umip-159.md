@@ -1,16 +1,16 @@
 ## Headers
 
-| UMIP-127       |                                                                                              |
+| UMIP-159       |                                                                                              |
 | -------------- | -------------------------------------------------------------------------------------------- |
-| UMIP Title     | Add NZUSD as price identifier on Polygon                                                     |
+| UMIP Title     | Add NZDUSD as price identifier                                                               |
 | Authors        | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                                                  |
-| Status         | Draft                                                                                        |
+| Status         | Last Call                                                                                    |
 | Created        | 04/05/22                                                                                     |
 | Discourse link | https://discourse.umaproject.org/t/umip-proposal-add-nzdusd-price-identifier-on-polygon/1603 |
 
 ## Summary
 
-The DVM should support price requests for the NZDUSD price index on Polygon.
+The DVM should support price requests for the NZDUSD price index.
 
 ## Motivation
 
