@@ -189,7 +189,7 @@ For all valid `FilledRelay` events above, group them by `repaymentChainId` and t
 
 For each group, sum the `fillAmount` values to get the total relay repayments for that group.
 
-Similarly, sum the `fillAmount * relayerFeePct / 1e18` to get the total LP fees for that group.
+Similarly, sum the `fillAmount * realizedLPFeePct / 1e18` to get the total LP fees for that group.
 
 To determine the amount to modify the running balances:
 
