@@ -199,10 +199,6 @@ To determine the amount to modify the running balances:
    `originChainId`, `originToken`, the `quoteTimestamp`, and the `SetPoolRebalanceRoute` event on the HubPool, use a
    similar process as the 3 step one above to map this back to an `l1Token`. For that `l1Token` and `originChainId`,
    initialize a running balance value if one doesn't exist already and subtract the `amount` from it.
-3. For all slow relay groups found above, they are bucketed into their `originChainId` and the associated `l1Token` of
-   their associated `FilledRelay` events. If a running balance doesn't exist for this combination, initialize it at 0.
-   Subtract the max `totalFilledAmount` of this group from the `amount` in the event to determine the slow relay
-   shortfall. This amount should be subtracted from the running balance.
 
 
 For each running balance value, past
@@ -219,7 +215,12 @@ to 0.
 
 Find all `FilledRelay` events in the block range that have `isSlowRelay` set to true. For each, use a similar method
 as above to map this event back to an `l1Token` at the `quoteTimestamp`. Use the `destinationChainId` as the `chainId`
-to determine which running balance that this event should apply to. If there is no running balance initialized for this
+to determine which running balance that this event should apply to. If the `fillAmount` on the `FilledRelay` event is
+`0`, perform a historical event lookup to determine if this slow relay has been executed before by searching for past
+`FilledRelay` events with `isSlowRelay` equal to `true`, matching `originChainId` and `depositId`. If any are found,
+ignore this slow relay. TODO: explain how to determine the intended size of this slow relay vs the executed size.
+
+If there is no running balance initialized for this
 `l1Token` and `chainId`, then do a historical lookup as above to determine the previous running balance value and add
 this value to it. If there is no historical running balance, initialize it to 0. Add `fillAmount` to this running
 balance value.
