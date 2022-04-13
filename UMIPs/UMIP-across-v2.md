@@ -1,10 +1,10 @@
 ## Headers
 
-| UMIP-Across-v2      |                                                                                               |
+| UMIP-157            |                                                                                               |
 | ------------------- | --------------------------------------------------------------------------------------------- |
 | UMIP Title          | Add **ACROSS-V2** as a supported price identifier                                             |
 | Authors             | Matt Rice                                                                                     |
-| Status              | Draft                                                                                         |
+| Status              | Last Call                                                                                     |
 | Created             | 03/30/2022                                                                                    |
 | Discourse Link      |                                                                                               |
 
