@@ -79,7 +79,7 @@ The ooRequester address is expected to be an instance of the
 If any of the expected details in the ooRequester are not available in the expected form because the HubPool does not
 match the expected interface, the identifier should return 0.
 
-To get the proposal data, the voter should find events that matches
+To get the proposal data, the voter should find events that match
 [this signature](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/HubPool.sol#L149-L157)
 on the ooRequester. The event that describes this proposal is the matching event with the highest block number whose
 timestamp is less than or equal to the timestamp of the price request. If there are two matching events that both
