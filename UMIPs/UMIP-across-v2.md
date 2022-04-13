@@ -25,6 +25,9 @@ are needed (and pulling funds from where they were deposited).
 If there is no relayer who can provide all the capital, a slow relay is performed where the funds are sent from the
 LP pool via the bundling process and anyone can use those funds to provide the remaining required capital to the user.
 
+The LP pool verification process works by having a proposer propose a bundle, which is effectively a group of merkle
+roots for a range of block numbers they specify in their proposal. This UMIP verifies that bundling process.
+
 ![](./images/across-architecture.png?raw=true "Across V2 Architecture)
 
 # Motivation
