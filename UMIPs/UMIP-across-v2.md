@@ -199,6 +199,22 @@ To determine the amount to modify the running balances:
    `originChainId`, `originToken`, the `quoteTimestamp`, and the `SetPoolRebalanceRoute` event on the HubPool, use a
    similar process as the 3 step one above to map this back to an `l1Token`. For that `l1Token` and `originChainId`,
    initialize a running balance value if one doesn't exist already and subtract the `amount` from it.
+3. Find all `FilledRelay` events in the block range that have `isSlowRelay` set to true. For each, use a similar method
+   as above to map this event back to an `l1Token` at the `quoteTimestamp`. Use the `destinationChainId` as the `chainId`
+   to determine which running balance that this event should apply to. If the `fillAmount` on the `FilledRelay` event is
+   `0`, perform a historical event lookup to determine if this slow relay has been executed before by searching for past
+   `FilledRelay` events with `isSlowRelay` equal to `true`, matching `originChainId` and `depositId`. If any are found,
+   ignore this slow relay. If the slow relay is not ignored, follow the steps in the "Finding Slow Relays" section above
+   for this `originChainId` and `depositId`, but remove the block range and only look for slow relays with a matching
+   `originChainId` and `depositId`. This should reveal the `FilledRelay` event that triggered this slow relay to be sent.
+   Once that is found, pull the block number for that event. Search through past `ProposeRootBundle` events to find the
+   proposal for this `destinationChainId` whose ending block number is the closest to this block number without being
+   smaller. Search for all `FilledRelay` events that have matching `amount`, `originChainId`, `destinationChainId`,
+   `relayerFeePct`, `depositId`, `recipient`, and `depositor` values before that ending block number. Grab the
+   `totalFillAmount` and `amount` from the latest of these events. Subtract the `totalFillAmount` from the `amount` to
+   compute `sentAmount`. For the original event we found where `isSlowRelay` was set to true, grab the `fillAmount` and
+   compute `sentAmount - fillAmount` to determine the extra funds that were sent. Subtract the result from the running
+   balance for the associated `l1Token` and `destinationChainId`.
 
 
 For each running balance value, past
@@ -212,18 +228,6 @@ absolute value of this running balance is > `TOKEN_TRANSFER_THRESHOLD` of the to
 `l1Token` at the `ProposeRootBundle` event that came before the one being evaluated (process described above).
 If this passes the threshold, then set net send amount to the running balance value and set the running balance value
 to 0.
-
-Find all `FilledRelay` events in the block range that have `isSlowRelay` set to true. For each, use a similar method
-as above to map this event back to an `l1Token` at the `quoteTimestamp`. Use the `destinationChainId` as the `chainId`
-to determine which running balance that this event should apply to. If the `fillAmount` on the `FilledRelay` event is
-`0`, perform a historical event lookup to determine if this slow relay has been executed before by searching for past
-`FilledRelay` events with `isSlowRelay` equal to `true`, matching `originChainId` and `depositId`. If any are found,
-ignore this slow relay. TODO: explain how to determine the intended size of this slow relay vs the executed size.
-
-If there is no running balance initialized for this
-`l1Token` and `chainId`, then do a historical lookup as above to determine the previous running balance value and add
-this value to it. If there is no historical running balance, initialize it to 0. Add `fillAmount` to this running
-balance value.
 
 Take the above running balances and net send amounts and group them by only `chainId` and sort by `chainId`. Within
 each group, sort by `l1Token`. If there are more than `MAX_POOL_REBALANCE_LEAF_SIZE` `l1Tokens`, a particular chain's leaf will
