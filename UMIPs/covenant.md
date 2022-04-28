@@ -33,7 +33,7 @@ When converting ancillary data to UTF8 string it must contain price request para
 - `BribedChoices`: Voting choices that are covered by the bribe. This can be either single value or an array of voting choices if the briber wants to sum their results as a group in a multiple choice type voting. Individual voting choices can be identified either by their fixed index positions (e.g. if known in advance in a snapshot proposal) or their human readable descriptions.
 - `VoteMetric`: Method for quantifying bribed vote results (from `BribedChoices` parameter) as a non-negative number.
 - `PayoutFunction`: Total payout function that defines how vote results value should be translated to total payout amount expressed as a multiplier to previously funded maximum bribe amount. This can be expressed either as formula or human readable instructions in case where more complex transformation logic is required.
-- ``BribeDistribution`: Bribe distribution rules to individual bribers. This should provide full instructions on:
+- `BribeDistribution`: Bribe distribution rules to individual bribers. This should provide full instructions on:
   - how to identify user addresses that have directly or indirectly (e.g. through delegation) voted on any of `BribedChoices` in the `VoteProposal`,
   - conditions for disqualifying voters (e.g. due to split-vote in multiple choice voting) or applying minimum qualifying thresholds to user voting power,
   - how to distribute total payout (before fees) among qualifying voters (e.g.  proportional to voting power, any maximum payout limits to individual users, equal to all qualifying voters, etc.),
