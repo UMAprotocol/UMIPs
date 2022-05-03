@@ -72,30 +72,30 @@ Voters should first resolve all ancillary data parameter values either directly 
    );
    ```
 9. Verify each individual bribe payout by traversing a Merkle tree up from its leaf (calculated is Step 8 above) using its corresponding Merkle proofs:
-  - The process should start by taking the leaf and the first element of the Merkle proofs array.
-  - Order both above from lowest value to highest and concatenate them to get `bytes64` value.
-  - Perform Keccak-256 hash on the concatenated `bytes64` to get the next Merkle branch. In `web3.js` one can use `web3.utils.soliditySha3` method.
-  - Continue by taking the next element from the Merkle proofs array, pair it with the obtained Merkle branch from the previous step and Keccak-256 hash their ordered concatenation to get the next Merkle branch.
-  - Repeat the above procedure for all elements of the provided Merkle proofs array. The last obtained hash **must** exactly match the `merkleRoot` for all individual bribe payments.
+    - The process should start by taking the leaf and the first element of the Merkle proofs array.
+    - Order both above from lowest value to highest and concatenate them to get `bytes64` value.
+    - Perform Keccak-256 hash on the concatenated `bytes64` to get the next Merkle branch. In `web3.js` one can use `web3.utils.soliditySha3` method.
+    - Continue by taking the next element from the Merkle proofs array, pair it with the obtained Merkle branch from the previous step and Keccak-256 hash their ordered concatenation to get the next Merkle branch.
+    - Repeat the above procedure for all elements of the provided Merkle proofs array. The last obtained hash **must** exactly match the `merkleRoot` for all individual bribe payments.
 10. Follow instructions passed from the `voteMetric` parameter to quantify the cumulative voting results for all the bribed choices (from `bribedChoices` parameter).
 11. Follow the instructions passed from the `payoutFunction` (or apply the formula) to convert obtained voting results to payout amount expressed as a multiplier to previously funded maximum bribe amount. In any case the results should be floored at 0 and capped at 1.
 12. Multiply the obtained value above with the `maximumRewardAmount` and round it to the nearest integer to obtain gross payout (before fees) in raw units of `rewardToken`.
 13. Subtract the calculated gross payout above from the `maximumRewardAmount` to obtain claw-back amount claimable by the bribe sponsor(s):
-   - In case `clawback` parameter is provided in ancillary data and it contains a single address then assign the calculated claw-back amount to this address.
-   - If `clawback` parameter provides other instructions, follow them to assign how claw-back amount should be distributed among sponsors.
-   - If `clawback` parameter is missing or its value cannot be interpreted unambiguously then by default entire claw-back amount should be assigned to the original sponsor funding the the bribe. This can be obtained by calling `rewards` method on the Optimistic Distributor contract with the `rewardIndex` from ancillary data as input parameter. The obtained `Reward` struct will contain the `sponsor` address as its second element. Note that in case other sponsors have topped up the bribe by funding the same `rewardIndex` with the `increaseReward` method they would not receive any clawed-back bribe amounts.
+    - In case `clawback` parameter is provided in ancillary data and it contains a single address then assign the calculated claw-back amount to this address.
+    - If `clawback` parameter provides other instructions, follow them to assign how claw-back amount should be distributed among sponsors.
+    - If `clawback` parameter is missing or its value cannot be interpreted unambiguously then by default entire claw-back amount should be assigned to the original sponsor funding the the bribe. This can be obtained by calling `rewards` method on the Optimistic Distributor contract with the `rewardIndex` from ancillary data as input parameter. The obtained `Reward` struct will contain the `sponsor` address as its second element. Note that in case other sponsors have topped up the bribe by funding the same `rewardIndex` with the `increaseReward` method they would not receive any clawed-back bribe amounts.
 14. Calculate protocol fee as 2% from gross payout amount in rounded raw units of `rewardToken`. Assign Covenant protocol fee collector address on Polygon (TBD) as its recipient.
 15. Calculate total net payout to users by subtracting protocol fee amount from the gross bribe payout.
 16. Follow the instructions passed from the `bribeDistribution` parameter to assign net bribe amount calculated above to individual recipients. This should involve:
-   - Identify user addresses and their voting power that have directly voted for any of `bribedChoices` in the bribed `voteProposal`.
-   - If instructed, exclude any disqualifying recipients (e.g. due to split-vote or minimum voting threshold).
-   - Assign part of net bribe payout to direct voters based on provided instructions (e.g.  proportional to voting power, any maximum payout limits to individual users, equal to all qualifying voters, etc.).
-   - If instructed, identify users that had delegated their voting power and assign their net bribe amounts from the previously calculated delegate bribe. If instructed apply the provided delegation fee to be held by the delegates.
-   - Apply any other instructions provided in the `bribeDistribution` parameter. This can involve rules for distributing any remainder from total payout in case any qualifying conditions or maximum payout limits to individual users have been applied (e.g. how to split it among other users or just reducing total payout amount and adding them to sponsor's claw-back amount).
+    - Identify user addresses and their voting power that have directly voted for any of `bribedChoices` in the bribed `voteProposal`.
+    - If instructed, exclude any disqualifying recipients (e.g. due to split-vote or minimum voting threshold).
+    - Assign part of net bribe payout to direct voters based on provided instructions (e.g.  proportional to voting power, any maximum payout limits to individual users, equal to all qualifying voters, etc.).
+    - If instructed, identify users that had delegated their voting power and assign their net bribe amounts from the previously calculated delegate bribe. If instructed apply the provided delegation fee to be held by the delegates.
+    - Apply any other instructions provided in the `bribeDistribution` parameter. This can involve rules for distributing any remainder from total payout in case any qualifying conditions or maximum payout limits to individual users have been applied (e.g. how to split it among other users or just reducing total payout amount and adding them to sponsor's claw-back amount).
 17. Compile the expected bribe payout amount list by recipient addresses including sponsor(s) claw-back (Step 13), protocol fee recipient (Step 14) and voters/delegates (Step 16).
 18. Validate proposed payouts in the file referenced by `ipfsHash` with expected payouts from Step 17:
-   - All recipient addresses in the proposed payout file **must** have a matching recipient from expected payouts, though some of smaller expected payouts could be excluded in the proposed payout file due to rounding.
-   - For each individual address recipient from the proposed payout file calculate the modulus for its proposed payout amount (in raw units of `rewardToken`) difference with the expected payout for the same address and divide it over its expected payout. This coefficient **must** not exceed the maximum allowed error margin passed as `errorMargin` parameter. If `errorMargin` is not provided in ancillary data then fall back to default allowed error margin of `0.0001` for this comparison.
+    - All recipient addresses in the proposed payout file **must** have a matching recipient from expected payouts, though some of smaller expected payouts could be excluded in the proposed payout file due to rounding.
+    - For each individual address recipient from the proposed payout file calculate the modulus for its proposed payout amount (in raw units of `rewardToken`) difference with the expected payout for the same address and divide it over its expected payout. This coefficient **must** not exceed the maximum allowed error margin passed as `errorMargin` parameter. If `errorMargin` is not provided in ancillary data then fall back to default allowed error margin of `0.0001` for this comparison.
 
 ## Refund instructions
 
