@@ -32,8 +32,7 @@ When converting ancillary data to UTF8 string it **must** contain price request 
 - `voteProposal`: Includes all information required to identify the vote that is being bribed (human readable description). If required bribers can reference the next vote relative to the timestamp when the bribe had been first funded.
 - `expirationTimestamp`: Provides ability for sponsors to claw back bribe if there is no finalized vote results available on the `voteProposal` after the set expiration timestamp.
 - `bribedChoice`: Single voting choice that is covered by the bribe (e.g. YES/NO, asset in gauge proposal, etc.).
-- `voteType`: Which voting type is expected by the bribed voting proposal (e.g. single choice, multiple choice, quadratic, etc.).
-- `voteMeasurement`: Method for quantifying relative vote results for the bribed choice (from the `bribedChoice` parameter) expressed as a number ranging from 0 to 1 where 0 represents no votes and 1 means all voters had voted for the bribed choice. This method should also be consistent with the expected voting type from the `voteType` parameter.
+- `voteMeasurement`: Method for quantifying relative vote results for the bribed choice (from the `bribedChoice` parameter) expressed as a number ranging from 0 to 1 where 0 represents no votes and 1 means all voters had voted for the bribed choice.
 - `payoutFunction`: Total payout function that defines how vote results value should be translated to total payout amount expressed as a multiplier to previously funded maximum bribe amount. This can be expressed either as formula or human readable instructions in case where more complex transformation logic is required.
 - `bribeDistribution`: Bribe distribution rules to individual bribers. This should provide full instructions on:
   - how to identify user addresses that have directly or indirectly (e.g. through delegation) voted on the `bribedChoice` in the `voteProposal`,
@@ -58,7 +57,7 @@ Voters should first resolve all ancillary data parameter values either directly 
 
 ## Status of bribed vote proposal
 
-1. Identify the voting proposal being bribed from the `votingPlatform` and `voteProposal` parameters. In order to identify the vote proposal one should also check that it matches the expected voting type passed from the `voteType` parameter.
+1. Identify the voting proposal being bribed from the `votingPlatform` and `voteProposal` parameters.
 2. Determine whether the voting proposal being bribed had been opened for voting and irreversibly resolved at or before the cut-off time from the `expirationTimestamp` parameter. In case the vote was not resolved on time the bribe should be refunded to its sponsor and voters should validate such price request (made after `expirationTimestamp`) against Refund instructions section.
 3. If the price request was made at or before the cut-off time from the `expirationTimestamp` the voting proposal being bribed **must** have been irreversibly resolved at or before the `expirationTimestamp`. This condition also applies when the voting proposal had been withdrawn and the proposal to refund the briber can be made only after the `expirationTimestamp`.
 
