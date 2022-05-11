@@ -129,3 +129,14 @@ This section provides instructions to verify proposed payout amounts against exp
 ## Refund instructions
 
 In case required ancillary data parameters are missing or their values/instructions cannot be interpreted unambiguously the bribe  should be refunded to its sponsor(s). This also applies in cases when the bribed vote has not been resolved (or has been withdrawn altogether) at or before the `expirationTimestamp`. In these scenarios one should perform the instructions in the Economic verification section as if the `payoutFunction` in Step 2 resulted in value of 0 and entire `maximumRewardAmount` should be distributed only among bribe sponsor(s) (identified in Step 4). Also, such refund proposal should be verified against the Technical verification section.
+
+
+## Security considerations
+
+The security of this price identifier is highly dependent on bribers providing unambiguous instructions through ancillary data parameters. In order to mitigate this it is expected that Covenant bribing market operator would impose restrictions on standard allowed ancillary data parameters through its front-end.
+
+In order to ensure right incentives for independent verifiers to check proposed bribe payouts the operator of Covenant bribing market should impose adequate Optimistic Oracle bond amounts and liveness periods that are consistent with the complexity of expected verification operation.
+
+Users of this price identifier should be aware that IPFS storage on itself does not guarantee persistent data availability. Even though the operator of Covenant bribing market would attempt to ensure data availability within reasonable time period users can provide pinning of linked IPFS files on their nodes or at least save a local copies of files linked in ancillary data and Merkle proofs for claiming the payouts.
+
+Bribers of Covenant protocol should be aware that not all voting platforms enforce that vote results directly translate to transaction execution on-chain and might require certain trust assumptions on the organizers of the vote to execute it properly. The execution risk hence is outside the scope of this price identifier that tracks only the resolved voting scores and payouts to individual voters.
