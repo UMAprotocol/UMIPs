@@ -45,6 +45,22 @@ When converting ancillary data to UTF8 string it **must** contain price request 
 
 Whenever any of the parameters above require longer descriptions they can be hosted on IPFS and their content hash string used as parameter value instead.
 
+### Example ancillary data
+
+As an illustration one could construct bribe for QiDao Vault Incentives Gauge with following ancillary data parameters:
+
+```
+votingPlatform: "https://snapshot.org/#/qidao.eth",
+voteProposal: "Next Vault Incentives Gauge round following the initial funding as emitted by requesting contract in RewardCreated event with matching rewardIndex. This is bi-weekly voting to allocate Qi rewards to vault collateral types established in QIP047 by QiDao.",
+expirationTimestamp: 1653264000,
+bribedChoice: vGHST (Polygon),
+voteMeasurement: bafkreiepkdupeke462zpoj56xysihfh663q3v4aoxlltyixhy3lkn3qgb4,
+payoutFunction: bafkreifupsisnlqi2264ze6rjih3b6cpgpomwpljtlb5qk376sjc7haijm,
+bribeDistribution: bafkreidmvkovrgi2jvhxgjvn6b4d6wydhlvsab2742e7b5rpvedmvtifem
+```
+
+This would provide incentives to vote for vGHST vault collateral on Polygon for the upcoming QiDao Vault Incentives Gauge round. Sponsor would be able to recover its bribe if no voting takes place till May 23, 2022 12:00:00 AM UTC. The linked [voteMeasurement](https://ipfs.io/ipfs/bafkreiepkdupeke462zpoj56xysihfh663q3v4aoxlltyixhy3lkn3qgb4) document details how to resolve voting score for vGHST (Polygon) choice. [payoutFunction](https://ipfs.io/ipfs/bafkreifupsisnlqi2264ze6rjih3b6cpgpomwpljtlb5qk376sjc7haijm) instructions would insure that no bribe is paid below 8.33% threshold (as QI is allocated to other vaults above this minimum threshold) and constant bribe payout per 1% when above 10% score. [bribeDistribution](bafkreidmvkovrgi2jvhxgjvn6b4d6wydhlvsab2742e7b5rpvedmvtifem) document details how to distribute the payout among participating voters and also covering vote delegation with 20% delegate fee.
+
 # Implementation
 
 `COVENANT_V1` price responses represent whether the proposed bribe payout distribution is valid. If any of **must** conditions in this UMIP is not fulfilled the proposed payout should be considered invalid. If the proposed payout is invalid, the price should be `0`. If the proposed payout is valid, the price should be `1`. *Note*: all price values should be scaled by `1e18` if responding programmatically, but Optimistic Oracle and Voting dApps scales them for the users.
