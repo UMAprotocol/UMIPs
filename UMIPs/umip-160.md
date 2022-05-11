@@ -1,12 +1,12 @@
 ##  Headers
 
-| UMIP-<#>       |                                                               |
-| ---------------| --------------------------------------------------------------|
-| UMIP Title     | Add COVENANT_V1 as a supported price identifier               |
-| Authors        | Reinis Martinsons (reinis@umaproject.org)                     |
-| Status         | Draft                                                         |
-| Created        | April 22, 2022                                                |
-| Discourse Link | [UMA's Discourse](TBD)                                        |
+| UMIP-160       |                                                                                             |
+| ---------------| --------------------------------------------------------------------------------------------|
+| UMIP Title     | Add COVENANT_V1 as a supported price identifier                                             |
+| Authors        | Reinis Martinsons (reinis@umaproject.org)                                                   |
+| Status         | Last Call                                                                                   |
+| Created        | April 22, 2022                                                                              |
+| Discourse Link | [UMA's Discourse](https://discourse.umaproject.org/t/add-covenant-v1-price-identifier/1719) |
 
 # Summary
 
