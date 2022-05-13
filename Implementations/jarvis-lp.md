@@ -15,7 +15,7 @@ Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/jarvis-
 jarvisLPContract:0xa769c6786C3717945438d4C4feb8494a1a6Ca443,
 Interval:daily,
 Aggregation:Average end of day (midnight UTC) LP TVL since <START_TIMESTAMP>,
-Rounding:-6
+Rounding:0
 ```
 
 ***Note 1:** `TVLCurrency` represents the quote currency in which the TVL should be measured. This parameter can be set to any quote currency supported by CoinGecko (see full supported list in https://api.coingecko.com/api/v3/simple/supported_vs_currencies).*
@@ -46,15 +46,14 @@ Rounding:-6
 7. Multiply each LP reserve token balance from Step 6 with its price from Step 5 for each evaluation timestamp.
 8. Sum both LP reserve balance values from Step 7 to get the total value of the pool in terms of `TVLCurrency` at the latest available block at or before each evaluation timestamp.
 9. Calculate the average from the daily values in Step 8 to obtain the LP TVL in terms of `TVLCurrency`. 
-10. Apply ceiling rounding on the output from step 9 using instructions from [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md) and `Rounding` parameter passed in ancillary data. As an example, if `Rounding` parameter was -6 and the output from step 9 was USD 800,000, the value should be rounded up to 1,000,000. Alternatively, if the output from step 9 was USD 1,200,000, the value should be rounded up to 2,000,000.
 
 ## Post-Processing
 
-It is intended to deploy the documented KPI options on Polygon using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 3,000,000. 
+It is intended to deploy the documented KPI options on Polygon using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts should use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 3,000,000. 
 
-Ceiling rounding should be used to calculate the returned value. As an illustration, based on the intended ancillary data above, `upperBound` would be set to 3,000,000 implying the following payouts:
-* LP TVL below or equal to USD 1,000,000 would have returned 1,000,000 and long KPI option holders would receive 1,000,000/3,000,000=33.33% of `collateralPerPair` for each token;
-* LP TVL above USD 1,000,000 and below or equal to USD 2,000,000 would have returned 2,000,000 and long KPI option holders would receive 2,000,000/3,000,000=66.66% of `collateralPerPair` for each token;
-* LP TVL above USD 2,000,000 would have returned 3,000,000 and long KPI option holders would receive 3,000,000/3,000,000=100% of `collateralPerPair` for each token;
+Ceiling rounding should be used to calculate the returned value. As an illustration, based on the intended ancillary data above, `upperBound` should be set to 3,000,000 implying the following payouts:
+* LP TVL below or equal to USD 1,000,000 should return 1,000,000 and long KPI option holders should receive 1,000,000/3,000,000=33.33% of `collateralPerPair` for each token;
+* LP TVL above USD 1,000,000 and below or equal to USD 2,000,000 should return 2,000,000 and long KPI option holders should receive 2,000,000/3,000,000=66.66% of `collateralPerPair` for each token;
+* LP TVL above USD 2,000,000 should return 3,000,000 and long KPI option holders should receive 3,000,000/3,000,000=100% of `collateralPerPair` for each token;
 
-`collateralPerPair` above is the total locked collateral per KPI options token and it would be set by the deployer considering the available LP incentivization budget and intended KPI option token distribution amount.
+`collateralPerPair` above is the total locked collateral per KPI options token and it should be set by the deployer considering the available LP incentivization budget and intended KPI option token distribution amount.
