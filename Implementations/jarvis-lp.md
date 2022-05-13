@@ -46,7 +46,6 @@ Rounding:0
 7. Multiply each LP reserve token balance from Step 6 with its price from Step 5 for each evaluation timestamp.
 8. Sum both LP reserve balance values from Step 7 to get the total value of the pool in terms of `TVLCurrency` at the latest available block at or before each evaluation timestamp.
 9. Calculate the average from the daily values in Step 8 to obtain the LP TVL in terms of `TVLCurrency`. 
-10. Apply ceiling rounding on the output from step 9 using instructions from [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md) and `Rounding` parameter passed in ancillary data. As an example, if `Rounding` parameter was 0 and the output from step 9 was USD 800,000, the value should be rounded up to 1,000,000. Alternatively, if the output from step 9 was USD 1,200,000, the value should be rounded up to 2,000,000.
 
 ## Post-Processing
 
