@@ -53,8 +53,8 @@ Rounding:0
 It is intended to deploy the documented KPI options on Polygon using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts should use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 3,000,000. 
 
 Ceiling rounding should be used to calculate the returned value. As an illustration, based on the intended ancillary data above, `upperBound` should be set to 3,000,000 implying the following payouts:
-* LP TVL below or equal to USD 1,000,000 should have returned 1,000,000 and long KPI option holders should receive 1,000,000/3,000,000=33.33% of `collateralPerPair` for each token;
-* LP TVL above USD 1,000,000 and below or equal to USD 2,000,000 should have returned 2,000,000 and long KPI option holders should receive 2,000,000/3,000,000=66.66% of `collateralPerPair` for each token;
-* LP TVL above USD 2,000,000 should have returned 3,000,000 and long KPI option holders should receive 3,000,000/3,000,000=100% of `collateralPerPair` for each token;
+* LP TVL below or equal to USD 1,000,000 should return 1,000,000 and long KPI option holders should receive 1,000,000/3,000,000=33.33% of `collateralPerPair` for each token;
+* LP TVL above USD 1,000,000 and below or equal to USD 2,000,000 should return 2,000,000 and long KPI option holders should receive 2,000,000/3,000,000=66.66% of `collateralPerPair` for each token;
+* LP TVL above USD 2,000,000 should return 3,000,000 and long KPI option holders should receive 3,000,000/3,000,000=100% of `collateralPerPair` for each token;
 
 `collateralPerPair` above is the total locked collateral per KPI options token and it should be set by the deployer considering the available LP incentivization budget and intended KPI option token distribution amount.
