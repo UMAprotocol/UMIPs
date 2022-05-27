@@ -6,23 +6,33 @@
 - Created: March 7, 2022
 
 ## Summary (2-5 sentences)
-The ZODIAC identifier is intended to be used with a [Zodiac module](https://gnosis.github.io/zodiac/docs/intro) that allows you to control a [Gnosis Safe](https://gnosis-safe.io/) according to a set of rules defined off-chain and enforced with UMA's [Optimistic Oracle](https://umaproject.org/optimistic-oracle.html). Unless the module contract has extra restrictions, any address can propose transactions that follow the rules and any address can dispute a proposal to UMA's Optimistic Oracle within a challenge window.
+The ZODIAC identifier is intended to be used with an [Optimistic Governor](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/zodiac/OptimisticGovernor.sol) [Zodiac module](https://gnosis.github.io/zodiac/docs/intro) that allows you to control a [Gnosis Safe](https://gnosis-safe.io/) according to a set of rules defined off-chain and enforced with UMA's [Optimistic Oracle](https://umaproject.org/optimistic-oracle.html). Any address can propose transactions that follow the rules and any address can dispute a proposal to UMA's Optimistic Oracle within a challenge window.
 
 ## Motivation
-The ZODIAC identifier, coupled with the Optimistic Oracle Zodiac module, will allow for a new era of flexible "optimistic governance," where management of DAO treasuries and other multi-signature wallets can be managed more effectively, without being limited to X-of-Y signing schemes or tokenholder votes, although the Zodiac module can enforce those things, too.
+The ZODIAC identifier, coupled with the Optimistic Governor module, will allow for a new era of flexible "optimistic governance," where management of DAO treasuries and other multi-signature wallets can be managed more effectively, without being limited to X-of-Y signing schemes or tokenholder votes, although the Optimistic Governor module can enforce those things, too.
 
-To date, DAO governance has twisted itself to conform to the limitations of simplistic tools, instead of finding the best rules to coordinate around shared resources. The ZODIAC identifier allows a DAO to publish their rules in plain English with sufficient detail for a neutral third-party observer to determine whether transactions submitted to a Gnosis Safe follow the rules or not, and then have any address propose and execute transactions that follow those rules.
+To date, DAO governance has twisted itself to conform to the limitations of simplistic tools, instead of finding the best rules to coordinate around shared resources. The ZODIAC identifier allows a DAO to publish their rules in plain language with sufficient detail for a neutral third-party observer to determine whether transactions submitted to a Gnosis Safe follow the rules or not, and then have any address propose and execute transactions that follow those rules.
 
 Because human voters can be brought in the loop to resolve disputes, this is an incredibly flexible and powerful form of DAO governance. Due to that flexibility, users of this identifier should be sure to make their rules as clear as possible, including the process for upgrading to a new set of rules.
 
 ## Technical Specification
-The Zodiac module is in a draft state and currently being tested with a Gnosis Safe on Rinkeby. You can find the code on [GitHub](https://github.com/UMAprotocol/protocol/pull/3843/files).
+The Optimistic Governor module is a new tool and can be paired with an administrative multi-signature scheme for emergency actions for greater user assurance. Over time, the signature threshold can be increased for the emergency multi-sig, and eventually the multi-sig can be eliminated entirely, with all governance actions going through the Optimistic Governor.
 
-Each Gnosis Safe will have its own Zodiac module contract which will store proposals made by external addresses. Each proposal is a bundle of transactions. See the structs defined below for technical detail.
+Each Gnosis Safe will have its own Optimistic Governor module contract which will store a hash of transactions proposed by external addresses. Each proposal hash represents a bundle of transactions and each proposal emits an event with the full transaction details.
 
 ```
+
+event TransactionsProposed(
+    address indexed proposer,
+    uint256 indexed proposalTime,
+    Proposal proposal,
+    bytes explanation,
+    uint256 challengeWindowEnds
+);
+
 struct Transaction {
     address to;
+    Enum.Operation operation;
     uint256 value;
     bytes data;
 }
@@ -30,16 +40,28 @@ struct Transaction {
 struct Proposal {
     Transaction[] transactions;
     uint256 requestTime;
-    bytes ancillaryData;
-    bool status;
 }
 ```
 
-The module contract stores an array of `Proposal` objects and a string reference to an off-chain set of rules that have been publicly published, which may be an IPFS hash, a URI, or something else.
+The module contract stores a mapping of proposal hashes to their proposal time, to verify proposals during execution and to prevent duplicate proposals. The contract also stores a string reference to an off-chain set of rules that have been publicly published, which may be an IPFS hash, a URI, or something else.
+
+Other important configuration variables stored by the contract are the collateral token address (for bonds), the amount of collateral tokens proposers and disputers are required to post as a bond, the liveness period for disputes, the identifier used by the module, and the address of the Optimistic Oracle and the Finder.
 
 ```
-Proposal[] public proposals;
+// This maps proposal hashes to the proposal timestamps.
+mapping(bytes32 => uint256) public proposalHashes;
+
+// Since finder is set during setUp, you will need to deploy a new Optimistic Governor module if this address need to be changed in the future.
+FinderInterface public immutable finder;
+
+IERC20 public collateral;
+uint64 public liveness;
+// Extra bond in addition to the final fee for the collateral type.
+uint256 public bondAmount;
 string public rules;
+// This will usually be "ZODIAC" but a deployer may want to create a more specific identifier.
+bytes32 public identifier;
+OptimisticOracleInterface public optimisticOracle;
 ```
 
 When a user creates a proposal, they submit an array of transactions along with an optional explanation that explains the intent and purpose of the transactions, which is useful for voters trying to understand the transactions and whether or not they follow the published rules.
@@ -50,47 +72,58 @@ function proposeTransactions(Transaction[] memory transactions, bytes memory exp
 }
 ```
 
-Each proposal has a unique ID, which is assigned in the transaction where a proposal is created. The ID is incremented by one with each new proposal.
+In this function, a price request and price proposal are submitted to the Optimistic Oracle, and the proposal hash is generated and stored in a mapping to the proposal time.
 
 ```
-uint256 id = proposals.length;
-Proposal storage proposal = proposals[id];
-```
+// Create the proposal hash.
+bytes32 proposalHash = keccak256(abi.encode(_transactions));
 
-After a proposal is created, an event is emitted which includes the proposal id, the proposer, and the current timestamp.
+// Add the proposal hash to ancillary data.
+bytes memory ancillaryData = AncillaryData.appendKeyValueBytes32("", "proposalHash", proposalHash);
 
-```
-emit TransactionsProposed(id, proposer, time);
-```
+// Check that the proposal is not already mapped to a proposal time, i.e., is not a duplicate.
+require(proposalHashes[proposalHash] == 0, "Duplicate proposals are not allowed");
 
-At the same time, a price request and price proposal are submitted to the Optimistic Oracle, including the timestamp, the proposer, and `ancillaryData`, which includes the explanation, proposal ID, and module contract address.
+// Map the proposal hash to the current time.
+proposalHashes[proposalHash] = time;
 
-```
-optimisticOracle.requestAndProposePriceFor(
+// Propose a set of transactions to the OO. If not disputed, they can be executed with executeProposal().
+// docs: https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/interfaces/OptimisticOracleInterface.sol
+optimisticOracle.requestPrice(identifier, time, ancillaryData, collateral, 0);
+uint256 totalBond = optimisticOracle.setBond(identifier, time, ancillaryData, bondAmount);
+optimisticOracle.setCustomLiveness(identifier, time, ancillaryData, liveness);
+
+// Get the bond from the proposer and approve the bond and final fee to be used by the oracle.
+// This will fail if the proposer has not granted the OptimisticGovernor contract an allowance
+// of the collateral token equal to or greater than the totalBond.
+collateral.safeTransferFrom(msg.sender, address(this), totalBond);
+collateral.safeIncreaseAllowance(address(optimisticOracle), totalBond);
+
+optimisticOracle.proposePriceFor(
+    msg.sender,
+    address(this),
     identifier,
-    uint32(time),
+    time,
     ancillaryData,
-    collateral,
-    0,
-    bond,
-    liveness,
-    proposer,
-    // Canonical value representing "True"; i.e. the transactions are valid.
-    int256(1e18)
+    PROPOSAL_VALID_RESPONSE
 );
+
+uint256 challengeWindowEnds = time + liveness;
 ```
 
-Voters can find the `rules` in the module contract at the address specified in `ancillaryData`.
+After a proposal is created, an event is emitted which includes the proposer address, the proposal time, the proposal details (see: Proposal struct), the optional explanation, and the timestamp at which the challenge window ends.
+
+```
+emit TransactionsProposed(proposer, time, proposal, _explanation, challengeWindowEnds);
+```
+
+Disputers and voters can find the `rules` reference in the Optimistic Governor contract. This contract address will be the `requester` in the `ProposePrice` event emitted by the Optimistic Oracle contract.
 
 ### Ancillary Data Format
 
-The `ancillaryData` submitted with proposals should consist of:
+The `ancillaryData` for the price request will be generated automatically and consist of the word `proposalHash` as a key, followed by a colon, followed by the proposal hash automatically generated from the transaction details.
 
-- `explanation`, which is written in natural language by the proposer and explains the nature of the transactions and how they follow the module's rules
-- `id`, which is automatically appended to the ancillary data and used to find the proposal details in the module
-- `module`, which is the address of the module contract
-
-`explanation:These transactions were approved by the majority of tokenholders in a Snapshot vote on March 8, 2022.,id:123,module:0xabc...123`
+`proposalHash: 0x...abcdef`
 
 ### Resolving Disputes
 
@@ -98,8 +131,8 @@ If a proposal is disputed, the disputer is encouraged to publish their reasoning
 
 Voters should consider four sources of public information in their ruling:
 
-1. The published rules for the Zodiac module.
-2. The rationale given by the proposer in ancillary data.
+1. The published rules for the Optimistic Governor module.
+2. The rationale given by the proposer in explanation (if any).
 3. The arguments presented by disputers.
 4. The voter's understanding of what the transactions *actually* do, regardless of the stated rationale.
 
@@ -109,7 +142,7 @@ If a proposal doesn't follow the rules, an UMA voter should return a value of `0
 
 If a voter is unsure if a proposal follows the rules, an UMA voter should return a value of `0`.
 
-If the rules are unclear or malformed, or the ancillary data is malformed, an UMA voter should return a value of `0`.
+If the rules are unclear or malformed, an UMA voter should return a value of `0`.
 
 It is the responsibility of the DAO users of the `ZODIAC` identifier to write clear and unambiguous rules. If their rules are unclear, they should expect proposals that get disputed to be rejected by UMA's oracle.
 
@@ -117,7 +150,7 @@ It is important that the process for changing the rules be particularly clear an
 
 ### Important Special Case: Rule Changes
 
-It is possible for a bad proposal to be made that technically follows the published rules, either by a malicious actor or due to an oversight or mistake. It is also possible for the rules in a Zodiac module to be changed via the existing governance process.
+It is possible for a bad proposal to be made that technically follows the published rules, either by a malicious actor or due to an oversight or mistake. It is also possible for the rules in an Optimistic Governor module to be changed via the existing governance process or an emergency adminstrative action by the multi-sig (if any).
 
 As a failsafe mechanism, it should be allowed for a DAO to change their rules in response to malicious proposals, and in those cases the new rules should be considered the official rules by UMA voters, and disputed proposals should be rejected if they violate the old rules, even if they technically followed the rules at the time of the original proposal.
 
@@ -130,7 +163,7 @@ Let us consider a Magicland DAO with two rules in their published rules document
 2. The rules can be changed by a Snapshot vote where more than 50% of the token supply votes to change the rules.
 ```
 
-As it turns out, the Magicland treasurer is revealed to be a serial scam artist and proposes to move 10,000 ETH from the Magicland treasury to Tornado Cash through their own wallet address.
+As it turns out, the Magicland treasurer is revealed to be a serial scam artist and proposes to move 10,000 ETH from the Magicland treasury to a smart contract wallet they controlled and then to Tornado Cash.
 
 DAO members, understandably concerned, dispute that proposal, and more than 50% of the token supply votes on Snapshot to change to new rules:
 
@@ -163,9 +196,7 @@ The onus is on the DAO to write clear rules and on the proposer to ensure their 
 This methodology allows for a huge amount of flexibility for DAOs to manage their shared resources without requiring UMA voters to make subjective judgements, which would be difficult for voters and could potentially create unpredictable and undesirable results for DAOs.
 
 ## Implementation
-The implementation of the Zodiac module is currently in a draft state [viewable here](https://github.com/UMAprotocol/protocol/pull/3843/files).
-
-TODO: Script that can decode transactions for voters.
+The implementation of the Optimistic Governor module can be [found here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/zodiac/OptimisticGovernor.sol).
 
 ### Example Rules
 The `ZODIAC` identifier is designed to allow rules to be as flexible as possible while still being clear to UMA voters called in to resolve disputes. These examples are meant to inspire creativity in users creating their own rules and demonstrate the legalistic approach they should take.
@@ -200,7 +231,7 @@ To that end, we have established the following rules governing our treasury, con
 1. DAO member Alice has a great idea for utilizing the DAO treasury and writes some Ethereum transactions that would execute her idea.
 2. Alice holds a Snapshot vote to approve their idea and associated transactions.
 3. The majority of $ABC tokens back Alice's proposal in the Snapshot vote.
-4. Alice submits the proposal to the Zodiac module governing the Gnosis Safe and notes in the ancillary data that the proposal was approved on Snapshot and includes a link to the Snapshot results. Alice includes a bond with her proposal.
+4. Alice submits the proposal to the Zodiac module governing the Gnosis Safe and notes in the explanation that the proposal was approved on Snapshot and includes a link to the Snapshot results. Alice includes a bond with her proposal.
 5. The proposal is not disputed within the challenge window and can be executed by any address.
 6. Bob, another member of the DAO, executes Alice's proposal since Alice is out watching a movie.
 7. Alice's transactions are executed and the treasury funds are spent according to her plan, which was approved by a Snapshot vote.
@@ -224,6 +255,14 @@ Starting after step 4 from the Successful Execution Flow:
 5. UMA token holders reveal their votes during the reveal period.
 6. After the reveal period, the settlement value is `0`. The Zodiac module receives the settlement value and deletes the invalid proposal.
 7. Elon loses his bond and Alice receives her bond back and a portion of Elon's bond.
+
+### Emergency Administrative Action
+1. The DAO includes an emergency multi-sig that can override any proposal.
+2. DAO member Alice has a great idea to steal all of the money in the treasury for herself and writes some Ethereum transactions that would execute her idea.
+3. Alice holds a Snapshot vote during a holiday when people aren't paying attention and bribes enough voters to get majority approval.
+4. Alice submits the proposal to the Zodiac module governing the Gnosis Safe and notes in the explanation that the proposal was approved on Snapshot and includes a link to the Snapshot results. Alice includes a bond with her proposal.
+5. The signers on the emergency multi-sig are alerted in time and delete Alice's proposal.
+6. The DAO votes on new rules that would prevent incidents like this in the future.
 
 ## Security considerations
 
@@ -257,7 +296,16 @@ Ideally, the rules will include enough checks and balances to prevent this scena
 
 But if they fail to do so and a malicious transaction comes through right before an UMA voting cycle, the DAO should consider having an extra failsafe that allows for rapid rule changes through some mechanism outside of UMA's oracle.
 
-For example, the rules may specify that they will "shut down" and become invalid if 50% of voters in an emergency Snapshot poll, or 3-of-5 signers on some committee, vote to invalidate them. In that scenario, UMA voters will check if the shutdown condition was triggered when evaluating a proposal.
+For example, the rules may specify that they will "shut down" and become invalid if 50% of voters in an emergency Snapshot poll, or 3-of-5 signers on an emergency multi-sig, vote to invalidate them. In that scenario, UMA voters will check if the shutdown condition was triggered when evaluating a proposal.
+
+It is also possible that the DAO will have an emergency multi-sig with the power to delete proposals directly (see below).
+
+### Continued Use of an Emergency Administrative Multi-Sig
+In the long run, it should be possible to replace multi-sig control of a Gnosis Safe, with all governance actions going through the Optimistic Governor. While the Optimistic Governor is being implemented, however, and best practices around DAO rules are being established, it may be useful to retain a multi-sig as an emergency override mechanism.
+
+This multi-sig can protect against failures caused by unclear or inadequate rules or by some issue with the Optimistic Governor itself. However, it is important to remember that the continued existence of an emergency multi-sig adds additional trust assumptions, and it is possible for rogue multi-sig signers to override actions that were approved through the DAO's stated governance system or the will of the DAO expressed through a SafeSnap vote.
+
+Over time, the signing threshold for the emergency multi-sig can be increased to make it harder for the multi-sig to overrule the normal function of the Optimistic Governor, and eventually the multi-sig administrative powers can be dropped entirely.
 
 ### Poorly Formed Proposals
 It is possible that transactions in a proposal may not match the intent of the proposer and may not be well understood by potential disputers. As a result, bad transactions may go through and result in loss of funds or accidents in smart contracts controlled by a Gnosis Safe.
