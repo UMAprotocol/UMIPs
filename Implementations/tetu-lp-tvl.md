@@ -10,11 +10,10 @@ This calculation is intended to track the TVL in USD of liquidity provider (LP) 
 
 ```
 Metric:LP TVL provided to the  TetuSwap LP (TLP_USDC_UMA),
-TVLCurrency:usd,
-Method:TetuSwap LP (TLP_USDC_UMA)Contract:0xAbcA7538233cbE69709C004c52DC37e61c03796B,
+Method:https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/tetu-lp-tvl.md,
 Interval:daily,
 Aggregation:Average end of day (midnight UTC) TVL since <START_TIMESTAMP>,
-Rounding:-6
+Rounding:-5
 ```
 
 ***Note 1:** `TVLCurrency` represents the quote currency in which the TVL should be measured. This parameter can be set to any quote currency supported by CoinGecko (see full supported list at: https://api.coingecko.com/api/v3/simple/supported_vs_currencies).*
@@ -25,15 +24,15 @@ Rounding:-6
 
 ## Implementation
 
-1. Identify all daily evaluation timestamps at the end of the day (midnight UTC) that fall in between the start timestamp (passed within the `Aggregation` parameter from the ancillary data) and the request timestamp.
-2. Identify the LP contract on Polygon passed as  `0xAbcA7538233cbE69709C004c52DC37e61c03796B` parameter in the ancillary data.
+1. Identify all daily evaluation timestamps at the end of the day (midnight UTC) that fall in between the start timestamp and the request timestamp.
+2. Identify the LP contract:`0xAbcA7538233cbE69709C004c52DC37e61c03796B` at https://Polygonscan.com. 
 3. Identify the LP contract currencies by calling `token0` and `token1` methods on the LP contract from Step 2. Expected values are:
 
 `token0` "usd-coin" `0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174`
 
 `token1` "uma" `0x3066818837c5e6eD6601bd5a91B0762877A6B731`
 
-4. Using `token0` “usd-coin” and `token1` ”uma” contract addresses acquired in Step 3, call `balanceOfVaultUnderlying` to obtain both separate LP token amounts. 
+4. Using `token0` “usd-coin” and `token1` ”uma” contract addresses acquired in Step 3, on the LP contract call `balanceOfVaultUnderlying` to obtain both separate LP token amounts. 
 
 5. Scale down LP token balances from Step 4 with their respective decimals (call `decimals` method on the token, read as proxy contracts from Step 3).
 
@@ -60,9 +59,9 @@ Rounding:-6
 
 It is intended to deploy the documented KPI option  on Polygon using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 1.00. 
 
-With the intention of providing a minimum payout, if the `TetuSwap LP (TLP_USDC_UMA)`TVL is at or below USD $299,999 after the necessary rounding is applied, voters should return 0.25 . As an illustration, based on the intended ancillary data above, `upperBound` would be set to 1.00 implying the following payouts:
-* If TVL is at or below $299,999 USD at expiry, each KPI option pays out 0.25 TETU.
-* If TVL reaches $300,000 USD at expiry, each KPI option pays out 0.50 TETU.
+With the intention of providing a minimum payout, if the `TetuSwap LP (TLP_USDC_UMA)`TVL is below USD $300,000 after the necessary rounding is applied, voters should return 0.25 . As an illustration, based on the intended ancillary data above, `upperBound` would be set to 1.00 implying the following payouts:
+* If TVL is below $300,000 USD at expiry, each KPI option pays out 0.25 TETU.
+* If TVL is above $300,000 USD at expiry, each KPI option pays out 0.50 TETU.
 * If TVL reaches $450,000 USD at expiry, each KPI option pays out 0.75 TETU.
 * If TVL is $600,000 USD or above at expiry, each KPI option pays out 1.00 TETU.
 
