@@ -22,7 +22,7 @@ Rounding:0
 
 Oolongswap wishes to track the total increase in cumulative lifetime volume over a period of time. Since this calculation is somewhat complicated, it is recommended to use Oolong's subgraph to calculate this.
 
-This [cumulative volume query](https://graph.mainnet.boba.network:8000/subgraphs/name/oolongswap/staging/graphql?operationName=users&query=query%20users%20%7B%0A%20%20uniswapFactories(first%3A%201000%2C%20block%3A%20%7Bnumber%3A%20413042%7D)%20%7B%0A%20%20%20%20id%0A%20%20%20%20totalVolumeUSD%0A%20%20%7D%0A%7D%0A) will be used.
+This [cumulative volume query](https://api.thegraph.com/subgraphs/name/oolongswap/oolongswap-mainnet/graphql?operationName=users&query=query%20users%20%7B%0A%20%20uniswapFactories(first%3A%201000%2C%20block%3A%20%7Bnumber%3A%20413042%7D)%20%7B%0A%20%20%20%20id%0A%20%20%20%20totalVolumeUSD%0A%20%20%7D%0A%7D%0A) will be used.
 
 The query that should be used is:
 
