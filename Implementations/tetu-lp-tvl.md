@@ -13,14 +13,14 @@ Metric:LP TVL provided to the  TetuSwap LP (TLP_USDC_UMA),
 Method:https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/tetu-lp-tvl.md,
 Interval:daily,
 Aggregation:Average end of day (midnight UTC) TVL since <START_TIMESTAMP>,
-Rounding:-5
+Rounding:-0
 ```
 
-***Note 1:** `TVLCurrency` represents the quote currency in which the TVL should be measured. This parameter can be set to any quote currency supported by CoinGecko (see full supported list at: https://api.coingecko.com/api/v3/simple/supported_vs_currencies).*
 
-***Note 2:** `TetuSwap LP (TLP_USDC_UMA)` above is specific to Polygon network.*
 
-***Note 3:** <START_TIMESTAMP> should be filled in upon contract deployment based on expected expiration and desired averaging period.*
+***Note 1:** `TetuSwap LP (TLP_USDC_UMA)` above is specific to Polygon network.*
+
+***Note 2:** <START_TIMESTAMP> should be filled in upon contract deployment based on expected expiration and desired averaging period.*
 
 ## Implementation
 
@@ -39,7 +39,7 @@ Rounding:-5
 6. For both LP tokens from Step 3, get the latest available pricing at or before each of the evaluation timestamps, from CoinGecko:
     * Based on CoinGecko [API documentation](https://www.coingecko.com/api/documentations/v3#/coins/get_coins__id__market_chart_range) construct price API request with following parameters:
       * `id`: pass the coin id from Step 3 (e.g. "usd-coin");
-      * `vs_currency`: TVL measurement currency based on the passed `TVLCurrency` parameter in the ancillary data (e.g. "usd");
+      * `vs_currency`: TVL measurement currency ("usd");
       * `from`: start timestamp (passed within the `Aggregation` parameter from the ancillary data);
       * `to`: request timestamp;
     * Note that some tokens might not be supported by CoinGecko on all chains  - in such case consult supported currency/platform list at https://api.coingecko.com/api/v3/coins/list?include_platform=true and replace to supported `id` for the same reserve token.
@@ -51,8 +51,8 @@ Rounding:-5
     * Locate the `prices` key value from CoinGecko API response - it should contain a list of [ timestamp, price ] values. Choose the price at the latest timestamp before the evaluation timestamp (CoinGecko timestamps are in milliseconds);
     * Voters should verify that obtained price results agree with broad market consensus.
 7. Multiply each LP reserve token balance from Step 5 with its price from Step 6 for each evaluation timestamp.
-8. Sum both LP reserve balance values from Step 7 to get the total value of the pool in terms of `TVLCurrency` at the latest available block at or before each evaluation timestamp.
-9. Calculate the average from the daily values in Step 8 to obtain the LP TVL in terms of `TVLCurrency`. 
+8. Sum both LP reserve balance values from Step 7 to get the total value of the pool in terms of USD at the latest available block at or before each evaluation timestamp.
+9. Calculate the average from the daily values in Step 8 to obtain the LP TVL in terms of USD. 
 
 
 ## Post-Processing
@@ -61,7 +61,7 @@ It is intended to deploy the documented KPI option  on Polygon using [LSP contra
 
 With the intention of providing a minimum payout, if the `TetuSwap LP (TLP_USDC_UMA)`TVL is below USD $300,000 after the necessary rounding is applied, voters should return 0.25 . As an illustration, based on the intended ancillary data above, `upperBound` would be set to 1.00 implying the following payouts:
 * If TVL is below $300,000 USD at expiry, each KPI option pays out 0.25 TETU.
-* If TVL is above $300,000 USD at expiry, each KPI option pays out 0.50 TETU.
+* If TVL is at or above $300,000 USD at expiry, each KPI option pays out 0.50 TETU.
 * If TVL reaches $450,000 USD at expiry, each KPI option pays out 0.75 TETU.
 * If TVL is $600,000 USD or above at expiry, each KPI option pays out 1.00 TETU.
 
