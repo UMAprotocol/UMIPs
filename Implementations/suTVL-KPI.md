@@ -51,9 +51,9 @@ Note: [Chainlist.org](https://chainlist.org/) can be a good reference if mapping
 
 ### Other Outcome TVL & contracts
 
-At the time of writing, the LSP contract is currently the only active Outcome contract that has a TVL value. Outcome plans to deploy other contracts, such as the Optimistic Governor, that will be included in this value.
+At the time of writing, the LSP contract is currently the only active Outcome contract that has a TVL value. Outcome will also include optimistic distributor and optimistic governor contracts.
 
-As new contracts become active, please note that this implementation document is subject to change and will be updated to include steps for Voters and Proposers on how to obtain the TVL calculation.
+OD and OG contracts do not follow factory pattern, so supported Outcome contracts will be published on docs.
 
 **Additional information for UMA DVM participants:**
       
