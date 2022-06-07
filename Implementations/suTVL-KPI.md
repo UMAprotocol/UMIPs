@@ -2,11 +2,11 @@
 SuperUMAn DAO TVL KPI Option
 
 ## Summary:
-The SuperUMAn DAO wishes to use KPI Options to incentivize the community to continue the pursuit of increased TVL in Outcome financial contracts. This implementation doc is intended to be used with the General_KPI price identifier. These objectives and corresponding payouts are detailed in the Implementation section.
+The KPI options minted through this implementation document are intended for distribution to the SuperUMAn DAO to incentive their members to continue the pursuit of increased TVL in Outcome financial contracts. This implementation doc is intended to be used with the General_KPI price identifier. These objectives and corresponding payouts are detailed in the Implementation section.
 
 ## Intended Ancillary Data:
 Metric:Outcome TVL denominated in the price of 10k ETH,
-Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/suTVL-KPI.md", Rounding:6, Scaling:0
+Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/suTVL-KPI.md", Rounding:3, Scaling:0
 
 ## Implementation:
 
@@ -29,7 +29,7 @@ Note: [Chainlist.org](https://chainlist.org/) can be a good reference if mapping
 
 4. For each address from the list from step 3, call the `collateralToken` method to retrieve the collateral token address for each LSP contract.
 
-5. Call the `balanceOf()` method on the collateral contract from step 4 using the LSP contract address from step 2 as the argument at the latest available block at or before the request timestamp. This retrieves the value of the collateral token deposited into the LSP contract.
+5. Call the `balanceOf()` method on the collateral contract from step 4 using the LSP contract address from step 2 as the argument at the latest available block at or before the request timestamp. This retrieves the value of the collateral token deposited into the LSP contract. This [script](https://github.com/UMAprotocol/protocol/blob/master/packages/affiliates/liquidity-mining/FindBlockAtTimeStamp.js) can be used to find the block number closest to a given timestamp. 
 
 6. Scale down the balances returned from Step 5 by calling the `decimals()` method on the collateral token contracts from Step 4.
 
@@ -47,7 +47,7 @@ Note: [Chainlist.org](https://chainlist.org/) can be a good reference if mapping
 
 8. Multiply the values returned from step 6 and step 7. 
 
-9. Sum the total values from step 8 and divide the value by 10,000. Round the returned value to 6 decimal places.
+9. Sum the total values from step 8 and divide the value by 10,000. Round the returned value to 3 decimal places.
 
 ### Other Outcome TVL & contracts
 
@@ -58,7 +58,7 @@ As new contracts become active, please note that this implementation document is
 **Additional information for UMA DVM participants:**
       
 ## Intended Application:
-It is intended to deploy the documented KPI Options on Polygon network using [LSP Contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with 'General_KPI' price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). This contract would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the 'lowerBound' set to 0 and the 'upperBound' set to 1.
+It is intended to deploy the documented KPI Options on the Ethereum mainnet network using [LSP Contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with 'General_KPI' price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). This contract would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the 'lowerBound' set to 0 and the 'upperBound' set to 1.
 
 'collateralPerPair' parameter for the LSP contract would be set to 1 so that the maximum payout per KPI option would reach 1 UMA if the max value denominated in 10k ETH is reached at the request timestamp.
 
