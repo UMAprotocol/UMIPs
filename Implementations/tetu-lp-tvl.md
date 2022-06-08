@@ -13,7 +13,7 @@ Metric:LP TVL provided to the  TetuSwap LP (TLP_USDC_UMA),
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/tetu-lp-tvl.md",
 Interval:daily,
 Aggregation:Average end of day (midnight UTC) TVL since <START_TIMESTAMP>,
-Rounding:-0
+Rounding:0
 ```
 
 
