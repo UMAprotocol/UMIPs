@@ -10,7 +10,7 @@ This calculation is intended to track the TVL in USD of liquidity provider (LP) 
 
 ```
 Metric:LP TVL provided to the  TetuSwap LP (TLP_USDC_UMA),
-Method:https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/tetu-lp-tvl.md,
+Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/tetu-lp-tvl.md",
 Interval:daily,
 Aggregation:Average end of day (midnight UTC) TVL since <START_TIMESTAMP>,
 Rounding:-0
