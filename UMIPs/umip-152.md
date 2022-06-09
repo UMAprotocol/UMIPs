@@ -125,7 +125,23 @@ The `ancillaryData` for the price request will be generated automatically and co
 
 `proposalHash: 0x...abcdef`
 
-### Resolving Disputes
+## Rationale
+It is impossible to capture every form of human organization in rigid programmatic structures. Without a flexible, natural language based system for outlining rules of operation, and a trustless and decentralized mechanism for enforcing those rules, DAOs can only exist in a stunted form, like an oak tree growing in a pot with no space for deep roots.
+
+This UMIP and the associated module code brings the flexibility of law to smart contracts, with UMA voters serving as judge and jury in case of disputes. Unlike the tradition of common law, however, UMA voters do not attempt to create precedent for ambiguous cases, resolve controversy, or fill in the gaps. If there is ambiguity about whether a particular proposal follows the rules, it is simply rejected.
+
+The onus is on the DAO to write clear rules and on the proposer to ensure their transactions follow the rules, with no room for ambiguity by a neutral third-party observer.
+
+This methodology allows for a huge amount of flexibility for DAOs to manage their shared resources without requiring UMA voters to make subjective judgements, which would be difficult for voters and could potentially create unpredictable and undesirable results for DAOs.
+
+## Implementation
+Voters should read the plain language rules referenced in the public `rules` value in the Optimistic Governor contract that requested a price and check the proposed transactions against those rules.
+
+This `rules` value will usually be an IPFS hash. If it is, voters can view the rules through a web browser by going to https://ipfs.io/ipfs/<RULES_HASH> or by using any other system to access the document using IPFS. If the `rules` value is a web URI, voters can simply enter the web URI into any web browser.
+
+The system is quite flexible, so voters may need to find other publicly verifiable data to determine if the proposed transactions follow the rules. For instance, they may need to check the result of a Snapshot vote to verify that a governance proposal was approved by the DAO token holders, or check the current price of a token to verify a proposal to make a trade according to a trading strategy outlined in the rules, or confirm public misbehavior by some address to verify a proposal to slash a bond posted by that address.
+
+If the proposer included an optional `explanation` in the ancillary data of the price request, that may be helpful for understanding the intent of the proposal, but voters should primarily consider the actual effects of the proposed transactions and verify that the transactions clearly and unambiguously follow the rules.
 
 If a proposal is disputed, the disputer is encouraged to publish their reasoning in a public forum to assist UMA voters in their determination of whether or not the proposal was valid.
 
@@ -148,17 +164,11 @@ It is the responsibility of the DAO users of the `ZODIAC` identifier to write cl
 
 It is important that the process for changing the rules be particularly clear and unambiguous, if a rule change process is allowed by the DAO. This allows the DAO to add, remove, or clarify rules as needed, analogous to a constitutional amendment.
 
-## Rationale
-It is impossible to capture every form of human organization in rigid programmatic structures. Without a flexible, natural language based system for outlining rules of operation, and a trustless and decentralized mechanism for enforcing those rules, DAOs can only exist in a stunted form, like an oak tree growing in a pot with no space for deep roots.
-
-This UMIP and the associated module code brings the flexibility of law to smart contracts, with UMA voters serving as judge and jury in case of disputes. Unlike the tradition of common law, however, UMA voters do not attempt to create precedent for ambiguous cases, resolve controversy, or fill in the gaps. If there is ambiguity about whether a particular proposal follows the rules, it is simply rejected.
-
-The onus is on the DAO to write clear rules and on the proposer to ensure their transactions follow the rules, with no room for ambiguity by a neutral third-party observer.
-
-This methodology allows for a huge amount of flexibility for DAOs to manage their shared resources without requiring UMA voters to make subjective judgements, which would be difficult for voters and could potentially create unpredictable and undesirable results for DAOs.
-
-## Implementation
 The implementation of the Optimistic Governor module can be [found here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/zodiac/OptimisticGovernor.sol).
+
+The requester will be the Optimistic Governor contract itself, which means voters can use the requester address to find the contract on Etherscan and inspect the public `rules` value.
+
+Voters can use the [`DecodeTransactionData` script](https://github.com/UMAprotocol/protocol/blob/master/packages/scripts/src/DecodeTransactionData.js) to decode transaction data as needed.
 
 ### Example Rules
 The `ZODIAC` identifier is designed to allow rules to be as flexible as possible while still being clear to UMA voters called in to resolve disputes. These examples are meant to inspire creativity in users creating their own rules and demonstrate the legalistic approach they should take.
