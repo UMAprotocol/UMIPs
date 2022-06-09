@@ -29,7 +29,11 @@ Note: [Chainlist.org](https://chainlist.org/) can be a good reference if mapping
 
 4. For each address from the list from step 3, call the `collateralToken` method to retrieve the collateral token address for each LSP contract.
 
-5. Call the `balanceOf()` method on the collateral contract from step 4 using the LSP contract address from step 2 as the argument at the latest available block at or before the request timestamp. This retrieves the value of the collateral token deposited into the LSP contract. This [script](https://github.com/UMAprotocol/protocol/blob/master/packages/affiliates/liquidity-mining/FindBlockAtTimeStamp.js) can be used to find the block number closest to a given timestamp. 
+5. Call the `balanceOf()` method on the collateral contract from step 4 using the LSP contract address from step 2 as the argument at the latest available block at or before the request timestamp.
+
+Determine the collateral balance for each of the three previous hours from the latest available block at or before the request timestamp. Sum these balances and divide the total by three to retrieve the value that will be used for the collateral token deposited into the LSP contract.
+
+This [script](https://github.com/UMAprotocol/protocol/blob/master/packages/affiliates/liquidity-mining/FindBlockAtTimeStamp.js) can be used to find the block number closest to a given timestamp. 
 
 6. Scale down the balances returned from Step 5 by calling the `decimals()` method on the collateral token contracts from Step 4.
 
