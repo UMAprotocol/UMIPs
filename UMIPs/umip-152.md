@@ -148,44 +148,6 @@ It is the responsibility of the DAO users of the `ZODIAC` identifier to write cl
 
 It is important that the process for changing the rules be particularly clear and unambiguous, if a rule change process is allowed by the DAO. This allows the DAO to add, remove, or clarify rules as needed, analogous to a constitutional amendment.
 
-### Important Special Case: Rule Changes
-
-It is possible for a bad proposal to be made that technically follows the published rules, either by a malicious actor or due to an oversight or mistake. It is also possible for the rules in an Optimistic Governor module to be changed via the existing governance process or an emergency adminstrative action by the multi-sig (if any).
-
-As a failsafe mechanism, it should be allowed for a DAO to change their rules in response to malicious proposals, and in those cases the new rules should be considered the official rules by UMA voters, and disputed proposals should be rejected if they violate the old rules, even if they technically followed the rules at the time of the original proposal.
-
-It's easiest to understand this by example.
-
-Let us consider a Magicland DAO with two rules in their published rules document:
-
-```
-1. The treasurer is allowed to move money from the treasury at their discretion for the good of the DAO.
-2. The rules can be changed by a Snapshot vote where more than 50% of the token supply votes to change the rules.
-```
-
-As it turns out, the Magicland treasurer is revealed to be a serial scam artist and proposes to move 10,000 ETH from the Magicland treasury to a smart contract wallet they controlled and then to Tornado Cash.
-
-DAO members, understandably concerned, dispute that proposal, and more than 50% of the token supply votes on Snapshot to change to new rules:
-
-```
-1. Any proposals from the former treasurer's address, 0xabc...123, are invalid and should be rejected.
-2. The rules can be changed by a Snapshot vote where more than 50% of the token supply votes to change the rules.
-```
-
-The former treasurer disputes the rules change since it would prevent them from stealing money from the treasury.
-
-The UMA voters must now consider two disputed proposal: The treasurer's proposal to move the treasury's funds to Tornado Cash and the proposal to change the rules to block the treasurer, which was approved by a majority vote on Snapshot.
-
-The voters must consider and potentially execute the rules change proposal FIRST, even though the treasurer's proposal came earlier.
-
-Since the majority of tokens voted in favor of the rules change on Snapshot, the UMA voters must return a value of `1` indicating that the rules change is valid.
-
-And, importantly, they must apply the new rules *retroactively* to the treasurer's proposal, and return a value of `0` indicating that the treasurer's proposal is invalid, even though the proposal was made before the rules were changed.
-
-This failsafe mechanism allows a DAO to change their rules when they identify a loophole or need to off-board contributors who previously had some measure of trust and personal discretion in spending DAO funds.
-
-See also: Rule Change Race Conditions, below, in `Security considerations`.
-
 ## Rationale
 It is impossible to capture every form of human organization in rigid programmatic structures. Without a flexible, natural language based system for outlining rules of operation, and a trustless and decentralized mechanism for enforcing those rules, DAOs can only exist in a stunted form, like an oak tree growing in a pot with no space for deep roots.
 
@@ -288,17 +250,6 @@ The rules may also add additional requirements for special transactions, like ch
 The reason to add these extra requirements for complex or potentially risky transactions is to make it easy for oracle observers to evaluate proposals within a short challenge window and dispute proposals that are obviously invalid.
 
 The more important a transaction is, the more requirements the DAO may want to put into their rules around that transaction. That makes it more likely that a disputer will step in to block bad proposals with confidence that they will be backed up by UMA voters since some unambiguous requirement was not fulfilled.
-
-### Rule Change Race Conditions
-A clever exploiter (see: Important Special Case) who identifies a loophole may submit a proposal shortly before the start of a new UMA voting cycle, with the expectation that their proposal will be disputed quickly and voted on in the next UMA voting cycle but a change in rules will not be made in time to block their malicious proposal.
-
-Ideally, the rules will include enough checks and balances to prevent this scenario from happening. There is a great deal of responsibility on the DAO to write safe and effective rules.
-
-But if they fail to do so and a malicious transaction comes through right before an UMA voting cycle, the DAO should consider having an extra failsafe that allows for rapid rule changes through some mechanism outside of UMA's oracle.
-
-For example, the rules may specify that they will "shut down" and become invalid if 50% of voters in an emergency Snapshot poll, or 3-of-5 signers on an emergency multi-sig, vote to invalidate them. In that scenario, UMA voters will check if the shutdown condition was triggered when evaluating a proposal.
-
-It is also possible that the DAO will have an emergency multi-sig with the power to delete proposals directly (see below).
 
 ### Continued Use of an Emergency Administrative Multi-Sig
 In the long run, it should be possible to replace multi-sig control of a Gnosis Safe, with all governance actions going through the Optimistic Governor. While the Optimistic Governor is being implemented, however, and best practices around DAO rules are being established, it may be useful to retain a multi-sig as an emergency override mechanism.
