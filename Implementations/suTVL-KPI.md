@@ -5,7 +5,7 @@ SuperUMAn DAO TVL KPI Option
 The KPI options minted through this implementation document are intended for distribution to the SuperUMAn DAO to incentive their members to continue the pursuit of increased TVL in Outcome financial contracts. This implementation doc is intended to be used with the General_KPI price identifier. These objectives and corresponding payouts are detailed in the Implementation section.
 
 ## Intended Ancillary Data:
-Metric:TVL in UMA LSP, OG, and OD contracts denominated in the price of 10k ETH,
+Metric:"TVL in UMA LSP, OG, and OD contracts denominated in the price of 10k ETH",
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/suTVL-KPI.md", Rounding:3, Scaling:0
 
 ## Implementation:
