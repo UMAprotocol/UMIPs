@@ -168,8 +168,6 @@ The implementation of the Optimistic Governor module can be [found here](https:/
 
 The requester will be the Optimistic Governor contract itself, which means voters can use the requester address to find the contract on Etherscan and inspect the public `rules` value.
 
-Voters can use the [`DecodeTransactionData` script](https://github.com/UMAprotocol/protocol/blob/master/packages/scripts/src/DecodeTransactionData.js) to decode transaction data as needed.
-
 ### Example Rules
 The `ZODIAC` identifier is designed to allow rules to be as flexible as possible while still being clear to UMA voters called in to resolve disputes. These examples are meant to inspire creativity in users creating their own rules and demonstrate the legalistic approach they should take.
 
