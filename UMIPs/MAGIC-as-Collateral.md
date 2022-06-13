@@ -19,9 +19,17 @@ MAGIC token is economic infrastructure for various play-to-own games using Treas
 To accomplish this upgrade, the following changes need to be made:
 
 
-- MAGIC token address 0x539bdE0d7Dbd336b79148AA742883198BBF60342
+- The following address on Arbitrum needs to be added to the collateral currency whitelist introduced in UMIP-8:
 
-https://arbiscan.io/token/0x539bdE0d7Dbd336b79148AA742883198BBF60342
+     - MAGIC token address 0x539bdE0d7Dbd336b79148AA742883198BBF60342
+
+     - https://arbiscan.io/token/0x539bdE0d7Dbd336b79148AA742883198BBF60342
+
+- The token on ethereum mainnet also needs to be added to the collateral currency whitelist. 
+
+     - 0xB0c7a3Ba49C7a6EaBa6cD4a96C55a1391070Ac9A
+
+     - https://etherscan.io/token/0xB0c7a3Ba49C7a6EaBa6cD4a96C55a1391070Ac9A
 
 - A final fee of 5500 MAGIC needs to be set in the Store contract for MAGIC token
 
