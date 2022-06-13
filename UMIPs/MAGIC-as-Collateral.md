@@ -23,7 +23,7 @@ To accomplish this upgrade, the following changes need to be made:
 
 https://arbiscan.io/token/0x539bdE0d7Dbd336b79148AA742883198BBF60342
 
-- A final fee of 2500 MAGIC needs to be set in the Store contract for MAGIC token
+- A final fee of 5500 MAGIC needs to be set in the Store contract for MAGIC token
 
 
 ## Rationale
