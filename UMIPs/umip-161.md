@@ -2,9 +2,8 @@
 
 - **UMIP title:** Add MAGIC as collateral currency
 - **Author:** Mr.Bahama
-- **Status:** Ready for Review
+- **Status:** Last Call
 - **Created:** 26 May 2022
-- **Discourse Link:**
 
 ## Summary (2-5 sentences)
 
