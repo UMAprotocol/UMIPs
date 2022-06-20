@@ -75,11 +75,21 @@ MAGIC has predominant liquidity and volume activity in the AMMs paired with WETH
 
 Voters should query for the price of MAGIC/WETH and MAGIC/USDC on SushiSwap. When determining the price for MAGIC/USDC it should also take into account MAGIC/USDT on OKX. Use the ETH/USDC price as specified via UMIP-6. Recommended endpoints are provided in the markets and data sources section (To be added by DevX). 
 
-1. Query the MAGIC/WETH price from SushiSwap using 2-week TWAP.
-2. Query the ETH/USD price as per UMIP-6.
-3. Multiply the MAGIC/ETH price by the ETH/USD price and round to 6 decimals to get the MAGIC/USD price.
-4. The result from step 5 should be rounded to six decimals to determine the MAGICUSD price.
-5. (for USD/MAGIC) Take the inverse of the result of step 3, before rounding, (1/ MAGIC/USD) to get the USD/MAGIC price, and round to 6 decimals.
+### MAGICUSDC
+
+1. Query the MAGICUSDC price from SushiSwap using a 2-week TWAP.
+2. Query the MAGICUSDT price from OKX using a 2-week TWAP.
+3. Add the 2 week TWAP from Sushiswap to the 2-week TWAP from OKX and divide by two to receive the average price of Magic between Sushiswap and OKX
+4. Query the ETH/USD price as per UMIP-6 using a 2-week TWAP. 
+5. Multiply the MAGICUSDC price by the ETH/USD price and round to 8 decimals to get the MAGIC/USD price.
+6. (for USD/MAGIC) Take the inverse of the result of step 3, before rounding, (1/ MAGIC/USD) to get the USD/MAGIC price, and round to 8 decimals.
+
+### MAGICETH
+
+1. Query the MAGICETH price from SushiSwap using a 2-week TWAP.
+2. Query the ETH/USD price as per UMIP-6 using a 2-week TWAP. 
+3. Multiply the MAGICETH price by the ETH/USD price and round to 8 decimals to get the MAGIC/ETH price.
+ 
 
 For both implementations, voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
