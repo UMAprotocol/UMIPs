@@ -2,7 +2,7 @@
 
 -   **UMIP title:** Add **PSP** (ParaSwap), **BEAN** (Beanstalk), and **TETU** as collateral currency 
 -   **Author:**  Geoff (stadnykgeoff1@gmail.com)
--   **Status:** Last Call
+-   **Status:** Approved
 -   **Created:**  4 April 2022
 -   **Discourse Link:**  https://discourse.umaproject.org/t/umip-proposal-create-psp-bean-tetu-collateral-add/1642
 

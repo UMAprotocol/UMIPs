@@ -4,7 +4,7 @@
 | ------------------- | --------------------------------------------------------------------------------------------- |
 | UMIP Title          | Add **ACROSS-V2** as a supported price identifier                                             |
 | Authors             | Matt Rice                                                                                     |
-| Status              | Last Call                                                                                     |
+| Status              | Approved                                                                                    |
 | Created             | 03/30/2022                                                                                    |
 | Discourse Link      |                                                                                               |
 

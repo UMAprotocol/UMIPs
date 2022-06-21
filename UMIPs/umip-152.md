@@ -2,7 +2,7 @@
 - UMIP-152
 - UMIP title: Add ZODIAC as a supported price identifier
 - Author: John Shutt (john@umaproject.org)
-- Status: Last Call
+- Status: Approved
 - Created: March 7, 2022
 
 ## Summary (2-5 sentences)

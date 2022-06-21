@@ -3,7 +3,7 @@
 |------------|------------------------------------|
 | UMIP Title | Upgrade Polygon Root Tunnel System |
 | Authors    | Nick Pai (nick@umaproject.org)     |
-| Status     | Last Call                          |
+| Status     | Approved                        |
 | Created    | March 28, 2022                     |
 
 ## Summary (2-5 sentences)

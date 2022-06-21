@@ -4,7 +4,7 @@
 | ------------------- | --------------------------------------------------------------------------------------------- |
 | UMIP Title          | Add **APT** as a supported price identifier                                                   |
 | Authors             | **AthleteX DAO**                                                                              |
-| Status              | Last Call                                                                                     |
+| Status              | Approved                                                                                    |
 | Created             | 12/18/2021                                                                                    |
 | Discourse Link      | https://discourse.umaproject.org/t/umip-proposal-add-apt-as-a-supported-price-identifier/1566 |
 

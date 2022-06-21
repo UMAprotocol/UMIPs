@@ -2,7 +2,7 @@
 - UMIP-155
 - UMIP title: Add **VSQ** as collateral currency
 - Author: Geoff (stadnykgeoff1@gmail.com)
-- Status: Last Call
+- Status: Approved
 - Created: 24 March 2022
 - Discourse Link: https://discourse.umaproject.org/t/umip-proposal-create-add-vsq-as-collateral-on-polygon/1576
 

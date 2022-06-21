@@ -3,7 +3,7 @@
 |------------|---------------------------------|
 | UMIP Title | Add OptimisticOracleV2          |
 | Authors    | Pablo Maldonado (pablo@umaproject.org) |
-| Status     | Approved                        |
+| Status     | Last Call                       |
 | Created    | June 21, 2022                    |
 
 ## Summary (2-5 sentences)

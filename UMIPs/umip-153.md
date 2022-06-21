@@ -2,7 +2,7 @@
 - UMIP-153
 - UMIP title: Add Fiat DAO (FDT) as a collateral currency. 
 - Author: Geoff (stadnykgeoff1@gmail.com)
-- Status: Last Call
+- Status: Approved
 - Created: 14 March 2022
 - Discourse Link: https://discourse.umaproject.org/t/umip-proposal-create-vsq-and-fdt-collateral-adds/1571
 
