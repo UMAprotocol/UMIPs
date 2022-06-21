@@ -15,22 +15,22 @@ Prior to the addition of this Optimistic Oracle, callbacks were executed wheneve
 ## Technical Specification
 To accomplish this upgrade, a few actions will need to be taken:
 - A new `OptimisticOracleV2` contract has been deployed in the following networks:
--- Mainnet: [0xA0Ae6609447e57a42c51B50EAe921D701823FFAe](https://etherscan.io/address/0xA0Ae6609447e57a42c51B50EAe921D701823FFAe).
--- ...
-- A transaction will need to be proposed to add this new addresses to the `Finder` contract under the name `OptimisticOracleV2`. This is how other contracts will find the optimistic oracle and reference it.
-- The `OptimisticOracleV2` will need to be registered with the `Registry` so that it can make requests to the DVM.
+    * Mainnet: [0xA0Ae6609447e57a42c51B50EAe921D701823FFAe](https://etherscan.io/address/0xA0Ae6609447e57a42c51B50EAe921D701823FFAe)
+    * Polygon: [0xee3afe347d5c74317041e2618c49534daf887c24](https://polygonscan.com/address/0xee3afe347d5c74317041e2618c49534daf887c24)
+    * Optimism: [0x255483434aba5a75dc60c1391bB162BCd9DE2882](https://optimistic.etherscan.io/address/0x255483434aba5a75dc60c1391bB162BCd9DE2882)
+    * Arbitrum: [0x88Ad27C41AD06f01153E7Cd9b10cBEdF4616f4d5](https://arbiscan.io/address/0x88Ad27C41AD06f01153E7Cd9b10cBEdF4616f4d5)
+    * Boba: [0xb2b5C1b17B19d92CC4fC1f026B2133259e3ccd41](https://blockexplorer.boba.network/address/0xb2b5C1b17B19d92CC4fC1f026B2133259e3ccd41/transactions)
 
-Note: this change will only add the optimistic oracle v2. New financial contracts that utilize the optimistic oracle v2 will need to be deployed for it to become useful. Until all steps above are performed, the deployed OptimisticOracleV2 _should not_ be used in production since it will not be able to raise disputes to the DVM.
+
+- Transactions will need to be proposed to add this new addresses to the `Finder` contract under the name `OptimisticOracleV2` in each network. This is how other contracts will find the optimistic oracle and reference it.
+- The `OptimisticOracleV2` will need to be registered with the `Registry` in each network so that it can make requests to the DVM.
+
+Note: this change will only add the optimistic oracle v2 to the networks mentioned above. New financial contracts that utilize the optimistic oracle v2 will need to be deployed for it to become useful. Until all steps above are performed, the deployed OptimisticOracleV2 _should not_ be used in production since it will not be able to raise disputes to the DVM.
 
 ## Implementation
 
 The `OptimisticOracleV2` contract can be found [here](https://github.com/UMAprotocol/protocol/tree/master/packages/core/contracts/oracle/implementation). It is in the process of being audited. If the audit requires changes, a follow-up proposal can remove this implementation and add the updated one with little-to-no risk to the DVM.
 
-The mainnet contract address:
-
-*OptimisticOracleV2* - [0xA0Ae6609447e57a42c51B50EAe921D701823FFAe](https://etherscan.io/address/0xA0Ae6609447e57a42c51B50EAe921D701823FFAe)
-
-
 ## Security considerations
 
-The Optimistic Oracle only has the ability to send price requests to the DVM, so in the event of a serious bug, the biggest security implication would be that end-users would be able to send requests to the DVM without paying the final fee.
+The Optimistic Oracle V2 only has the ability to send price requests to the DVM, so in the event of a serious bug, the biggest security implication would be that end-users would be able to send requests to the DVM without paying the final fee.
