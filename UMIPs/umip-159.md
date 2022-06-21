@@ -4,7 +4,7 @@
 | -------------- | -------------------------------------------------------------------------------------------- |
 | UMIP Title     | Add NZDUSD as price identifier                                                               |
 | Authors        | Iliyan Iliev (iliyan.iliev@jarvis.exchange)                                                  |
-| Status         | Last Call                                                                                    |
+| Status         | Approved                                                                                   |
 | Created        | 04/05/22                                                                                     |
 | Discourse link | https://discourse.umaproject.org/t/umip-proposal-add-nzdusd-price-identifier-on-polygon/1603 |
 
