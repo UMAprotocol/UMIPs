@@ -1,10 +1,10 @@
 ## Headers
-| UMIP-161   |                                 |
+| UMIP-162   |                                 |
 |------------|---------------------------------|
 | UMIP Title | Add OptimisticOracleV2          |
 | Authors    | Pablo Maldonado (pablo@umaproject.org) |
 | Status     | Approved                        |
-| Created    | June 8, 2022                    |
+| Created    | June 21, 2022                    |
 
 ## Summary (2-5 sentences)
 This UMIP will result in the creation of a new optimistic oracle contract with enhanced control over pricing request callbacks, which will only be executed if the requester has declared its readiness to receive them. This modification also eliminates the use of try-catch structures, which were vulnerable to gas griefing. Additionally, the contract includes a new event-based price request, which is suitable for requests that depend on events without a fixed date, thereby evaluating pricing requests at the time of proposal. This will enable the implementation of a more robust and adaptable price requests.
