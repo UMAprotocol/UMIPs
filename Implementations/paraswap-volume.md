@@ -65,7 +65,7 @@ Sum the returned token prices and divide by the number of price values. This val
 
 5. Sum all returned values from step 6. Round the value to 0 decimal places (e.g. 25.123 -> 25).
 
-An example implementation script is provided here, but voters are encouraged to independently verify its calculation logic and results.
+An example implementation script is provided [here](https://github.com/abg4/paraswap), but voters are encouraged to independently verify its calculation logic and results.
 
 ## Intended Application
 
