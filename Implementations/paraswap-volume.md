@@ -44,9 +44,9 @@ Paraswap wishes to track the total increase in cumulative volume over a period o
 
 1. For each of the listed `Subgraphs` endpoints above, replace the `timestamp.number` value with the request timestamp and run the swaps query shown above. Note: If necessary, use the skip variable `skip:1000` to iterate through a loop to query 1,000 swaps each time. Continually skip by 1,000 until all swap responses are returned.
 2. From the returned results of step 1, filter out returned values where values have a `timestamp` value that is less than the `StartTimestamp` value. Record each returned `srcAmount`, `srcToken`, `destAmount`, `destToken` values returned.
-3. Group all `srcToken` and `destToken` values returned from step 2 and sum the values of `srcAmount` and `destAmount`.
+3. Group all `srcToken` and `destToken` values returned from step 2 and sum the values of `srcAmount` and `destAmount` separately.
 4. Scale down raw amounts calculated in Step 3 by each ERC-20 token contract decimals (or convert from wei for Ether).
-5. For all swapped ERC-20 tokens / Ether get the historical pricing series from CoinGecko for the evaluation period:
+5. For all swapped ERC-20 tokens / native token get the historical pricing series from CoinGecko for the evaluation period:
    - Based on CoinGecko [API documentation](https://www.coingecko.com/api/documentations/v3#/contract/get_coins__id__contract__contract_address__market_chart_range) construct a price API request with the following parameters:
      - `id`: CoinGecko platform id - should be set to the network according to the subgraph;
      - `contract_address`: ERC-20 token address;
