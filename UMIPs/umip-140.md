@@ -55,7 +55,7 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 
 ## IMPLEMENTATION
 ### Price Identifier
-The index basket is formed by including the first 10 stocks from the Top Performing SPACs table from the website [SPACanalytics.com](https://www.spacanalytics.com/)
+The index basket is formed by including the first 10 stocks from the Top Performing SPACs table from the website [SPACanalytics.com](https://www.spacanalytics.com/)  on 30.06.2022.
 The list of stocks included in the index basket are:
 |N|TICKER|MARKET|
 |:--:|:------:|:--------:|
