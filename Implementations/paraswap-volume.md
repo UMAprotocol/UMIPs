@@ -81,8 +81,3 @@ It is intended to deploy the documented KPI options on Ethereum network using [L
 Example 1: Paraswap achieves a cumulative volume of $250 million. The calculation would be 250,000,000 / 1,000,000,000 = 0.25 and 0.25 PSP would be allocated to the long token and 0.75 PSP would be allocated to the short token.
 
 Example 1: Paraswap achieves a cumulative volume of $750 million. The calculation would be 750,000,000 / 1,000,000,000 = 0.75 and 0.75 PSP would be allocated to the long token and 0.25 PSP would be allocated to the short token.
-
-## Outstanding Items
-- Need to confirm if we are using a daily TWAP or include all values returned. Something like `TWAPAggregation:Average end of day (midnight UTC) price since <StartTWAP>` would be included in ancillary data.
-- The Intended Application section uses placeholder values as we are waiting for confirmed values from Paraswap.
-- Include script when complete.
