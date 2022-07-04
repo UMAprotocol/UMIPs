@@ -25,22 +25,22 @@ The set up will work as follows:
 
 ### `YES_OR_NO_QUERY`
 ```
-Q: Did the Meter network repay back the hacked funds? The answer is valid if any public medium publishes the repaying using stablecoins from the Meter network. P1: No, P2: Yes.
+Q: Did the Meter network repay back the hacked funds? The answer is valid if any public medium publishes the repaying using stablecoins from the Meter network. res_data: p1: 0, p2: 1, p3: 0.5, p4: -57896044618658097711785492504343953926634992332820282019728.792003956564819968. Where p1 corresponds to No, p2 to a Yes, p3 to unknown, and p4 to an early request
 ```
 ### `Token Price calculation`
 ```
 Metric: Meter token price,
 Aggregation:TWAP TVL for the provided time range,
-StartTWAP:1648771200,
-EndTWAP:1651363200,
-Rounding:6
+<StartTWAP>:1648771200,
+<EndTWAP>:1651363200,
+Rounding:2
 ```
 
 ## Implementation
 
 1. Determine the price evaluation range from `StartTWAP` till `EndTWAP` as UNIX timestamps passed in the ancillary data.
-For historical pricing series, use CoinGecko API endpoint: https://api.coingecko.com/api/v3/coins/{id}/market_chart/
-2. Use the following details to construct the
+2. For historical pricing series, use CoinGecko API endpoint: https://api.coingecko.com/api/v3/coins/{id}/market_chart/
+3. Use the following details to construct the
       * `id`: meter
       * `vs_currency`:  measurement currency, should be set to "usd";
       * `from`: start timestamp (identified in Step 1);
@@ -50,11 +50,13 @@ For historical pricing series, use CoinGecko API endpoint: https://api.coingecko
     * Locate the `prices` key value from CoinGecko API response - it should contain a list of [ timestamp, price ] value pairs. Note that returned CoinGecko timestamps are in milliseconds;
     * In case returned pricing interval is more frequent than 1 hour voters should extend the requested time range. This is necessary to have consistent pricing results independent on when the voters are calculating them.
     * Voters should verify that obtained price results agree with broad market consensus.
-3. Once obtaining the prices, find the average price for given time range.
+4. Once obtaining the prices, find the average price for given time range.
 
 ## Post processing
 
 Once the TWAP value has been calculated, the options will expire based on the following payout function:
+
+The payout thresholds should be equal to or above to jump to the next level.
 
 | **MTRG Price ($)** | **MTRG Release** | **Payout per KPI token** |
 |----------------|------------------|--------------------------|
