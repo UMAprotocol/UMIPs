@@ -29,7 +29,7 @@ Q: Did the Meter network repay back the hacked funds? The answer is valid if any
 ```
 ### `Token Price calculation`
 ```
-Metric: Meter token price,
+Metric: Meter token price measured in USD,
 Aggregation:TWAP TVL for the provided time range,
 StartTWAP:1648771200,
 EndTWAP:1651363200,
