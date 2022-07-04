@@ -18,7 +18,7 @@ There are 2 layers to this implementation: i) the definition of the repaying usi
 The set up will work as follows: 
 
 - The KPI options will be minted using the `General_KPI` identifier. 
-- An early expiry condition will be set up such that if the Meter Network publicly publishes an announcement that mentions the repaying of the hacked funds, the KPI options will expire to a value of zero. The identification of such announcement is any public account (such as Twitter, Medium, etc.) that publishes the repaying using stablecoins. The early expiry request will be passed through the `YES_OR_NO_QUERY`, If yes, the KPI options will expire. If no, the options will remain unchanged.
+- On deployment, the `enableEarlyExpiration` parameter will be set to `true` so that if the Meter Network publicly publishes an announcement that mentions the repaying of the hacked funds, the KPI options will expire to a value of zero. The identification of such announcement is any public account (such as Twitter, Medium, etc.) that publishes the repaying using stablecoins. The early expiry request will be resolved using the `YES_OR_NO_QUERY` from [UMIP-107](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-107.md), If yes, the KPI options will expire. If no, the options will remain unchanged.
 - If no such announcement is made, the KPI options will expire based on the price of the MTRG token, using the CoinGecko API. The token price logic will be passed through ancillary data. 
 
 ## Intended Ancillary Data
@@ -29,7 +29,7 @@ Q: Did the Meter network repay back the hacked funds? The answer is valid if any
 ```
 ### `Token Price calculation`
 ```
-Metric: Meter token price,
+Metric: Meter token price measured in USD,
 Aggregation:TWAP TVL for the provided time range,
 <StartTWAP>:1648771200,
 <EndTWAP>:1651363200,
