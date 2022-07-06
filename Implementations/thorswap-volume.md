@@ -46,7 +46,7 @@ group by 1
 ```
 
 1. Use the `volume per month` query above to retrieve the Thorswap monthly trade values. It should contain a list of { MONTH, TS_SWAP_VOLUME, CUMULATIVE_TS_SWAP_VOLUME } values.
-2. For the values returned from step 1, locate the `MONTH` key value that corresponds with the parameter specified in the ancillary data.  Choose the `TS_SWAP_VOLUME` value returned in the same array. Round the difference to 0 decimal places (e.g. 72166475.9878698 -> 72166475).
+2. For the values returned from step 1, locate the `MONTH` key value that corresponds with the parameter specified in the ancillary data.  Choose the `TS_SWAP_VOLUME` value returned in the same array. Round the returned value to 0 decimal places (e.g. 72166475.9878698 -> 72166475).
 
 ## Intended Application
 
