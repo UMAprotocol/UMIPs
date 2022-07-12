@@ -23,24 +23,20 @@ The set up will work as follows:
 
 ## Intended Ancillary Data
 
-### `YES_OR_NO_QUERY`
-```
-Q: Did the Meter network repay back the hacked funds? The answer is valid if any public medium publishes the repaying using stablecoins from the Meter network. res_data: p1: 0, p2: 1, p3: 0.5, p4: -57896044618658097711785492504343953926634992332820282019728.792003956564819968. Where p1 corresponds to No, p2 to a Yes, p3 to unknown, and p4 to an early request
-```
-### `Token Price calculation`
 ```
 Metric: Meter token price measured in USD,
 Aggregation:TWAP TVL for the provided time range,
 <StartTWAP>:1648771200,
 <EndTWAP>:1651363200,
 Rounding:2
+q: Did the Meter network repay back the hacked funds? The answer is valid if any public medium publishes the repaying using stablecoins from the Meter network. If the answer is YES, the contract will expire early. If no, the contract will remain live. p1:1 and p2:0
 ```
 
 ## Implementation
-
-1. Determine the price evaluation range from `StartTWAP` till `EndTWAP` as UNIX timestamps passed in the ancillary data.
-2. For historical pricing series, use CoinGecko API endpoint: https://api.coingecko.com/api/v3/coins/{id}/market_chart/
-3. Use the following details to construct the
+1. Voters should first determine if this is an "early expiration" price request - this can be designated in ancillary data by identifying that there is a key:value pair of earlyExpiration:1 present. If this is an "early expiration" price request, voters should resolve it as if the requested price identifier was YES_OR_NO_QUERY following instructions from UMIP-107 and no further post-processing is required. If this is not an early expiration the voters should ignore parameters q, p1, p2 and proceed with instructions in following steps.
+2. Determine the price evaluation range from `StartTWAP` till `EndTWAP` as UNIX timestamps passed in the ancillary data.
+3. For historical pricing series, use CoinGecko API endpoint: https://api.coingecko.com/api/v3/coins/{id}/market_chart/
+4. Use the following details to construct the
       * `id`: meter
       * `vs_currency`:  measurement currency, should be set to "usd";
       * `from`: start timestamp (identified in Step 1);
@@ -50,7 +46,8 @@ Rounding:2
     * Locate the `prices` key value from CoinGecko API response - it should contain a list of [ timestamp, price ] value pairs. Note that returned CoinGecko timestamps are in milliseconds;
     * In case returned pricing interval is more frequent than 1 hour voters should extend the requested time range. This is necessary to have consistent pricing results independent on when the voters are calculating them.
     * Voters should verify that obtained price results agree with broad market consensus.
-4. Once obtaining the prices, find the average price for given time range.
+5. Once obtaining the prices, find the average price for given time range.
+6. Use the table in post processing to find the price and resolve the contract using the payout per KPI option.
 
 ## Post processing
 
@@ -60,6 +57,7 @@ The payout thresholds should be equal to or above to jump to the next level.
 
 | **MTRG Price ($)** | **MTRG Release** | **Payout per KPI token** |
 |----------------|------------------|--------------------------|
+| 0              | 0                |             0            |
 | 10             | 37,988.37        |             0.2475397765 |
 | 15             | 25,325.58        |             0.1650265177 |
 | 20             | 18,994.19        |             0.1237699208 |
