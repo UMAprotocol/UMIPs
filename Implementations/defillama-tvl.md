@@ -14,7 +14,7 @@ Endpoint:"https://api.llama.fi/protocol/<PROJECT_SLUG>",
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/defillama-tvl.md",
 Key:tvl[i].totalLiquidityUSD where tvl[i].date is the latest daily timestamp before the evaluated timestamp,
 Interval:"Daily 24:00 UTC",
-VestingPeriod:<VESTING_PERIOD>,
+RequestTimestamp:<REQUEST_TIMESTAMP>,
 AggregationPeriod:<AGGREGATION_PERIOD>,
 AggregationMethod:<AGGREGATION_METHOD>,
 PostProcessingMethod:<POST_PROCESSING_METHOD>,
@@ -22,7 +22,7 @@ PostProcessingParameters:<POST_PROCESSING_PARAMETERS>,
 Rounding:<ROUNDING_DECIMALS>
 ```
 
-***Note 1:** `VestingPeriod` is optional parameter.*
+***Note 1:** `RequestTimestamp` is optional parameter.*
 
 ***Note 2:** `AggregationPeriod` and `AggregationMethod` are optional parameters, though if either of them is provided the other one must be present as well.*
 
@@ -32,7 +32,7 @@ Variables enclosed in angle brackets above are place-holders to be completed upo
 
 - `<PROJECT_NAME>`: Canonical name of the project whose TVL is being tracked at DefiLlama.
 - `<PROJECT_SLUG>`: Project slug name to be appended to DefiLlama API endpoint.
-- `<VESTING_PERIOD>`: Expected time period in seconds between when the latest evaluated TVL and actual price request timestamp.
+- `<REQUEST_TIMESTAMP>`: Override value for price request timestamp.
 - `<AGGREGATION_PERIOD>`: Time period in seconds for any time series data processing.
 - `<AGGREGATION_METHOD>`: URL link to the supported aggregation method for time series data processing.
 - `<POST_PROCESSING_METHOD>`: URL link to the supported post-processing method.
@@ -46,8 +46,9 @@ Variables enclosed in angle brackets above are place-holders to be completed upo
     - `date`: UNIX timestamp
     - `totalLiquidityUSD`: project TVL measured in USD for the timestamp at `date` value above
 2. Determine evaluation timestamp(s) for TVL data:
-    - If `AggregationPeriod` is not provided then only single TVL value should be evaluated. In the absence of `VestingPeriod` this should be the latest available daily timestamp that is at or before the price request timestamp. If `VestingPeriod` parameter was provided one should first subtract its value from the price request timestamp and then identify the closest available (at or before) daily timestamp.
-    - If `AggregationPeriod` is provided then series of daily TVL values should be evaluated. The first evaluation timestamp is set by subtracting `AggregationPeriod` and `VestingPeriod` (`0` if not provided) from the price request timestamp and identifying the closest available (at or after) daily timestamp. The last evaluation timestamp is set the same as for scenario without `AggregationPeriod` (above). All available daily timestamps between the start and end evaluation (inclusive) should be evaluated.
+    - If `RequestTimestamp` parameter is provided its value should be used as an override for the actual price request timestamp. Though this should always be ignored if the provided `RequestTimestamp` value exceeds actual price request timestamp.
+    - If `AggregationPeriod` is not provided then only single TVL value should be evaluated at the latest available daily timestamp that is at or before the effective price request timestamp.
+    - If `AggregationPeriod` is provided then series of daily TVL values should be evaluated. The first evaluation timestamp is set by subtracting `AggregationPeriod` from the effective price request timestamp and identifying the closest available (at or after) daily timestamp. The last evaluation timestamp is set the same as for scenario without `AggregationPeriod` (above). All available daily timestamps between the start and end evaluation (inclusive) should be evaluated.
 3. Determine TVL values for all the evaluation timestamp(s) (Step 2) from the returned `tvl` array by taking `totalLiquidityUSD` value where item's `date` matches evaluation timestamp(s).
 4. If `AggregationMethod` is provided perform its referenced instructions using the TVL time series for all the evaluation timestamps to derive single TVL value. Otherwise use the only evaluated TVL data point for further processing.
 5. If `PostProcessingMethod` is provided perform its referenced instructions using the resolved TVL metric (Step 4) and post-processing function parameters from `PostProcessingParameters`. Otherwise use the raw TVL metric.
