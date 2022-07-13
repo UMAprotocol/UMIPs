@@ -1,15 +1,15 @@
 ## Title
 
-Dappback NFT KPI Option Calculation
+DappBack NFT KPI Option Calculation
 
 ## Summary
 
-Dappback allows users to earn tokens by going on task journeys for various projects. Dappback wishes to incentivize increased participation by offering the Dappback community a KPI option that targets holders of an NFT.
+DappBack allows users to earn tokens by going on task journeys for various projects. DappBack wishes to incentivize increased participation by offering the DappBack community a KPI option that targets holders of an NFT.
 
 ## Intended Ancillary Data
 
 ```
-Metric:Dappback NFT holders measured by supply of a collection,
+Metric:DappBack NFT holders measured by supply of a collection,
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/dappback-nft.md",
 contractAddress:<collectionContractAddress>,
 collectionID:<collectionID>,
@@ -18,7 +18,7 @@ Rounding:0
 
 ## Implementation
 
-Dappback wishes to track the number of holders for a specific NFT collection.
+DappBack wishes to track the number of holders for a specific NFT collection.
 
 1. Find the block number that corresponds to the block either at or before and closest to the request timestamp.
 2. At the block number returned from step 1, call the `totalSupply` method on the `contractAddress` from the ancillary data using the `collectionID` value from the ancillary data as the argument. Round the returned value to 0 decimal places (e.g. 25.123 -> 25).
