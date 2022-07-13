@@ -57,7 +57,7 @@ The payout thresholds should be equal to or above to jump to the next level.
 
 | **MTRG Price ($)** | **MTRG Release** | **Payout per KPI token** |
 |----------------|------------------|--------------------------|
-| 0              | 0                |             0            |
+| 0              | 37,988.37        |              0.2475397765|
 | 10             | 37,988.37        |             0.2475397765 |
 | 15             | 25,325.58        |             0.1650265177 |
 | 20             | 18,994.19        |             0.1237699208 |
