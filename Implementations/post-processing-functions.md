@@ -1,4 +1,4 @@
-These instructions are expected to be used with the `General-KPI` price identifier in conjunction with a dedicated `Method` document that requires off-chain post-processing of the resolved KPI metric.
+These instructions are expected to be used with the `General_KPI` price identifier in conjunction with a dedicated `Method` document that requires off-chain post-processing of the resolved KPI metric.
 
 Below sections provide post-processing instructions where each of section names corresponds to the supported values for the `PostProcessingMethod` parameter values passed in the ancillary data. `PostProcessingParameters` passed in the ancillary data should be a JSON object with key-value pairs representing named function parameters as detailed below.
 

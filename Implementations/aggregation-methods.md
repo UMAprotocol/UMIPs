@@ -1,4 +1,4 @@
-These instructions are expected to be used with the `General-KPI` price identifier in conjunction with a dedicated `Method` document that requires aggregation of time series data. The instructions in the referenced `Method` document should have passed an array of measured KPI metrics along with Unix timestamps for these data points. 
+These instructions are expected to be used with the `General_KPI` price identifier in conjunction with a dedicated `Method` document that requires aggregation of time series data. The instructions in the referenced `Method` document should have passed an array of measured KPI metrics along with Unix timestamps for these data points. 
 
 Below sections provide instructions where each of section names corresponds to the supported values for the `AggregationMethod` parameter values passed in the ancillary data.
 
