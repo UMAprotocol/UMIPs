@@ -55,7 +55,7 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 
 ## IMPLEMENTATION
 ### Price Identifier
-The index basket is formed by including the first 10 stocks from the Top Performing SPACs table from the website [SPACanalytics.com](https://www.spacanalytics.com/)
+The index basket is formed by including the first 10 stocks from the Top Performing SPACs table from the website [SPACanalytics.com](https://www.spacanalytics.com/)  on 30.06.2022.
 The list of stocks included in the index basket are:
 |N|TICKER|MARKET|
 |:--:|:------:|:--------:|
@@ -68,7 +68,7 @@ The list of stocks included in the index basket are:
 | 7|TGLS|NASDAQ|
 | 8|CERE|NASDAQ|
 | 9|KW  |NYSE  |
-|10|ROIC|NASDAQ|
+|10|HPK |NASDAQ|
 <br>
 In order to determine the index value, the following steps are required:
 
@@ -83,7 +83,7 @@ var axios = require("axios").default;
 var options = {
   method: 'GET',
   url: 'https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v6/finance/quote',
-  params: {symbols: 'DWAC,IRDM,MP,PRIM,WSC,SMPL,TGLS,CERE,KW,ROIC'},
+  params: {symbols: 'DWAC,IRDM,MP,PRIM,WSC,SMPL,TGLS,CERE,KW,HPK'},
   headers: {
     'x-rapidapi-host': 'stock-data-yahoo-finance-alternative.p.rapidapi.com',
     'x-rapidapi-key': ACCESS_KEY
@@ -212,7 +212,7 @@ var options = {
   method: 'GET',
   url: 'https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark',
   params: {
-    symbols: 'DWAC,IRDM,MP,PRIM,WSC,SMPL,TGLS,CERE,KW,ROIC',
+    symbols: 'DWAC,IRDM,MP,PRIM,WSC,SMPL,TGLS,CERE,KW,HPK',
     interval: '1m'
   },
   headers: {
@@ -345,7 +345,7 @@ API Response Object:
   "TGLS":{...}8 items
   "CERE":{...}8 items
   "KW":{...}8 items
-  "ROIC":{...}8 items
+  "HPK":{...}8 items
 }
 ```
 
@@ -360,14 +360,14 @@ INDEX = ------------------ * K
 where:
 - Qi - quote of Share i in index;<br>
 - N - number of shares in index. **N = 10**<br>
-- K - Correction factor, used to smooth the index values when the basket is changed. For the current index bucket **K = 1**. The value of K changes when the index basket changes and is calculated in accordance as quotient of division INDEXold by INDEXnew:<br>
+- K - Correction factor, used to smooth the index values when the basket is changed. For the current index bucket **K = 0,95951**. The value of K changes when the index basket changes and is calculated in accordance as quotient of division INDEXold by INDEXnew:<br>
 ```
-                INDEXold
-          K = ------------
-                INDEXnew
+                INDEXold        26,846
+          K = ------------ = ------------ = 0,95951
+                INDEXnew        27,979
 ```
 where:
-- INDEXold – the last index value calculated from the old basket;<br>
+- INDEXold – the last index value calculated from the old basket on 30.06.2022;<br>
 - INDEXnew – the first index value calculated for the new basket at the same time as INDEXold;<br>
 
 > In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we will publish a new price identifier quarterly.
