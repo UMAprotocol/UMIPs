@@ -13,6 +13,7 @@ Metric:<PROJECT_NAME> TVL measured in USD,
 Endpoint:"https://api.llama.fi/protocol/<PROJECT_SLUG>",
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/defillama-tvl.md",
 Key:tvl[i].totalLiquidityUSD where tvl[i].date is the latest daily timestamp before the evaluated timestamp,
+ChainName:<CHAIN_NAME>,
 Interval:"Daily 24:00 UTC",
 RequestTimestamp:<REQUEST_TIMESTAMP>,
 AggregationPeriod:<AGGREGATION_PERIOD>,
@@ -22,7 +23,7 @@ PostProcessingParameters:<POST_PROCESSING_PARAMETERS>,
 Rounding:<ROUNDING_DECIMALS>
 ```
 
-***Note 1:** `RequestTimestamp` is optional parameter.*
+***Note 1:** `ChainName` and `RequestTimestamp` are optional parameters.*
 
 ***Note 2:** `AggregationPeriod` and `AggregationMethod` are optional parameters, though if either of them is provided the other one must be present as well.*
 
@@ -32,6 +33,7 @@ Variables enclosed in angle brackets above are place-holders to be completed upo
 
 - `<PROJECT_NAME>`: Canonical name of the project whose TVL is being tracked at DefiLlama.
 - `<PROJECT_SLUG>`: Project slug name to be appended to DefiLlama API endpoint.
+- `<CHAIN_NAME>`: Chain name if TVL should be tracked only for a selected chain.
 - `<REQUEST_TIMESTAMP>`: Override value for price request timestamp.
 - `<AGGREGATION_PERIOD>`: Time period in seconds for any time series data processing.
 - `<AGGREGATION_METHOD>`: String choice from the [supported aggregation methods](https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/aggregation-methods.md) for time series data processing.
@@ -42,7 +44,7 @@ Variables enclosed in angle brackets above are place-holders to be completed upo
 
 ## Implementation
 
-1. Query `GET` method on the DefiLlama API `Endpoint` listed in ancillary data. The returned JSON object should contain `tvl` array that consists of time series data objects with following keys:
+1. Query `GET` method on the DefiLlama API `Endpoint` listed in ancillary data. The returned JSON object should contain `tvl` array that consists of time series data objects with below listed keys. If `ChainName` parameter was passed in ancillary data the `tvl` array should be looked up as nested under the returned `chainTvls.<CHAIN_NAME>` object where `<CHAIN_NAME>` is replaced with the string value passed in `ChainName` parameter.
     - `date`: UNIX timestamp
     - `totalLiquidityUSD`: project TVL measured in USD for the timestamp at `date` value above
 2. Determine evaluation timestamp(s) for TVL data:
