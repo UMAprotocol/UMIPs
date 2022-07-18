@@ -76,7 +76,7 @@ Notice that a p3 value would never be returned earlier than the final price requ
 # Implementation
 
 1. Voters should decode the ancillary data and attempt to interpret the UTF-8 question.
-2. Voters should first determine if this is an "early expiration" price request. This can either be designated in ancillary data by identifying that there is a key:value pair of `earlyExpiration:1` present, or by reading the question and determining that price request timestamp of the request is earlier than the expected price request time noted in ancillary data.
+2. Voters should first determine if this is an "early expiration" price request. This can either be designated in ancillary data by identifying that there is a key:value pair of `earlyExpiration:1` present, or by reading the question and determining that price request timestamp of the request (if using the original `OptimisticOracle` contract) or the price proposal timestamp (if using `OptimisticOracleV2`) is earlier than the expected event resolution time noted in ancillary data.
 3. If this is an "early expiration" price request, voters should first determine if the question in the ancillary data can be resolved definitively at this point in time. If not, voters should return the p4 value if there is one, and the default p4 value from `Ancillary Data Specifications` if there is not. If yes, the voters should continue the process to assess the question.
 4. If UMA voters believe that the answer to the question is no, they should vote return the p1 value (in the example given, they would return `0`).
 5. If UMA voters believe that the answer to the question is yes, they should return the p2 value (in the example given, they would return `1`).
