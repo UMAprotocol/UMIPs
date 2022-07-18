@@ -29,7 +29,9 @@ Aggregation:TWAP TVL for the provided time range,
 <StartTWAP>:1648771200,
 <EndTWAP>:1651363200,
 Rounding:2
-q: Did the Meter network repay back the hacked funds? The answer is valid if any public medium publishes the repaying using stablecoins from the Meter network. If the answer is YES, the contract will expire early. If no, the contract will remain live. p1:1 and p2:0
+q: "Did the Meter network repay back the hacked funds? The answer is valid if any public medium publishes the repaying using stablecoins from the Meter network before the expiration of the requesting contract. If the answer is YES, the contract will expire early. If no, the contract will remain live.",
+p1:1,
+p2:0
 ```
 
 ## Implementation
