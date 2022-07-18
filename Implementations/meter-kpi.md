@@ -57,7 +57,7 @@ Once the TWAP value has been calculated, the options will expire based on the fo
 
 The payout thresholds should be equal to or above to jump to the next level.
 
-| **MTRG Price ($)** | **MTRG Release** | **Payout per KPI token** |
+| **MTRG Price ($)** | **MTRG Release** | **Resolved price response** |
 |----------------|------------------|--------------------------|
 | 0              | 37,988.37        |              0.2475397765|
 | 10             | 37,988.37        |             0.2475397765 |
