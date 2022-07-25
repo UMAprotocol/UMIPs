@@ -43,7 +43,7 @@ No data feed is needed (or possible) for this data identifier.
 When converted from bytes to UTF-8, the ancillary data should be a dictionary object containing `q` (question) and `unresolvable` keys and values. Optionally, you may include `tooEarly` and `earlyExpiration` keys and values.
 
 ```
-q:What was the total number of points scored by the Dallas Mavericks in their game against the Miami Heat January 6th, 2022?, unresolvable:0.5, tooEarly:-57896044618658097711785492504343953926634992332820282019728.792003956564819968, earlyExpiration:1
+q:"What was the total number of points scored by the Dallas Mavericks in their game against the Miami Heat January 6th, 2022?", unresolvable:0.5, tooEarly:-57896044618658097711785492504343953926634992332820282019728.792003956564819968, earlyExpiration:1
 ```
 
 The q value should contain the question that UMA voters should answer with. 
