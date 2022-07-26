@@ -10,7 +10,7 @@ Humble tractors’ KPI options are to promote sales of its NFTs on the OpenSea m
 - Metric: Total number of sales before expiry,
 - Endpoint: “https://discord.com/channels/909933079181799524/994957148025012225", 
 - Fallback: If cannot access discord link refer to https://discord.com/channels/909933079181799524/994957148025012225,
-- Method: "https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/HumbleTractorNFT-KPI.md", 
+- Method: "https://github.com/SuperUMAn-DAO/UMIPs/blob/master/Implementations/humble-tractors.md", 
 - Key: Total sales,
 - Interval: Lookup the total number of sales achieved at or before request timestamp,
 - Rounding: 0.
