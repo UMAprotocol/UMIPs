@@ -2,7 +2,7 @@
 
 - **UMIP title:** Add THOR as collateral currency
 - **Author:** abg4
-- **Status:** Draft
+- **Status:** Approved
 - **Created:** 28 June 2022
 
 ## Summary (2-5 sentences)
