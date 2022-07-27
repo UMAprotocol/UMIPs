@@ -4,7 +4,7 @@
 | ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add MAGICETH, MAGICUSD, ETHMAGIC and USDMAGIC as supported price identifiers |
 | Authors             | Mr. Bahama                                             |
-| Status              | Last Call                                            |
+| Status              | Approved                                          |
 | Created             | 11 June 2022    |
 
 
