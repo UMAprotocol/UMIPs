@@ -24,14 +24,13 @@ Humble tractors’ KPI options are to promote sales of its NFTs on the OpenSea m
 
 # Post-Processing
 
-It is intended to deploy the documented KPI options on Polygon using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts should use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 10 and `upperBound` set to 30. 
+It is intended to deploy the documented KPI options on Polygon using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contracts should use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol) with the `lowerBound` set to 0 and `upperBound` set to 30. 
 
 500 USDC is set as the collateral, with the KPI linked to NFT sales
-Based on the intended ancillary data above, `upperBound` should be set to 30 and lowerbound set to 10 implying the following payouts:
+Based on the intended ancillary data above, `upperBound` should be set to 30 and lowerbound set to 0 implying the following payouts:
 
-* NFT Sales at or below 10 humble tractors voters should return the value 10 and long KPI option holders will be worth 10-10/30-10 = 0% of `collateralPerPair` for each token;
-* NFT Sales between 11 and 30 (inclusive) voters should return the value 20 and long KPI option holders will receive  20-10/30-10 = 50% of `collateralPerPair` for each token;
-* NFT Sales at 31 or above voters should return the value 30 and long KPI option holders will receive  30-10/30-10 = 100% of `collateralPerPair` for each token;
+* NFT Sales at or below 10 humble tractors voters should return the value 0 and long KPI option holders would be allocated 0% of collateral and short tokens would be allocated 100% for each token;
+* NFT Sales between 11 and 30 (inclusive) voters should return the value 15 and long KPI option holders would be allocated 50% of collateral and short tokens would be allocated 50% for each token;
+* NFT Sales at 31 or above voters should return the value 30 and long KPI option holders would be allocated 100% of collateral and short tokens would be allocated 0% for each token;
 
-`collateralPerPair` above is the total locked collateral per KPI options token and is set at 500 USDC
-
+`collateralPerPair` above is the total locked collateral per KPI options token and is set to 1 USDC
