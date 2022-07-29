@@ -27,5 +27,4 @@ DappBack wishes to track the number of holders for a specific NFT collection.
 
 It is intended to deploy the documented KPI options on Polygon network using [LSP contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/long-short-pair/LongShortPair.sol) with `General_KPI` price identifier approved in [UMIP-117](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-117.md). The contract would use [Linear LSP FPL](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/financial-templates/common/financial-product-libraries/long-short-pair-libraries/LinearLongShortPairFinancialProductLibrary.sol).
 
-
-TBD: specifics around `collateralPerPair`, `lowerBound`, `upperBound`, and expected payouts.
+As an example implementation the `collateralPerPair` could be set to 1, the `lowerBound` set to 0, and the `upperBound` set to 1,000. If the returned value was 250, 25% of the collateral would be allocated to the long tokena and 75% of the collateral would be allocated to the short token.
