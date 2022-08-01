@@ -28,6 +28,15 @@ Metric operations implementation can also include additional ancillary data para
 
 ## Implementation
 
+### Off-chain storage
+
+`metricParameters` and `metricParametersArray` elements of the `OperationParameters` parameter can also be stored off-chain using `metricParametersURL` or `metricParametersArrayURL` elements that represent URL links:
+
+  - If `metricParametersURL` is provided verifiers should perform GET request on its string value in order to resolve its referenced JSON object to be used as if `metricParameters` was provided.
+  - If `metricParametersArrayURL` is provided verifiers should perform GET request on its string value in order to resolve its referenced array of JSON objects to be used as if `metricParametersArray` was provided.
+
+It is expected that off-chain storage of `metricParameters` or `metricParametersArray` might be used when not all implementation details of measured metric are known at the time of contract deployment. Though this introduces certain level of centralization risk that should be mitigated by requiring these to be stored on a hosting platform with full version control visibility. Verifiers should also check that the referenced values are consistent with the measured `Metric` parameter.
+
 ### Single timestamp operation
 
 If `AggregationMethod` and `AggregationPeriod` parameters were not provided in the ancillary data the operation on the operand metrics should be performed at single daily timestamp, though the operand metrics themselves still can be calculated as aggregated metrics depending on the provided configuration. Below steps provide instructions for the case when `AggregationMethod` and `AggregationPeriod` parameters were not provided at the operation level:
