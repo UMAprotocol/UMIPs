@@ -136,6 +136,8 @@ Voters should also carefully follow any versioning history to the linked `Method
 
 In case the ancillary data provided does not comply with the ancillary data specification in this price identifier (to the extent that voters are unable to reasonably figure out what are the intended values of the required parameters) or the linked `Method` document is ambiguous or incomplete with unclear or missing fallback method, the voters should resolve the price request as zero. Though, the optionally passed `Unresolved` parameter in the ancillary data might set any other non-zero fallback value that the voters should return in case of any unresolvable ambiguity and voters should respect this fallback value to the extent it is unambiguously recognizable in the passed ancillary data.
 
+All resolved price values should be scaled by `1e18` when interacting with contracts directly (e.g. writing scripts, console access or interacting through block explorer). Optimistic Oracle and Voting dApps scales price response automatically so human readable prices should be provided by the users.
+
 # Security considerations
 
 This UMIP makes it easier for teams to launch their KPI options without having a pre-approved methodology. This opens the DVM to a potential situation where a price resolution may not be reached since the data is ambiguous or cannot be verified. This concern is addressed by allowing price resolutions for this price identifier to return a predefined value (defaulting to zero).
