@@ -69,3 +69,66 @@ The above instructions rely on subgraph API endpoint being accessible at the tim
 The voters should also be aware that subgraphs can be upgraded during the lifetime of requesting contract, hence they should use their human judgement to detect and mitigate any attempted malicious subgraph upgrades.
 
 Users of this subgraph implementation should be aware that the Graph protocol is planning to sunset the hosted service in Q1 2023. Hence, all contracts that are expected to expire after end of 2022 should use the decentralized subgraph network and provide the `SubgraphId` parameter instead of `Endpoint` for the hosted service.
+
+## Example use case
+
+As an illustration the below configuration of ancillary data would track 90 day TWAP of Idle Finance Senior wstETH tranche measured in ETH:
+
+```
+Metric:"TVL of IdleCDO AA Tranche - wstETH measured in ETH",
+Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/subgraph-query.md",
+Endpoint:"https://api.thegraph.com/subgraphs/name/samster91/idle-tranches",
+QueryString:"{trancheInfos(<PAGINATE>,orderBy:timeStamp,orderDirection:desc,where:{Tranche:\"0x2688fc68c4eac90d9e5e1b94776cf14eade8d877\",timeStamp_lte:<QUERY_DTS>,timeStamp_gte:<QUERY_DTS-90D>}){timeStamp,contractValue}}",
+CollectionKey:trancheInfos,
+MetricKey:contractValue,
+TimestampKey:timeStamp,
+Interval:"Daily 24:00 UTC",
+AggregationMethod:TWAP,
+Scaling:-18,
+Rounding:4
+```
+
+- `<PAGINATE>` in `QueryString` would ensure proper pagination since the query is expected to return more than 1000 entries.
+- `<QUERY_DTS>` in `QueryString` would translate to `1659484800` (August 3, 2022 12:00:00 AM UTC) if the contract was expired at `1659554374`.
+- `<QUERY_DTS-90D>` in `QueryString` would translate to `1651708800` (May 5, 2022 12:00:00 AM UTC) that is 90 days before `<QUERY_DTS>`.
+- The first page of requested subgraph query would be processed as (indentation inserted for readability):
+
+    ```
+    {
+      trancheInfos (
+        first: 1000,
+        orderBy: timeStamp,
+        orderDirection: desc,
+        where: {
+          Tranche: "0x2688fc68c4eac90d9e5e1b94776cf14eade8d877",
+          timeStamp_lte: 1659484800,
+          timeStamp_gte: 1651708800
+        }
+      )
+      {
+        timeStamp,
+        contractValue
+      }
+    }
+    ```
+- The above request would result in following returned data (truncated):
+
+    ```
+    {
+      "data": {
+        "trancheInfos": [
+          {
+            "timeStamp": "1659483368",
+            "contractValue": "21181974578611372296598"
+          },
+          {
+            "timeStamp": "1659479764",
+            "contractValue": "21181974578611372296598"
+          },
+    ...
+    ```
+- The query would be repeated iterating over 1000 entry intervals by adding `skip: 1000,`, `skip: 2000,` and so on after `first: 1000`.
+- `CollectionKey` (`trancheInfos` above) contains series of data entries where each element has `contractValue` as `MetricKey` and `timeStamp` as `TimestampKey`.
+- Only the last timestamp metric for each day within the 90 day period would be processed with `TWAP` `AggregationMethod`.
+- Since `contractValue` is returned in units of Wei, `Scaling:-18` would ensure translation to units of ETH.
+- `Rounding:4` would ensure TVL expressed in ETH would be rounded to 4 decimals before returned as resolved price.
