@@ -15,7 +15,7 @@ Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/defilla
 Key:tvl[i].totalLiquidityUSD where tvl[i].date is the latest daily timestamp before the evaluated timestamp,
 ChainName:<CHAIN_NAME>,
 Interval:"Daily 24:00 UTC",
-RequestTimestamp:<REQUEST_TIMESTAMP>,
+RequestTimestampOverride:<REQUEST_TIMESTAMP_OVERRIDE>,
 AggregationPeriod:<AGGREGATION_PERIOD>,
 AggregationMethod:<AGGREGATION_METHOD>,
 PostProcessingMethod:<POST_PROCESSING_METHOD>,
@@ -26,7 +26,7 @@ Rounding:<ROUNDING_DECIMALS>,
 ReturnFrom:<RETURN_FROM>
 ```
 
-***Note 1:** `ChainName`, `RequestTimestamp`, `RawRounding`, `Scaling`, `Rounding` and `ReturnFrom` are optional parameters.*
+***Note 1:** `ChainName`, `RequestTimestampOverride`, `RawRounding`, `Scaling`, `Rounding` and `ReturnFrom` are optional parameters.*
 
 ***Note 2:** `AggregationPeriod` and `AggregationMethod` are optional parameters, though if either of them is provided the other one must be present as well.*
 
@@ -37,7 +37,7 @@ Variables enclosed in angle brackets above are place-holders to be completed upo
 - `<PROJECT_NAME>`: Canonical name of the project whose TVL is being tracked at DefiLlama.
 - `<PROJECT_SLUG>`: Project slug name to be appended to DefiLlama API endpoint.
 - `<CHAIN_NAME>`: Chain name if TVL should be tracked only for a selected chain.
-- `<REQUEST_TIMESTAMP>`: Override value for price request timestamp.
+- `<REQUEST_TIMESTAMP_OVERRIDE>`: Override value for price request timestamp.
 - `<AGGREGATION_PERIOD>`: Time period in seconds for any time series data processing.
 - `<AGGREGATION_METHOD>`: String choice from the [supported aggregation methods](https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/aggregation-methods.md) for time series data processing.
 - `<POST_PROCESSING_METHOD>`: String choice from the [supported post-processing functions](https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/post-processing-functions.md).
@@ -54,7 +54,7 @@ Variables enclosed in angle brackets above are place-holders to be completed upo
     - `date`: UNIX timestamp
     - `totalLiquidityUSD`: project TVL measured in USD for the timestamp at `date` value above
 2. Determine evaluation timestamp(s) for TVL data:
-    - If `RequestTimestamp` parameter is provided its value should be used as an override for the actual price request timestamp. Though this should always be ignored if the provided `RequestTimestamp` value exceeds actual price request timestamp.
+    - If `RequestTimestampOverride` parameter is provided its value should be used as an override for the actual price request timestamp. Though this should always be ignored if the provided `RequestTimestampOverride` value exceeds actual price request timestamp.
     - If `AggregationPeriod` is not provided then only single TVL value should be evaluated at the latest available daily timestamp that is at or before the effective price request timestamp.
     - If `AggregationPeriod` is provided then series of daily TVL values should be evaluated. The first evaluation timestamp is set by subtracting `AggregationPeriod` from the effective price request timestamp and identifying the closest available (at or after) daily timestamp. The last evaluation timestamp is set the same as for scenario without `AggregationPeriod` (above). All available daily timestamps between the start and end evaluation (inclusive) should be evaluated.
 3. Determine TVL values for all the evaluation timestamp(s) (Step 2) from the returned `tvl` array by taking `totalLiquidityUSD` value where item's `date` matches evaluation timestamp(s).
