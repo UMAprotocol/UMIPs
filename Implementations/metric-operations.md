@@ -12,7 +12,6 @@ This metric operations document should be used with following ancillary data par
 
 - `Metric:<DESCRIPTION>` where `<DESCRIPTION>`is short description reflecting the metric and units to be measured.
 - `Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/metric-operations.md"` points to this implementation document.
-- `Interval:"Daily 24:00 UTC"` is set in order to limit aggregation processing overhead for manual verifiers and preserve composability across data sources.
 - `Operation:<OPERATION>` where `<OPERATION>` represents string choice from the [supported operations](#supported-operations) from this document.
 - `OperationParameters:<OPERATION_PARAMETERS>` where `OPERATION_PARAMETERS` represents JSON object with parameter key-value pairs to be used with the chosen `Operation`.
 - `RequestTimestamp:<REQUEST_TIMESTAMP>` (optional) where  `<REQUEST_TIMESTAMP>` represents override value for price request timestamp.
@@ -57,7 +56,7 @@ If `AggregationMethod` and `AggregationPeriod` parameters were not provided in t
 
 ### Operation over time series
 
-If `AggregationMethod` and `AggregationPeriod` parameters were provided in the ancillary data at the operation level the operation on the operand metrics should be performed at every daily timestamp over the configured time period following instructions below:
+If `AggregationMethod` and `AggregationPeriod` parameters were provided in the ancillary data at the operation level the operation on the operand metrics should be performed at every daily timestamp (24:00 UTC) over the configured time period following instructions below:
 
 1. Inspect `OperationParameters` value to identify its `metricParameters` or `metricParametersArray` element. Only one of these elements should be present depending on the chosen `Operation`. Value of `metricParameters` is single JSON object while value of `metricParametersArray`is an array of JSON objects containing ancillary data parameters for any directly referenced KPI metrics (or other operations) that will be used as operand(s). In addition to provided ancillary data the operand should also inherit those parameters from the dependent operation that were not provided with following exception:
     - `AggregationMethod` and `AggregationPeriod` parameters should always be overridden in operand(s) from the configuration at the operation level;
