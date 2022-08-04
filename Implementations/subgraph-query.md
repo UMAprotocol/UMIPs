@@ -20,7 +20,6 @@ This subgraph tracking implementation should be used with following ancillary da
 - `MetricKey:<METRIC_KEY>` where `<METRIC_KEY>` represents key path to the tracked metric. If no `CollectionKey` is provided `<METRIC_KEY>` represents absolute key path under returned `data` object. If there is `CollectionKey` parameter then `<METRIC_KEY>` represents relative key path to the tracked metric within the returned collection of entities. `<METRIC_KEY>` can consist of single key string or concatenated key strings joined by dots (`.`) when nested elements should be processed.
 - `TimestampKey:<TIMESTAMP_KEY>` (optional) where `<TIMESTAMP_KEY>` represents relative key path to the timestamp of the returned metric within the returned collection of entities. `<TIMESTAMP_KEY>` can consist of single key string or concatenated key strings joined by dots (`.`) when nested elements should be processed. `TimestampKey` is mandatory if `DailyAggregation` was provided and set to `true`.
 - `ChainId:<CHAIN_ID>` (optional) where `<CHAIN_ID>` represents numeric chain identifier when query timestamp needs to be converted to the block number for the relevant chain.
-- `Interval:"Daily 24:00 UTC"` is set in order to limit aggregation processing overhead for manual verifiers and preserve composability with other data sources. Note that subgraph does not return data on fixed intervals hence effective intervals might vary (see Implementation for further details).
 - `RequestTimestamp:<REQUEST_TIMESTAMP>` (optional) where  `<REQUEST_TIMESTAMP>` represents override value for price request timestamp.
 - `AggregationPeriod:<AGGREGATION_PERIOD>` (optional) where `<AGGREGATION_PERIOD>` represents time period in seconds for any time series data processing. This parameter is mandatory if `AggregationMethod` was provided while `TimestampKey` was not provided.
 - `AggregationMethod:<AGGREGATION_METHOD>` (optional) where `<AGGREGATION_METHOD>` represents string choice from the [supported aggregation methods](https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/aggregation-methods.md) for time series data processing.
@@ -82,7 +81,6 @@ QueryString:"{trancheInfos(<PAGINATE>,orderBy:timeStamp,orderDirection:desc,wher
 CollectionKey:trancheInfos,
 MetricKey:contractValue,
 TimestampKey:timeStamp,
-Interval:"Daily 24:00 UTC",
 AggregationMethod:TWAP,
 Scaling:-18,
 Rounding:4
