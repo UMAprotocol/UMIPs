@@ -55,7 +55,7 @@ that `e1` is "earlier" than `e2` if `e1.blockNumber < e2.blockNumber` OR if `e1.
 So, "earlier" events have a lower block number, transaction index, or log index, and we should compare event properties in that order.
 
 ## Valid bundle proposals
-A valid root bundle submitted by calling `HubPool.proposeRootBundle()` will emit a [`ProposedRootBundle`](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L148-L156) event.
+A root bundle can be proposed by calling `HubPool.proposeRootBundle()`, which will will emit a [`ProposedRootBundle`](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L148-L156) event.
 
 The root bundle is valid once *all* of its `PoolRebalanceLeaves` are executed via `HubPool.executeRootBundle()`, which can only be called after the proposed root bundle's `challengePeriodEndTimestamp` is passed. 
 
