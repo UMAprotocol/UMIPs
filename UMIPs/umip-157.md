@@ -21,7 +21,7 @@ Relayers lend capital to the Across V2 system by fulfilling users' deposits via 
 
 
 If there is no relayer who can provide all the capital for a given deposit request, a "slow relay" (or "slow fill") is performed where the funds are sent from the
-LP pool to the destination spoke to fulfill the deposit. These slow fill requests are also included in the aformentioned Bundles.
+LP pool to the destination spoke to fulfill the deposit. These slow fill requests are also included in the aforementioned bundles.
 
 Bundles are implemented on-chain as [Merkle Roots](https://www.youtube.com/watch?v=JXn4GqyS7Gg) which uniquely identify the set of all repayments and rebalance instructions over a specific time range. Therefore, Across V2 moves capital to repay relayers by continuous Bundles, all validated by the OO.
 
