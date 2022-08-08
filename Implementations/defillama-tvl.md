@@ -14,7 +14,6 @@ Endpoint:"https://api.llama.fi/protocol/<PROJECT_SLUG>",
 Method:"https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/defillama-tvl.md",
 Key:tvl[i].totalLiquidityUSD where tvl[i].date is the latest daily timestamp before the evaluated timestamp,
 ChainName:<CHAIN_NAME>,
-Interval:"Daily 24:00 UTC",
 RequestTimestampOverride:<REQUEST_TIMESTAMP_OVERRIDE>,
 AggregationPeriod:<AGGREGATION_PERIOD>,
 AggregationMethod:<AGGREGATION_METHOD>,
@@ -55,8 +54,8 @@ Variables enclosed in angle brackets above are place-holders to be completed upo
     - `totalLiquidityUSD`: project TVL measured in USD for the timestamp at `date` value above
 2. Determine evaluation timestamp(s) for TVL data:
     - If `RequestTimestampOverride` parameter is provided its value should be used as an override for the actual price request timestamp. Though this should always be ignored if the provided `RequestTimestampOverride` value exceeds actual price request timestamp.
-    - If `AggregationPeriod` is not provided then only single TVL value should be evaluated at the latest available daily timestamp that is at or before the effective price request timestamp.
-    - If `AggregationPeriod` is provided then series of daily TVL values should be evaluated. The first evaluation timestamp is set by subtracting `AggregationPeriod` from the effective price request timestamp and identifying the closest available (at or after) daily timestamp. The last evaluation timestamp is set the same as for scenario without `AggregationPeriod` (above). All available daily timestamps between the start and end evaluation (inclusive) should be evaluated.
+    - If `AggregationPeriod` is not provided then only single TVL value should be evaluated at the latest available daily timestamp (24:00 UTC) that is at or before the effective price request timestamp.
+    - If `AggregationPeriod` is provided then series of daily TVL values should be evaluated. The first evaluation timestamp is set by subtracting `AggregationPeriod` from the effective price request timestamp and identifying the closest available (at or after) daily timestamp (24:00 UTC). The last evaluation timestamp is set the same as for scenario without `AggregationPeriod` (above). All available daily timestamps (at 24:00 UTC) between the start and end evaluation (inclusive) should be evaluated.
 3. Determine TVL values for all the evaluation timestamp(s) (Step 2) from the returned `tvl` array by taking `totalLiquidityUSD` value where item's `date` matches evaluation timestamp(s).
 4. If due to performed [operation](https://github.com/UMAprotocol/UMIPs/blob/master/Implementations/metric-operations.md) on the metric its ancillary data has inherited `ReturnFrom` parameter the processing of this implementation should stop here and intermediate results should be passed for the processing of dependant operation:
     - If `ReturnFrom` parameter is set to `rawMetric` the obtained value of TVL from Step 3 should be paired with the latest daily query timestamp from Step 2 and passed as timestamp / metric key-value pair for the processing of dependant operation.
