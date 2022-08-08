@@ -135,6 +135,8 @@ each `chainId`, their starting block number is that chain's `bundleEvaluationBlo
 Use this mechanism to determine the starting block numbers for each `chainId` represented in the original
 `bundleEvaluationBlockNumbers`.
 
+Note that the above rules require that the `bundleEvaluationBlockNumbers` for each `chainId` are strictly greater than the preceding [valid proposal's](#valid-bundle-proposals) `bundleEvaluationBlockNumbers` for the same `chainId`. The block range for each proposal starts at the preceding proposal's `bundleEvaluationBlockNumbers` plus 1 and go to the next `bundleEvaluationBlockNumbers`.
+
 Evaluate the
 [crossChainContracts](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L59)
 method on the HubPool contract (passing each `chainId`) at the block number of the proposal to determine the addresses
@@ -335,8 +337,7 @@ Three conditions must be met for the proposal to be deemed valid:
 1. The roots computed above match the ones in the proposal.
 2. The poolRebalanceLeafCount specified in the proposal event matches the number of pool rebalance leaves computed in
    the PoolRebalanceRoot above.
-3. `bundleEvaluationBlockNumbers` must be reasonably recent (up-to-date within 30 minutes of the proposal transaction)
-   and include all `chainIds` that have a nonzero
+3. `bundleEvaluationBlockNumbers` must include all `chainIds` that have a nonzero
    [CrossChainContractsSet](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L119)
    at the time of proposal.
 4. No obvious griefing or manipulation of the system is being performed via this proposal.
