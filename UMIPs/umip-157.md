@@ -49,7 +49,7 @@ Note 3: wherever unspecified, sorting should be ascending by default, not descen
 # Definitions
 
 ## Comparing events chronologically
-Smart contract transactions can emit events that conform to the specifications described in the "Returns" section of these [docs](https://web3js.readthedocs.io/en/v1.2.11/web3-eth-contract.html#contract-events). Specifically, an event is expected to have a `blockNumber`, `transactionIndex` and `logIndex`. To compare events `e1` and `e2` chronologically, we can say
+Smart contract transactions can emit events that conform to the specifications described in the "Returns" section of these [docs](https://web3js.readthedocs.io/en/v1.2.11/web3-eth-contract.html#contract-events). Specifically, an event is expected to have a unique combination of `blockNumber`, `transactionIndex` and `logIndex`. To compare events `e1` and `e2` chronologically, we can say
 that `e1` is "earlier" than `e2` if `e1.blockNumber < e2.blockNumber` OR if `e1.blockNumber == e2.blockNumber && e1.transactionIndex < e2.transactionIndex` OR if `e1.blockNumber == e2.blockNumber && e1.transactionIndex == e2.transactionIndex && e1.logIndex < e2.logIndex`.
 
 So, "earlier" events have a lower block number, transaction index, or log index, and we should compare event properties in that order.
