@@ -62,6 +62,11 @@ The root bundle is valid once *all* of its `PoolRebalanceLeaves` are executed vi
 ## Comparing deposit events chronologically for different origin chains
 Each deposit emits a [`quoteTimestamp`](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/SpokePool.sol#L73) parameter. This timestamp should be evaluated within the context of the Ethereum network, and should be mapped to the Ethereum block who's [`timestamp`](https://ethereum.org/en/developers/docs/data-and-analytics/block-explorers/#blocks) is closest to the `deposit.quoteTimestamp` but not greater (i.e. `block.timestamp` closest to and `<= deposit.quoteTimestamp`).
 
+## Matching L1 tokens to Running Balances or Net Send Amounts
+The [`RootBundleExecuted`](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) event and [`PoolRebalanceLeaf`] structure both contain equal length arrays: `l1Tokens`, `netSendAmounts`, `bundleLpFees`, and `runningBalances`. Each `l1Token` value in `l1Tokens` is an address correspondingto an ERC20 token deployed on Ethereum Mainnet. It should be mapped to the value in any of the other three arrays (`netSendAmounts`, `bundleLpFees`, and `runningBalances`) that shares the same index within the array.
+
+For example, if `l1Tokens` is "[0x123,0x456,0x789]" and `netSendAmounts` is "[1,2,3]", then the "net send amount" for token with address "0x456" is equal to "2".
+
 # Ancillary Data Specifications
 
 The ancillary data only needs a single field: `ooRequester`, which should be the contract requesting the price from the
@@ -121,7 +126,8 @@ From the selected event, one should be able to glean the following information:
 - `relayerRefundRoot`
 - `slowRelayRoot`
 
-The `bundleEvaluationBlockNumbers` is an ordered array of block numbers for each destination chain. Which index
+## Determining block range for root bundle proposal
+The `bundleEvaluationBlockNumbers` is an ordered array of end block numbers for each destination chain for this bundle. Which index
 corresponds to which chain is denoted by the "CHAIN_ID_LIST" in the [global config](#global-constants).
 
 To determine the start block number for each chainId, search for the latest
@@ -149,7 +155,7 @@ for each destination chain. We'll use these SpokePool addresses to query correct
 For each destination chain, find all
 [FilledRelay events](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePool.sol#L84-L100)
 on its `SpokePool` between the starting block number and ending block number for that chain. For this query, exclude
-any `FilledRelay` events that have `isSlowRelay` set to `true`.
+any `FilledRelay` events that have `isSlowRelay` set to `true` or have `fillAmount` equal to `0`.
 
 For all `FilledRelay` events, you can find the `SpokePool` address for the deposit's origin chain by querying
 [CrossChainContractsSet](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L119)
@@ -174,6 +180,8 @@ event should be found in one of the spoke pools for the originChainId where the 
 - `recipient`
 - `depositor`
 
+## Matching L2 tokens and L1 tokens
+
 Additionally, matching relays should have their `destinationToken` set such that the following process is satisfied:
 
 1. Find the latest
@@ -188,7 +196,7 @@ Additionally, matching relays should have their `destinationToken` set such that
    from the `FundsDeposited` event. If a match is found, the `destinationToken` should match the `destinationToken`
    value in the `FilledRelay` event. If they don't match or if no matching event is found, the relay is invalid.
 
-
+## Validating realizedLpFeePct
 To determine the validity of the `realizedLPFeePct` in the `FilledRelay` event, the exact same process is used as in
 the identifier [`IS_RELAY_VALID`, specified in UMIP 136](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-136.md). However, instead ofing a `RateModelStore` contract to look up a deposit's rate model, we can use the `AcrossConfigStore`'s `tokenConfig` to [look up the rate model](#token-constants) for a deposit. The deposited `originToken` can be mapped to an `l1Token` by following step 2 above which can be used to query a `rateModel`. 
 
@@ -229,44 +237,33 @@ Similarly, sum the `fillAmount * realizedLPFeePct / 1e18` to get the total LP fe
 
 To determine the amount to modify the running balances:
 
-1. For each `FilledRelay` [group](#finding-valid-relays), initialize a running balance value at 0 and add the total relay repayments to
-   it. Each running balance value is defined by its `chainId` and `l1Token`.
-2. For each [slow relay group](#finding-slow-relays), add each slow relay's [unfilled deposit amount](#computing-slow-relay-payment-amounts) to the group's running balance.
-3. Find all `FundsDeposited` events on all `SpokePool`s from earlier within each `SpokePool`'s block range. Using the
+1. _Add relayer refunds_: For each `FilledRelay` [group](#finding-valid-relays), initialize a running balance value at 0 and add the total relay repayments to
+   it. Each running balance value is defined by its `repaymentChainId` and `l1Token`.
+2. _Add slow fills_: For each [slow relay group](#finding-slow-relays), add each slow relay's [unfilled deposit amount](#computing-slow-relay-payment-amounts) to the group's running balance.
+3. _Subtract deposits_: Find all `FundsDeposited` events on all `SpokePool`s from earlier within each `SpokePool`'s block range. Using the
    `originChainId`, `originToken`, the `quoteTimestamp`, and the `SetPoolRebalanceRoute` event on the HubPool, use a
    similar process as the 3 step one above to map this back to an `l1Token`. For that `l1Token` and `originChainId`,
    initialize a running balance value if one doesn't exist already and subtract the `amount` from it.
-4. Find all `FilledRelay` events in the block range that have `isSlowRelay` set to true. For each, use a similar method
-   as above to map this event back to an `l1Token` at the `quoteTimestamp`. Use the `destinationChainId` as the `chainId`
-   to determine which running balance that this event should apply to. If the `fillAmount` on the `FilledRelay` event is
-   `0`, perform a historical event lookup to determine if this slow relay has been executed before by searching for past
-   `FilledRelay` events with `isSlowRelay` equal to `true`, matching `originChainId` and `depositId`. If any are found,
-   ignore this slow relay. If the slow relay is not ignored, follow the steps in the "Finding Slow Relays" section above
-   for this `originChainId` and `depositId`, but remove the block range and only look for slow relays with a matching
-   `originChainId` and `depositId`. This should reveal the `FilledRelay` event that triggered this slow relay to be sent.
-   Once that is found, pull the block number for that event. Search through past `ProposeRootBundle` events to find the
-   proposal for this `destinationChainId` whose ending block number is the closest to this block number without being
-   smaller. Search for all `FilledRelay` events that have matching `amount`, `originChainId`, `destinationChainId`,
-   `relayerFeePct`, `depositId`, `recipient`, and `depositor` values before that ending block number. Grab the
-   `totalFillAmount` and `amount` from the latest of these events. Subtract the `totalFillAmount` from the `amount` to
-   compute `sentAmount`. For the original event we found where `isSlowRelay` was set to true, grab the `fillAmount` and
-   compute `sentAmount - fillAmount` to determine the extra funds that were sent. Subtract the result from the running
+4. _Subtract excesses from partially executed slow fills_: Imagine that a previous slow fill payment was sent to a `SpokePool`, but before the slow fill leaf could be executed, a relayer partially "fast" filled the deposit. Afterwards, the slow fill leaf was executed to complete the remainder of the deposit. The `SpokePool` now has a surplus amount of tokens because the original slow fill payment was not fully used to complete the deposit, so this excess must be returned to Mainnet. This step therefore explains how to identify excesses and determine how much to send back (i.e. subtract from running balances). Find all `FilledRelay` events in the block range that have `isSlowRelay` set to true. For each, use a similar method
+   as above to [map this event back to an `l1Token` at the `quoteTimestamp`](#matching-l2-tokens-and-l1-tokens). Use the `destinationChainId` as the `repaymentChainId`
+   to determine which running balance that this event should apply to. For every [validated root bundle](#valid-bundle-proposals) in history, follow the steps in the ["Finding Slow Relays"](#finding-slow-relays) section
+   for this `originChainId` and `depositId`, and look for slow relays with a matching
+   `originChainId` and `depositId`. There should be exactly one slow relay payment matching the `FilledRelay` in question. This is the slow fill that was included in a previous bundle that added to the `runningBalance` and ultimately led the bundle to send a slow fill payment to the `SpokePool` on the `destinationChainId`. Compute the [slow fill amount](#computing-slow-relay-payment-amounts) sent in the older root bundle. The excess amount remaining in the `SpokePool` after this current `FilledRelay` (with `isSlowRelay = true`) is equal to `slow fill amount` minus `FilledRelay.fillAmount`. In other words, if the `FilledRelay.fillAmount` is less than the `slow fill amount` originally sent over in a prior bundle, then send back the difference. Subtract the result from the running
    balance for the associated `l1Token` and `destinationChainId`.
+5. _Subtract excesses from unexecuted slow fills_: This section is similar to the one above but deals with cases where the slow fill leaf can never be executed. Find all `FilledRelay` events in the block range that have `totalFilledAmount` equal to `amount` (i.e. fills that completed a deposit) and that have `fillAmount` less than `amount` (i.e. fills that were not the first fill for a deposit). If the first fill for a deposit completed a deposit (`fillAmount == amount` and `totalFilledAmount == amount`), then there can be no excess left in the spoke pool because this would not have triggered a slow fill payment to be sent to the spoke. First we need to see if the first fill for this current fill triggered a slow fill. Looking through all [valid fills](#valid-bundle-proposals) in history, identify all matching fills for the same `originChainId` and `depositId`. Find the earliest such fill. Determine the block range of the root bundle proposal that contained this fill using [this logic](#determining-block-range-for-root-bundle-proposal) for the `ProposeRootBundle` event with a `bundleEndBlock` for the `FilledRelay.destinationChainId` greater than or equal to the `FilledRelay` block number. Find the last fill in this same bundle block range. The slow fill payment for the bundle should have been `FilledRelay.amount - FilledRelay.totalFilledAmount`, same as [this calculation](#computing-slow-relay-payment-amounts). Since we know that the current `FilledRelay` in this upcoming proposal 100% filled the deposit, we know that the slow fill leaf cannot be executed, so the entire slow fill payment must be sent back to mainnet. Subtract this (the preceiding slow fill payment from a valid root bundle that this fill ultimately completed) from the running balance.
 
+We now need to add the preceding running balance value to the current one for a given `repaymentChainId` and `l1Token`.
+For each `repaymentChainId` and `l1Token` combination, older
+[RootBundleExecuted](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) events
+should be queried to find the preceding `RootBundleExecuted` event. This means identifying the most recent `RootBundleExecuted` event with a `chainId` matching the `repaymentChainId` and [identifying the `runningBalanceValue` at the index of the `l1Token`](#matching-l1-tokens-to-running-balances-or-net-send-amounts).
 
-For each running balance value, past
-[RootBundleExecuted](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166)
-should be queried to find a matching element for the `chainId` and `l1Token` (they would need to be at matching indices
-in the array). Once these values are found at matching indices, that index can be used to find the associated running
-balance value. That most recent running balance value should be added to the one computed above.
-
-For each tuple of `l1Token` and `chainId`, we should have computed a total running balance value. Determine if the
+For each tuple of `l1Token` and `repaymentChainId`, we should have computed a total running balance value. Determine if the
 absolute value of this running balance is > [`TOKEN_TRANSFER_THRESHOLD`](#global-constants) of the total value of all LP tokens for this
 `l1Token` at the `ProposeRootBundle` event that came before the one being evaluated (process described above).
 If this passes the threshold, then set net send amount to the running balance value and set the running balance value
 to 0.
 
-Take the above running balances and net send amounts and group them by only `chainId` and sort by `chainId`. Within
+Take the above running balances and net send amounts and group them by only `repaymentChainId` and sort by `repaymentChainId`. Within
 each group, sort by `l1Token`. If there are more than [`MAX_POOL_REBALANCE_LEAF_SIZE`](#global-constants) `l1Tokens`, a particular chain's leaf will
 need to be broken up into multiple leaves, starting at `groupIndex` 0 and each subsequent leaf incrementing the
 `groupIndex` value by 1.
@@ -275,6 +272,7 @@ Now that we have ordered leaves, we can assign each one a unique `leafId` starti
 
 With all of that information, each leaf should be possible to construct in the format given
 [here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPoolInterface.sol#L13-L42).
+Importantly, the `l1Tokens`, `bundleLpFees`, `netSendAmounts` and `runningBalances` arrays should all be the same length. The latter three arrays are values mapped to the `l1Tokens` entry of the same index. See [this section](#matching-l1-tokens-to-running-balances-or-net-send-amounts) to better explain how to map `l1Tokens` to the other three arrays.
 
 Once the leaves are constructed, the merkle root can be constructed by hashing each leaf data structure using
 Solidity's standard process of `keccak256(abi.encode(poolRebalanceLeaf))`. Once the leaves are hashed, the tree should
@@ -300,8 +298,7 @@ information about each group determined in the previous section.
 
 The `amountToReturn` should be set to `max(-netSendAmount, 0)`.
 
-The `l2TokenAddress` is the corresponding L2 token address for the `l1Token` in the previous section. Note: see above
-sections for how to map L1 and L2 tokens via events on L1. This mapping should be done according to the highest
+The `l2TokenAddress` is the corresponding L2 token address for the `l1Token` in the previous section. Note: see [above section](#matching-l2-tokens-and-l1-tokens) for how to map L1 and L2 tokens via events on L1. This mapping should be done according to the highest
 `quoteTimestamp` of any relays in the group. If no relays are present, then as of the previous successful proposal.
 
 `refundAmounts` and `refundAddresses` are just computed by grouping the relays in this group by the `relayer` and
