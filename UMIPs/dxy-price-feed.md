@@ -3,7 +3,7 @@
 | UMIP-XXX; DXY Feed            |                                                      |
 | ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add DXY as a supported price identifier |
-| Authors             | ???                                             |
+| Authors             | Sumero                                             |
 | Status              | In-progress                                            |
 | Created             | ???    |
 
@@ -44,9 +44,9 @@ Implemented as a price feed "plugin" [here](https://github.com/Signo-App/uma-pro
 
 # Rationale
 
-TODO
+DXY is a calculated index that is very difficult to manipulate in the short term without exhorbitant cost, so no TWAP is needed.
 
-Rationale should explain why the particular above technical specifications were chosen.
+We chose to use the daily open price, updated daily, because this is easier to fetch via various APIs.
 
 # Implementation
 
@@ -62,6 +62,4 @@ Voters should determine whether the returned price differs from broad market con
 
 # Security considerations
 
-The inclusion of this requested price identifier should not present a security concern for DVM.
-
-TODO: are there more?
+The inclusion of this requested price identifier should not present a security concern for DVM. There is a clearly defined method of determining a canonical price, and the data needed is publicly available.
