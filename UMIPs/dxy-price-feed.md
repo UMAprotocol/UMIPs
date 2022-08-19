@@ -56,7 +56,7 @@ Voters should then go to https://www.tradingview.com/chart/?symbol=TVC%3ADXY, an
 
 Then voters should do the same for the additional two markets of CAPITALCOM and ICEUS. These can be chose by clicking the DXY symbol on the top left (see A on the below image) and selecting the appropriate choice (each choice source is listed on its right)
 
-!(tradingview ux)[images/tradingview-ux.png]
+![tradingview ux](images/tradingview-ux.png)
 
 Voters should then add these values up and divide by 3 to get the mean value, then round to 3 decimal places to arrive at the final value.
 
