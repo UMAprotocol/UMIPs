@@ -34,7 +34,7 @@ DXY is a well-defined and publicly accessible metric, and so will be trivial to 
 
 # Price feed implementation
 
-[implementation](https://github.com/Signo-App/uma-protocol/blob/new-price-feed/packages/financial-templates-lib/src/price-feed/MarketStackPriceFeed.ts)
+Implemented as a price feed "plugin" [here](https://github.com/Signo-App/uma-protocol/blob/new-price-feed/packages/financial-templates-lib/src/price-feed/MarketStackPriceFeed.ts). Uses the MarketStack platform.
 
 # Technical Specifications
 
@@ -50,9 +50,15 @@ Rationale should explain why the particular above technical specifications were 
 
 # Implementation
 
-TODO
+Voters should first determine the day of the request's timestamp.
 
-How exactly should voters determine the price when they have to do so?
+Voters should then go to https://www.tradingview.com/chart/?symbol=TVC%3ADXY, and make sure the interval is set to "1 day" (see B on the below image). Voters should then mouse-over the day determined, and look at the Open price (C on the below image) and record this number. This is the value for the TVC market.
+
+Then voters should do the same for the additional two markets of CAPITALCOM and ICEUS. These can be chose by clicking the DXY symbol on the top left (see A on the below image) and selecting the appropriate choice (each choice source is listed on its right)
+
+Voters should then add these values up and divide by 3 to get the mean value, then round to 3 decimal places to arrive at the final value.
+
+Voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
 
 # Security considerations
 
