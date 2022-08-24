@@ -1,13 +1,12 @@
 ## Headers
 
-| UMIP-XXX; DXY Feed            |                                                      |
+| DXY Feed            |                                                      |
 | ------------------- | ---------------------------------------------------- |
-| UMIP Title          | Add DXY as a supported price identifier |
+| UMIP Title          | Add **DXY** as a supported price identifier |
 | Authors             | Sumero                                             |
-| Status              | In-progress                                            |
-| Created             | ???    |
-
-
+| Status              | Draft                                            |
+| Created             | 2022.8.24    |
+| Discourse Link      |             |
 
 # Summary
 
@@ -46,7 +45,7 @@ Implemented as a price feed "plugin" [here](https://github.com/Signo-App/uma-pro
 
 DXY is a calculated index that is very difficult to manipulate in the short term without exhorbitant cost, so no TWAP is needed.
 
-We chose to use the daily open price, updated daily, because this is easier to fetch via various APIs.
+We chose to use the daily open price, updated daily, because this is easier to fetch via various APIs for historical data.
 
 # Implementation
 
@@ -54,7 +53,7 @@ Voters should first determine the day of the request's timestamp.
 
 Voters should then go to https://www.tradingview.com/chart/?symbol=TVC%3ADXY, and make sure the interval is set to "1 day" (see B on the below image). Voters should then mouse-over the day determined, and look at the Open price (C on the below image) and record this number. This is the value for the TVC market.
 
-Then voters should do the same for the additional two markets of CAPITALCOM and ICEUS. These can be chose by clicking the DXY symbol on the top left (see A on the below image) and selecting the appropriate choice (each choice source is listed on its right)
+Then voters should do the same for the additional two markets of CAPITALCOM and ICEUS. These can be chosen by clicking the DXY symbol on the top left (see A on the below image) and selecting the appropriate choice (each choice source is listed on its right)
 
 ![tradingview ux](images/tradingview-ux.png)
 
