@@ -6,7 +6,7 @@
 | Authors             | Sumero                                             |
 | Status              | Draft                                            |
 | Created             | 2022.8.24    |
-| Discourse Link      |             |
+| Discourse Link      | https://discourse.umaproject.org/t/umip-add-dxy-usd-index-as-a-price-identifier/1797            |
 
 # Summary
 
