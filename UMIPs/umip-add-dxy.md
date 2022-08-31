@@ -72,4 +72,5 @@ Voters should determine whether the returned price differs from broad market con
 
 # Security considerations
 
-The inclusion of this requested price identifier should not present a security concern for DVM. There is a clearly defined method of determining a canonical price, and the data needed is publicly available.
+* If this price identifier is used to create synthetic assets, there is a dependency on liquidations and disputes happening within certain time limits. If this is neglected the resulting synthetic asset will become unstable and could quickly become insolvent.
+* If all the above price resolution strategies are not available, the price identifier will become unresolveable.
