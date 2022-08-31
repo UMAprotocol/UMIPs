@@ -16,7 +16,7 @@ The canonical identifier should be `DXY`.
 
 # Motivation
 
-Adding DXY would allow synthetic assets for the US Dollar Index to be created, which would in turn allow various derivatives to be built on top of this token.
+Adding DXY would allow synthetic assets for the US Dollar Index to be created, using Sumero's forked version of UMA's Expiring Multiparty (EMP) contracts, which UMA no longer supports.
 
 The US Dollar Index is a measure of the value of USD relative to a weighted basket of foreign currencies. These currencies and their weights are:
 
