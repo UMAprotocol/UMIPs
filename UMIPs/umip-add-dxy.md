@@ -44,6 +44,10 @@ This is a well-defined and publicly accessible metric, and so will be trivial to
 
 Implemented as a price feed "plugin" [here](https://github.com/Signo-App/uma-protocol/blob/new-price-feed/packages/financial-templates-lib/src/price-feed/MarketStackPriceFeed.ts). Uses the MarketStack platform.
 
+An example price feed config to pass into this script is:
+
+`{"apiKey":"your_api_key_for_marketstack","type": "marketstack","lookback":604800, "symbolString":"DXY.INDX"}`
+
 # Technical Specifications
 
 - Price identifier name: DXY
