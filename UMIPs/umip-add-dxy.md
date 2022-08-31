@@ -62,7 +62,11 @@ We chose to use the daily open price, updated daily, because this is easier to f
 
 # Implementation
 
-Voters should first determine the day of the request's timestamp.
+Voters should determine whether the price calculated as below differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+
+## Assuming TradingView is accessible and serves the relevant data...
+
+Voters should first determine the day of the request's timestamp, in the UTC time zone.
 
 Voters should then go to https://www.tradingview.com/chart/?symbol=TVC%3ADXY, and make sure the interval is set to "1 day" (see B on the below image). Voters should then mouse-over the day determined, and look at the Open price (C on the below image) and record this number. This is the value for the TVC market.
 
@@ -72,7 +76,26 @@ Then voters should do the same for the additional two markets of CAPITALCOM and 
 
 Voters should then add these values up and divide by 3 to get the mean value, then round to 3 decimal places to arrive at the final value.
 
-Voters should determine whether the returned price differs from broad market consensus. This is meant to provide flexibility in any unforeseen circumstances as voters are responsible for defining broad market consensus.
+## If TradingView is inaccessible or doesn't serve all the relevant data...
+
+Voters should calculate the US Dollar Index manually, as follows.
+
+TODO
+
+With these averaged values for each of the exchange pairs, find the [weighted geometric mean](https://en.wikipedia.org/wiki/Weighted_geometric_mean), using the following weights:
+
+| value | weight |
+|-|-|
+| USD/EUR | 57.6% |
+| USD/JPY | 13.6% |
+| USD/GBP | 11.9% |
+| USD/CAD | 9.1% |
+| USD/SEK | 4.2% |
+| USD/CHF | 3.6% |
+
+The result should then be rounded to 3 decimal places to arrive at the final value.
+
+## Once these three data points are collected:
 
 # Security considerations
 
