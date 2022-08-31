@@ -18,7 +18,16 @@ The canonical identifier should be `DXY`.
 
 Adding DXY would allow synthetic assets for the US Dollar Index to be created, which would in turn allow various derivatives to be built on top of this token.
 
-DXY is a well-defined and publicly accessible metric, and so will be trivial to resolve by the Oracle.
+The US Dollar Index is a measure of the value of USD relative to a weighted basket of foreign currencies. These currencies and their weights are:
+
+1. Euro (EUR): 57.6 percent
+2. Japanese Yen (JPY): 13.6 percent
+3. British Pound (GBP): 11.9 percent
+4. Canadian Dollar (CAD): 9.1 percent
+5. Swedish Krona (SEK): 4.2 percent
+6. Swiss Franc (CHF): 3.6 percent
+
+This is a well-defined and publicly accessible metric, and so will be trivial to resolve by the Oracle.
 
 # Data Specifications
 
