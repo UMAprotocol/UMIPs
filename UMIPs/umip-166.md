@@ -1,10 +1,10 @@
 ## Headers
 
-| DXY Feed            |                                                      |
+| UMIP-166           |                                                      |
 | ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add **DXY** as a supported price identifier |
 | Authors             | Sumero                                             |
-| Status              | Draft                                            |
+| Status              | Last Call                                            |
 | Created             | 2022.8.24    |
 | Discourse Link      | https://discourse.umaproject.org/t/umip-add-dxy-usd-index-as-a-price-identifier/1797            |
 
