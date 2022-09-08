@@ -1,6 +1,6 @@
 ## Headers
 
-| DXY Feed            |                                                      |
+| UMIP-166           |                                                      |
 | ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add **DXY** as a supported price identifier |
 | Authors             | Sumero                                             |
