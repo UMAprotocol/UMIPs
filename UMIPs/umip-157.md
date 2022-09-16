@@ -95,6 +95,15 @@ The following constants are currently specified in this UMIP directly, but shoul
 ## Token Constants
 The following constants are also stored in the `AcrossConfigStore` contract but are specific to an Ethereum token address. Therefore, they are fetched by querying the config store's `tokenConfig(address)` function.
 - "rateModel"
+- "spokeTargetBalances"
+  - This is contains a JSON mapping from chainId to JSON structs.
+  - Each struct contains two sub-fields, "target" and "threshold".
+  - Each is a string containing an integer.
+  - These integers should both be positive values. If either is negative, it should be treated as "0" when used.
+  - The "target" integer should be < the "threshold" integer. If not, the "theshold" integer should be treated as if
+    it contained the same value as the "target" integer when used.
+  - If "spokeTargetBalances", a particular chainId is missing from the mapping, or "target" or "threshold" is missing,
+    the missing "target" and "threshold" should be defaulted to 0.
 - "transferThreshold"
 
 For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")` might return:
@@ -257,11 +266,21 @@ For each `repaymentChainId` and `l1Token` combination, older
 [RootBundleExecuted](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) events
 should be queried to find the preceding `RootBundleExecuted` event. This means identifying the most recent `RootBundleExecuted` event with a `chainId` matching the `repaymentChainId` and [identifying the `runningBalanceValue` at the index of the `l1Token`](#matching-l1-tokens-to-running-balances-or-net-send-amounts).
 
-For each tuple of `l1Token` and `repaymentChainId`, we should have computed a total running balance value. Determine if the
-absolute value of this running balance is > [`TOKEN_TRANSFER_THRESHOLD`](#global-constants) of the total value of all LP tokens for this
-`l1Token` at the `ProposeRootBundle` event that came before the one being evaluated (process described above).
-If this passes the threshold, then set net send amount to the running balance value and set the running balance value
-to 0.
+For each tuple of `l1Token` and `repaymentChainId`, we should have computed a total running balance value. There are
+two cases to consider.
+
+The first is when the running balance value for this token is positive or 0. In that case, we follow the following
+logic: if the running balance is > the [`transferThreshold`](#token-constants) for this token, set net send amount to
+the running balance and set the running balance to 0.
+
+The other case is when the running balance is negative. In that case, the logic is a bit more complex:
+- If the running balance value for this token is < the "threshold" value in [`spokeTargetBalances`](#token-constants)
+  for this token is < the absolute value of this running balance, leave the running balance set to its current value
+  and set the net send amount for this token to 0.
+- Otherwise, subtract the absolute value of the running balance from the "target" value in
+  [`spokeTargetBalances`](#token-constants). If the result is positive (this should not happen under correct
+  configurations), set it to 0.
+- Set net send amount to that value and subtract that value from the running balance.
 
 Take the above running balances and net send amounts and group them by only `repaymentChainId` and sort by `repaymentChainId`. Within
 each group, sort by `l1Token`. If there are more than [`MAX_POOL_REBALANCE_LEAF_SIZE`](#global-constants) `l1Tokens`, a particular chain's leaf will
