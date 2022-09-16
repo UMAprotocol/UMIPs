@@ -84,7 +84,7 @@ The user of this UMIP accepts the responsibility to provide the information pass
 # Implementation
 
 If ancillary data is correctly configured voters should be able to follow below listed standard steps to resolve the price request using this TOKEN_PRICE identifier:
-1. Voters should decode the ancillary data and add the JSON object from the `configuration` parameter as a value (naming its key to be unique) to `defaultConfigs` dictionary object in [DefaultPriceFeedConfigs.js](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.js). As an example, choosing `UMAUSD_CUSTOM` as key name from the example in Ancillary Data Specifications section would become:
+1. Voters should decode the ancillary data and add the JSON object from the `configuration` parameter as a value (naming its key to be unique) to `defaultConfigs` dictionary object in [DefaultPriceFeedConfigs.ts](https://github.com/UMAprotocol/protocol/blob/master/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.ts). As an example, choosing `UMAUSD_CUSTOM` as key name from the example in Ancillary Data Specifications section would become:
    ```
    const defaultConfigs = {
      // Leave other price feed configs here
