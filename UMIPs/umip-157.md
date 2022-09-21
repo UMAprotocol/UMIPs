@@ -273,10 +273,9 @@ The first is when the running balance value for this token is positive or 0. In 
 logic: if the running balance is > the [`transferThreshold`](#token-constants) for this token, set net send amount to
 the running balance and set the running balance to 0.
 
-The other case is when the running balance is negative. In that case, the logic is a bit more complex:
-- If the running balance value for this token is < the "threshold" value in [`spokeTargetBalances`](#token-constants)
-  for this token is < the absolute value of this running balance, leave the running balance set to its current value
-  and set the net send amount for this token to 0.
+The other case is when the running balance is negative. In that case, the logic is:
+- If the absolute value of the running balance value for this token is < the "threshold" value in [`spokeTargetBalances`](#token-constants)
+  for this token, leave the running balance set to its current value and set the net send amount for this token to 0.
 - Otherwise, subtract the absolute value of the running balance from the "target" value in
   [`spokeTargetBalances`](#token-constants). If the result is positive (this should not happen under correct
   configurations), set it to 0.
