@@ -3,7 +3,7 @@
 | UMIP-166    |                                                                                            |
 | ---------- | ------------------------------------------------------------------------------------------ |
 | UMIP Title | Approve DVM upgrade to DVM2.0                                  |
-| Authors    | Chris Maree (chris@umaproject.org) Pablo Maldonado (pablo@umaproject.org)       |
+| Authors    | Chris Maree (chris@umaproject.org), Pablo Maldonado (pablo@umaproject.org)       |
 | Status     | Draft                                                                                     |
 | Created    | x                                                                          |
 
