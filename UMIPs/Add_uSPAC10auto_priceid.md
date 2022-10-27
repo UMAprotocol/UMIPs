@@ -60,7 +60,7 @@ In order to determine the index value, the following steps are required:
 
 #### 1. Obtain Index Basket
 The index basket is formed **weekly** by requesting top-10 gainers from the spacHero database, available from "spacHero – Rapidapi.com" (API)<br> 
-> In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we request a new price identifier weekly.
+> In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we request a new price identifier weekly. <br>
 
 ##### Example "spacHero – Rapidapi.com" request for top-10 gainer:
 
@@ -218,8 +218,7 @@ The price for the given timestamp is calculated like this:
 - Find the interval for the timestamp. The interval begin timestamp must be less or equal than given timestamp, and the interval end timestamp must be greater than given timestamp
 - Get the closing price for the interval found in the previous step
 - Evaluate index value (see later)
-
-
+<br>
 ##### Example "Yahoo Finance 97 – Rapidapi.com" request for **historical** price:
 
 ```
@@ -438,7 +437,7 @@ API Response Object:
   "status": 200
 }
 ```
-
+<br>
 #### 3. Evaluate index value
 3.1. Sum up quotes of all N SPAC shares included in index.<br>
 3.2. Divide result by N (number of shares in index basket).<br>
