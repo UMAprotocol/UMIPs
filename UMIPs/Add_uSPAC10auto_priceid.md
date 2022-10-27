@@ -1,14 +1,14 @@
 ## HEADERS
 |UMIP-     | | 
 |:-------------|:-----------------------------------------------------------------------------|
-|UMIP title|Add uSPAC10auto as price identifier|
+|UMIP title|Add uSPAC10g as price identifier|
 |Author|BinomFX (binomfx@gmail.com)|
 |Status|Draft| 
 |Created|27.10.2022|
 |Discourse Link|https://discourse.umaproject.org/_________|
 
 ## SUMMARY
-The DVM should support price requests for uSPAC10auto price identifier<br>
+The DVM should support price requests for uSPAC10g price identifier<br>
 The purpose of this price identifier is to create synthetic token, price of which is linked to the value of index of **10** most active SPACs (Special Purpose Acquisition Companies) shares.<br> That synthetic token can be used for creating speculative strategies at IPO market.<br>
 The difference from the existing UMIP-140 is that the proposed price ID does not require manually changing the basket of 10 SPAC shares on a quarterly basis.
 
@@ -19,7 +19,7 @@ In addition, that token can be used as components associated with classical mark
 ## TECHNICAL SPECIFICATION
 | | |
 |:---------------------------|:---------------------------------------------------|
-|**Identifier name**         |**uSPAC10auto**|
+|**Identifier name**         |**uSPAC10g**|
 |Base asset                  | Most active SPAC shares.|
 |Quote Currency              | USD|
 |Intended Collateral Currency| USDC|
@@ -56,8 +56,9 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 
 ## IMPLEMENTATION
 ### Price Identifier
-The index basket is formed **weekly** by including top-10 gainers from the spacHero database, available from "spacHero – Rapidapi.com" (API)<br> 
-
+In order to determine the index value, the following steps are required:
+#### 1. Obtain Inndex Basket
+The index basket is formed **weekly** by requesting top-10 gainers from the spacHero database, available from "spacHero – Rapidapi.com" (API)<br> 
 ##### Example "spacHero – Rapidapi.com" request for top-10 gainer:
 ```
 const axios = require("axios");
@@ -145,133 +146,60 @@ API Response Object:
   ]
 }
 ```
-
-
-
 <br>
-In order to determine the index value, the following steps are required:
-
-#### 1. Get shares quotes
+#### 2. Get shares quotes
 Real time and historical share prices are available from "Yahoo Finance 97 – Rapidapi.com" (API).<br> 
+It is necessary to request the price of each stock included in the index basket in the previous step.<br>
 Price requests should use the 1 minute quotes for the date corresponding to price request timestamp. Close price should be used.
 <br><br>
-##### Example "Stock Data – Rapidapi.com" request for 10 shares listed above **realtime prices**:
+##### Example "Yahoo Finance 97 – Rapidapi.com" request for **realtime prices**:
 ```
-var axios = require("axios").default;
+const axios = require("axios");
 
-var options = {
-  method: 'GET',
-  url: 'https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v6/finance/quote',
-  params: {symbols: 'DWAC,IRDM,MP,PRIM,WSC,SMPL,TGLS,CERE,KW,HPK'},
+const encodedParams = new URLSearchParams();
+encodedParams.append("symbol", "CRHC");
+encodedParams.append("period", "1d");
+
+const options = {
+  method: 'POST',
+  url: 'https://yahoo-finance97.p.rapidapi.com/price',
   headers: {
-    'x-rapidapi-host': 'stock-data-yahoo-finance-alternative.p.rapidapi.com',
-    'x-rapidapi-key': ACCESS_KEY
-  }
+    'content-type': 'application/x-www-form-urlencoded',
+    'X-RapidAPI-Key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb',
+    'X-RapidAPI-Host': 'yahoo-finance97.p.rapidapi.com'
+  },
+  data: encodedParams
 };
 
 axios.request(options).then(function (response) {
-  console.log(response.data);
+	console.log(response.data);
 }).catch(function (error) {
-  console.error(error);
+	console.error(error);
 });
 ```
 
 API Response Object:
 
 ```
-{1 item
-    "quoteResponse":{2 items
-        "result":[10 items
-            0:{63 items
-                "language":"en-US"
-                "region":"US"
-                "quoteType":"EQUITY"
-                "quoteSourceName":"Delayed Quote"
-                "triggerable":true
-                "currency":"USD"
-                "shortName":"Digital World Acquisition Corp."
-                "marketState":"POSTPOST"
-                "twoHundredDayAverageChangePercent":0.03635165
-                "priceToBook":-181.1017
-                "sourceInterval":15
-                "exchangeDataDelayedBy":0
-                "ipoExpectedDate":"2021-09-30"
-                "tradeable":false
-                "exchange":"NGM"
-                "longName":"Digital World Acquisition Corp."
-                "messageBoardId":"finmb_715145893"
-                "exchangeTimezoneName":"America/New_York"
-                "exchangeTimezoneShortName":"EST"
-                "gmtOffSetMilliseconds":-18000000
-                "market":"us_market"
-                "esgPopulated":false
-                "firstTradeDateMilliseconds":1633008600000
-                "priceHint":2
-                "postMarketChangePercent":-0.56153876
-                "postMarketTime":1638233985
-                "postMarketPrice":42.5
-                "postMarketChange":-0.24000168
-                "regularMarketChange":-0.3599968
-                "regularMarketChangePercent":-0.83525944
-                "regularMarketTime":1638219603
-                "regularMarketPrice":42.74
-                "regularMarketDayHigh":44.2
-                "regularMarketDayRange":"41.51 - 44.2"
-                "regularMarketDayLow":41.51
-                "regularMarketVolume":1393432
-                "regularMarketPreviousClose":43.1
-                "bid":42.41
-                "ask":42.69
-                "bidSize":8
-                "askSize":9
-                "fullExchangeName":"NasdaqGM"
-                "financialCurrency":"USD"
-                "regularMarketOpen":43.46
-                "averageDailyVolume3Month":23048800
-                "averageDailyVolume10Day":4166100
-                "fiftyTwoWeekLowChange":32.9
-                "fiftyTwoWeekLowChangePercent":3.343496
-                "fiftyTwoWeekRange":"9.84 - 175.0"
-                "fiftyTwoWeekHighChange":-132.26
-                "fiftyTwoWeekHighChangePercent":-0.7557714
-                "fiftyTwoWeekLow":9.84
-                "fiftyTwoWeekHigh":175
-                "sharesOutstanding":30027200
-                "bookValue":-0.236
-                "fiftyDayAverage":41.24083
-                "fiftyDayAverageChange":1.4991722
-                "fiftyDayAverageChangePercent":0.03635165
-                "twoHundredDayAverage":41.24083
-                "twoHundredDayAverageChange":1.4991722
-                "marketCap":1590556288
-                "displayName":"Digital World"
-                "symbol":"DWAC"
-            }
-            1:{...}71 items
-            2:{...}76 items
-            3:{...}76 items
-            4:{...}73 items
-            5:{...}73 items
-            6:{...}72 items
-            7:{...}73 items
-            8:{...}72 items
-            9:{...}72 items
-        ]
-        "error":NULL
+{
+  "data": [
+    {
+      "Close": 9.9399995804,
+      "Date": 1664496000000,
+      "Dividends": 0,
+      "High": 9.9399995804,
+      "Low": 9.9300003052,
+      "Open": 9.9300003052,
+      "Stock Splits": 0,
+      "Volume": 43100
     }
-}
+  ],
+  "message": "Success",
+  "status": 200
+} 
 ```
-The most important fields are:
-- "exchangeDataDelayedBy":0 - means no delay in quotes
-- "regularMarketPrice":42.74 - current price, after closing (4:00 pm ET) equals current day close price
-- "regularMarketDayHigh":44.2 - high daily price
-- "regularMarketDayLow":41.51 - low daily price
-- "regularMarketPreviousClose":43.1 - previous day close price, changed at 0:00 am ET
-- "regularMarketOpen":43.46 - open daily price
-- "symbol":"DWAC" - share ticker
-
+<br>
 ##### Retrieving historical price
-
 To retrieve historical price, the `Stock History` method should be used. It is available via `https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark` endpoint. 1 minute pricing interval should be used.
 
 For each symbol the method returns two arrays of the same length. The first is array of timestamps for interval open moment. The second is array of **closing** prices for the same intervals.
@@ -283,157 +211,229 @@ The price for the given timestamp is calculated like this:
 - Evaluate index value (see later)
 
 
-##### Example "Stock Data – Rapidapi.com" request for 10 shares listed above **historical** price:
+##### Example "Yahoo Finance 97 – Rapidapi.com" request for **historical** price:
 ```
-var axios = require("axios").default;
+const axios = require("axios");
 
-var options = {
-  method: 'GET',
-  url: 'https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark',
-  params: {
-    symbols: 'DWAC,IRDM,MP,PRIM,WSC,SMPL,TGLS,CERE,KW,HPK',
-    interval: '1m'
-  },
+const encodedParams = new URLSearchParams();
+encodedParams.append("end", "2022-09-30");
+encodedParams.append("symbol", "CRHC");
+encodedParams.append("start", "2022-09-01");
+
+const options = {
+  method: 'POST',
+  url: 'https://yahoo-finance97.p.rapidapi.com/price-customdate',
   headers: {
-    'x-rapidapi-host': 'stock-data-yahoo-finance-alternative.p.rapidapi.com',
-    'x-rapidapi-key': ACCESS_KEY
-  }
+    'content-type': 'application/x-www-form-urlencoded',
+    'X-RapidAPI-Key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb',
+    'X-RapidAPI-Host': 'yahoo-finance97.p.rapidapi.com'
+  },
+  data: encodedParams
 };
 
 axios.request(options).then(function (response) {
-  console.log(response.data);
+	console.log(response.data);
 }).catch(function (error) {
-  console.error(error);
+	console.error(error);
 });
 ```
 API Response Object:
 
 ```
-{10 items
-  "DWAC":{8 items
-    "symbol":"DWAC"
-    "timestamp":[...]95 items
-    "previousClose":37.92
-    "chartPreviousClose":37.92
-    "end":1639602000
-    "start":1639578600
-    "close":[95 items
-      0:38
-      1:37.73
-      2:37.73
-      3:37.74
-      4:37.63
-      5:37.59
-      6:37.5
-      7:37.635
-      8:37.65
-      9:37.645
-      10:37.69
-      11:37.6
-      12:37.6
-      13:37.59
-      14:37.55
-      15:37.475
-      16:37.59
-      17:37.54
-      18:37.59
-      19:37.67
-      20:37.655
-      21:37.719
-      22:37.7
-      23:37.81
-      24:37.76
-      25:37.76
-      26:37.655
-      27:37.74
-      28:37.72
-      29:37.8
-      30:37.77
-      31:37.78
-      32:37.685
-      33:37.69
-      34:37.76
-      35:37.57
-      36:37.6
-      37:37.59
-      38:37.62
-      39:37.6
-      40:37.64
-      41:37.53
-      42:37.58
-      43:37.53
-      44:37.451
-      45:37.41
-      46:37.36
-      47:37.36
-      48:37.33
-      49:37.28
-      50:37.31
-      51:37.28
-      52:37.285
-      53:37.36
-      54:37.305
-      55:37.31
-      56:37.34
-      57:37.36
-      58:37.38
-      59:37.35
-      60:37.315
-      61:37.345
-      62:37.32
-      63:37.39
-      64:37.36
-      65:37.36
-      66:37.27
-      67:37.39
-      68:37.395
-      69:37.43
-      70:37.45
-      71:37.5
-      72:37.44
-      73:37.58
-      74:37.51
-      75:37.445
-      76:37.49
-      77:37.469
-      78:37.41
-      79:37.41
-      80:37.42
-      81:37.41
-      82:37.42
-      83:37.39
-      84:37.345
-      85:37.32
-      86:37.305
-      87:37.339
-      88:37.36
-      89:37.36
-      90:37.39
-      91:37.35
-      92:37.35
-      93:37.33
-      94:NULL
-    ]
-    "dataGranularity":300
-  }     
-  "IRDM":{...}8 items
-  "MP":{...}8 items
-  "PRIM":{...}8 items
-  "WSC":{...}8 items
-  "SMPL":{...}8 items
-  "TGLS":{...}8 items
-  "CERE":{...}8 items
-  "KW":{...}8 items
-  "HPK":{...}8 items
+{
+  "data": [
+    {
+      "Adj Close": 9.6800003052,
+      "Close": 9.6800003052,
+      "Date": 1661990400000,
+      "High": 9.779999733,
+      "Low": 9.25,
+      "Open": 9.6899995804,
+      "Volume": 1222500
+    },
+    {
+      "Adj Close": 8.8599996567,
+      "Close": 8.8599996567,
+      "Date": 1662076800000,
+      "High": 9.9499998093,
+      "Low": 8.3100004196,
+      "Open": 9.8100004196,
+      "Volume": 1037200
+    },
+    {
+      "Adj Close": 8.5799999237,
+      "Close": 8.5799999237,
+      "Date": 1662422400000,
+      "High": 9.1000003815,
+      "Low": 8.1999998093,
+      "Open": 8.8900003433,
+      "Volume": 637100
+    },
+    {
+      "Adj Close": 9.1300001144,
+      "Close": 9.1300001144,
+      "Date": 1662508800000,
+      "High": 9.1999998093,
+      "Low": 8.5,
+      "Open": 8.6000003815,
+      "Volume": 285400
+    },
+    {
+      "Adj Close": 7.9600000381,
+      "Close": 7.9600000381,
+      "Date": 1662595200000,
+      "High": 9.3999996185,
+      "Low": 7.8499999046,
+      "Open": 9.3999996185,
+      "Volume": 596500
+    },
+    {
+      "Adj Close": 8.4499998093,
+      "Close": 8.4499998093,
+      "Date": 1662681600000,
+      "High": 8.6700000763,
+      "Low": 7.9099998474,
+      "Open": 7.9099998474,
+      "Volume": 153800
+    },
+    {
+      "Adj Close": 8.2899999619,
+      "Close": 8.2899999619,
+      "Date": 1662940800000,
+      "High": 8.5900001526,
+      "Low": 8.2100000381,
+      "Open": 8.4399995804,
+      "Volume": 108300
+    },
+    {
+      "Adj Close": 8.3699998856,
+      "Close": 8.3699998856,
+      "Date": 1663027200000,
+      "High": 8.6000003815,
+      "Low": 8.1800003052,
+      "Open": 8.1800003052,
+      "Volume": 144300
+    },
+    {
+      "Adj Close": 8.5500001907,
+      "Close": 8.5500001907,
+      "Date": 1663113600000,
+      "High": 8.6440000534,
+      "Low": 8.3599996567,
+      "Open": 8.3999996185,
+      "Volume": 43100
+    },
+    {
+      "Adj Close": 8.6000003815,
+      "Close": 8.6000003815,
+      "Date": 1663200000000,
+      "High": 8.9799995422,
+      "Low": 8.4510002136,
+      "Open": 8.470000267,
+      "Volume": 191900
+    },
+    {
+      "Adj Close": 8.779999733,
+      "Close": 8.779999733,
+      "Date": 1663286400000,
+      "High": 9,
+      "Low": 8.4600000381,
+      "Open": 8.5100002289,
+      "Volume": 142900
+    },
+    {
+      "Adj Close": 8.8100004196,
+      "Close": 8.8100004196,
+      "Date": 1663545600000,
+      "High": 8.8199996948,
+      "Low": 8.3000001907,
+      "Open": 8.7299995422,
+      "Volume": 154700
+    },
+    {
+      "Adj Close": 9.1700000763,
+      "Close": 9.1700000763,
+      "Date": 1663632000000,
+      "High": 9.4499998093,
+      "Low": 8.5100002289,
+      "Open": 8.6999998093,
+      "Volume": 539800
+    },
+    {
+      "Adj Close": 9.1800003052,
+      "Close": 9.1800003052,
+      "Date": 1663718400000,
+      "High": 9.279999733,
+      "Low": 8.8500003815,
+      "Open": 9.279999733,
+      "Volume": 116200
+    },
+    {
+      "Adj Close": 9.1999998093,
+      "Close": 9.1999998093,
+      "Date": 1663804800000,
+      "High": 9.375,
+      "Low": 9.0220003128,
+      "Open": 9.1309995651,
+      "Volume": 160700
+    },
+    {
+      "Adj Close": 9.1700000763,
+      "Close": 9.1700000763,
+      "Date": 1663891200000,
+      "High": 9.3000001907,
+      "Low": 8.9200000763,
+      "Open": 9.1300001144,
+      "Volume": 115300
+    },
+    {
+      "Adj Close": 9.9300003052,
+      "Close": 9.9300003052,
+      "Date": 1664150400000,
+      "High": 9.9499998093,
+      "Low": 9.9200000763,
+      "Open": 9.9300003052,
+      "Volume": 698500
+    },
+    {
+      "Adj Close": 9.9300003052,
+      "Close": 9.9300003052,
+      "Date": 1664236800000,
+      "High": 9.9499998093,
+      "Low": 9.9200000763,
+      "Open": 9.9200000763,
+      "Volume": 196400
+    },
+    {
+      "Adj Close": 9.9300003052,
+      "Close": 9.9300003052,
+      "Date": 1664323200000,
+      "High": 9.9399995804,
+      "Low": 9.9300003052,
+      "Open": 9.9300003052,
+      "Volume": 29300
+    },
+    {
+      "Adj Close": 9.9300003052,
+      "Close": 9.9300003052,
+      "Date": 1664409600000,
+      "High": 9.9399995804,
+      "Low": 9.9200000763,
+      "Open": 9.9200000763,
+      "Volume": 24500
+    }
+  ],
+  "message": "Success",
+  "status": 200
 }
 ```
 
-#### 2. Evaluate index value
+#### 3. Evaluate index value
 2.1. Sum up quotes of all N SPAC shares included in index.<br>
 2.2. Divide result by N (number of shares in index basket).<br>
 ```
            SumUp (Qi)
-INDEX = ------------------ * K
+INDEX = ------------------
                N
 ```
 where:
