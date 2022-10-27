@@ -24,8 +24,8 @@ In addition, that token can be used as components associated with classical mark
 |Quote Currency              | USD|
 |Intended Collateral Currency| USDC|
 |Market                      | NYSE, NASDAQ|
-|Source                      |["Shares basket - Rapidapi.com"](https://rapidapi.com/spachero/api/spachero-spac-database/), API - Cost to use: Free 10 requests per day, [Pricing](https://rapidapi.com/spachero/api/spachero-spac-database/pricing)|
-|                            |["Stock Data  – Rapidapi.com"](https://rapidapi.com/asepscareer/api/yahoo-finance97), API - Cost to use: Free 900 requests per month, [Pricing](https://rapidapi.com/asepscareer/api/yahoo-finance97/pricing)|
+|Shares Basket Source        |["spacHero – Rapidapi.com"](https://rapidapi.com/spachero/api/spachero-spac-database/), API - Cost to use: Free 10 requests per day, [Pricing](https://rapidapi.com/spachero/api/spachero-spac-database/pricing)|
+|Shares Quotes Source        |["Yahoo Finance 97 – Rapidapi.com"](https://rapidapi.com/asepscareer/api/yahoo-finance97), API - Cost to use: Free 900 requests per month, [Pricing](https://rapidapi.com/asepscareer/api/yahoo-finance97/pricing)|
 |Scaling Decimals            | 18 (1e18)|
 |Rounding                    | Round to nearest 6 decimal places (seventh decimal place digit >= 5 rounds up and < 5 rounds down)|
 
@@ -43,15 +43,12 @@ The SPAC market is growing exponentially:
 |2016|       13|            3,499.2|                269.2|
 
 By their nature, SPAC shares are subject to impulsive growth at the moment of information or even just rumors that a target company for a merger has been found.<br>
-`A good way to capitalize on such momentum growth without having to analyze hundreds of SPACs is to take advantage of the movement of the index value that includes stocks of the most active SPACs.`<br>
+A good way to capitalize on such momentum growth without having to analyze hundreds of SPACs is to take advantage of the movement of the index value that includes stocks of the most active SPACs.<br>
 
-The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC10 index is made according to [SPAC Analytics Top Performing SPACs](https://www.spacanalytics.com/).<br>
->SPAC Analytics is the leading provider of SPAC data and research to portfolio managers and investment banks since 2007.
+The selection of **10** stocks of the most active SPACs included in the basket of the proposed uSPAC10 index is made according to [spacHero database top-10 gainers](https://www.spachero.com/)).spacHero is a free SPAC resource for retail investors. [**spacHero – Rapidapi.com**](https://rapidapi.com/spachero/api/spachero-spac-database/) is an official spacHero SPAC API with live rankings, SPAC target names, merger meetings, warrant redemption deadlines, price targets, SEC filings, investor presentations and more.<br>
 
 These underlying assets are traded on the NYSE and NASDAQ, but reliable sources of quotations are either paid or provide data with a delay.<br> 
-We suggest using the ["Stock Data – Rapidapi.com"](https://rapidapi.com/principalapis/api/stock-data-yahoo-finance-alternative/) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data.
-
->Stock Data – Rapidapi.com is a decision for retrieving real time stock data. Alternative to the Yahoo Finance API. Rapidapi.com Finance APIs allow end-users a variety of service options for their accounts as well as to stay current on events and news that impact their portfolios and financial security. For example, a finance API could remotely connect them to their bank account to initiate deposits, transfers, or other transactions. Other financial APIs include stock market news and trading platforms, cryptocurrency markets, and more. A financial API provides a secure link from a consumer to the databases and transactional servers of the institutions with which they do business. Application programming interfaces, or APIs, are the digital links between data providers and end-users. In the financial sector, security is essential as sensitive information is transferred in real-time, so only the most robust protocols are utilized to protect the data transmitted on both ends.
+We suggest using the [**Yahoo Finance 97 – Rapidapi.com**](https://rapidapi.com/asepscareer/api/yahoo-finance97) API as the main source of quotes, which has both free and paid tariff plans, and also provides historical price data. Yahoo Finance 97 – Rapidapi.com is a decision for retrieving real time stock data. Alternative to the Yahoo Finance API. Rapidapi.com Finance APIs allow end-users a variety of service options for their accounts as well as to stay current on events and news that impact their portfolios and financial security. For example, a finance API could remotely connect them to their bank account to initiate deposits, transfers, or other transactions. Other financial APIs include stock market news and trading platforms, cryptocurrency markets, and more. A financial API provides a secure link from a consumer to the databases and transactional servers of the institutions with which they do business. Application programming interfaces, or APIs, are the digital links between data providers and end-users. In the financial sector, security is essential as sensitive information is transferred in real-time, so only the most robust protocols are utilized to protect the data transmitted on both ends.
 
 Underlying stocks are traded during exchange hours which leaves gaps in prices between 4:00PM EST close and 9:30AM EST open the next day and on weekends and market holidays. 
 
