@@ -56,25 +56,103 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 
 ## IMPLEMENTATION
 ### Price Identifier
-The index basket is formed by including the first 10 stocks from the Top Performing SPACs table from the website [SPACanalytics.com](https://www.spacanalytics.com/)  on 30.06.2022.
-The list of stocks included in the index basket are:
-|N|TICKER|MARKET|
-|:--:|:------:|:--------:|
-| 1|DWAC|NASDAQ|
-| 2|IRDM|NASDAQ|
-| 3|MP  |NYSE  |
-| 4|PRIM|NASDAQ|
-| 5|WSC |NASDAQ|
-| 6|SMPL|NASDAQ|
-| 7|TGLS|NASDAQ|
-| 8|CERE|NASDAQ|
-| 9|KW  |NYSE  |
-|10|HPK |NASDAQ|
+The index basket is formed **weekly** by including top-10 gainers from the spacHero database, available from "spacHero – Rapidapi.com" (API)<br> 
+
+##### Example "spacHero – Rapidapi.com" request for top-10 gainer:
+```
+const axios = require("axios");
+
+const options = {
+  method: 'GET',
+  url: 'https://spachero-spac-database.p.rapidapi.com/top10/',
+  params: {period: 'weekly', type: 'common', sortby: 'gainers'},
+  headers: {
+    'X-RapidAPI-Key': 'SIGN-UP-FOR-KEY',
+    'X-RapidAPI-Host': 'spachero-spac-database.p.rapidapi.com'
+  }
+};
+
+axios.request(options).then(function (response) {
+	console.log(response.data);
+}).catch(function (error) {
+	console.error(error);
+});
+```
+API Response Object:
+```
+{
+  "Gainers": [
+    {
+      "Commons_Symbol": "CRHC",
+      "Commons_Weekly_Change": "12.71",
+      "Commons_Price": "9.94",
+      "Commons_Volume": "43113"
+    },
+    {
+      "Commons_Symbol": "HHGC",
+      "Commons_Weekly_Change": "3.04",
+      "Commons_Price": "10.39",
+      "Commons_Volume": "4279"
+    },
+    {
+      "Commons_Symbol": "ATA",
+      "Commons_Weekly_Change": "2.15",
+      "Commons_Price": "10.42",
+      "Commons_Volume": "22000"
+    },
+    {
+      "Commons_Symbol": "AMAO",
+      "Commons_Weekly_Change": "1.98",
+      "Commons_Price": "10.22",
+      "Commons_Volume": "0"
+    },
+    {
+      "Commons_Symbol": "EBAC",
+      "Commons_Weekly_Change": "1.42",
+      "Commons_Price": "9.92",
+      "Commons_Volume": "43900"
+    },
+    {
+      "Commons_Symbol": "RCAC",
+      "Commons_Weekly_Change": "1.02",
+      "Commons_Price": "9.94",
+      "Commons_Volume": "20249"
+    },
+    {
+      "Commons_Symbol": "TRTL",
+      "Commons_Weekly_Change": "0.72",
+      "Commons_Price": "9.82",
+      "Commons_Volume": "3030"
+    },
+    {
+      "Commons_Symbol": "IMAQ",
+      "Commons_Weekly_Change": "0.70",
+      "Commons_Price": "10.15",
+      "Commons_Volume": "19285"
+    },
+    {
+      "Commons_Symbol": "LIBY",
+      "Commons_Weekly_Change": "0.70",
+      "Commons_Price": "10.09",
+      "Commons_Volume": "510"
+    },
+    {
+      "Commons_Symbol": "ICNC",
+      "Commons_Weekly_Change": "0.69",
+      "Commons_Price": "10.14",
+      "Commons_Volume": "0"
+    }
+  ]
+}
+```
+
+
+
 <br>
 In order to determine the index value, the following steps are required:
 
 #### 1. Get shares quotes
-Real time and historical share prices are available from "Stock Data – Rapidapi.com" (API).<br> 
+Real time and historical share prices are available from "Yahoo Finance 97 – Rapidapi.com" (API).<br> 
 Price requests should use the 1 minute quotes for the date corresponding to price request timestamp. Close price should be used.
 <br><br>
 ##### Example "Stock Data – Rapidapi.com" request for 10 shares listed above **realtime prices**:
