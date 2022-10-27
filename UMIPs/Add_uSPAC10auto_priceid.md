@@ -153,13 +153,15 @@ API Response Object:
 }
 ```
 <br>
+
 #### 2. Get shares quotes
 
 Real time and historical share prices are available from "Yahoo Finance 97 – Rapidapi.com" (API).<br> 
 It is necessary to request the price of each stock included in the index basket in the previous step.<br>
 Price requests should use the 1 minute quotes for the date corresponding to price request timestamp. Close price should be used.
 <br><br>
-##### Example "Yahoo Finance 97 – Rapidapi.com" request for **realtime prices**:
+
+##### Example "Yahoo Finance 97 – Rapidapi.com" request for realtime prices:
 
 ```
 const axios = require("axios");
@@ -207,6 +209,7 @@ API Response Object:
 } 
 ```
 <br>
+
 ##### Retrieving historical price
 
 To retrieve historical price, the `Stock History` method should be used. It is available via `https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark` endpoint. 1 minute pricing interval should be used.
@@ -219,7 +222,8 @@ The price for the given timestamp is calculated like this:
 - Get the closing price for the interval found in the previous step
 - Evaluate index value (see later)
 <br>
-##### Example "Yahoo Finance 97 – Rapidapi.com" request for **historical** price:
+
+##### Example "Yahoo Finance 97 – Rapidapi.com" request for historical price:
 
 ```
 const axios = require("axios");
@@ -438,6 +442,7 @@ API Response Object:
 }
 ```
 <br>
+
 #### 3. Evaluate index value
 3.1. Sum up quotes of all N SPAC shares included in index.<br>
 3.2. Divide result by N (number of shares in index basket).<br>
