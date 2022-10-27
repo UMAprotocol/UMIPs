@@ -1,5 +1,5 @@
 ## HEADERS
-|UMIP-     | | 
+|UMIP     | | 
 |:-------------|:-----------------------------------------------------------------------------|
 |UMIP title|Add uSPAC10g as price identifier|
 |Author|BinomFX (binomfx@gmail.com)|
@@ -158,8 +158,7 @@ API Response Object:
 
 Real time and historical share prices are available from "Yahoo Finance 97 – Rapidapi.com" (API).<br> 
 It is necessary to request the price of each stock included in the index basket in the previous step.<br>
-Price requests should use the 1 minute quotes for the date corresponding to price request timestamp. Close price should be used.
-<br><br>
+Price requests should use the 1 minute quotes for the date corresponding to price request timestamp. Close price should be used.<br>
 
 ##### Example "Yahoo Finance 97 – Rapidapi.com" request for realtime prices:
 
@@ -212,16 +211,7 @@ API Response Object:
 
 ##### Retrieving historical price
 
-To retrieve historical price, the `Stock History` method should be used. It is available via `https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark` endpoint. 1 minute pricing interval should be used.
-
-For each symbol the method returns two arrays of the same length. The first is array of timestamps for interval open moment. The second is array of **closing** prices for the same intervals.
-
-The price for the given timestamp is calculated like this:
-
-- Find the interval for the timestamp. The interval begin timestamp must be less or equal than given timestamp, and the interval end timestamp must be greater than given timestamp
-- Get the closing price for the interval found in the previous step
-- Evaluate index value (see later)
-<br>
+To retrieve historical price, the `Price Custom Date` method should be used. 
 
 ##### Example "Yahoo Finance 97 – Rapidapi.com" request for historical price:
 
@@ -479,18 +469,19 @@ In the case of a "Yahoo Finance 97 – Rapidapi.com" outage voters can turn to a
 ```
 const axios = require("axios");
 
-const encodedParams = new URLSearchParams();
-encodedParams.append("symbol", "CRHC");
-
 const options = {
-  method: 'POST',
-  url: 'https://yahoo-finance97.p.rapidapi.com/stock-info',
-  headers: {
-    'content-type': 'application/x-www-form-urlencoded',
-    'X-RapidAPI-Key': API_KEY,
-    'X-RapidAPI-Host': 'yahoo-finance97.p.rapidapi.com'
+  method: 'GET',
+  url: 'https://yahoofinance-stocks1.p.rapidapi.com/stock-prices',
+  params: {
+    EndDateInclusive: '2022-10-26',
+    StartDateInclusive: '2022-10-26',
+    Symbol: 'CRHC',
+    OrderBy: 'Ascending'
   },
-  data: encodedParams
+  headers: {
+    'X-RapidAPI-Key': API_KEY,
+    'X-RapidAPI-Host': 'yahoofinance-stocks1.p.rapidapi.com'
+  }
 };
 
 axios.request(options).then(function (response) {
