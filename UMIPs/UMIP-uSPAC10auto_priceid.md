@@ -58,6 +58,8 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 ### Price Identifier
 In order to determine the index value, the following steps are required:
 
+![uSPAC10g-IdxCalc](https://user-images.githubusercontent.com/25432493/198379446-af065a62-88a7-4c94-9315-f6b98b1123ca.jpg)
+
 #### 1. Obtain Index Basket
 The index basket is formed **weekly** by requesting top-10 gainers from the spacHero database, available from "spacHero – Rapidapi.com" (API)<br> 
 > In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we request a new price identifier weekly. <br>
