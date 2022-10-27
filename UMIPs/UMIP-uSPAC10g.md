@@ -64,7 +64,7 @@ In order to determine the index value, the following steps are required:
 The index basket is formed **weekly** by requesting top-10 gainers from the spacHero database, available from "spacHero – Rapidapi.com" (API)<br> 
 > In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we request a new price identifier weekly. <br>
 
-##### Example "spacHero – Rapidapi.com" request for top-10 gainer:
+##### Example "spacHero – Rapidapi.com" request for top-10 gainers:
 
 ```
 const axios = require("axios");
