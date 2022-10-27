@@ -57,9 +57,13 @@ Underlying stocks are traded during exchange hours which leaves gaps in prices b
 ## IMPLEMENTATION
 ### Price Identifier
 In order to determine the index value, the following steps are required:
-#### 1. Obtain Inndex Basket
+
+#### 1. Obtain Index Basket
 The index basket is formed **weekly** by requesting top-10 gainers from the spacHero database, available from "spacHero – Rapidapi.com" (API)<br> 
+> In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we request a new price identifier weekly.
+
 ##### Example "spacHero – Rapidapi.com" request for top-10 gainer:
+
 ```
 const axios = require("axios");
 
@@ -68,7 +72,7 @@ const options = {
   url: 'https://spachero-spac-database.p.rapidapi.com/top10/',
   params: {period: 'weekly', type: 'common', sortby: 'gainers'},
   headers: {
-    'X-RapidAPI-Key': 'SIGN-UP-FOR-KEY',
+    'X-RapidAPI-Key': API_KEY,
     'X-RapidAPI-Host': 'spachero-spac-database.p.rapidapi.com'
   }
 };
@@ -79,7 +83,9 @@ axios.request(options).then(function (response) {
 	console.error(error);
 });
 ```
+
 API Response Object:
+
 ```
 {
   "Gainers": [
@@ -148,11 +154,13 @@ API Response Object:
 ```
 <br>
 #### 2. Get shares quotes
+
 Real time and historical share prices are available from "Yahoo Finance 97 – Rapidapi.com" (API).<br> 
 It is necessary to request the price of each stock included in the index basket in the previous step.<br>
 Price requests should use the 1 minute quotes for the date corresponding to price request timestamp. Close price should be used.
 <br><br>
 ##### Example "Yahoo Finance 97 – Rapidapi.com" request for **realtime prices**:
+
 ```
 const axios = require("axios");
 
@@ -165,7 +173,7 @@ const options = {
   url: 'https://yahoo-finance97.p.rapidapi.com/price',
   headers: {
     'content-type': 'application/x-www-form-urlencoded',
-    'X-RapidAPI-Key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb',
+    'X-RapidAPI-Key': API_KEY,
     'X-RapidAPI-Host': 'yahoo-finance97.p.rapidapi.com'
   },
   data: encodedParams
@@ -200,6 +208,7 @@ API Response Object:
 ```
 <br>
 ##### Retrieving historical price
+
 To retrieve historical price, the `Stock History` method should be used. It is available via `https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v8/finance/spark` endpoint. 1 minute pricing interval should be used.
 
 For each symbol the method returns two arrays of the same length. The first is array of timestamps for interval open moment. The second is array of **closing** prices for the same intervals.
@@ -212,6 +221,7 @@ The price for the given timestamp is calculated like this:
 
 
 ##### Example "Yahoo Finance 97 – Rapidapi.com" request for **historical** price:
+
 ```
 const axios = require("axios");
 
@@ -225,7 +235,7 @@ const options = {
   url: 'https://yahoo-finance97.p.rapidapi.com/price-customdate',
   headers: {
     'content-type': 'application/x-www-form-urlencoded',
-    'X-RapidAPI-Key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb',
+    'X-RapidAPI-Key': API_KEY,
     'X-RapidAPI-Host': 'yahoo-finance97.p.rapidapi.com'
   },
   data: encodedParams
@@ -237,6 +247,7 @@ axios.request(options).then(function (response) {
 	console.error(error);
 });
 ```
+
 API Response Object:
 
 ```
@@ -429,8 +440,8 @@ API Response Object:
 ```
 
 #### 3. Evaluate index value
-2.1. Sum up quotes of all N SPAC shares included in index.<br>
-2.2. Divide result by N (number of shares in index basket).<br>
+3.1. Sum up quotes of all N SPAC shares included in index.<br>
+3.2. Divide result by N (number of shares in index basket).<br>
 ```
            SumUp (Qi)
 INDEX = ------------------
@@ -439,17 +450,6 @@ INDEX = ------------------
 where:
 - Qi - quote of Share i in index;<br>
 - N - number of shares in index. **N = 10**<br>
-- K - Correction factor, used to smooth the index values when the basket is changed. For the current index bucket **K = 0,95951**. The value of K changes when the index basket changes and is calculated in accordance as quotient of division INDEXold by INDEXnew:<br>
-```
-                INDEXold        26,846
-          K = ------------ = ------------ = 0,95951
-                INDEXnew        27,979
-```
-where:
-- INDEXold – the last index value calculated from the old basket on 30.06.2022;<br>
-- INDEXnew – the first index value calculated for the new basket at the same time as INDEXold;<br>
-
-> In order to index can reliably reflect the market picture, a periodic change of the basket of stocks included in the index is required. Therefore, we will publish a new price identifier quarterly.
 
 ### Weekend timestamp
 Over the weekend or some official holidays the REST API does not return any price, but we can request the price of a certain moment before the market close (as ex: the closing price of Friday).
@@ -459,64 +459,43 @@ Please note that this is different than the normal calculation process, which re
 ### Stock markets working hours
 Underlaying assets trade during exchange hours which leaves gaps in prices between 4:00PM EST close and 9:30AM EST open the next day and on weekends and market holidays.
 ### Price feed
-Our price-feed provider’s API documentation can be found [here](https://rapidapi.com/principalapis/api/stock-data-yahoo-finance-alternative/).<br>
+Our price-feed provider’s API documentation can be found [here](https://rapidapi.com/asepscareer/api/yahoo-finance97).<br>
 A reference price feed implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/unisxapp/protocol/blob/USPAC5PriceFeed/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.ts)<br>
-"Stock Data  – Rapidapi.com" is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
-In the case of a "Stock Data  – Rapidapi.com" outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
+"Yahoo Finance 97 – Rapidapi.com" is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
+In the case of a "Yahoo Finance 97 – Rapidapi.com" outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 ### Additional price feed providers
-- **Yahoo Finance – Rapidapi.com**<br>
--- Documentation for the API can be found here: https://rapidapi.com/apidojo/api/yahoo-finance1<br>
+- **YahooFinance Stocks – Rapidapi.com**<br>
+-- Documentation for the API can be found here: https://rapidapi.com/integraatio/api/yahoofinance-stocks1/<br>
 -- Live price feed data<br>
 -- Historical prices based on date and time<br>
 -- Registration is free<br>
--- Free and paid plans available: https://rapidapi.com/apidojo/api/yh-finance/pricing<br>
+-- Free and paid plans available: https://rapidapi.com/integraatio/api/yahoofinance-stocks1/pricing<br>
 -- OHLC request can be used to grab the last closing price before a weekend or a non-working day<br>
--- Example (PSTH) requests:
+-- Example (CRHC) requests:
 ```
-var axios = require("axios").default;
+const axios = require("axios");
 
-var options = {
-  method: 'GET',
-  url: 'https://apidojo-yahoo-finance-v1.p.rapidapi.com/auto-complete',
-  params: {q: 'PSTH', region: 'US'},
+const encodedParams = new URLSearchParams();
+encodedParams.append("symbol", "CRHC");
+
+const options = {
+  method: 'POST',
+  url: 'https://yahoo-finance97.p.rapidapi.com/stock-info',
   headers: {
-    'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
-    'x-rapidapi-key': ACCESS_KEY
-  }
+    'content-type': 'application/x-www-form-urlencoded',
+    'X-RapidAPI-Key': API_KEY,
+    'X-RapidAPI-Host': 'yahoo-finance97.p.rapidapi.com'
+  },
+  data: encodedParams
 };
 
 axios.request(options).then(function (response) {
-  console.log(response.data);
+	console.log(response.data);
 }).catch(function (error) {
-  console.error(error);
+	console.error(error);
 });
 ```
-- **Stock and Options Trading Data Provider API – Rapidapi.com**<br>
--- Documentation for the API can be found here: https://rapidapi.com/mpeng/api/stock-and-options-trading-data-provider<br>
--- Live price feed data<br>
--- Historical prices based on date and time<br>
--- Registration is free<br>
--- Free and paid plans available: https://rapidapi.com/mpeng/api/stock-and-options-trading-data-provider/pricing<br>
--- OHLC request can be used to grab the last closing price before a weekend or a non-working day<br>
--- Example (PSTH) requests:
-```
-var axios = require("axios").default;
 
-var options = {
-  method: 'GET',
-  url: 'https://stock-and-options-trading-data-provider.p.rapidapi.com/straddle/PSTH',
-  headers: {
-    'x-rapidapi-host': 'stock-and-options-trading-data-provider.p.rapidapi.com',
-    'x-rapidapi-key': ACCESS_KEY
-  }
-};
-
-axios.request(options).then(function (response) {
-  console.log(response.data);
-}).catch(function (error) {
-  console.error(error);
-});
-```
 ## SECURITY CONSIDERATIONS
 Security considerations are focused on the use of the token price for monitoring collateral ratios.
 
