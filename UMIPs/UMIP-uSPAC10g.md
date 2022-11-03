@@ -172,7 +172,7 @@ const options = {
   url: 'https://mboum-finance.p.rapidapi.com/qu/quote',
   params: {symbol: 'CRHC,HHGC,ATA,AMAO,EBAC,RCAC,TRTL,IMAQ,LIBY,ICNC'},
   headers: {
-    'X-RapidAPI-Key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb',
+    'X-RapidAPI-Key': API_KEY,
     'X-RapidAPI-Host': 'mboum-finance.p.rapidapi.com'
   }
 };
@@ -418,7 +418,7 @@ const options = {
     adjust: 'false'
   },
   headers: {
-    'X-RapidAPI-Key': '37cec062d9msh1906bc89b032f5fp1c6fc8jsn21883587ddcb',
+    'X-RapidAPI-Key': API_KEY,
     'X-RapidAPI-Host': 'quotient.p.rapidapi.com'
   }
 };
