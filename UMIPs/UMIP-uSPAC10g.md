@@ -292,6 +292,7 @@ Main fields:<br>
 - "regularMarketPrice": 10.005, - current price
 - symbol": "CRHC" - symbol of share
 <br>
+
 ##### Retrieving historical price
 
 To retrieve historical price, the `stock/history/{stock}/{interval}` method should be used for each share separately. The request must specify the interval with which historical data is provided (5m|15m|30m|1h|1d|1wk).<br>
