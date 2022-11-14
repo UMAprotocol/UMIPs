@@ -9,12 +9,12 @@
 
 ## SUMMARY
 The DVM should support price requests for uSPAC10g price identifier<br>
-The purpose of this price identifier is to create synthetic token, price of which is linked to the value of index of **10** most active SPACs (Special Purpose Acquisition Companies) shares.<br> That synthetic token can be used for creating speculative strategies at IPO market.<br>
-The difference from the existing UMIP-140 is that the proposed price ID does not require manually changing the basket of 10 SPAC shares on a quarterly basis.
+The purpose of this price identifier is to create a synthetic token, the price of which is linked to the value of an index of the **10** most active SPACs (Special Purpose Acquisition Companies) during a given time period.<br> That synthetic token can be used for creating speculative strategies in SPAC market.<br>
+The difference from the existing UMIP-140 is that the proposed price ID does not require manually changing the basket of 10 SPAC shares on a quarterly basis. Now the index basket is obtained automatically with each price request via the spacHero API.
 
 ## MOTIVATION
-A synthetic token that tracks the index of the 10 most active SPACs stocks can be used for speculative purposes and allows the user to earn on price movements in one of the most interesting markets without centralized intermediaries such as exchanges and brokers.<br> 
-In addition, that token can be used as components associated with classical markets by other DeFi and DApp protocols, which makes it possible to scale.
+A synthetic token that tracks the index of the 10 most active SPAC stocks can be used for speculative purposes and allow the user to earn on price movements in one of the most interesting markets without centralized intermediaries such as exchanges and brokers.<br>
+In addition, that token can be used as a component associated with classical markets by other DeFi and DApp protocols, which makes it possible to scale.
 
 ## TECHNICAL SPECIFICATION
 | | |
@@ -394,8 +394,8 @@ Underlaying assets trade during exchange hours which leaves gaps in prices betwe
 ### Price feed
 Our price-feed provider’s API documentation can be found [here](https://rapidapi.com/sparior/api/mboum-finance).<br>
 A reference price feed implementation that is used by liquidator and dispute bots can be seen [here](https://github.com/unisxapp/protocol/blob/USPAC5PriceFeed/packages/financial-templates-lib/src/price-feed/DefaultPriceFeedConfigs.ts)<br>
-"Yahoo Finance 97 – Rapidapi.com" is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
-In the case of a "Yahoo Finance 97 – Rapidapi.com" outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
+"Mboum Finance – Rapidapi.com" is provided as an accessible source to query for this data, but ultimately how one queries for these rates should be varied and determined by the voter to ensure that there is no central point of failure.<br>
+In the case of a "Mboum Finance – Rapidapi.com" outage voters can turn to any other available price feed API or a broker API, as the price feeds for the forementioned financial assets does not differ much between different providers. There might be some slight differences, however they are quite insignificant and would not affect the liquidation or dispute processes. For this case, we provide options for additional price feed providers that voters could utilize.
 ### Additional price feed providers
 - **Quotient – Rapidapi.com**<br>
 -- Documentation for the API can be found here: https://rapidapi.com/dubois4and/api/quotient<br>
