@@ -10,7 +10,7 @@
 ## Summary
 
 This UMIP proposes an upgrade to the UMA Data Verification Mechanism(DVM) that re-works core parts of UMA's tokenomics.
-At a high level, this upgrade adds a new staking and slashing mechanism wherein voters earn a prorate share of emissions
+At a high level, this upgrade adds a new staking and slashing mechanism wherein voters earn a pro-rata share of emissions
  for staking and are slashed for voting wrong (or not voting). This upgrade also re-works a number of other DVM contracts
  such as an updated governor, proposer contract and new designated voting contract. Finally, this upgrade as a new
  emergency recovery mechanism to the DVM that enables emergency admin proposals to bypass the DVM's schelling point 
