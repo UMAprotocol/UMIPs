@@ -85,6 +85,7 @@ ooRequester:0x69CA24D3084a2eea77E061E2D7aF9b76D107b4f6
 The following constants should reflect what is stored in the [`AcrossConfigStore`](https://etherscan.io/address/0x3b03509645713718b78951126e0a6de6f10043f5#code) contract deployed on Etherscan. This contract is owned by Across governance and acts as the source of truth for the following variables. The global variables currently stored in the above contract for this UMIP are:
 - "MAX_POOL_REBALANCE_LEAF_SIZE"
 - "MAX_RELAYER_REPAYMENT_LEAF_SIZE"
+- "ADMIN_BUNDLE"
 
 To query the value for any of the above constants, the `AcrossConfigStore` contract's `globalConfig(bytes32)` function should be called with the hex value of the variable name. For example, the "MAX_POOL_REBALANCE_LEAF_SIZE" can be queried by calling `globalConfig(toHex("MAX_POOL_REBALANCE_LEAF_SIZE"))` which is equivalent to `globalConfig("0x4d41585f504f4f4c5f524542414c414e43455f4c4541465f53495a45")`. For example, this might return 
 >"25"
@@ -367,3 +368,12 @@ Three conditions must be met for the proposal to be deemed valid:
 4. No obvious griefing or manipulation of the system is being performed via this proposal.
 
 If the proposal is deemed invalid, return 0. If valid, return 1. Note: these values are scaled by `1e18`.
+
+# Admin bundle proposals
+
+The following section describes the normal path for determining a proposed bundle's validity. We have to follow a slightly different path to reconstructing the bundle roots if and only if the `ConfigStore`'s admin bundle setting is set: i.e. `globalConfig(toHex("ADMIN_BUNDLE")) !== undefined`. If not `undefined`, then use the value of this setting to reconstruct roots. The config store's "ADMIN_BUNDLE" value should have three keys: `poolRebalanceLeaves`, `relayerRefundLeaves` and `slowRelayLeaves`. 
+- `poolRebalanceLeaves`: `{ chainId, bundleLpFees, netSendAmounts, runningBalances, groupIndex, leafId, l1Tokens }`
+- `relayerRefundLeaves`: `{ groupIndex, amountToReturn, chainId, refundAmounts: [], leafId, l2TokenAddress, refundAddresses }`
+- `slowRelayLeaves`: `{ depositor, recipient, destinationToken, amount, originChainId, destinationChainId, realizedLpFeePct, relayerFeePct, depositId }`
+
+The dataworker should convert these values into merkle roots in order to reconstruct a bundle. As long as "ADMIN_BUNDLE" is defined, the dataworker should mark any root bundle containing these exact roots as valid, otherwise the dataworker should follow the normal path to reconstruct roots.
