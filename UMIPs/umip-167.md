@@ -3,9 +3,10 @@
 | UMIP-167            |                                                      |
 | ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add ACX as a supported collateral currency           |
-| Authors             | Matt Rice (matt@umaproject.org)                   |
+| Authors             | Matt Rice (matt@umaproject.org)                      |
 | Status              | Draft                                                |
 | Created             | 2022-11-22                                           |
+| Discourse Link      | https://github.com/UMAprotocol/UMIPs/pull/561        |
 
 ## Summary (2-5 sentences)
 
