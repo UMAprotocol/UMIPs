@@ -16,7 +16,7 @@ Final fees had previously been targeted at $1500. This was voted in at a time wh
 
 To accomplish this upgrade, all the following currencies should have their final fee be updated to 500 tokens each.
 
-- FRAX Mainnet: [0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a](https://etherscan.io/token/0x853d955acef822db058eb8505911ed77f175b99e)
+- FRAX Mainnet: [0x853d955acef822db058eb8505911ed77f175b99e](https://etherscan.io/token/0x853d955acef822db058eb8505911ed77f175b99e)
 
 - DAI Mainnet: [0x6b175474e89094c44da98b954eedeac495271d0f](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f)
 - DAI Polygon: [0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063](https://polygonscan.com/address/0x8f3cf7ad23cd3cadbd9735aff958023239c6a063)
