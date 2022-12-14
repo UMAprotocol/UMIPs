@@ -14,7 +14,7 @@ Final fees had previously been targeted at $1500. This was voted in at a time wh
 
 ## Specifics
 
-To accomplish this upgrade, all the following currencies should have their final fee be updated to X tokens.
+To accomplish this upgrade, all the following currencies should have their final fee be updated to 500 tokens each.
 
 - FRAX Mainnet: [0x0b3f868e0be5597d5db7feb59e1cadbb0fdda50a](https://etherscan.io/token/0x853d955acef822db058eb8505911ed77f175b99e)
 
