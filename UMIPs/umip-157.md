@@ -213,7 +213,7 @@ Additionally, matching relays should have their `destinationToken` set such that
 
 ## Validating realizedLpFeePct
 To determine the validity of the `realizedLPFeePct` in the `FilledRelay` event, the exact same process is used as in
-the identifier [`IS_RELAY_VALID`, specified in UMIP 136](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-136.md). However, instead ofing a `RateModelStore` contract to look up a deposit's rate model, we can use the `AcrossConfigStore`'s `tokenConfig` to [look up the rate model](#token-constants) for a deposit. The deposited `originToken` can be mapped to an `l1Token` by following step 2 above which can be used to query a `rateModel`. 
+the identifier [`IS_RELAY_VALID`, specified in UMIP 136](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-136.md). However, instead of using a `RateModelStore` contract to look up a deposit's rate model, we can use the `AcrossConfigStore`'s `tokenConfig` to [look up the rate model](#token-constants) for a deposit. The deposited `originToken` can be mapped to an `l1Token` by following step 2 above which can be used to query a `rateModel`. 
 
 Moreover, instead of calling `liquidityUtilizationCurrent` and
 `liquidityUtilizationPostRelay` on the `BridgePool` contract (passing no arguments) to compute the rate model, identically-named methods would be
@@ -221,6 +221,8 @@ called on the `HubPool` contract, passing in a single argument, the `l1Token` de
 
 If the `realizedLPFeePct` that is computed using those means does not match the `realizedLPFeePct` in the
 `FilledRelay` event, then the relay is considered invalid.
+
+We acknowledge that this calculation is complex and poses risk to the relayer who would not receive a refund for an honest attempt at a fill where the computed LP fee is off by a trivial amount. Therefore, all `realizedLpFeePct`'s should be floor rounded to 6 decimals. For example, `11000000000000` and `11830749673498` would be considered equivalent fees because `0.000011` and `0.000011830749673498` are both equal to `0.000011` after floor rounding to 6 decimals.
 
 All valid `FilledRelay` events should then be stored for the construction of the bundle.
 
