@@ -85,6 +85,8 @@ ooRequester:0x69CA24D3084a2eea77E061E2D7aF9b76D107b4f6
 The following constants should reflect what is stored in the [`AcrossConfigStore`](https://etherscan.io/address/0x3b03509645713718b78951126e0a6de6f10043f5#code) contract deployed on Etherscan. This contract is owned by Across governance and acts as the source of truth for the following variables. The global variables currently stored in the above contract for this UMIP are:
 - "MAX_POOL_REBALANCE_LEAF_SIZE"
 - "MAX_RELAYER_REPAYMENT_LEAF_SIZE"
+- "VERSION"
+  - This is a convenience to relayer and dataworker users who can compare their locally stored version against the latest version stored in the `ConfigStore` to know when to safely halt their programs and not send invalid transactions as a result of not using up to date `ConfigStore` client code.
 
 To query the value for any of the above constants, the `AcrossConfigStore` contract's `globalConfig(bytes32)` function should be called with the hex value of the variable name. For example, the "MAX_POOL_REBALANCE_LEAF_SIZE" can be queried by calling `globalConfig(toHex("MAX_POOL_REBALANCE_LEAF_SIZE"))` which is equivalent to `globalConfig("0x4d41585f504f4f4c5f524542414c414e43455f4c4541465f53495a45")`. For example, this might return 
 >"25"
