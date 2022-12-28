@@ -28,7 +28,7 @@ participation over a number of recent votes) to profit from creating spurious vo
 2. It is currently hard to work out the APY a voter receives for participating in the UMA system. One needs to consider
 the number of other UMA involved in votes and, crucially, estimate how many voting rounds per period of time there will be
 to work out an implied APY. This is difficult as the number of requests (and the resultant emissions) changes depending
-on externalities that can't easily be modeled. This also poses complexities when working out the UMA inflation over time as
+on externalities that can't easily be modelled. This also poses complexities when working out the UMA inflation over time as
 it is so dependent on the number of requests. Ideally, the UMA supply inflation (and the associated voter APY) are easy
 to find and are not a function of the number of requests. 
 
@@ -38,11 +38,11 @@ requests.
 
 4. Today the DVM has no way of enforcing dynamic rewards for participation depending on dynamics of a given vote.
 For example, we might want to penalize non-participation more if a vote is contentious. Ultimately, it would be useful to
-have a more flexable mechanism for the conditions under which a voter is rewarded (or punished.)
+have a more flexible mechanism for the conditions under which a voter is rewarded (or punished.)
 
 5. Lastly, the current UMA tokenomics does not incentivize the locking up (staking) of UMA. The DVM and UMA token interplay
 should drive up the UMA token price through the removal of liquid UMA through a staking mechanism. This should also make
-UMA more antifragile to price shocks and general market movements through the removal of liquidity.
+UMA more anti-fragile to price shocks and general market movements through the removal of liquidity.
 
 The proposed upgrade aims to address all of the identified issues, as well as adding in some additional nice-to-haves. A
 full list of the functionality change is listed below:
