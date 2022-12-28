@@ -102,4 +102,6 @@ When executed, these transaction have the effect of moving all internal ownershi
 
 
 ## Security considerations
-The upgraded DVM contracts listed above have been audited by Open Zeppelin in two separate audits ([report1](), [report2]()). Additionally, the upgrade process presented above was also audited by OZ.
+The upgraded DVM contracts listed above have been audited by Open Zeppelin in two separate audits ([report1](https://blog.openzeppelin.com/uma-dvm-2-0-audit/), [report2](https://blog.openzeppelin.com/uma-dvm-2-0-incremental-audit/)). Additionally, the upgrade process presented above was also audited by OZ.
+
+// TODO: Add the second OZ incremental audit link.
