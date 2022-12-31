@@ -46,6 +46,8 @@ sort should be on the `transactionIndex`, and the tertiary sort should be on the
 
 Note 3: wherever unspecified, sorting should be ascending by default, not descending.
 
+Note 4: all event data should be identically returned by at least two independent, reputable RPC providers to give confidence in the integrity of the data.
+
 # Definitions
 
 ## Comparing events chronologically
