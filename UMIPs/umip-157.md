@@ -107,6 +107,8 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
     [UMIP 136](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-136.md).
   - Each field in this struct should be an integer represented as a string (to allow unlimited precision).
   - The rateModel struct is only valid if it contains all of the following parameters: `UBar`, `R0`, `R1`, and `R2`.
+- "routeRateModel"
+  - Similar to `rateModel`, this is a dictionary of `originChain-destinationChain` keys mapped to rate models that take precedence over the `rateModel` for a token on that specific deposit route. The route rate models should follow the same `UBar`, `R0`, `R1`, `R2` format as the default `rateModel`
 - "spokeTargetBalances"
   - This is contains a JSON mapping from chainId to JSON structs.
   - Each struct contains two sub-fields, "target" and "threshold".
