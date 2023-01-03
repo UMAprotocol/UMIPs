@@ -389,4 +389,4 @@ The following section describes the normal path for determining a proposed bundl
 
 The dataworker should convert these values into merkle roots in order to reconstruct a bundle. As long as "ADMIN_BUNDLE" is defined, the dataworker should mark any root bundle containing these exact roots as valid, otherwise the dataworker should follow the normal path to reconstruct roots.
 
-The admin bundle is only valid if it is proposed before the `proposalBlock` and by the `proposer` address
+The admin bundle is only valid if it is proposed before the `proposalBlock` and by the `proposer` address. The transaction in which the `ADMIN_BUNDLE` is written into the `ConfigStore` state must be mined no earlier than 600 blocks (approximately 2 hours) before the `proposalBlock`. For example, if the `ConfigStore` owner wants to set the `proposalBlock` to `16327036`, then it should only be accepted by clients if the transaction setting it so is mined after block `16326436`.
