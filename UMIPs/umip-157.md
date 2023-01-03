@@ -46,6 +46,8 @@ sort should be on the `transactionIndex`, and the tertiary sort should be on the
 
 Note 3: wherever unspecified, sorting should be ascending by default, not descending.
 
+Note 4: all event data should be identically returned by at least two independent, reputable RPC providers to give confidence in the integrity of the data.
+
 # Definitions
 
 ## Comparing events chronologically
@@ -67,6 +69,9 @@ The [`RootBundleExecuted`](https://github.com/across-protocol/contracts-v2/blob/
 
 For example, if `l1Tokens` is "[0x123,0x456,0x789]" and `netSendAmounts` is "[1,2,3]", then the "net send amount" for token with address "0x456" is equal to "2".
 
+## Versions
+The `ConfigStore` stores a "VERSION" value in the `globalConfig`. This is used to protect relayers and dataworkers from using outdated code when interacting with Across. The "VERSION" should be mapped to an integer string that can only increase over time. The "VERSION" is updated by calling `updateGlobalConfig` so it is emitted as an on-chain event. The block time of the event that included the "VERSION" indicates when that "VERSION" became active. Relayers should support the version at the quote timestamp for a deposit, otherwise they risk sending an invalid fill. Proposers and Disputers should support the latest version for a bundle block range to validate or propose a new bundle. This version is independent from the version included in [speed up deposit signatures](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePool.sol#L668).
+
 # Ancillary Data Specifications
 
 The ancillary data only needs a single field: `ooRequester`, which should be the contract requesting the price from the
@@ -86,6 +91,8 @@ The following constants should reflect what is stored in the [`AcrossConfigStore
 - "MAX_POOL_REBALANCE_LEAF_SIZE"
 - "MAX_RELAYER_REPAYMENT_LEAF_SIZE"
 - "ADMIN_BUNDLE"
+- "VERSION"
+  - Across protocol version number. Supporting implementations should query this value against the value defined in their implementation to determine compatibility with the current protocol version. Failure to correctly evaluate the version number may mean that filled relays are not refunded from the HubPool, and may therefore result in loss of funds. For more information go [here](#versions).
 
 To query the value for any of the above constants, the `AcrossConfigStore` contract's `globalConfig(bytes32)` function should be called with the hex value of the variable name. For example, the "MAX_POOL_REBALANCE_LEAF_SIZE" can be queried by calling `globalConfig(toHex("MAX_POOL_REBALANCE_LEAF_SIZE"))` which is equivalent to `globalConfig("0x4d41585f504f4f4c5f524542414c414e43455f4c4541465f53495a45")`. For example, this might return 
 >"25"
@@ -101,6 +108,8 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
     [UMIP 136](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-136.md).
   - Each field in this struct should be an integer represented as a string (to allow unlimited precision).
   - The rateModel struct is only valid if it contains all of the following parameters: `UBar`, `R0`, `R1`, and `R2`.
+- "routeRateModel"
+  - Similar to `rateModel`, this is a dictionary of `originChain-destinationChain` keys mapped to rate models that take precedence over the `rateModel` for a token on that specific deposit route. The route rate models should follow the same `UBar`, `R0`, `R1`, `R2` format as the default `rateModel`
 - "spokeTargetBalances"
   - This is contains a JSON mapping from chainId to JSON structs.
   - Each struct contains two sub-fields, "target" and "threshold".
@@ -372,8 +381,12 @@ If the proposal is deemed invalid, return 0. If valid, return 1. Note: these val
 # Admin bundle proposals
 
 The following section describes the normal path for determining a proposed bundle's validity. We have to follow a slightly different path to reconstructing the bundle roots if and only if the `ConfigStore`'s admin bundle setting is set: i.e. `globalConfig(toHex("ADMIN_BUNDLE")) !== undefined`. If not `undefined`, then use the value of this setting to reconstruct roots. The config store's "ADMIN_BUNDLE" value should have three keys: `poolRebalanceLeaves`, `relayerRefundLeaves` and `slowRelayLeaves`. 
-- `poolRebalanceLeaves`: `{ chainId, bundleLpFees, netSendAmounts, runningBalances, groupIndex, leafId, l1Tokens }`
-- `relayerRefundLeaves`: `{ groupIndex, amountToReturn, chainId, refundAmounts: [], leafId, l2TokenAddress, refundAddresses }`
-- `slowRelayLeaves`: `{ depositor, recipient, destinationToken, amount, originChainId, destinationChainId, realizedLpFeePct, relayerFeePct, depositId }`
+- `poolRebalanceLeaves`: `[{ chainId, bundleLpFees, netSendAmounts, runningBalances, groupIndex, leafId, l1Tokens }]`
+- `relayerRefundLeaves`: `[{ groupIndex, amountToReturn, chainId, refundAmounts: [], leafId, l2TokenAddress, refundAddresses }]`
+- `slowRelayLeaves`: `[{ depositor, recipient, destinationToken, amount, originChainId, destinationChainId, realizedLpFeePct, relayerFeePct, depositId }]`
+- `proposer`
+- `proposalBlock`
 
 The dataworker should convert these values into merkle roots in order to reconstruct a bundle. As long as "ADMIN_BUNDLE" is defined, the dataworker should mark any root bundle containing these exact roots as valid, otherwise the dataworker should follow the normal path to reconstruct roots.
+
+The admin bundle is only valid if it is proposed before the `proposalBlock` and by the `proposer` address
