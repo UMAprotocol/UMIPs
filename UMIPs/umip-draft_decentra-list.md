@@ -6,7 +6,7 @@
 | Authors             | pumpedlunch                                                     |
 | Status              | Draft                                                         |
 | Created             | January 19, 2023                                            |
-| [Discourse Link](https://discourse.umaproject.org/xxxxxx)      |             |
+| [Github Link](https://discourse.umaproject.org/xxxxxx](https://github.com/pumpedlunch/UMIPs/blob/master/UMIPs/umip-draft_decentra-list.md)      |             |
 
 # Summary 
 
