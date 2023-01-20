@@ -65,9 +65,9 @@ Whether an address meets a list's criteria may change over time. Proposed Addres
 
 1. Voters should decode the ancillary data to get the list criteria and the Revision ID needed to get the list of Proposed Addresses.
 2. Voters should find the array of Proposed Addresses as below:
-- Navigate to the Decentra-List dapp, select the network of the price request and connect their wallet.
-- Select the List address from the drop down to display information about that List. The List address can be found in the requester field of the oracle price request.
-- Open the Pending Revisions drop down and find the Proposed Addresses for the Revision ID provided in the Oracle price request ancillary data.
+  - Navigate to the Decentra-List dapp, select the network of the price request and connect their wallet.
+  - Select the List address from the drop down to display information about that List. The List address can be found in the requester field of the oracle price request.
+  - Open the Pending Revisions drop down and find the Proposed Addresses for the Revision ID provided in the Oracle price request ancillary data.
 3. Voters should evaluate the array of Proposed Addresses against the List Criteria provided in the ancillary data to answer the question provided in the ancillary data. The List Criteria provided in the ancillary data could contain directions on data sources, verification scripts, etc. If so, that information should be used. Otherwise, the voter should determine how to verify whether the Proposed Addresses meet the given List Criteria.
 4. Voters should return `p2` if the answer to the question in the ancillary data is provably "YES". Voters should return `p1` if the answer to the question is "NO" or "CAN NOT BE DETERMINED".
 
