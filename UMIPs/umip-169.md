@@ -13,7 +13,7 @@ This UMIP proposes the introduction of the `OptimisticAsserter` contract, which 
 
 ## Motivation
 
-The `OptimisticAsserter` is a new form of Optimisitic Oracle which existing mechanics have been streamlined in order to simplify the creation of world-truth assertions. To this end, the result of an assertion can only be true or false, and an assertion is resolved only after the liveness period has expired or, in the case of a dispute, after it has been settled in the DVM. In addition, the `OptimisticAsserter` permits the use of Escalation Managers to provide better control and setting over the escalation game and, ultimately, to disconnect from the UMA DVM in order to arbitrate conflicts in the specified Oracle.
+The `OptimisticAsserter` is a new form of Optimisitic Oracle which existing mechanics have been streamlined in order to simplify the creation of world-truth assertions. To this end, the result of an assertion can only be true or false, and an assertion is resolved only after the liveness period has expired or, in the case of a dispute, after it has been settled in the Oracle. In addition, the `OptimisticAsserter` permits the use of Escalation Managers to provide better control and setting over the escalation game and, ultimately, to disconnect from the UMA DVM in order to arbitrate conflicts in the specified Oracle.
 
 ## Technical Specification
 
