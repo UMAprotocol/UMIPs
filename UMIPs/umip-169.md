@@ -28,7 +28,7 @@ To accomplish this upgrade, a few actions will need to be taken:
 - Transactions will need to be proposed to add this new addresses to the `Finder` contract under the name `OptimisticAsserter` in each network. This is how other contracts will find the optimistic oracle and reference it.
 - The `OptimisticAsserter` will need to be registered with the `Registry` in each network so that it can make requests to the DVM.
 
-Note: this change will only add the OptimisticAsserter to the networks mentioned above. New contracts that utilize the OptimisticAsserter will need to be deployed for it to become useful. Until all steps above are performed, the deployed OptimisticAsserter _should not_ be used in production since it will not be able to raise disputes to the DVM.
+Note: this change will only add the `OptimisticAsserter` to the networks mentioned above. New contracts that utilize the `OptimisticAsserter` will need to be deployed for it to become useful. Until all steps above are performed, the deployed `OptimisticAsserter` _should not_ be used in production since it will not be able to raise disputes to the DVM.
 
 ## Implementation
 
