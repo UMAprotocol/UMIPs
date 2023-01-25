@@ -13,7 +13,7 @@ This UMIP proposes the introduction of the `OptimisticAsserter` contract, which 
 
 ## Motivation
 
-The `OptimisticAsserter` contract aims to provide a more efficient and secure way to assert truths about the world. The contract utilizes an optimistic escalation game, which allows for the assertion of a truth without the need for a dispute to be raised. In the event of a dispute, the DVM is used to arbitrate the dispute and determine the resolution. Additionally, the use of escalation managers allows for the definition of custom security properties and tradeoffs, enabling the notion of "sovereign security".
+The `OptimisticAsserter` is a new form of Optimisitic Oracle which existing mechanics have been streamlined in order to simplify the creation of world-truth assertions. To this end, the result of an assertion can only be true or false, and an assertion is resolved only after the liveness period has expired or, in the case of a dispute, after it has been settled in the DVM. In addition, the `OptimisticAsserter` permits the use of Escalation Managers to provide better control and setting over the escalation game and, ultimately, to disconnect from the UMA DVM in order to arbitrate conflicts in the specified Oracle.
 
 ## Technical Specification
 
@@ -21,8 +21,8 @@ To accomplish this upgrade, a few actions will need to be taken:
 
 - A new `OptimisticAsserter` contract has been deployed in the following networks:
 
-  - Mainnet: [0xA0Ae6609447e57a42c51B50EAe921D701823FFAe](https://etherscan.io/address/0xA0Ae6609447e57a42c51B50EAe921D701823FFAe)
-  - Polygon: [0xee3afe347d5c74317041e2618c49534daf887c24](https://polygonscan.com/address/
+  - Mainnet: [0x123](https://etherscan.io/address/0x123)
+  - Polygon: [0x123](https://polygonscan.com/address/0x123)
   - TODO - add other networks
 
 - Transactions will need to be proposed to add this new addresses to the `Finder` contract under the name `OptimisticAsserter` in each network. This is how other contracts will find the optimistic oracle and reference it.
@@ -36,4 +36,4 @@ The `OptimisticAsserter` contract can be found [here](https://github.com/UMAprot
 
 ## Security considerations
 
-The OptimisticAsserter only has the ability to send price requests to the DVM, so in the event of a serious bug, the biggest security implication would be that end-users would be able to send requests to the DVM without paying the final fee.
+The `OptimisticAsserter` only has the ability to send price requests to the DVM, so in the event of a serious bug, the biggest security implication would be that end-users would be able to send requests to the DVM without paying the final fee.
