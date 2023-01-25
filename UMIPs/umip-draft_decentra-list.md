@@ -55,8 +55,6 @@ When this ancillary data dictionary is stored as bytes, the result would be: `0x
 
 # Rationale
 
-Decentra-List 
-
 Decentra-List allows users to propose revisions to the list by proposing addresses for addition or removal from the list. The proposed revisions are then sent to the Optimistic Oracle for verification that they meet the list criteria. The price requests sent to the Optimistic Oracle only verify that the proposed revision is correct as per the list criteria. It does not verify that addresses on the list not included in the revision are correct, nor does it verify that the current revision includes all addresses that should be added or removed from the list.
 
 It is intended that Decentra-List will only execute revisions that are provably correct as per the list criteria. As such, there are only 2 price return values provided: `1` is used for revisions that are provably "YES" and will be executed by Decentra-List and `0` is used for "NO" or "CAN NOT BE DETERMINED" and Decentra-List will reject revisions with this returned price value.
