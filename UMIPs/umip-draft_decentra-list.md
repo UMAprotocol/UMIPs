@@ -6,7 +6,7 @@
 | Authors             | pumpedlunch                                                     |
 | Status              | Draft                                                         |
 | Created             | January 19, 2023                                            |
-| Discourse Link   |             |
+| Discourse Link   |  https://discourse.umaproject.org/t/decentra-list-price-identifier/1898 |
 
 # Summary 
 
@@ -55,7 +55,11 @@ When this ancillary data dictionary is stored as bytes, the result would be: `0x
 
 # Rationale
 
-The price return values have been set up to suit the Decentra-List dapp. Decentra-List allows users to propose revisions to the list by proposing addresses for addition or removal from the list. The proposed revisions are then sent to the Optimistic Oracle for verification that they meet the list criteria. It is intended that Decentra-List will only execute revisions that are provably correct as per the list criteria. As such, there are only two price return values provided: `1` is used for revisions that are provably "YES" and will be executed by Decentra-List and `0` is used for "NO" or "CAN NOT BE DETERMINED" and Decentra-List will reject revisions with this returned price value.
+Decentra-List 
+
+Decentra-List allows users to propose revisions to the list by proposing addresses for addition or removal from the list. The proposed revisions are then sent to the Optimistic Oracle for verification that they meet the list criteria. The price requests sent to the Optimistic Oracle only verify that the proposed revision is correct as per the list criteria. It does not verify that addresses on the list not included in the revision are correct, nor does it verify that the current revision includes all addresses that should be added or removed from the list.
+
+It is intended that Decentra-List will only execute revisions that are provably correct as per the list criteria. As such, there are only 2 price return values provided: `1` is used for revisions that are provably "YES" and will be executed by Decentra-List and `0` is used for "NO" or "CAN NOT BE DETERMINED" and Decentra-List will reject revisions with this returned price value.
 
 Every Decentra-List price request to the Oracle will start with a question, either "Do all Proposed Addresses meet the List Criteria?", or "Do all Proposed Addresses fail to meet the List Criteria?", depending on whether the proposed revision is to add or remove addresses to the list. These questions have been constructed so that every single address must be a "YES" for the correct Oracle response to be "YES" or `1`. For example, if a Decentra-List user proposes a revision that would add 4 addresses to the list where 3 addresses meet the criteria, but 1 address does not, the correct Oracle response would be `0` and the revision would be rejected by Decentra-List with no new addresses added to the list.
 
