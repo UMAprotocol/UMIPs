@@ -97,3 +97,7 @@ All resolved price values should be scaled by `1e18` when interacting with contr
 This construction sacrifices assurances of determinism in favor of greater price identifier flexibility. Users of this
  price identifier should be careful to ensure that claims being made through Optimistic Asserter contract can be
  evaluated to reach a deterministic outcome.
+
+In case of any future upgrades to the Optimistic Asserter contract the Step 1 in the Implementation section should also
+ be updated since its instructions currently assume only one version of the Optimistic Asserter contract is deployed per
+ supported network.
