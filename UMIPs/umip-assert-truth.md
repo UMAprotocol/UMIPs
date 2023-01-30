@@ -73,7 +73,7 @@ This construction sacrifices assurances of determinism in favor of greater price
 2. Voters should decode the ancillary data of the request and determine its `assertionId` parameter.
 3. Voters should search the `AssertionMade` event emitted by the Optimistic Asserter contract from Step 1 for an
  assertion with the matching `assertionId` parameter from Step 2. Take a note of the timestamp of this event and its
- `claim` parameter.
+ `claim` parameter, as well as any other relevant fields needed to resolve the dispute.
 4. Voters should attempt to decode the `claim` parameter from Step 3 as UTF-8 string. If the decoding fails, the claim
  is not a string that can be asserted truthful, and voters should return the `0` value.
 5. The decoded `claim` string from Step 4 could include references to the timestamp that was used to make the assertion.
