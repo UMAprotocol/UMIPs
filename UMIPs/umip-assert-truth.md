@@ -13,9 +13,12 @@
 
 The DVM should support price requests for the `ASSERT_TRUTH` price identifier. `ASSERT_TRUTH` is intended to be used as
  a default price identifier for UMA's [Optimistic Asserter contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/optimistic-asserter/implementation/OptimisticAsserter.sol)
- that allows asserters to make claims about the state of the world. This UMIP does not attempt to put any restrictions
- on the types of claims that can be made, but rather focuses on the mechanics of how the DVM should be used to resolve
- disputes over such claims.
+ that allows asserters to make claims about the state of the world. Optimistic Asserter contract would be added to
+ `Registry` and `Finder` contracts as part of the [Optimistic Asserter UMIP](https://github.com/UMAprotocol/UMIPs/pull/570).
+// TODO: Update link to Optimistic Asserter UMIP once it's merged in.
+
+This UMIP does not attempt to put any restrictions on the types of claims that can be made, but rather focuses on the
+ mechanics of how the DVM should be used to resolve disputes over such claims.
 
 Price settlement can happen only in one of two ways:
 
