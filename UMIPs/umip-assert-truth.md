@@ -71,7 +71,7 @@ This construction sacrifices assurances of determinism in favor of greater price
 
 1. Voters should identify the Optimistic Asserter contract that was used to make and dispute the assertion. This can be
  done by calling `getImplementationAddress` on the `Finder` contract with the `OptimisticAsserter` identifier encoded as
- `bytes32` at the time of assertion. The address of the `Finder` contract depends on the network where the dispute was
+ `bytes32` at the time of DVM request. The address of the `Finder` contract depends on the network where the dispute was
  raised and is available in the `networks` directory of the UMA [protocol repository](https://github.com/UMAprotocol/protocol/tree/master/packages/core/networks).
 2. Voters should decode the ancillary data of the request and determine its `assertionId` parameter.
 3. Voters should search the `AssertionMade` event emitted by the Optimistic Asserter contract from Step 1 for an
