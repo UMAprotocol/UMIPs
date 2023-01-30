@@ -9,7 +9,7 @@
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes the introduction of the `OptimisticAsserter` contract, which allows for the assertion of truths about the world using an optimistic escalation game. The contract utilizes the UMA Data Verification Mechanism (DVM) to arbitrate disputes, and allows for the use of escalation managers to define their own security properties and tradeoffs.
+This UMIP proposes the introduction of the `OptimisticAsserter` contract, which allows for the assertion of truths about the world using an optimistic escalation game. The contract utilizes the UMA Data Verification Mechanism (DVM) to arbitrate disputes, and allows for the use of Escalation Managers to define their own security properties and tradeoffs.
 
 ## Motivation
 
