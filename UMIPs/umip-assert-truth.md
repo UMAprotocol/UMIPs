@@ -1,13 +1,13 @@
 ## Headers
 
 
-| UMIP-XXX       |                                                    |
-| -------------- | -------------------------------------------------- |
-| UMIP Title     | Add `ASSERT_TRUTH` as a supported price identifier |
-| Authors        | Reinis Martinsons (reinis@umaproject.org)          |
-| Status         | Draft                                              |
-| Created        | January 30th, 2023                                 |
-| Discourse Link |                                                    |
+| UMIP-XXX       |                                                                          |
+| -------------- | ------------------------------------------------------------------------ |
+| UMIP Title     | Add `ASSERT_TRUTH` as a supported price identifier                       |
+| Authors        | Reinis Martinsons (reinis@umaproject.org)                                |
+| Status         | Draft                                                                    |
+| Created        | January 30th, 2023                                                       |
+| Discourse Link | https://discourse.umaproject.org/t/feat-add-assert-truth-identifier/1900 |
 
 # Summary
 
