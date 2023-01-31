@@ -28,7 +28,7 @@ To accomplish this upgrade, a few actions will need to be taken:
   - Arbitrum: [0x211AD7adEf4d4348408B43da49D99bA117ADD8D1](https://arbiscan.io/address/0x211AD7adEf4d4348408B43da49D99bA117ADD8D1)
   - Boba: [0x17d02b5CDb6fe2c681A447B119e9f6F5AB4E3018](https://bobascan.com/address/0x17d02b5CDb6fe2c681A447B119e9f6F5AB4E3018)
 
-- Transactions will need to be proposed to add this new addresses to the `Finder` contract under the name `OptimisticAsserter` in each network. This is how other contracts will find the optimistic oracle and reference it.
+- Transactions will need to be proposed to add this new addresses to the `Finder` contract under the name `OptimisticAsserter` in each network. This is how other contracts will find the Optimistic Asserter and reference it.
 - The `OptimisticAsserter` will need to be registered with the `Registry` in each network so that it can make requests to the DVM.
 
 Note: this change will only add the `OptimisticAsserter` to the networks mentioned above. New contracts that utilize the `OptimisticAsserter` will need to be deployed for it to become useful. Until all steps above are performed, the deployed `OptimisticAsserter` _should not_ be used in production since it will not be able to raise disputes to the DVM.
