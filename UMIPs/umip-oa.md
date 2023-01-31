@@ -6,6 +6,7 @@
 | Authors    | Pablo Maldonado (pablo@umaproject.org) |
 | Status     | Approved                               |
 | Created    | January 25, 2023                       |
+|Discourse Link|https://discourse.umaproject.org/t/add-optimistic-asserter/1905|
 
 ## Summary (2-5 sentences)
 
