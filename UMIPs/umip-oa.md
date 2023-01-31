@@ -37,7 +37,7 @@ This [script](https://github.com/UMAprotocol/protocol/blob/master/packages/scrip
 
 ## Implementation
 
-The `OptimisticAsserter` contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/optimistic-asserter/implementation/OptimisticAsserter.sol). The contract has already been audited by Open Zeppelin and the audit report can be found [here](https://blog.openzeppelin.com/uma-optimistic-asserter-audit/).
+The `OptimisticAsserter` contract can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/optimistic-asserter/implementation/OptimisticAsserter.sol). The contract has already been audited by OpenZeppelin and the audit report can be found [here](https://blog.openzeppelin.com/uma-optimistic-asserter-audit/).
 
 ## Security considerations
 
