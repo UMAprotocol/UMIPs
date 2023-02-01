@@ -1,7 +1,7 @@
 ## Headers
 
 
-| UMIP-XXX       |                                                                          |
+| UMIP-170       |                                                                          |
 | -------------- | ------------------------------------------------------------------------ |
 | UMIP Title     | Add `ASSERT_TRUTH` as a supported price identifier                       |
 | Authors        | Reinis Martinsons (reinis@umaproject.org)                                |
