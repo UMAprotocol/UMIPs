@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP-172       |                                        |
-| -------------- | -------------------------------------- |
-| UMIP Title     | Update OptimisticAsserter              |
-| Authors        | Pablo Maldonado (pablo@umaproject.org) |
-| Status         | Approved                               |
-| Created        | February 9, 2023                       |
-| Discourse Link | https://todo                           |
+| UMIP-172       |                                                                        |
+| -------------- | ---------------------------------------------------------------------- |
+| UMIP Title     | Update OptimisticAsserter                                              |
+| Authors        | Pablo Maldonado (pablo@umaproject.org)                                 |
+| Status         | Approved                                                               |
+| Created        | February 9, 2023                                                       |
+| Discourse Link | https://discourse.umaproject.org/t/add-optimistic-asserter-update/1914 |
 
 ## Summary (2-5 sentences)
 
