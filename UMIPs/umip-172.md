@@ -30,6 +30,7 @@ To accomplish this upgrade, a few actions will need to be taken:
 
 - Transactions will need to be proposed to add this new addresses to the `Finder` contract under the name `OptimisticOracleV3` in each network. This is how other contracts will find the optimistic oracle and reference it.
 - The new `OptimisticOracleV3` will need to be registered with the `Registry` in each network so that it can make requests to the DVM.
+- The old `OptimisticAsserter` contract will need to be unregistered in the `Finder` in each network. This will prevent it from being used in the future.
 
 Note: this change will only add the `OptimisticOracleV3` to the networks mentioned above. New contracts that utilize the `OptimisticOracleV3` will need to be deployed for it to become useful. Until all steps above are performed, the deployed `OptimisticOracleV3` _should not_ be used in production since it will not be able to raise disputes to the DVM.
 
