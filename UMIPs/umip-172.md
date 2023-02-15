@@ -22,11 +22,11 @@ To accomplish this upgrade, a few actions will need to be taken:
 
 - A new `OptimisticOracleV3` contract has been re-deployed in the following networks:
 
-  - Mainnet: [0x1234567890abcdefghijklmonpqrstuvwxyzzzzz](https://etherscan.io/address/0x1234567890abcdefghijklmonpqrstuvwxyzzzzz)
-  - Polygon: [0x1234567890abcdefghijklmonpqrstuvwxyzzzzz](https://polygonscan.com/address/0x1234567890abcdefghijklmonpqrstuvwxyzzzzz)
-  - Optimism: [0x1234567890abcdefghijklmonpqrstuvwxyzzzzz](https://optimistic.etherscan.io/address/0x1234567890abcdefghijklmonpqrstuvwxyzzzzz)
-  - Arbitrum: [0x1234567890abcdefghijklmonpqrstuvwxyzzzzz](https://arbiscan.io/address/0x1234567890abcdefghijklmonpqrstuvwxyzzzzz)
-  - Boba: [0x1234567890abcdefghijklmonpqrstuvwxyzzzzz](https://bobascan.com/address/0x1234567890abcdefghijklmonpqrstuvwxyzzzzz)
+  - Mainnet: [0xfb55F43fB9F48F63f9269DB7Dde3BbBe1ebDC0dE](https://etherscan.io/address/0xfb55F43fB9F48F63f9269DB7Dde3BbBe1ebDC0dE)
+  - Polygon: [0x5953f2538F613E05bAED8A5AeFa8e6622467AD3D](https://polygonscan.com/address/0x5953f2538F613E05bAED8A5AeFa8e6622467AD3D)
+  - Optimism: [0x072819Bb43B50E7A251c64411e7aA362ce82803B](https://optimistic.etherscan.io/address/0x072819Bb43B50E7A251c64411e7aA362ce82803B)
+  - Arbitrum: [0xa6147867264374F324524E30C02C331cF28aa879](https://arbiscan.io/address/0xa6147867264374F324524E30C02C331cF28aa879)
+  - Boba: [0xe1C2587C1789f7D00F22931D4DBAD537405DFe1f](https://bobascan.com/address/0xe1C2587C1789f7D00F22931D4DBAD537405DFe1f)
 
 - Transactions will need to be proposed to add this new addresses to the `Finder` contract under the name `OptimisticOracleV3` in each network. This is how other contracts will find the optimistic oracle and reference it.
 - The new `OptimisticOracleV3` will need to be registered with the `Registry` in each network so that it can make requests to the DVM.
