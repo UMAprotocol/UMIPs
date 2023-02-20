@@ -5,17 +5,16 @@
 | -------------- | ------------------------------------------------------------------------ |
 | UMIP Title     | Add `ASSERT_TRUTH` as a supported price identifier                       |
 | Authors        | Reinis Martinsons (reinis@umaproject.org)                                |
-| Status         | Draft                                                                    |
+| Status         | Approved                                                                 |
 | Created        | January 30th, 2023                                                       |
 | Discourse Link | https://discourse.umaproject.org/t/feat-add-assert-truth-identifier/1900 |
 
 # Summary
 
 The DVM should support price requests for the `ASSERT_TRUTH` price identifier. `ASSERT_TRUTH` is intended to be used as
- a default price identifier for UMA's [Optimistic Asserter contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/optimistic-asserter/implementation/OptimisticAsserter.sol)
- that allows asserters to make claims about the state of the world. Optimistic Asserter contract would be added to
- `Registry` and `Finder` contracts as part of the [Optimistic Asserter UMIP](https://github.com/UMAprotocol/UMIPs/pull/570).
-// TODO: Update link to Optimistic Asserter UMIP once it's merged in.
+ a default price identifier for UMA's [Optimistic Oracle V3 contract](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/optimistic-oracle-v3/implementation/OptimisticOracleV3.sol)
+ that allows asserters to make claims about the state of the world. Optimistic Oracle V3 contract would be added to
+ `Registry` and `Finder` contracts as part of the [Update OptimisticOracleV3 UMIP](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-172.md).
 
 This UMIP does not attempt to put any restrictions on the types of claims that can be made, but rather focuses on the
  mechanics of how the DVM should be used to resolve disputes over such claims.
@@ -28,7 +27,7 @@ Price settlement can happen only in one of two ways:
 # Motivation
 
 Approving this price identifier will allow integrating partners to build their products on top of UMA's Optimistic
- Asserter contract. This will allow their users to make claims about the state of the world and resolve disputes over
+ Oracle V3 contract. This will allow their users to make claims about the state of the world and resolve disputes over
  these claims in a trustless manner.
 
 # Data Specifications
@@ -55,7 +54,7 @@ Upon dispute the following ancillary data parameters will be available to the vo
  UTF-8:
 
 - `assertionId`: The ID of the assertion being disputed.
-- `oaAsserter`: The address of the asserter that made the claim.
+- `ooAsserter`: The address of the asserter that made the claim.
 
 If the assertion was disputed on any other chain than Ethereum mainnet, additional `childChainId` parameter will be
  available to identify the chain where the dispute was raised.
@@ -65,16 +64,16 @@ If the assertion was disputed on any other chain than Ethereum mainnet, addition
 This construction sacrifices assurances of determinism in favor of greater price identifier flexibility. This places the
  burden of correct construction on claims being asserted, but, in return, allows for quicker and easier development
  without needing to pass through UMA governance for each additional application that builds on top of Optimistic
- Asserter contract.
+ Oracle V3 contract.
 
 # Implementation
 
-1. Voters should identify the Optimistic Asserter contract that was used to make and dispute the assertion. This can be
- done by calling `getImplementationAddress` on the `Finder` contract with the `OptimisticAsserter` identifier encoded as
+1. Voters should identify the Optimistic Oracle V3 contract that was used to make and dispute the assertion. This can be
+ done by calling `getImplementationAddress` on the `Finder` contract with the `OptimisticOracleV3` identifier encoded as
  `bytes32` at the time of DVM request. The address of the `Finder` contract depends on the network where the dispute was
  raised and is available in the `networks` directory of the UMA [protocol repository](https://github.com/UMAprotocol/protocol/tree/master/packages/core/networks).
 2. Voters should decode the ancillary data of the request and determine its `assertionId` parameter.
-3. Voters should search the `AssertionMade` event emitted by the Optimistic Asserter contract from Step 1 for an
+3. Voters should search the `AssertionMade` event emitted by the Optimistic Oracle V3 contract from Step 1 for an
  assertion with the matching `assertionId` parameter from Step 2. Take a note of the timestamp of this event and its
  `claim` parameter, as well as any other relevant fields needed to resolve the dispute.
 4. Voters should attempt to decode the `claim` parameter from Step 3 as UTF-8 string. If the decoding fails, the claim
@@ -88,16 +87,16 @@ This construction sacrifices assurances of determinism in favor of greater price
     - If the claim cannot be unambiguously resolved, voters should return the `0` value.
 
 All resolved price values should be scaled by `1e18` when interacting with contracts directly (e.g. writing scripts,
- console access or interacting through block explorer). Optimistic Asserter and Voting dApps scale price response
+ console access or interacting through block explorer). Optimistic Oracle and Voting dApps scale price response
  automatically or can abstract the price value with  simple `YES` or `NO` answer to the truthfulness of the claim for
  the convenience of the voter.
 
 # Security Considerations
 
 This construction sacrifices assurances of determinism in favor of greater price identifier flexibility. Users of this
- price identifier should be careful to ensure that claims being made through Optimistic Asserter contract can be
+ price identifier should be careful to ensure that claims being made through Optimistic Oracle V3 contract can be
  evaluated to reach a deterministic outcome.
 
-In case of any future upgrades to the Optimistic Asserter contract the Step 1 in the Implementation section should also
- be updated since its instructions currently assume only one version of the Optimistic Asserter contract is deployed per
- supported network.
+In case of any future upgrades to the Optimistic Oracle V3 contract the Step 1 in the Implementation section should also
+ be updated since its instructions currently assume only one version of the Optimistic Oracle V3 contract is deployed
+ per supported network.
