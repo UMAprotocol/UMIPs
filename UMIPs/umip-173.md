@@ -52,7 +52,9 @@ full list of the functionality change is listed below:
     2. Slashing mechanism that redistributes tokens from inactive and wrong voters to the stakers who have resolved the vote correctly. This hardens the schelling point by adding a more punitive cost function with being wrong.
     3. Dynamic slashing library that can configure the amount slashed as a function of vote participation metrics. For example, the system could be configured to slash non-participates more highly the more contentious a vote is. The configuration of this module is left up to UMA governance and can be changed later via a DVM vote.
     4. Governance votes are treated as a special price request category where slashing mechanism is not applied.
-2. Spam protection mechanism enabling governance to selectively delete particular DVM price requests, if they are deemed spam.
+2. Automatic spam protection mechanism where any non-governance votes that do not meet required participation and
+agreement thresholds for a number of rounds (set by UMA governance) would be deleted. This allows voters to create a
+schelling point around treating a request as spam by not voting on it.
 3. Recovery mechanism where bonded emergency proposals can be executed short-circuiting the normal voting mechanism. This enables the DVM to recover from any kind of internal failure mode that could occur (breakage in the commit reveal system, contract issues or other) through a permissionless upgrade flow.
 4. First class vote delegation support enabling a 1 to 1 relationship between the delegator and delegate wallets. This lets a voter delegate from a secure cold storage wallet to a hot wallet. The hot wallet can commit, reveal and claim and re-stake their rewards but can't access the underlying stake. More complex delegation systems (e.g. pooled UMA staking with delegate voting) can be built on top of this externally to the core UMA contracts, if desired.
 5. Governance proposals now include ancillary data enabling better identification for voters.
@@ -61,26 +63,24 @@ full list of the functionality change is listed below:
 
 ## Implementation & Technical Specification
 This UMIP upgrades the following contracts in the UMA DVM system:
-1. Core DVM voting contract: `Voting.sol` → `VotingV2.sol` (implementation [here](https://github.com/UMAprotocol/protocol/blob/17de20eb9d43243ff8151fe3dfff19d0423bd87c/packages/core/contracts/oracle/implementation/VotingV2.sol)).
-2. Proposal contract for governance actions: `Proposer.sol` → `ProposerV2.sol` (implementation [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/implementation/ProposerV2.sol)).
-3. Governor contract that manages UMA ecosystem contracts `Governor.sol` → `GovernorV2.sol` (implementation [here](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/oracle/implementation/GovernorV2.sol)).
-4. New `EmergencyProposer.sol` contract that enables the bi-passing of the schelling point oracle through a bonded, permissionless upgrade flow (implementation [here](https://github.com/UMAprotocol/protocol/blob/17de20eb9d43243ff8151fe3dfff19d0423bd87c/packages/core/contracts/oracle/implementation/EmergencyProposer.sol)).
-5. New `SlashingLibrary.sol` that calculates the amount of tokens to slash for not voting or voting wrong (implementation [here](https://github.com/UMAprotocol/protocol/blob/17de20eb9d43243ff8151fe3dfff19d0423bd87c/packages/core/contracts/oracle/implementation/SlashingLibrary.sol)).
-
-// TODO: Update permalinks to new contracts after fixes to OZ audit.
+1. Core DVM voting contract: `Voting.sol` → `VotingV2.sol` (implementation [here](https://github.com/UMAprotocol/protocol/blob/3ad31b3aab3cf342f6a91dce54032fe0ee1b15c8/packages/core/contracts/data-verification-mechanism/implementation/VotingV2.sol)).
+2. Proposal contract for governance actions: `Proposer.sol` → `ProposerV2.sol` (implementation [here](https://github.com/UMAprotocol/protocol/blob/3ad31b3aab3cf342f6a91dce54032fe0ee1b15c8/packages/core/contracts/data-verification-mechanism/implementation/ProposerV2.sol)).
+3. Governor contract that manages UMA ecosystem contracts `Governor.sol` → `GovernorV2.sol` (implementation [here](https://github.com/UMAprotocol/protocol/blob/3ad31b3aab3cf342f6a91dce54032fe0ee1b15c8/packages/core/contracts/data-verification-mechanism/implementation/GovernorV2.sol)).
+4. New `EmergencyProposer.sol` contract that enables the bi-passing of the schelling point oracle through a bonded, permissionless upgrade flow (implementation [here](https://github.com/UMAprotocol/protocol/blob/3ad31b3aab3cf342f6a91dce54032fe0ee1b15c8/packages/core/contracts/data-verification-mechanism/implementation/EmergencyProposer.sol)).
+5. New `FixedSlashSlashingLibrary.sol` that calculates the amount of tokens to slash for not voting or voting wrong (implementation [here](https://github.com/UMAprotocol/protocol/blob/3ad31b3aab3cf342f6a91dce54032fe0ee1b15c8/packages/core/contracts/data-verification-mechanism/implementation/FixedSlashSlashingLibrary.sol)).
 
 The associated deployments for these contracts can be found in this table:
-| **Contract Name**       | **Deployment Address** |
-|-------------------------|------------------------|
-| `VotingV2.sol`          |                        |
-| `ProposerV2.sol`        |                        |
-| `EmergencyProposer.sol` |                        |
-| `GovernorV2.sol`        |                        |
-| `SlashingLibrary.sol`   |                        |
+| **Contract Name**               | **Deployment Address** |
+|---------------------------------|------------------------|
+| `VotingV2.sol`                  |                        |
+| `ProposerV2.sol`                |                        |
+| `EmergencyProposer.sol`         |                        |
+| `GovernorV2.sol`                |                        |
+| `FixedSlashSlashingLibrary.sol` |                        |
 
 // TODO: Document deployed contract parameters.
 
-The proposed upgrade process involves a number of steps and is described in detail [here](https://github.com/UMAprotocol/protocol/blob/master/packages/scripts/src/upgrade-tests/voting2/readme.md). The upgrade involves proposing a number of upgrade transactions to the DVM that are then executed. These transactions involve a number of detailed steps (and the exact implementation can be found [here](https://github.com/UMAprotocol/protocol/blob/25d22a9088a64da8f6783130c65d717a9104015d/packages/scripts/src/upgrade-tests/voting2/1_Propose.ts)) and are briefly mentioned below:
+The proposed upgrade process involves a number of steps and is described in detail [here](https://github.com/UMAprotocol/protocol/blob/master/packages/scripts/src/upgrade-tests/voting2/readme.md). The upgrade involves proposing a number of upgrade transactions to the DVM that are then executed. These transactions involve a number of detailed steps (and the exact implementation can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/scripts/src/upgrade-tests/voting2/1_Propose.ts)) and are briefly mentioned below:
 1. Changing the minter permissions on the UMA token
 2. Adding the new governor as the owner of the voting token
 3. Transferring UMA tokens held by old governor to the new governor
@@ -104,4 +104,4 @@ When executed, these transaction have the effect of moving all internal ownershi
 ## Security considerations
 The upgraded DVM contracts listed above have been audited by Open Zeppelin in two separate audits ([report1](https://blog.openzeppelin.com/uma-dvm-2-0-audit/), [report2](https://blog.openzeppelin.com/uma-dvm-2-0-incremental-audit/)). Additionally, the upgrade process presented above was also audited by OZ.
 
-// TODO: Add the second OZ incremental audit link.
+// TODO: Add the third OZ audit once published.
