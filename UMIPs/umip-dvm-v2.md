@@ -22,7 +22,7 @@ The current UMA tokenonomics suffers from a few issues that the proposed upgrade
 
 1. The current system has a flaw wherein an attacker can create spurious votes with the intention of capturing UMA inflation
 rewards. This becomes an issue when the rewards a voter receives exceed the cost of the final fee (currently ~$500).
-In practice, this means that you need to be voting with ~110k UMA (at an UMA price of $1.5 and considering average vote
+In practice, this means that you need to be voting with ~72k UMA (at an UMA price of $2.25 and considering average vote
 participation over a number of recent votes) to profit from creating spurious votes.
 
 2. It is currently hard to work out the APY a voter receives for participating in the UMA system. One needs to consider
