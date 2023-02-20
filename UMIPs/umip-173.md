@@ -57,7 +57,7 @@ agreement thresholds for a number of rounds (set by UMA governance) would be del
 schelling point around treating a request as spam by not voting on it.
 3. Recovery mechanism where bonded emergency proposals can be executed short-circuiting the normal voting mechanism. This enables the DVM to recover from any kind of internal failure mode that could occur (breakage in the commit reveal system, contract issues or other) through a permissionless upgrade flow.
 4. First class vote delegation support enabling a 1 to 1 relationship between the delegator and delegate wallets. This lets a voter delegate from a secure cold storage wallet to a hot wallet. The hot wallet can commit, reveal and claim and re-stake their rewards but can't access the underlying stake. More complex delegation systems (e.g. pooled UMA staking with delegate voting) can be built on top of this externally to the core UMA contracts, if desired.
-5. Governance proposals now include ancillary data enabling better identification for voters.
+5. Governance proposals can now include ancillary data, allowing for better identifying information to be included with vote proposals.
 6. Price requests now contain a unique identifier, enabling easier tracking and support in front ends.
 7. A number of gas optimizations were made throughout the protocol.
 
