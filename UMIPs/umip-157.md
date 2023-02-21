@@ -98,6 +98,7 @@ To query the value for any of the above constants, the `AcrossConfigStore` contr
 
 The following constants are currently specified in this UMIP directly, but should be moved to the `AcrossConfigStore` in the future. Once that happens, this UMIP can be amended to move the following constants in to the above section.
 - "CHAIN_ID_LIST"=[1,10,137,288,42161] # Mainnet, Optimism, Polygon, Boba, Arbitrum
+- "DISABLED_CHAIN_ID_LIST"=[]
 
 ## Token Constants
 The following constants are also stored in the `AcrossConfigStore` contract but are specific to an Ethereum token address. Therefore, they are fetched by querying the config store's `tokenConfig(address)` function.
@@ -166,6 +167,8 @@ Use this mechanism to determine the starting block numbers for each `chainId` re
 `bundleEvaluationBlockNumbers`.
 
 Note that the above rules require that the `bundleEvaluationBlockNumbers` for each `chainId` are strictly greater than the preceding [valid proposal's](#valid-bundle-proposals) `bundleEvaluationBlockNumbers` for the same `chainId`. The block range for each proposal starts at the preceding proposal's `bundleEvaluationBlockNumbers` plus 1 and go to the next `bundleEvaluationBlockNumbers`.
+
+Note that the above rules for determining an end block don't apply if the chain ID is in the "DISABLED_CHAIN_ID_LIST" list. For disabled chains, the `endBlock` should be equal to the `startBlock`, which is computed using the rules above.
 
 Evaluate the
 [crossChainContracts](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L59)
