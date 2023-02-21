@@ -101,7 +101,7 @@ The proposed upgrade process involves a number of steps and is described in deta
 11. Reset governance ownership to the voting upgrader for both the old and new governor
 12. Execute upgrade through the voting upgrader.
 
-When executed, these transaction have the effect of moving all internal ownership to the voting upgrader contract and using this to upgrade the UMA DVM system atomically. Please see the linked upgrade scripts that outline the upgrade process in detail.
+When executed, these transaction have the effect of moving all internal ownership to the voting upgrader contract and using this to upgrade the UMA DVM system atomically. Please see the linked upgrade scripts that outline the upgrade process in detail. The prior DVM (Voting) will no longer be used once it has been migrated, although unclaimed rewards from the previous contract can still be claimed using the new DVM 2.0. The migration will not not involve any interruption of the functionality of contracts using the DVM (OOv2, OO, etc.), as they will continue to function with DVM 2.0 after migration.
 
 ## Security considerations
 
