@@ -170,7 +170,7 @@ Use this mechanism to determine the starting block numbers for each `chainId` re
 
 Note that the above rules require that the `bundleEvaluationBlockNumbers` for each `chainId` are strictly greater than the preceding [valid proposal's](#valid-bundle-proposals) `bundleEvaluationBlockNumbers` for the same `chainId`. The block range for each proposal starts at the preceding proposal's `bundleEvaluationBlockNumbers` plus 1 and go to the next `bundleEvaluationBlockNumbers`.
 
-Note that the above rules for determining an end block don't apply if the chain ID is in the "DISABLED_CHAINS" list. If a chain ID is in the DISABLED_CHAINS list then we need to find the last known bundle end block for the chain ID by finding the most recent validated bundle that was proposed before the chain ID was added to the DISABLED_CHAINS list. The bundle end block for the (now) disabled chain should be used as the current bundle's end block for this chain. This bundle end block should keep being re-used until the chain is removedfrom the DISABLED_CHAINS list. For proposal validators, for any bundles where the bundle end block for chain ID 1 is >= the block at which the disabled chain was added to the DISABLED_CHAINS list, the disabled chain's end block should be re-used in this way.
+Note that the above rules for determining an end block don't apply if the chain ID is in the "DISABLED_CHAINS" list. if a chain exists in DISABLED_CHAINS, all future proposals must reuse the bundle end block from the last proposal before it was added.
 
 Evaluate the
 [crossChainContracts](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L59)
