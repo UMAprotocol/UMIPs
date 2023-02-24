@@ -75,16 +75,32 @@ This UMIP upgrades the following contracts in the UMA DVM system:
 4. New `EmergencyProposer.sol` contract that enables the bi-passing of the schelling point oracle through a bonded, permissionless upgrade flow (implementation [here](https://github.com/UMAprotocol/protocol/blob/3ad31b3aab3cf342f6a91dce54032fe0ee1b15c8/packages/core/contracts/data-verification-mechanism/implementation/EmergencyProposer.sol)).
 5. New `FixedSlashSlashingLibrary.sol` that calculates the amount of tokens to slash for not voting or voting wrong (implementation [here](https://github.com/UMAprotocol/protocol/blob/3ad31b3aab3cf342f6a91dce54032fe0ee1b15c8/packages/core/contracts/data-verification-mechanism/implementation/FixedSlashSlashingLibrary.sol)).
 
-The associated deployments for these contracts can be found in this table:
+**The associated deployments for these contracts can be found in this table:**
 | **Contract Name** | **Deployment Address** |
 |---------------------------------|------------------------|
-| `VotingV2.sol` | |
-| `ProposerV2.sol` | |
-| `EmergencyProposer.sol` | |
-| `GovernorV2.sol` | |
-| `FixedSlashSlashingLibrary.sol` | |
+| `VotingV2.sol` | [0x004395edb43EFca9885CEdad51EC9fAf93Bd34ac](https://etherscan.io/address/0x004395edb43EFca9885CEdad51EC9fAf93Bd34ac) |
+| `ProposerV2.sol` | [0x50efaC9619225d7fB4703C5872da978849B6E7cC](https://etherscan.io/address/0x50efaC9619225d7fB4703C5872da978849B6E7cC) |
+| `EmergencyProposer.sol` | [0x91F1804aCaf87C2D34A34A70be1bb16bB85D6748](https://etherscan.io/address/0x91F1804aCaf87C2D34A34A70be1bb16bB85D6748) |
+| `GovernorV2.sol` | [0x7b292034084A41B9D441B71b6E3557Edd0463fa8](https://etherscan.io/address/0x7b292034084A41B9D441B71b6E3557Edd0463fa8) |
+| `FixedSlashSlashingLibrary.sol` | [0x9a406ba5a99983250fd663947b3c968d387ce5cd](https://etherscan.io/address/0x9a406ba5a99983250fd663947b3c968d387ce5cd) |
 
-// TODO: Document deployed contract parameters.
+**The deployment parameters used are defined below:**
+| Key | Value |
+|--------------------------|--------------------------------------------|
+| `emergencyQuorum` | 5000000.0 |
+| `emergencyExecutor` | 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 |
+| `emergencyMinimumWaitTime` | 864000 |
+| `baseSlashAmount` | 0.001 |
+| `governanceSlashAmount` | 0.0 |
+| `emissionRate` | 0.0 |
+| `unstakeCooldown` | 604800 |
+| `phaseLength` | 86400 |
+| `gat` | 5000000 |
+| `spat` | 0.5 |
+| `maxRolls` | 4 |
+| `maxRequestsPerRound` | 1000 |
+| `proposerV2DefaultBond` | 5000.0 |
+| `votingUpgraderAddress` | 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 |
 
 The proposed upgrade process involves a number of steps and is described in detail [here](https://github.com/UMAprotocol/protocol/blob/master/packages/scripts/src/upgrade-tests/voting2/readme.md). The upgrade involves proposing a number of upgrade transactions to the DVM that are then executed. These transactions involve a number of detailed steps (and the exact implementation can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/scripts/src/upgrade-tests/voting2/1_Propose.ts)) and are briefly mentioned below:
 
@@ -99,12 +115,10 @@ The proposed upgrade process involves a number of steps and is described in deta
 9. Transfer ownership of all remaining ownable contracts to the voting upgrader
 10. Transfer all multirole ownership to the voting upgrader
 11. Reset governance ownership to the voting upgrader for both the old and new governor
-12. Execute upgrade through the voting upgrader.
+12. Execute upgrade through the voting upgrader. This is deployed [here](https://etherscan.io/address/0x13852D4AF390d8C3404c0577fd8B8E43389A290b)
 
 When executed, these transaction have the effect of moving all internal ownership to the voting upgrader contract and using this to upgrade the UMA DVM system atomically. Please see the linked upgrade scripts that outline the upgrade process in detail. The prior DVM (Voting) will no longer be used once it has been migrated, although unclaimed rewards from the previous contract can still be claimed using the new DVM 2.0. The migration will not not involve any interruption of the functionality of contracts using the DVM (OOv2, OO, etc.), as they will continue to function with DVM 2.0 after migration.
 
 ## Security considerations
 
 The upgraded DVM contracts listed above have been audited by Open Zeppelin in two separate audits ([report1](https://blog.openzeppelin.com/uma-dvm-2-0-audit/), [report2](https://blog.openzeppelin.com/uma-dvm-2-0-incremental-audit/),[report3]()). Additionally, the upgrade process presented above was also audited by OZ.
-
-// TODO: Add the third OZ audit once published.
