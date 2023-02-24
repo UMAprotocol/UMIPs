@@ -5,7 +5,8 @@
 | UMIP Title | Approve DVM upgrade to DVM2.0                                                                                         |
 | Authors    | Chris Maree (chris@umaproject.org), Pablo Maldonado (pablo@umaproject.org), Reinis Martinsons (reinis@umaproject.org) |
 | Status     | Draft                                                                                                                 |
-| Created    | October 26, 2022                                                                                                      |
+| Created    | October 26, 2022    
+| Discussion | [Discourse](discourse.umaproject.org/t/approve-dvm-upgrade-to-dvm-2-0/1935)                                                                                                  |
 
 ## Summary
 
