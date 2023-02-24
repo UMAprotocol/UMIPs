@@ -88,7 +88,7 @@ This UMIP upgrades the following contracts in the UMA DVM system:
 | Key | Value |
 |--------------------------|--------------------------------------------|
 | `emergencyQuorum` | 5000000.0 |
-| `emergencyExecutor` | 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 |
+| `emergencyExecutor` | 0x8180D59b7175d4064bDFA8138A58e9baBFFdA44a |
 | `emergencyMinimumWaitTime` | 864000 |
 | `baseSlashAmount` | 0.001 |
 | `governanceSlashAmount` | 0.0 |
@@ -100,7 +100,7 @@ This UMIP upgrades the following contracts in the UMA DVM system:
 | `maxRolls` | 4 |
 | `maxRequestsPerRound` | 1000 |
 | `proposerV2DefaultBond` | 5000.0 |
-| `votingUpgraderAddress` | 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 |
+| `votingUpgraderAddress` | 0x13852D4AF390d8C3404c0577fd8B8E43389A290b |
 
 The proposed upgrade process involves a number of steps and is described in detail [here](https://github.com/UMAprotocol/protocol/blob/master/packages/scripts/src/upgrade-tests/voting2/readme.md). The upgrade involves proposing a number of upgrade transactions to the DVM that are then executed. These transactions involve a number of detailed steps (and the exact implementation can be found [here](https://github.com/UMAprotocol/protocol/blob/master/packages/scripts/src/upgrade-tests/voting2/1_Propose.ts)) and are briefly mentioned below:
 
