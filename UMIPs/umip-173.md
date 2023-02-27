@@ -4,7 +4,7 @@
 | ---------- | --------------------------------------------------------------------------------------------------------------------- |
 | UMIP Title | Approve DVM upgrade to DVM2.0                                                                                         |
 | Authors    | Chris Maree (chris@umaproject.org), Pablo Maldonado (pablo@umaproject.org), Reinis Martinsons (reinis@umaproject.org) |
-| Status     | Approved                                                                                                                 |
+| Status     | Approved                                                                                                              |
 | Created    | October 26, 2022                                                                                                      |
 | Discussion | [Discourse](discourse.umaproject.org/t/approve-dvm-upgrade-to-dvm-2-0/1935)                                           |
 
@@ -116,7 +116,7 @@ The proposed upgrade process involves a number of steps and is described in deta
 9. Transfer ownership of all remaining ownable contracts to the voting upgrader
 10. Transfer all multirole ownership to the voting upgrader
 11. Reset governance ownership to the voting upgrader for both the old and new governor
-12. Execute upgrade through the voting upgrader. This is deployed [here](https://etherscan.io/address/0x13852D4AF390d8C3404c0577fd8B8E43389A290b). 
+12. Execute upgrade through the voting upgrader. This is deployed [here](https://etherscan.io/address/0x13852D4AF390d8C3404c0577fd8B8E43389A290b).
 
 When executed, these transaction have the effect of moving all internal ownership to the voting upgrader contract and using this to upgrade the UMA DVM system atomically. Please see the linked upgrade scripts that outline the upgrade process in detail. The prior DVM (Voting) will no longer be used once it has been migrated, although unclaimed rewards from the previous contract can still be claimed using the new DVM 2.0. The migration will not not involve any interruption of the functionality of contracts using the DVM (OOv2, OO, etc.), as they will continue to function with DVM 2.0 after migration.
 
