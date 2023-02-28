@@ -93,7 +93,7 @@ The following constants should reflect what is stored in the [`AcrossConfigStore
 - "VERSION"
   - Across protocol version number. Supporting implementations should query this value against the value defined in their implementation to determine compatibility with the current protocol version. Failure to correctly evaluate the version number may mean that filled relays are not refunded from the HubPool, and may therefore result in loss of funds. For more information go [here](#versions).
 - "DISABLED_CHAINS"
-  - This should be a stringified list of chain ID numbers. This cannot contain the chain ID "1".
+  - This must be a stringified list of chain ID numbers. This cannot contain the chain ID "1".
 
 To query the value for any of the above constants, the `AcrossConfigStore` contract's `globalConfig(bytes32)` function should be called with the hex value of the variable name. For example, the "MAX_POOL_REBALANCE_LEAF_SIZE" can be queried by calling `globalConfig(toHex("MAX_POOL_REBALANCE_LEAF_SIZE"))` which is equivalent to `globalConfig("0x4d41585f504f4f4c5f524542414c414e43455f4c4541465f53495a45")`. For example, this might return 
 >"25"
