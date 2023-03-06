@@ -36,8 +36,8 @@ Though actual return for individual stakers who vote correctly can be even highe
 
 ## Implementation & Technical Specification
 
-This UMIP proposes a governance transaction that sets the `emissionRate` parameter of the VotingV2 contract to 0.18 UMA
- scaled by 1e18.
+This UMIP proposes a governance transaction that sets the `emissionRate` parameter of the [VotingV2 contract](https://etherscan.io/address/0x004395edb43EFca9885CEdad51EC9fAf93Bd34ac)
+ to 0.18 UMA scaled by 1e18.
 
 ## Security considerations
 
