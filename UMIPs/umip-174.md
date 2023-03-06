@@ -6,7 +6,7 @@
 | Authors    | Reinis Martinsons (reinis@umaproject.org)                                              |
 | Status     | Draft                                                                                  |
 | Created    | March 06, 2023                                                                         |
-| Discussion | [Discourse]()                                           |
+| Discussion | [Discourse](https://discourse.uma.xyz/t/feat-update-uma-emission/1940)                 |
 
 ## Summary
 
