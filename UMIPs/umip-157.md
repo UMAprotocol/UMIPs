@@ -92,14 +92,14 @@ The following constants should reflect what is stored in the [`AcrossConfigStore
 - "MAX_RELAYER_REPAYMENT_LEAF_SIZE"
 - "VERSION"
   - Across protocol version number. Supporting implementations should query this value against the value defined in their implementation to determine compatibility with the current protocol version. Failure to correctly evaluate the version number may mean that filled relays are not refunded from the HubPool, and may therefore result in loss of funds. For more information go [here](#versions).
-- "DISABLED_CHAINS"
-  - This must be a stringified list of chain ID numbers. This cannot contain the chain ID "1".
+- "ENABLED_CHAINS"
+  - This must be a stringified list of chain ID numbers. These ID's must be a subset of the "CHAIN_ID_INDICES" list.
+- "CHAIN_ID_INDICES"=[1,10,137,288,42161]
+  - This must be a stringified list of chain ID numbers. Updates to this value must only add ID's to the end of the list.
 
 To query the value for any of the above constants, the `AcrossConfigStore` contract's `globalConfig(bytes32)` function should be called with the hex value of the variable name. For example, the "MAX_POOL_REBALANCE_LEAF_SIZE" can be queried by calling `globalConfig(toHex("MAX_POOL_REBALANCE_LEAF_SIZE"))` which is equivalent to `globalConfig("0x4d41585f504f4f4c5f524542414c414e43455f4c4541465f53495a45")`. For example, this might return 
 >"25"
 
-The following constants are currently specified in this UMIP directly, but should be moved to the `AcrossConfigStore` in the future. Once that happens, this UMIP can be amended to move the following constants in to the above section.
-- "CHAIN_ID_LIST"=[1,10,137,288,42161] # Mainnet, Optimism, Polygon, Boba, Arbitrum
 
 ## Token Constants
 The following constants are also stored in the `AcrossConfigStore` contract but are specific to an Ethereum token address. Therefore, they are fetched by querying the config store's `tokenConfig(address)` function.
@@ -169,7 +169,7 @@ Use this mechanism to determine the starting block numbers for each `chainId` re
 
 Note that the above rules require that the `bundleEvaluationBlockNumbers` for each `chainId` are strictly greater than the preceding [valid proposal's](#valid-bundle-proposals) `bundleEvaluationBlockNumbers` for the same `chainId`. The block range for each proposal starts at the preceding proposal's `bundleEvaluationBlockNumbers` plus 1 and go to the next `bundleEvaluationBlockNumbers`.
 
-Note also that the above rules for determining an end block don't apply if the chain ID is in the "DISABLED_CHAINS" list. if a chain exists in DISABLED_CHAINS, the proposed bundle must reuse the bundle end block from the last valid proposal before it was added. Specifically, if a chain exists in DISABLED_CHAINS at the "mainnet" end block (chain ID 1) for a particular proposal, the end block for that chain should be identical to its value in the latest executed bundle.
+Note also that the above rules for determining an end block don't apply if the chain ID is not in the "ENABLED_CHAINS" list. If a chain does not exist in ENABLED_CHAINS, then the proposed bundle must reuse the bundle end block from the last valid proposal before it was removed from the list. Specifically, if a chain does not exist in ENABLED_CHAINS at the "mainnet" end block (chain ID 1) for a particular proposal, the end block for that chain should be identical to its value in the latest executed bundle.
 
 Evaluate the
 [crossChainContracts](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L59)
