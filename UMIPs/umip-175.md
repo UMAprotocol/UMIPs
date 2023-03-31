@@ -6,7 +6,7 @@
 | Authors    | Reinis Martinsons (reinis@umaproject.org)                                              |
 | Status     | Draft                                                                                  |
 | Created    | March 31, 2023                                                                         |
-| Discussion | [Discourse]()                 |
+| Discussion | [Discourse](https://discourse.uma.xyz/t/feat-revoke-depreciated-minters/1973)          |
 
 ## Summary
 
