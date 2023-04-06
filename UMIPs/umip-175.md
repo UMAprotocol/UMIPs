@@ -2,21 +2,21 @@
 
 | UMIP-175   |                                                                                        |
 | ---------- | -------------------------------------------------------------------------------------- |
-| UMIP Title | Revoke minter role for depreciated contracts                                           |
+| UMIP Title | Revoke minter role for deprecated contracts                                            |
 | Authors    | Reinis Martinsons (reinis@umaproject.org)                                              |
 | Status     | Draft                                                                                  |
 | Created    | March 31, 2023                                                                         |
-| Discussion | [Discourse](https://discourse.uma.xyz/t/feat-revoke-depreciated-minters/1973)          |
+| Discussion | [Discourse](https://discourse.uma.xyz/t/feat-revoke-deprecated-minters/1973)           |
 
 ## Summary
 
-This UMIP proposes to revoke UMA token minter role for depreciated voting contracts.
+This UMIP proposes to revoke UMA token minter role for deprecated voting contracts.
 
 ## Motivation & Rationale
 
 During each of DVM upgrades the new voting contracts got granted minter role for the UMA voting token while the previous
  contracts privileges were not revoked. Even though the minter role is only used to claim rewards, it is still
- considered a good security practice to revoke the minter role for depreciated contracts in order to reduce potential
+ considered a good security practice to revoke the minter role for deprecated contracts in order to reduce potential
  attack surface.
 
 The only contracts that should retain the minter role are the current VotingV2 contract and the one that was used before
@@ -34,5 +34,5 @@ This UMIP proposes a governance transaction that calls `removeMember(uint256 rol
 
 ## Security considerations
 
-Removing the minter role for depreciated contracts reduces potential attack surface and is considered a good security
+Removing the minter role for deprecated contracts reduces potential attack surface and is considered a good security
  practice.
