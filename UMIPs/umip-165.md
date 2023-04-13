@@ -4,7 +4,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add `NUMERICAL` as a supported data identifier |
 | Authors             | John Shutt                                                     |
-| Status              | Last Call                                                         |
+| Status              | Approved                                                         |
 | Created             | July 18, 2022                                              |
 
 # Summary 

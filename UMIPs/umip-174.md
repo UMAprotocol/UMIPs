@@ -4,7 +4,7 @@
 | ---------- | -------------------------------------------------------------------------------------- |
 | UMIP Title | Update UMA emission rate                                                               |
 | Authors    | Reinis Martinsons (reinis@umaproject.org)                                              |
-| Status     | Draft                                                                                  |
+| Status     | Approved                                                                                  |
 | Created    | March 06, 2023                                                                         |
 | Discussion | [Discourse](https://discourse.uma.xyz/t/feat-update-uma-emission/1940)                 |
 
