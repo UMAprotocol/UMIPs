@@ -207,6 +207,7 @@ event should be found in one of the spoke pools for the originChainId where the 
 - `depositId`
 - `recipient`
 - `depositor`
+- `message`
 
 ## Matching L2 tokens and L1 tokens
 
@@ -225,17 +226,22 @@ Additionally, matching relays should have their `destinationToken` set such that
    value in the `FilledRelay` event. If they don't match or if no matching event is found, the relay is invalid.
 
 ## Validating realizedLpFeePct
-To determine the validity of the `realizedLPFeePct` in the `FilledRelay` event, the exact same process is used as in
-the identifier [`IS_RELAY_VALID`, specified in UMIP 136](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-136.md). However, instead ofing a `RateModelStore` contract to look up a deposit's rate model, we can use the `AcrossConfigStore`'s `tokenConfig` to [look up the rate model](#token-constants) for a deposit. The deposited `originToken` can be mapped to an `l1Token` by following step 2 above which can be used to query a `rateModel`. 
+To determine the validity of the `realizedLPFeePct` in the `FilledRelay` event, we must first compute two separate fees: a "depositor" and a "relayer" fee.
 
-Moreover, instead of calling `liquidityUtilizationCurrent` and
-`liquidityUtilizationPostRelay` on the `BridgePool` contract (passing no arguments) to compute the rate model, identically-named methods would be
-called on the `HubPool` contract, passing in a single argument, the `l1Token` derived in the 3 step process above.
+### Depositor Fee
 
-If the `realizedLPFeePct` that is computed using those means does not match the `realizedLPFeePct` in the
-`FilledRelay` event, then the relay is considered invalid.
+First, identify the matched deposit for the fill following the steps [here](#finding-valid-relays).
+This fee is depends on the following parameters:
+- The "deposit count" at the time of the matched deposit on the origin chain.
+- The UBA fee parameters at the time of the deposit
 
-All valid `FilledRelay` events should then be stored for the construction of the bundle.
+### Relayer Fee
+
+This fee is depends on the following parameters:
+- The "fill count" at the time of the fill on the destination chain.
+- The UBA fee parameters at the time of the deposit
+
+The `realizedLpFeePct` should be equal to `depositorFee + relayerFee`. The `relayerFee` will ultimately be returned to the Relayer and be included in the refund amount.
 
 # Finding Slow Relays
 
