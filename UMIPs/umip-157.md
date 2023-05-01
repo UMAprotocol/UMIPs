@@ -111,6 +111,9 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
   - The rateModel struct is only valid if it contains all of the following parameters: `UBar`, `R0`, `R1`, and `R2`.
 - "routeRateModel"
   - Similar to `rateModel`, this is a dictionary of `originChain-destinationChain` keys mapped to rate models that take precedence over the `rateModel` for a token on that specific deposit route. The route rate models should follow the same `UBar`, `R0`, `R1`, `R2` format as the default `rateModel`
+- "UBAFeeModel"
+  - This is a JSON struct of parameters keyed to a specific `chain` and `token` that defines a fee curve for that token given an input `balance`. This model is described in more detail [here](#TODO) and it generally returns a fee % to charge for an input deposit or refund amount given (i) the current "running balance" for the chain and token and (ii) the target "running balance".
+  - The intuition is that the fee is positive for deposited amounts when `currentRunningBalance + depositAmount < targetRunningBalance` and positive for refunded amounts when `currentRunningBalance - refundAmount > targetRunningBalance`, and vice versa. So, deposits and refunds are rewarded when they push running balances held on SpokePools towards their targets and penalized when they do the opposite. Deposits can only add to a running balance and refunds can only subtract.
 - "spokeTargetBalances"
   - This is contains a JSON mapping from chainId to JSON structs.
   - Each struct contains two sub-fields, "target" and "threshold".
