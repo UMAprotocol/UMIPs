@@ -226,22 +226,27 @@ Additionally, matching relays should have their `destinationToken` set such that
    value in the `FilledRelay` event. If they don't match or if no matching event is found, the relay is invalid.
 
 ## Validating realizedLpFeePct
-To determine the validity of the `realizedLPFeePct` in the `FilledRelay` event, we must first compute two separate fees: a "depositor" and a "relayer" fee.
+To determine the validity of the `realizedLPFeePct` in the `FilledRelay` event, we must first compute two separate fees: a "depositor" and a "refund" fee.
 
 ### Depositor Fee
 
 First, identify the matched deposit for the fill following the steps [here](#finding-valid-relays).
-This fee is depends on the following parameters:
-- The "deposit count" at the time of the matched deposit on the origin chain.
-- The UBA fee parameters at the time of the deposit
+This fee depends on the following parameters:
+- The "running count" at the time of the matched deposit on the origin chain. This running count can be computed as the last validated running balance for the origin chain and token plus the total amount of deposits (for the same token) since that running balance before this matched deposit, minus the total amount of refunds (for the same token) taken on this chain before this matched deposit.
+- "Refunds" includes any fills with `repaymentChainId == depositOriginChain` and valid refunds requested on the chain.
+- The UBA fee curve parameters value for the running count of the deposit.
 
-### Relayer Fee
+### Refund Fee
 
-This fee is depends on the following parameters:
-- The "fill count" at the time of the fill on the destination chain.
-- The UBA fee parameters at the time of the deposit
+A refund includes a fill with `repaymentChainId == chainId` and refunds requested.
 
-The `realizedLpFeePct` should be equal to `depositorFee + relayerFee`. The `relayerFee` will ultimately be returned to the Relayer and be included in the refund amount.
+This fee depends on the following parameters:
+- The "running count" at the time of the refund on the destination chain.
+- The UBA fee curve parameters value for the running count of the refund.
+
+## Setting the realizedLpFeePct for a Fill
+
+The `realizedLpFeePct` should be equal to `depositorFee` for the matched deposit.  The `refundFee` will ultimately be returned to the Relayer and be included in the refund amount by the Dataworker.
 
 # Finding Slow Relays
 
@@ -258,6 +263,13 @@ For all remaining groups, they should be stored in a list of slow relay groups.
 For a given slow relay identified [above](#finding-slow-relays), we can compute the associated deposit's "unfilled amount" as `deposit.amount - latestFill.totalFilledAmount`, where `latestFill` is the last fill chronologically for a deposit. Since each fill increments `totalFilledAmount`, the `latestFill` can also be identified by sorting all fills associated wiht a deposit and keeping the fill with the largest `totalFilledAmount`. 
 
 Note: Since  we eliminated all fills where `totalFilledAmount == deposit.amount`, the remaining "last fill" should have `totalFilledAmount < deposit.amount` AND have `totalFilledAmount > [all other fills for deposit].totaFilledAmount`.
+
+## Slow Fill payout adjustments
+
+When creating a slow fill, the `realizedLpFeePct` is set equal to the `depositorFee`, just like a normal fill. However, unlike a normal fill there is no relayer to refund, so the `refundFee` should be charged to the user instead of a relayer. Intuitively, think of this like the user is ultimately taking funds out of the spoke pool, instead of the relayer asking for a refund, so the user needs to be charged for decrementing the spoke pool balance.
+
+The `payoutAdjustmentPct` is therefore set equal to the `refundFee` at the time of the first partial fill that triggered
+the deposit.
 
 # Constructing the PoolRebalanceRoot
 
