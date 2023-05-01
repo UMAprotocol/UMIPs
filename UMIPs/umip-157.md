@@ -306,22 +306,30 @@ For each `repaymentChainId` and `l1Token` combination, older
 [RootBundleExecuted](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) events
 should be queried to find the preceding `RootBundleExecuted` event. This means identifying the most recent `RootBundleExecuted` event with a `chainId` matching the `repaymentChainId` and [identifying the `runningBalanceValue` at the index of the `l1Token`](#matching-l1-tokens-to-running-balances-or-net-send-amounts).
 
-For each tuple of `l1Token` and `repaymentChainId`, we should have computed a total running balance value. The
+For each tuple of `l1Token` and `repaymentChainId`, we should have computed a total running balance value. In certain scenarios the bundle should "carry over" the running balance value to the `netSendAmount` parameter in the bundle proposal and "zero out" the running balance:
+
+The
 following algorithm describes the process of computing running balance and net send amount:
 
 ```
-transfer_threshold = the transfer threshold for this token
-spoke_balance_threshold = the "threshold" value in `spokeTargetBalances` for this token
-spoke_balance_target = the "threshold" value in `spokeTargetBalances` for this token
+hurdle_balance = the balance on the UBA fee curve's x-axis that equates to the hurdle rate
+hurdle_rate = the absolute percentage on the UBA fee curve over which we should transfer the running balance to the net send amount
+spoke_balance = the latest running balance on the spoke
+uba_fee_y = the latest fee returned by UBA fee curve using spoke_balance as input
+spoke_target = the desired neutral spoke pool running balance 
 
 net_send_amount = 0
-if running_balance >= 0 && running_balance >= transfer_threshold:
-  net_send_amount = running_balance
-  running_balance = 0
-else if abs(running_balance) >= spoke_balance_threshold:
-  desired_transfer_amount = min(running_balance + spoke_balance_target, 0)
-  net_send_amount = abs(desired_transfer_amount) >= transfer_threshold ? desired_transfer_amount : 0
-  running_balance = running_balance - net_send_amount
+
+# The Spoke is over target and needs more balance
+if uba_fee >= hurdle_rate:
+  desired_transfer_amount = spoke_balance - spoke_target # Should always be positive
+  net_send_amount = desired_transfer_amount
+  running_balance = running_balance - net_send_amount # Should always be positive
+# The Spoke is under target and needs to remove balance
+else if uba_fee <>= hurdle_rate
+  desired_transfer_amount = spoke_balance - spoke_target # Should always be negative
+  net_send_amount = desired_transfer_amount
+  running_balance = running_balance - net_send_amount # Should always be negative
 ```
 
 Take the above running balances and net send amounts and group them by only `repaymentChainId` and sort by `repaymentChainId`. Within
