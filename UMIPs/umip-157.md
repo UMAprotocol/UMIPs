@@ -103,31 +103,14 @@ The following constants are currently specified in this UMIP directly, but shoul
 
 ## Token Constants
 The following constants are also stored in the `AcrossConfigStore` contract but are specific to an Ethereum token address. Therefore, they are fetched by querying the config store's `tokenConfig(address)` function.
-- "rateModel"
-  - This is a JSON struct of rate model parameters.
-  - These parameters should fully specify the rate model for this token as described in
-    [UMIP 136](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-136.md).
-  - Each field in this struct should be an integer represented as a string (to allow unlimited precision).
-  - The rateModel struct is only valid if it contains all of the following parameters: `UBar`, `R0`, `R1`, and `R2`.
-- "routeRateModel"
-  - Similar to `rateModel`, this is a dictionary of `originChain-destinationChain` keys mapped to rate models that take precedence over the `rateModel` for a token on that specific deposit route. The route rate models should follow the same `UBar`, `R0`, `R1`, `R2` format as the default `rateModel`
 - "UBAFeeModel"
   - This is a JSON struct of parameters keyed to a specific `chain` and `token` that defines a fee curve for that token given an input `balance`. This model is described in more detail [here](#TODO) and it generally returns a fee % to charge for an input deposit or refund amount given (i) the current "running balance" for the chain and token and (ii) the target "running balance".
   - The intuition is that the fee is positive for deposited amounts when `currentRunningBalance + depositAmount < targetRunningBalance` and positive for refunded amounts when `currentRunningBalance - refundAmount > targetRunningBalance`, and vice versa. So, deposits and refunds are rewarded when they push running balances held on SpokePools towards their targets and penalized when they do the opposite. Deposits can only add to a running balance and refunds can only subtract.
-- "spokeTargetBalances"
-  - This is contains a JSON mapping from chainId to JSON structs.
-  - Each struct contains two sub-fields, "target" and "threshold".
-  - Each is an integer represented as a string (to allow unlimited precision).
-  - These integers should both be positive values. If either is negative, it should be treated as "0" when used.
-  - The "target" integer should be < the "threshold" integer. If not, the "theshold" integer should be treated as if
-    it contained the same value as the "target" integer when used.
-  - If "spokeTargetBalances", a particular chainId is missing from the mapping, or "target" or "threshold" is missing,
-    the missing "target" and "threshold" should be defaulted to 0.
-- "transferThreshold"
-  - This field should be a single integer value represented as a string (to allow unlimited precision).
+- "routeUBAFeeModel"
+  - Similar to `UBAFeeModel`, this is a dictionary of `originChain-destinationChain` keys mapped to models that take precedence over the `UBAFeeModel` for a token on that specific deposit route. The route rate models should contain exactly the same parameters as the default `UBAFeeModel`
 
 For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")` might return:
-> "{"rateModel":{"UBar":"750000000000000000","R0":"50000000000000000","R1":"0","R2":"600000000000000000"},"transferThreshold":"100000000000000000","spokeTargetBalances":{"1":{"threshold":"200000000000000000000","target":"100000000000000000000"},"42161":{"threshold":"400000000000000000000","target":"200000000000000000000"}}}"
+> TODO
 
 _This UMIP will explain later how global and token-specific configuration settings are used._
 
