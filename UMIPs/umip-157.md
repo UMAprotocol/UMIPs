@@ -245,12 +245,12 @@ This fee depends on the following parameters:
 ### Computing the running balance at any point in time.
 
 Succinctly, the running balance for a `token` and `chain` is equal to:
-- `snapshotted_running_balance + e_0 + e_1 + ... + e_n-1 + e_n` where
+- `snapshotted_running_balance + e_0 + e_1 + ... + e_n-1 + e_n + prb` where
 - `snapshotted_running_balance`: Last validated running balance for chain and token as of the latest root bundle execution in the HubPool
 - `e_i`: `E` is a series of time-ordered Deposit and Refund events involving `token` and `chain`. Deposit events increment the running balance by the deposited amount while Refund events decrement the running balance by the full fill amount.
 - The running balance at time `i` is equal to the snapshotted running balance plus all the effect of all events up until time `i-1`.
-- If the running balance ever exceeds the hurdle running balance as described [here](#constructing-the-poolrebalanceroot) then an adjustment needs to be made the running balance. For example, if the hurdle running balance is 10, and the snapshotted running balance is 1, then if 10 deposits events `e` in a row occur that send the running balance at `i` greater than 10, then the running balance at `i` needs to be decremented back to the target.
-- Intuitively, this means that the running balance is aware of any `netSendAmount` adjustments applied by the next bundle proposer.
+- If the running balance ever exceeds the hurdle running balance as described [here](#constructing-the-poolrebalanceroot) then an adjustment needs to be made the running balance. For example, if the hurdle running balance is 10, and the snapshotted running balance is 1, then if 10 deposits events `e` in a row occur that send the running balance at `i` greater than 10, then the running balance at `i` needs to be decremented back to the target. Any of these adjustments should be added to `prb` ("pool rebalances").
+- The `prb` will be applied to the next bundle as a `netSendAmount`.
 
 ## Setting the realizedLpFeePct for a Fill
 
@@ -311,31 +311,11 @@ For each `repaymentChainId` and `l1Token` combination, older
 [RootBundleExecuted](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) events
 should be queried to find the preceding `RootBundleExecuted` event. This means identifying the most recent `RootBundleExecuted` event with a `chainId` matching the `repaymentChainId` and [identifying the `runningBalanceValue` at the index of the `l1Token`](#matching-l1-tokens-to-running-balances-or-net-send-amounts).
 
-For each tuple of `l1Token` and `repaymentChainId`, we should have computed a total running balance value. In certain scenarios the bundle should "carry over" the running balance value to the `netSendAmount` parameter in the bundle proposal and "zero out" the running balance:
+For each tuple of `l1Token` and `repaymentChainId`, we should have computed a total running balance value. In certain scenarios the bundle should "carry over" part of the running balance value to the `netSendAmount` parameter in the bundle proposal and "zero out" the running balance:
 
-The
-following algorithm describes the process of computing running balance and net send amount:
+See [this section](#computing-the-running-balance-at-any-point-in-time) and understand the `prb` logic to compute any pool rebalances that occur over the course of a bundle's events in which the running balance exceeds some hurdle. In these situations, `prb` should add some adjustment value. The bundle proposer should then set `netSendAmounts = prb` for this bundle.
 
-```
-hurdle_balance = the balance on the UBA fee curve's x-axis that equates to the hurdle rate
-hurdle_rate = the absolute percentage on the UBA fee curve over which we should transfer the running balance to the net send amount
-spoke_balance = the latest running balance on the spoke
-uba_fee_y = the latest fee returned by UBA fee curve using spoke_balance as input
-spoke_target = the desired neutral spoke pool running balance 
-
-net_send_amount = 0
-
-# The Spoke is over target and needs more balance
-if uba_fee >= hurdle_rate:
-  desired_transfer_amount = spoke_balance - spoke_target # Should always be positive
-  net_send_amount = desired_transfer_amount
-  running_balance = running_balance - net_send_amount # Should always be positive
-# The Spoke is under target and needs to remove balance
-else if uba_fee <>= hurdle_rate
-  desired_transfer_amount = spoke_balance - spoke_target # Should always be negative
-  net_send_amount = desired_transfer_amount
-  running_balance = running_balance - net_send_amount # Should always be negative
-```
+There can be multiple `prb` adjustments over the course of a bundle. For example, imagine that the hurdle is 100 tokens, and multiple times, the running balance exceeds 100 tokens. At these times, `prb` should be incremented by `-adjustment` so that if the running balance exceeds 100 tokens twice, `prb = -2*adjustment = netSendAmount` which will lead the bundle to send `2 * adjustments` from the SpokePool to the HubPool. 
 
 Take the above running balances and net send amounts and group them by only `repaymentChainId` and sort by `repaymentChainId`. Within
 each group, sort by `l1Token`. If there are more than [`MAX_POOL_REBALANCE_LEAF_SIZE`](#global-constants) `l1Tokens`, a particular chain's leaf will
