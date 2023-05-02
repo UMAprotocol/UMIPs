@@ -3,14 +3,13 @@
 This UMIP has been deprecated and should not be used for resolving SHERLOCK_CLAIM price requests. [UMIP-176](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-176.md) should be used instead.
 
 ## Headers
-
-| UMIP-132       |                                                                          |
-| -------------- | ------------------------------------------------------------------------ |
-| UMIP Title     | Add SHERLOCK_CLAIM as a price identifier                                 |
-| Authors        | Jack Sanford, Sean Brown                                                 |
-| Status         | Approved                                                                 |
-| Created        | 09/28/21                                                                 |
-| Discourse Link | https://discourse.umaproject.org/t/sherlock-exploit-protection-umip/1344 |
+| UMIP-132          |                                                                          |
+|-------------------|--------------------------------------------------------------------------|
+| UMIP Title        | Add SHERLOCK_CLAIM as a price identifier                                 |
+| Authors           | Jack Sanford, Sean Brown                                                 |
+| Status            | Approved                                                                |
+| Created           | 09/28/21                                                                 |
+| Discourse Link    | https://discourse.umaproject.org/t/sherlock-exploit-protection-umip/1344 |
 
 ## Summary
 
@@ -18,15 +17,15 @@ The SHERLOCK_CLAIM price identifier is intended to allow users of [Sherlock](htt
 
 ## Motivation
 
-Sherlock is a new type of exploit protection protocol launching this September. The idea is to have smart contract security experts assess/price protocol coverage, then get paid based on the performance of the protocols (no hacks = large payout, large hack = no payout). Protocols who want coverage will pay Sherlock monthly premiums, and in return, Sherlock will use it’s staking pool to repay hacks at protocols. Sherlock is doing a guarded launch with $30M in staking pool funds and writing coverage for up to $10M per protocol. More details can be found here.
+Sherlock is a new type of exploit protection protocol launching this September. The idea is to have smart contract security experts assess/price protocol coverage, then get paid based on the performance of the protocols (no hacks = large payout, large hack = no payout). Protocols who want coverage will pay Sherlock monthly premiums, and in return, Sherlock will use it’s staking pool to repay hacks at protocols. Sherlock is doing a guarded launch with $30M in staking pool funds and writing coverage for up to $10M per protocol. More details can be found here. 
 
 Other exploit protection protocols rely on their tokenholders to decide whether claims should be paid out or not. Sherlock wants to do better and would like to use UMA’s Data Verification Mechanism as the final escalation to decide on claims payouts. This would help coverage buyers feel more comfortable that they have access to an unbiased party’s decision on a claim.
 
-For context, Sherlock agrees on coverage terms with every protocol. An example can be seen here (TBA). These terms will be broadly the same across all protocols but there may be extra language added for protocol-specific exploit risks.
+For context, Sherlock agrees on coverage terms with every protocol. An example can be seen here (TBA). These terms will be broadly the same across all protocols but there may be extra language added for protocol-specific exploit risks. 
 
-In the event of a potential exploit, Sherlock’s security team will work with the protocol to determine the nature of a hack. If the protocol believes they experienced an exploit that should be covered by Sherlock, the protocol will submit the block range of the exploit and the amount to be reimbursed by Sherlock. Next, Sherlock’s claims committee (made up of reputable security experts associated with Sherlock such as [John Mardlin](https://twitter.com/maurelian_), [Mariano Conti](https://twitter.com/nanexcool), and [Rajeev Gopalakrishna](https://twitter.com/0xRajeev)) will work to evaluate the nature of the potential exploit and then map the exploit to the coverage terms agreed to with that protocol. The committee will then decide whether to pay out the claim. If the committee decides not to pay out the claim, the protocol has the option to stake a minimum dollar amount ($50k for example) and escalate the claim to the UMA Data Verification Mechanism. The UMA tokenholders would then use information provided by the protocol, the claims committee, and importantly, security expert not associated with Sherlock, to decide whether the claim should be paid out or not.
+In the event of a potential exploit, Sherlock’s security team will work with the protocol to determine the nature of a hack. If the protocol believes they experienced an exploit that should be covered by Sherlock, the protocol will submit the block range of the exploit and the amount to be reimbursed by Sherlock. Next, Sherlock’s claims committee (made up of reputable security experts associated with Sherlock such as [John Mardlin](https://twitter.com/maurelian_), [Mariano Conti](https://twitter.com/nanexcool), and [Rajeev Gopalakrishna](https://twitter.com/0xRajeev)) will work to evaluate the nature of the potential exploit and then map the exploit to the coverage terms agreed to with that protocol. The committee will then decide whether to pay out the claim. If the committee decides not to pay out the claim, the protocol has the option to stake a minimum dollar amount ($50k for example) and escalate the claim to the UMA Data Verification Mechanism. The UMA tokenholders would then use information provided by the protocol, the claims committee, and importantly, security expert not associated with Sherlock, to decide whether the claim should be paid out or not. 
 
-Relying on UMA’s DVM for claims decisions will significantly increase the value of on-chain exploit protection mechanisms in the eyes of protocols and end users. One of the biggest hurdles to adoption of coverage is the biased nature of claims processes. Sherlock believes that the involvement of UMA’s DVM will make exploit protection protocols more trustworthy and further normalize adoption of coverage by protocols and end users alike. By adding this product, UMA can blaze a trail that contributes to the safety of DeFi. Sherlock would love to set a precedent with UMA for how exploit claims disputes should be resolved on-chain.
+Relying on UMA’s DVM for claims decisions will significantly increase the value of on-chain exploit protection mechanisms in the eyes of protocols and end users. One of the biggest hurdles to adoption of coverage is the biased nature of claims processes. Sherlock believes that the involvement of UMA’s DVM will make exploit protection protocols more trustworthy and further normalize adoption of coverage by protocols and end users alike. By adding this product, UMA can blaze a trail that contributes to the safety of DeFi. Sherlock would love to set a precedent with UMA for how exploit claims disputes should be resolved on-chain. 
 
 ## Ancillary Data Specifications
 
@@ -41,7 +40,6 @@ CoverageAgreement:<COVERAGE_AGREEMENT_LINK>
 ```
 
 Example:
-
 ```
 Metric:Sherlock exploit claim arbitration,
 Protocol:UMA Protocol,
@@ -74,18 +72,16 @@ It is low risk for UMA voters to return a value of 0.5, as it is likely that thi
 5. If voters cannot confidently assess one of the criterion above, they should return a value of `0.5` (cannot be resolved).
 
 ## Additional Resources
-
-While the coverage agreement document between Sherlock and the protocol in question will serve as the canonical guideline as to whether an exploit falls under coverage or not, it is non-trivial to determine whether an exploit occurred, and how that exploit maps to the coverage agreement.
+While the coverage agreement document between Sherlock and the protocol in question will serve as the canonical guideline as to whether an exploit falls under coverage or not, it is non-trivial to determine whether an exploit occurred, and how that exploit maps to the coverage agreement. 
 
 Outside of the coverage agreement, UMA tokenholders should rely on 3 sources of information when making their decision:
+1) The interpretation of the exploit and coverage agreement by the Sherlock claims committee and other persons associated with Sherlock. 
+2) The interpretation of the exploit and coverage agreement by the protocol in question.
+3) Most important, the interpretation of the exploit and coverage agreement by third party security experts. 
 
-1. The interpretation of the exploit and coverage agreement by the Sherlock claims committee and other persons associated with Sherlock.
-2. The interpretation of the exploit and coverage agreement by the protocol in question.
-3. Most important, the interpretation of the exploit and coverage agreement by third party security experts.
+While information in 1) and 2) should be readily available (both parties will be motivated to explain their interpretation), we can reasonably expect 3) to be readily available as well based on historical public interest in protocol exploits and past articles produced. 
 
-While information in 1) and 2) should be readily available (both parties will be motivated to explain their interpretation), we can reasonably expect 3) to be readily available as well based on historical public interest in protocol exploits and past articles produced.
-
-Sources of 3) could be [rekt.news](https://twitter.com/RektHQ), [Mudit Gupta](https://twitter.com/Mudit__Gupta), [Kelvin Fichter](https://twitter.com/kelvinfichter), [Igor Igamberdiev](https://twitter.com/FrankResearcher), as well as audit firms such as [PeckShield](https://twitter.com/peckshield) as long as the parties don’t have material connection to either Sherlock or the protocol in question.
+Sources of 3) could be [rekt.news](https://twitter.com/RektHQ), [Mudit Gupta](https://twitter.com/Mudit__Gupta), [Kelvin Fichter](https://twitter.com/kelvinfichter), [Igor Igamberdiev](https://twitter.com/FrankResearcher), as well as audit firms such as [PeckShield](https://twitter.com/peckshield) as long as the parties don’t have material connection to either Sherlock or the protocol in question. 
 
 ## Security Considerations
 
@@ -93,4 +89,4 @@ It should be noted that this price identifier is objectively complex and broad a
 
 There are also several mitigating processes built into the Sherlock system as well as the UMA voting system. As noted previously, claiming protocols will have up to 3 total chances to submit claims and go to a DVM vote. This should allow for comprehensive information gathering and analysis, and will allow UMA voters to default to an "unresolvable" return value unless clear supporting evidence is provided either to support or contradict a claim.
 
-The DVM voting system also allows for a multi-day discussion and information gathering process. Because of this reason, it seems acceptable that the potential price request space for this identifier is broad and potentially subjective. Both the claiming protocol, as well as Sherlock's security committee will have the opportunity to provide supporting evidence and advocate for their case. It is recommended that both parties be active in UMA's #voting [Discord channel](https://discord.gg/YE4h2YAb), as this is where most UMA voting discussion occurs.
+The DVM voting system also allows for a multi-day discussion and information gathering process. Because of this reason, it seems acceptable that the potential price request space for this identifier is broad and potentially subjective. Both the claiming protocol, as well as Sherlock's security committee will have the opportunity to provide supporting evidence and advocate for their case. It is recommended that both parties be active in UMA's #voting [Discord channel](https://discord.gg/YE4h2YAb), as this is where most UMA voting discussion occurs.  
