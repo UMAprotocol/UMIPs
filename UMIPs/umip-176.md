@@ -16,7 +16,7 @@ The SHERLOCK_CLAIM price identifier is intended to allow users of [Sherlock](htt
 
 This UMIP ammends the [UMIP-132](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-132.md) that was not consistent with the implementation of [Sherlocks' Claim Manager](https://github.com/sherlock-protocol/sherlock-v2-core/blob/main/contracts/managers/SherlockClaimManager.sol), which is the contract that will be used to request the DVM for claims arbitration. The UMIP-176 proposes a new way of handling the SHERLOCK_CLAIM price identifier that is aligned with the current implementation of the Sherlock Claim Manager.
 
-Sherlock is a DeFi audit marketplace and smart contract coverage protocol built on Ethereum. It provides audits by top security experts and offers optional coverage for audited contracts. In the claim lifecycle, Sherlock utilizes UMA's Optimistic Oracle and Data Verification Mechanism (DVM) for escalated claim resolution. 
+Sherlock is a DeFi audit marketplace and smart contract coverage protocol built on Ethereum. It provides audits by top security experts and offers optional coverage for audited contracts. In the claim lifecycle, Sherlock utilizes UMA's Optimistic Oracle and Data Verification Mechanism (DVM) for escalated claim resolution.
 
 In the event of a potential exploit, Sherlock’s security team will work with the protocol to determine the nature of a hack. If the protocol believes they experienced an exploit that should be covered by Sherlock, the protocol will submit the block range of the exploit and the amount to be reimbursed by Sherlock. Next, Sherlock’s claims committee will work to evaluate the nature of the potential exploit and then map the exploit to the coverage terms agreed to with that protocol. The committee will then decide whether to pay out the claim. If the committee decides not to pay out the claim, the protocol has the option to stake a minimum dollar amount ($50k for example) and escalate the claim to the UMA Data Verification Mechanism. The UMA tokenholders would then use information provided by the protocol, the claims committee, and importantly, security expert not associated with Sherlock in an unbiased way, to decide whether the claim should be paid out or not.
 
@@ -44,8 +44,6 @@ Value:1000000,
 StartBlock:13207345,
 CoverageAgreement:Link to protocol specific coverage agreement with Sherlock
 ```
-
-For guidance on how to structure ancillary data correctly, refer [here](https://docs.umaproject.org/uma-tokenholders/guidance-on-adding-price-identifiers#ancillary-data-specification).
 
 ## Rationale and usage
 
@@ -83,6 +81,7 @@ Sources of 3) could be [rekt.news](https://twitter.com/RektHQ), [Mudit Gupta](ht
 ## Implementation & Technical Specification
 
 This UMIP proposes a governance transaction that perform the following actions atomically:
+
 - Remove the `SHERLOCK_CLAIM` identifier by calling `removeSupportedIdentifier(bytes32 identifier)` method of IdentifierWhitelist contract found [here](https://etherscan.io/address/0xcF649d9Da4D1362C4DAEa67573430Bd6f945e570) with the hexadecimal representation of the `SHERLOCK_CLAIM` identifier as a parameter.
 - Add again the `SHERLOCK_CLAIM` identifier by calling `addSupportedIdentifier(bytes32 identifier)` method of IdentifierWhitelist contract found [here](https://etherscan.io/address/0xcF649d9Da4D1362C4DAEa67573430Bd6f945e570) with the hexadecimal representation of the `SHERLOCK_CLAIM` identifier as a parameter.
 
