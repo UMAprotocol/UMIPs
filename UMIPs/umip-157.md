@@ -131,6 +131,18 @@ For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")
 
 _This UMIP will explain later how global and token-specific configuration settings are used._
 
+
+## UBA Fee Curve Parameters
+
+- `target_lower_bound_usd`
+- `target_lower_bound_min_lp_pct`
+- The lower bound target running balance for a chain will be equal to `min(target_lower_bound_usd, target_lower_bound_min_lp_pct * LP pool amount in USD)`
+
+
+- `target_upper_bound_usd`
+- `target_upper_bound_min_lp_pct`
+- The lower bound target running balance for a chain will be equal to `min(target_upper_bound_usd, target_upper_bound_min_lp_pct * LP pool amount in USD)`
+
 # Preliminary Information
 
 The ooRequester address is expected to be an instance of the
