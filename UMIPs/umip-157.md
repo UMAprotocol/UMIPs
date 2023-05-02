@@ -118,13 +118,13 @@ _This UMIP will explain later how global and token-specific configuration settin
 ## UBA Fee Curve Parameters
 
 - `target_lower_bound_usd`
-- `target_lower_bound_min_lp_pct`
-- The lower bound target running balance for a chain will be equal to `min(target_lower_bound_usd, target_lower_bound_min_lp_pct * LP pool amount in USD)`
+- `target_lower_bound_min_usd`
+- The lower bound target running balance for a chain will be equal to `min(target_lower_bound_usd, target_lower_bound_min_usd)`
 
 
 - `target_upper_bound_usd`
-- `target_upper_bound_min_lp_pct`
-- The lower bound target running balance for a chain will be equal to `min(target_upper_bound_usd, target_upper_bound_min_lp_pct * LP pool amount in USD)`
+- `target_upper_bound_min_usd`
+- The lower bound target running balance for a chain will be equal to `min(target_upper_bound_usd, target_upper_bound_min_usd)`
 
 # Preliminary Information
 
@@ -241,6 +241,16 @@ A refund includes a fill with `repaymentChainId == chainId` and refunds requeste
 This fee depends on the following parameters:
 - The "running count" at the time of the refund on the destination chain.
 - The UBA fee curve parameters value for the running count of the refund.
+
+### Computing the running balance at any point in time.
+
+Succinctly, the running balance for a `token` and `chain` is equal to:
+- `snapshotted_running_balance + e_0 + e_1 + ... + e_n-1 + e_n` where
+- `snapshotted_running_balance`: Last validated running balance for chain and token as of the latest root bundle execution in the HubPool
+- `e_i`: `E` is a series of time-ordered Deposit and Refund events involving `token` and `chain`. Deposit events increment the running balance by the deposited amount while Refund events decrement the running balance by the full fill amount.
+- The running balance at time `i` is equal to the snapshotted running balance plus all the effect of all events up until time `i-1`.
+- If the running balance ever exceeds the hurdle running balance as described [here](#constructing-the-poolrebalanceroot) then an adjustment needs to be made the running balance. For example, if the hurdle running balance is 10, and the snapshotted running balance is 1, then if 10 deposits events `e` in a row occur that send the running balance at `i` greater than 10, then the running balance at `i` needs to be decremented back to the target.
+- Intuitively, this means that the running balance is aware of any `netSendAmount` adjustments applied by the next bundle proposer.
 
 ## Setting the realizedLpFeePct for a Fill
 
