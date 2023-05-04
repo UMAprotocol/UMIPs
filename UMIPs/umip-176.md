@@ -6,7 +6,7 @@
 | Authors        | Pablo Maldonado                          |
 | Status         | Approved                                 |
 | Created        | 02/05/23                                 |
-| Discourse Link | https://discourse.umaproject.org/t/TODO  |
+| Discourse Link | https://discourse.uma.xyz/t/umip-176-add-sherlock-claim-as-a-price-identifier/2002  |
 
 ## Summary
 
