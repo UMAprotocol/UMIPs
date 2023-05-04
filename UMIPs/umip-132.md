@@ -1,3 +1,7 @@
+# Disclaimer
+
+This UMIP has been deprecated and should not be used for resolving SHERLOCK_CLAIM price requests. [UMIP-176](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-176.md) should be used instead.
+
 ## Headers
 | UMIP-132          |                                                                          |
 |-------------------|--------------------------------------------------------------------------|
