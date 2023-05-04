@@ -260,7 +260,7 @@ The `realizedLpFeePct` should be equal to `depositorFee` for the matched deposit
 
 To determine all slow relays, follow the following process:
 
-1. For all valid `FilledRelay` events above, group them by `originChainId` and `depositId`.
+1. For all valid `FilledRelay` events above, group them by `originChainId` and `depositId`. Ignore any fills for deposits where the `message` is non-empty. This is to protect the dataworker from executing a slow leaf for a deposit with a `message` that is very expensive to execute from a gas perspective.
 2. Remove all groups that contain a `FilledRelay` event where `totalFilledAmount` equals `amount`. This removes deposits that have been 100% filled.
 3. Remove all groups that do not contain an event where `filledAmount` is nonzero and equal to `totalFilledAmount`. This keeps only deposits whose earliest fill is in this time range.
 
