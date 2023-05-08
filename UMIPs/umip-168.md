@@ -3,7 +3,7 @@
 |:-------------|:-----------------------------------------------------------------------------|
 |UMIP title|Add uSPAC10g as price identifier|
 |Author|BinomFX (binomfx@gmail.com)|
-|Status|Draft| 
+|Status|Approved| 
 |Created|27.10.2022|
 |Discourse Link|https://discourse.umaproject.org/t/add-uspac10g-as-price-identifier/1835|
 

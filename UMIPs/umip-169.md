@@ -4,7 +4,7 @@
 | ------------------- | ------------------------------------------------------------- |
 | UMIP Title          | Add `DECENTRA-LIST` as a supported price identifier |
 | Authors             | pumpedlunch                                                     |
-| Status              | Draft                                                         |
+| Status              | Approved                                                         |
 | Created             | January 19, 2023                                            |
 | Discourse Link   |  https://discourse.umaproject.org/t/decentra-list-price-identifier/1898 |
 

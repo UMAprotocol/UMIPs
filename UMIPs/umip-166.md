@@ -4,7 +4,7 @@
 | ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add **DXY** as a supported price identifier |
 | Authors             | Sumero                                             |
-| Status              | Last Call                                            |
+| Status              | Approved                                            |
 | Created             | 2022.8.24    |
 | Discourse Link      | https://discourse.umaproject.org/t/umip-add-dxy-usd-index-as-a-price-identifier/1797            |
 
