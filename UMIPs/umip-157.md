@@ -117,6 +117,8 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
   - This is a JSON struct of parameters keyed to a specific `chain` and `token` that defines a fee curve for that token given an input `balance`. This model is described in more detail [here](#TODO) along with visual aids. The parameters are used to construct curves that return percentages given an input running balance.
 - "routeUBAFeeModel"
   - Similar to `UBAFeeModel`, this is a dictionary of `originChain-destinationChain` keys mapped to models that take precedence over the `UBAFeeModel` for a token on that specific deposit route. The route rate models should contain exactly the same parameters as the default `UBAFeeModel`
+- "incentivePoolAdjustment"
+  - Used by DAO to keep track of any donations made to add to `incentivePool` liquidity.
 
 For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")` might return:
 > TODO
@@ -134,7 +136,13 @@ For each SpokePool on `chainId`, there will be an ordered series of Bridging Eve
 
 ### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
 
-Input the running balance into the Deposit or Refund curve. This returns a percentage of the incentive pool size that should be charged for `e`. For example, if the incentive pool size is 100 tokens and the curve at the running balance returns 5%, then the incentive fee is 5% of the incentive pool. The curve can return positive and negative fees. Negative fees should not be lower than -100%.
+First we'll compute the "uncapped" incentive fee amount. This is equal to the inverse of the integral of the incentive curve between [`runningBalance`, `runningBalance + e.amount`] where `e.amount > 0` for deposits and `e.amount < 0` for refunds and fills.
+
+Intuitively, this means that for deposits that add balance to running balances that are signficantly under target, the incentive curve will return a higher % for the post-deposit running balance. Because the running balance is under target, the incentive curve will move from a negative % to a more negative % and the integral between these %'s will be a negative value. This means that the uncapped incentive fee amount will be a penalty applied to the deposit.
+
+Secondly, we need to determine the available amounts of incentives in case we need to cap the actual incentive fee. We already know this as the incentive pool size at the time of `e`.
+
+Third, we need to determine the total amount of theoretical rewards that would be paid to any Bridge event that brought the running balances back to target. This is the integral on the incentive curve between [`target`, and `runningBalance + e.amount`]. If this amount exceeds the `incentivePool` available, then we need to discount any rewards by  `uncappedIncentiveFee / incentivePool`, where `uncappedIncentiveFee` is actually a "reward" that would be paid out to the initiator of the bridge event `e`. This also implies that some future events pushing the running balance in the same direction as `e` could also incur a discounted reward until the incentive pool is built up large enough over time.
 
 The following sections explain how to find the inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
 
@@ -152,7 +160,8 @@ Let's name this preceding running balance the "Starting Running Balance". Let's 
 
 Step through all events between the last validated bundle's end block and `e` (e.g. all `e`'s with blocks >= the `bundleEndBlock` for the chain `e.chainId` in the preceding validated bundle and <= `e.block`). For each deposit, add the `e.amount` to the starting running balance, and for each refund or fill, subtract `e.amount` from the starting running balance.
 
-If at any point in time, the running balance exceeds the [target upper or lower bounds](#TODO), then reset the running balance count to the target.
+##### Handling running balance bounds
+If at any point in time, the running balance exceeds the [target upper or lower bounds](#selecting-running-balance-bounds-for-bridging-event), then reset the running balance count to the target. The running balance for computing the incentive fee for `e` is computed as if the running balance at the time of the event `e` was added to `e.amount`. The next bridge event `e_{i+1}` just will use the target running balance instead of the starting running balance `+ e.amount`.
 
 Once you get to `e`, stop and you have the running balance for `e`.
 
@@ -163,6 +172,8 @@ Once you get to `e`, stop and you have the running balance for `e`.
 Similar to [finding the starting running balance](#finding-the-starting-running-balance), we need to identify the last validated `incentivePool` included with a `bundleEndBlock` preceding `e`. Follow [these steps](#identifying-running-balances-and-incentive-pool-amounts-for-token-chain-combinations) to find the incentive pool size within a `runningBalance` array for the chain associated with `e`.
 
 We now have the "Starting Incentive Pool" amount associated with a "Preceding Validated Bundle".
+
+Finally, add the [incentive fee adjustment](#token-constants) to the Starting Incentive Pool amount to account for any donations to the pool. This rule implies that any time an Admin wants to donate to the incentive pool, they should increment the `incentiveFeeAdjustment` configuration variable to make sure that the [cap on the applied incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e) is raised.
 
 #### Finding the Incentive Pool size for e
 
