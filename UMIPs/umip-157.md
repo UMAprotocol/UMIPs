@@ -119,6 +119,8 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
   - Similar to `UBAFeeModel`, this is a dictionary of `originChain-destinationChain` keys mapped to models that take precedence over the `UBAFeeModel` for a token on that specific deposit route. The route rate models should contain exactly the same parameters as the default `UBAFeeModel`
 - "incentivePoolAdjustment"
   - Used by DAO to keep track of any donations made to add to `incentivePool` liquidity.
+- "ubaRewardMultiplier"
+  - Used by DAO to scale rewards unilaterally.
 
 For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")` might return:
 > TODO
@@ -143,6 +145,8 @@ Intuitively, this means that for deposits that add balance to running balances t
 Secondly, we need to determine the available amounts of incentives in case we need to cap the actual incentive fee. We already know this as the incentive pool size at the time of `e`.
 
 Third, we need to determine the total amount of theoretical rewards that would be paid to any Bridge event that brought the running balances back to target. This is the integral on the incentive curve between [`target`, and `runningBalance + e.amount`]. If this amount exceeds the `incentivePool` available, then we need to discount any rewards by  `uncappedIncentiveFee / incentivePool`, where `uncappedIncentiveFee` is actually a "reward" that would be paid out to the initiator of the bridge event `e`. This also implies that some future events pushing the running balance in the same direction as `e` could also incur a discounted reward until the incentive pool is built up large enough over time.
+
+At this point we have a positive or negative incentive amount to be charged to `e`. If the amount is negative, then the incentive is a "reward" that will be rewarded to `e`. The final reward is equal to `reward * ubaRewardMultiplier`, a convenient scaler variable set in the [config store](#token-constants).
 
 The following sections explain how to find the inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
 
