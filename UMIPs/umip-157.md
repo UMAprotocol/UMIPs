@@ -329,6 +329,8 @@ However, slow fills are unlike normal fills in that there is no relayer to whom 
 The `payoutAdjustmentPct` is therefore set equal to the `refundFee` at the time of the first partial fill `e` that triggered
 the deposit. Follow [this guide](#computing-uba-fees) to determine the refund fee for `e`.
 
+TODO: Since refund fees [are denominated in tokens](#using-the-incentive-fee), its not straightforward how to set `payoutAdjustmentPct` since the amount to be executed can be less than the amount earmarked for the slow fill originally.
+
 # Constructing the PoolRebalanceRoot
 
 To construct the `poolRebalanceRoot`, you need to form a list of rebalances.
