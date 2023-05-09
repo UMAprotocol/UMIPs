@@ -65,9 +65,19 @@ The root bundle is valid once *all* of its `PoolRebalanceLeaves` are executed vi
 Each deposit emits a [`quoteTimestamp`](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/SpokePool.sol#L73) parameter. This timestamp should be evaluated within the context of the Ethereum network, and should be mapped to the Ethereum block who's [`timestamp`](https://ethereum.org/en/developers/docs/data-and-analytics/block-explorers/#blocks) is closest to the `deposit.quoteTimestamp` but not greater (i.e. `block.timestamp` closest to and `<= deposit.quoteTimestamp`).
 
 ## Matching L1 tokens to Running Balances or Net Send Amounts
-The [`RootBundleExecuted`](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) event and [`PoolRebalanceLeaf`] structure both contain equal length arrays: `l1Tokens`, `netSendAmounts`, `bundleLpFees`, and `runningBalances`. Each `l1Token` value in `l1Tokens` is an address corresponding to an ERC20 token deployed on Ethereum Mainnet. It should be mapped to the value in any of the other three arrays (`netSendAmounts`, `bundleLpFees`, and `runningBalances`) that shares the same index within the array.
+The [`RootBundleExecuted`](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) event and [`PoolRebalanceLeaf`] structure both contain arraus: `l1Tokens`, `netSendAmounts`, `bundleLpFees`, and `runningBalances`. Each `l1Token` value in `l1Tokens` is an address corresponding to an ERC20 token deployed on Ethereum Mainnet. It should be mapped to the value in any of the other three arrays (`netSendAmounts`, `bundleLpFees`, and `runningBalances`) that shares the same index within the array.
 
 For example, if `l1Tokens` is "[0x123,0x456,0x789]" and `netSendAmounts` is "[1,2,3]", then the "net send amount" for token with address "0x456" is equal to "2".
+
+## Identifying running balances and incentive pool amounts for {token, chain} combinations
+
+The `l1Tokens`, `netSendAmounts`, `bundleLpFees` arrays emitted in `RootBundleExecuted` events should be equal length so we can match each L1 token to a value in the following arrays. The `runningBalances` should be of length exactly twice the `l1Tokens` length. 
+
+Let's say there are `X` L1 tokens. The values in `runningBalances[0:X)` are equal to the running balances, and the values in `runningBalances[X:2x)` are equal to the incentive pool amounts for each token. 
+
+To find the running balance for a token at index `i` in the `l1Tokens` array, follow the steps [here](#matching-l1-tokens-to-running-balances-or-net-send-amounts).
+
+To find the incentive pool for the same token at index `i`, simply return `runningBalances[X+i]` where `X` is the length of `l1Tokens`.
 
 ## Versions
 The `ConfigStore` stores a "VERSION" value in the `globalConfig`. This is used to protect relayers and dataworkers from using outdated code when interacting with Across. The "VERSION" should be mapped to an integer string that can only increase over time. The "VERSION" is updated by calling `updateGlobalConfig` so it is emitted as an on-chain event. The block time of the event that included the "VERSION" indicates when that "VERSION" became active. Relayers should support the version at the quote timestamp for a deposit, otherwise they risk sending an invalid fill. Proposers and Disputers should support the latest version for a bundle block range to validate or propose a new bundle. This version is independent from the version included in [speed up deposit signatures](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePool.sol#L668).
@@ -122,6 +132,12 @@ A Bridging Event could be a `Deposit`, `Fill` or `Refund` event, which are intui
 
 For each SpokePool on `chainId`, there will be an ordered series of Bridging Events (sorted in [ascending](#comparing-events-chronologically) chronological order). To compute the incentive fee for any event `e` within `E` (the ordered series of Bridging Events), we need to determine the "Running Balance" and the "Incentive Pool" at the time that `e` was emitted. We also will need to select which Incentive Curve to use to find the Incentive fee given the running balance and available incentive pool.
 
+### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
+
+Input the running balance into the Deposit or Refund curve. This returns a percentage of the incentive pool size that should be charged for `e`. For example, if the incentive pool size is 100 tokens and the curve at the running balance returns 5%, then the incentive fee is 5% of the incentive pool. The curve can return positive and negative fees. Negative fees should not be lower than -100%.
+
+The following sections explain how to find the inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
+
 ### Computing Running Balance for Bridging Event
 
 #### Finding the Starting Running Balance
@@ -144,7 +160,7 @@ Once you get to `e`, stop and you have the running balance for `e`.
 
 #### Finding the Starting Incentive Pool
 
-Similar to [finding the starting running balance](#finding-the-starting-running-balance), we need to identify the last validated `incentivePool` included with a `bundleEndBlock` preceding `e`. Follow [these steps](#TODO) to find the incentive pool size within a `runningBalance` array for the chain associated with `e`.
+Similar to [finding the starting running balance](#finding-the-starting-running-balance), we need to identify the last validated `incentivePool` included with a `bundleEndBlock` preceding `e`. Follow [these steps](#identifying-running-balances-and-incentive-pool-amounts-for-token-chain-combinations) to find the incentive pool size within a `runningBalance` array for the chain associated with `e`.
 
 We now have the "Starting Incentive Pool" amount associated with a "Preceding Validated Bundle".
 
@@ -164,10 +180,6 @@ If `e` is a deposit, then find the Deposit Curve parameters, otherwise find the 
 
 Identify the [UBA Fee Curve Bounds](#token-constants) for the L1 token equivalent and chain for `e` similarly to finding the incentive curve for `e`.
 
-### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
-
-Input the running balance into the Deposit or Refund curve. This returns a percentage of the incentive pool size that should be charged for `e`. For example, if the incentive pool size is 100 tokens and the curve at the running balance returns 5%, then the incentive fee is 5% of the incentive pool. The curve can return positive and negative fees. Negative fees should not be lower than -100%.
-
 ### Using the incentive fee
 
 The incentive fee is charged to deposits and refunds differently. For fills and refunds, the `realizedLpFeePct` should be a percentage equal to `incentive fee / deposit.amount`. Deposit recipients will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit incentive fee.
@@ -175,7 +187,6 @@ The incentive fee is charged to deposits and refunds differently. For fills and 
 Relayers will receive a refund from the `HubPool` equal to `(1 - (fill.realizedLpFeePct + fillIncentiveFeePct)) * deposit.amount`. Therefore, relayers will be refunded the deposited amount minus the deposit and refund incentive fees. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee` andminus the refund incentive fee.
 
 Dataworkers will add the incentive fees for each event in a bundle that they want to propose plus the starting incentive pool amount (from the last validated bundle) and store these in the `runningBalances` array to snapshot the latest validated incentive pool amounts.
-
 
 ## UBA Fee Curve Parameters
 
