@@ -65,7 +65,7 @@ The root bundle is valid once *all* of its `PoolRebalanceLeaves` are executed vi
 Each deposit emits a [`quoteTimestamp`](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/SpokePool.sol#L73) parameter. This timestamp should be evaluated within the context of the Ethereum network, and should be mapped to the Ethereum block who's [`timestamp`](https://ethereum.org/en/developers/docs/data-and-analytics/block-explorers/#blocks) is closest to the `deposit.quoteTimestamp` but not greater (i.e. `block.timestamp` closest to and `<= deposit.quoteTimestamp`).
 
 ## Matching L1 tokens to Running Balances or Net Send Amounts
-The [`RootBundleExecuted`](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) event and [`PoolRebalanceLeaf`] structure both contain equal length arrays: `l1Tokens`, `netSendAmounts`, `bundleLpFees`, and `runningBalances`. Each `l1Token` value in `l1Tokens` is an address correspondingto an ERC20 token deployed on Ethereum Mainnet. It should be mapped to the value in any of the other three arrays (`netSendAmounts`, `bundleLpFees`, and `runningBalances`) that shares the same index within the array.
+The [`RootBundleExecuted`](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) event and [`PoolRebalanceLeaf`] structure both contain equal length arrays: `l1Tokens`, `netSendAmounts`, `bundleLpFees`, and `runningBalances`. Each `l1Token` value in `l1Tokens` is an address corresponding to an ERC20 token deployed on Ethereum Mainnet. It should be mapped to the value in any of the other three arrays (`netSendAmounts`, `bundleLpFees`, and `runningBalances`) that shares the same index within the array.
 
 For example, if `l1Tokens` is "[0x123,0x456,0x789]" and `netSendAmounts` is "[1,2,3]", then the "net send amount" for token with address "0x456" is equal to "2".
 
@@ -104,8 +104,7 @@ The following constants are currently specified in this UMIP directly, but shoul
 ## Token Constants
 The following constants are also stored in the `AcrossConfigStore` contract but are specific to an Ethereum token address. Therefore, they are fetched by querying the config store's `tokenConfig(address)` function.
 - "UBAFeeModel"
-  - This is a JSON struct of parameters keyed to a specific `chain` and `token` that defines a fee curve for that token given an input `balance`. This model is described in more detail [here](#TODO) and it generally returns a fee % to charge for an input deposit or refund amount given (i) the current "running balance" for the chain and token and (ii) the target "running balance".
-  - The intuition is that the fee is positive for deposited amounts when `currentRunningBalance + depositAmount < targetRunningBalance` and positive for refunded amounts when `currentRunningBalance - refundAmount > targetRunningBalance`, and vice versa. So, deposits and refunds are rewarded when they push running balances held on SpokePools towards their targets and penalized when they do the opposite. Deposits can only add to a running balance and refunds can only subtract.
+  - This is a JSON struct of parameters keyed to a specific `chain` and `token` that defines a fee curve for that token given an input `balance`. This model is described in more detail [here](#TODO) along with visual aids. The parameters are used to construct curves that return percentages given an input running balance.
 - "routeUBAFeeModel"
   - Similar to `UBAFeeModel`, this is a dictionary of `originChain-destinationChain` keys mapped to models that take precedence over the `UBAFeeModel` for a token on that specific deposit route. The route rate models should contain exactly the same parameters as the default `UBAFeeModel`
 
@@ -114,12 +113,84 @@ For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")
 
 _This UMIP will explain later how global and token-specific configuration settings are used._
 
+## Computing UBA Fees
+
+This section gives an overview for computing "UBA" (Universal Bridge Adapter) incentive fees, which are charged on all "Bridging Events".
+
+### Defining Bridging Events
+A Bridging Event could be a `Deposit`, `Fill` or `Refund` event, which are intuitively the only events that lead to inflows and outflows to and from a SpokePool. Every deposit is counted as a bridging event, but not all fills and refunds are. A fill is counted if its `repaymentChainId` is set to the `destinationChainId`, i.e. the fill will eventually be taking funds out of the SpokePool via a refund. If a fill's `repaymentChainId` is not set equal to the `destinationChainId`, then a corresponding refund event on the `repaymentChainId` should be emitted in order to signal when the refund from the SpokePool on the repayment chain should be counted as an outflow. See the section on [validating Refunds](#TODO) for  more details on matching refunds with fills.
+
+For each SpokePool on `chainId`, there will be an ordered series of Bridging Events (sorted in [ascending](#comparing-events-chronologically) chronological order). To compute the incentive fee for any event `e` within `E` (the ordered series of Bridging Events), we need to determine the "Running Balance" and the "Incentive Pool" at the time that `e` was emitted. We also will need to select which Incentive Curve to use to find the Incentive fee given the running balance and available incentive pool.
+
+### Computing Running Balance for Bridging Event
+
+#### Finding the Starting Running Balance
+
+Identify the last validated `runningBalance` included with a `bundleEndBlock` preceding `e`. If `e` is a deposit, then use the `deposit.quoteTimestamp`, and if `e` is a fill, then use the [fill's matched deposit's](#TODO) `quoteTimstamp`. This `runningBalance` should be for the [L1 token equivalent of `e`'s L2 token](#finding-the-preceding-running-balance-for-an-l1-token) and should be included in the latest `ExecutedRootBundle` event (included in a validated bundle) for `e`'s `chainId`.
+
+For example if `e` is a deposit on chain 1, then find the latest validated running balance for chain `1` and if `e` is a refund on chain 5, then find the latest validated running balance for chain `5`. 
+
+Let's name this preceding running balance the "Starting Running Balance". Let's also name the proposed bundle associated with this starting running balance as the "Preceding Validated Bundle".
+
+#### Finding the Running Balance for e
+
+Step through all events between the last validated bundle's end block and `e` (e.g. all `e`'s with blocks >= the `bundleEndBlock` for the chain `e.chainId` in the preceding validated bundle and <= `e.block`). For each deposit, add the `e.amount` to the starting running balance, and for each refund or fill, subtract `e.amount` from the starting running balance.
+
+If at any point in time, the running balance exceeds the [target upper or lower bounds](#TODO), then reset the running balance count to the target.
+
+Once you get to `e`, stop and you have the running balance for `e`.
+
+### Computing Incentive Pool for Bridging Event
+
+#### Finding the Starting Incentive Pool
+
+Similar to [finding the starting running balance](#finding-the-starting-running-balance), we need to identify the last validated `incentivePool` included with a `bundleEndBlock` preceding `e`. Follow [these steps](#TODO) to find the incentive pool size within a `runningBalance` array for the chain associated with `e`.
+
+We now have the "Starting Incentive Pool" amount associated with a "Preceding Validated Bundle".
+
+#### Finding the Incentive Pool size for e
+
+Step through all events between the last validated bundle's end block and `e`. For each event, compute the incentive fee charged to `e` using the steps in [this section](#computing-uba-fees). Add this incentive fee to the starting incentive fee until you get to `e`. Now you have the incentive pool size at the time of `e`.
+
+#### Selecting Incentive Curve for Bridging Event
+
+Identify the [UBA Fee Curve Parameters](#token-constants) for the L1 token equivalent for `e` and the chain ID where `e` was emitted by finding the parameters preceding the `quoteTimestamp` for `e`. We use the `quoteTimestamp` in order to compare the L1 timestamp of `e` with the time that the UBA fee curve parameters were set in the `ConfigStore` on L1. 
+
+If `e` is a deposit, then use `deposit.quoteTimestamp` and if `e` is a fill or refund, then first find the matched deposit for `e` and then use `deposit.quoteTimestamp`.
+
+If `e` is a deposit, then find the Deposit Curve parameters, otherwise find the Refund Curve parameters.
+
+#### Selecting Running Balance Bounds for Bridging Event
+
+Identify the [UBA Fee Curve Bounds](#token-constants) for the L1 token equivalent and chain for `e` similarly to finding the incentive curve for `e`.
+
+### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
+
+Input the running balance into the Deposit or Refund curve. This returns a percentage of the incentive pool size that should be charged for `e`. For example, if the incentive pool size is 100 tokens and the curve at the running balance returns 5%, then the incentive fee is 5% of the incentive pool. The curve can return positive and negative fees. Negative fees should not be lower than -100%.
+
+### Using the incentive fee
+
+The incentive fee is charged to deposits and refunds differently. For fills and refunds, the `realizedLpFeePct` should be a percentage equal to `incentive fee / deposit.amount`. Deposit recipients will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit incentive fee.
+
+Relayers will receive a refund from the `HubPool` equal to `(1 - (fill.realizedLpFeePct + fillIncentiveFeePct)) * deposit.amount`. Therefore, relayers will be refunded the deposited amount minus the deposit and refund incentive fees. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee` andminus the refund incentive fee.
+
+Dataworkers will add the incentive fees for each event in a bundle that they want to propose plus the starting incentive pool amount (from the last validated bundle) and store these in the `runningBalances` array to snapshot the latest validated incentive pool amounts.
+
 
 ## UBA Fee Curve Parameters
 
+UBA Fee Curves are defined completely by parameters set in the `ConfigStore` at a specific point in time. If there are no parameters set for a timestamp, then the default values should be used.
+### UBA Deposit Curve Parameters
+
+### UBA Refund Curve Parameters 
+
+### UBA Running Balance Bounds
+
+The default bounds are INFINITY for all variables.
+
 - `target_lower_bound_usd`
 - `target_lower_bound_min_usd`
-- The lower bound target running balance for a chain will be equal to `min(target_lower_bound_usd, target_lower_bound_min_usd)`
+- The lower bound target running balance for a chain will be equal to `min(target_lower_bound_usd, target_lower_bound_min_usd)`. 
 
 
 - `target_upper_bound_usd`
@@ -224,33 +295,8 @@ Additionally, matching relays should have their `destinationToken` set such that
    value in the `FilledRelay` event. If they don't match or if no matching event is found, the relay is invalid.
 
 ## Validating realizedLpFeePct
-To determine the validity of the `realizedLPFeePct` in the `FilledRelay` event, we must first compute two separate fees: a "depositor" and a "refund" fee.
 
-### Depositor Fee
-
-First, identify the matched deposit for the fill following the steps [here](#finding-valid-relays).
-This fee depends on the following parameters:
-- The "running count" at the time of the matched deposit on the origin chain. This running count can be computed as the last validated running balance for the origin chain and token plus the total amount of deposits (for the same token) since that running balance before this matched deposit, minus the total amount of refunds (for the same token) taken on this chain before this matched deposit.
-- "Refunds" includes any fills with `repaymentChainId == depositOriginChain` and valid refunds requested on the chain.
-- The UBA fee curve parameters value for the running count of the deposit.
-
-### Refund Fee
-
-A refund includes a fill with `repaymentChainId == chainId` and refunds requested.
-
-This fee depends on the following parameters:
-- The "running count" at the time of the refund on the destination chain.
-- The UBA fee curve parameters value for the running count of the refund.
-
-### Computing the running balance at any point in time.
-
-Succinctly, the running balance for a `token` and `chain` is equal to:
-- `snapshotted_running_balance + e_0 + e_1 + ... + e_n-1 + e_n + prb` where
-- `snapshotted_running_balance`: Last validated running balance for chain and token as of the latest root bundle execution in the HubPool
-- `e_i`: `E` is a series of time-ordered Deposit and Refund events involving `token` and `chain`. Deposit events increment the running balance by the deposited amount while Refund events decrement the running balance by the full fill amount.
-- The running balance at time `i` is equal to the snapshotted running balance plus all the effect of all events up until time `i-1`.
-- If the running balance ever exceeds the hurdle running balance as described [here](#constructing-the-poolrebalanceroot) then an adjustment needs to be made the running balance. For example, if the hurdle running balance is 10, and the snapshotted running balance is 1, then if 10 deposits events `e` in a row occur that send the running balance at `i` greater than 10, then the running balance at `i` needs to be decremented back to the target. Any of these adjustments should be added to `prb` ("pool rebalances").
-- The `prb` will be applied to the next bundle as a `netSendAmount`.
+To determine the validity of the `realizedLPFeePct` in the `FilledRelay` event, we must compute the [deposit incentive fee](#computing-uba-fees) for the matched deposit of the fill.
 
 ## Setting the realizedLpFeePct for a Fill
 
@@ -274,10 +320,14 @@ Note: Since  we eliminated all fills where `totalFilledAmount == deposit.amount`
 
 ## Slow Fill payout adjustments
 
-When creating a slow fill, the `realizedLpFeePct` is set equal to the `depositorFee`, just like a normal fill. However, unlike a normal fill there is no relayer to refund, so the `refundFee` should be charged to the user instead of a relayer. Intuitively, think of this like the user is ultimately taking funds out of the spoke pool, instead of the relayer asking for a refund, so the user needs to be charged for decrementing the spoke pool balance.
+Slow fills are implicitly created whenever there is a partial fill sent for a deposit and the fill is not eventually filled at the time of a bundle proposed including the deposit.
 
-The `payoutAdjustmentPct` is therefore set equal to the `refundFee` at the time of the first partial fill that triggered
-the deposit.
+The deposit has already set a `realizedLpFeePct`, so when the slow fill is executed, the deposit recipient will receive the deposited amount minus the `realizedLpFeePct`, which is equal to the deposit incentive fee.
+
+However, slow fills are unlike normal fills in that there is no relayer to whom should be charged the refund incentive fee. Slow fills ultimately cause a token outflow from the destination spoke pool, so intuitively the slow fill should be charged the refund incentive fee.
+
+The `payoutAdjustmentPct` is therefore set equal to the `refundFee` at the time of the first partial fill `e` that triggered
+the deposit. Follow [this guide](#computing-uba-fees) to determine the refund fee for `e`.
 
 # Constructing the PoolRebalanceRoot
 
@@ -306,6 +356,7 @@ To determine the amount to modify the running balances:
    balance for the associated `l1Token` and `destinationChainId`.
 5. _Subtract excesses from unexecuted slow fills_: This section is similar to the one above but deals with cases where the slow fill leaf can never be executed. Find all `FilledRelay` events in the block range that have `totalFilledAmount` equal to `amount` (i.e. fills that completed a deposit) and that have `fillAmount` less than `amount` (i.e. fills that were not the first fill for a deposit). If the first fill for a deposit completed a deposit (`fillAmount == amount` and `totalFilledAmount == amount`), then there can be no excess left in the spoke pool because this would not have triggered a slow fill payment to be sent to the spoke. First we need to see if the first fill for this current fill triggered a slow fill. In previously [validated bundles](#valid-bundle-proposals), identify all matching fills for the same `originChainId` and `depositId`. Find the earliest such fill. Determine the block range of the root bundle proposal that contained this fill using [this logic](#determining-block-range-for-root-bundle-proposal) for the `ProposeRootBundle` event with a `bundleEndBlock` for the `FilledRelay.destinationChainId` greater than or equal to the `FilledRelay` block number. Find the last fill in this same bundle block range. The slow fill payment for the bundle should have been `FilledRelay.amount - FilledRelay.totalFilledAmount`, same as [this calculation](#computing-slow-relay-payment-amounts). Since we know that the current `FilledRelay` in this upcoming proposal 100% filled the deposit, we know that the slow fill leaf cannot be executed, so the entire slow fill payment must be sent back to mainnet. Subtract this (the preceiding slow fill payment from a valid root bundle that this fill ultimately completed) from the running balance.
 
+## Finding the Preceding Running Balance for an L1 Token
 We now need to add the preceding running balance value to the current one for a given `repaymentChainId` and `l1Token`.
 For each `repaymentChainId` and `l1Token` combination, older
 [RootBundleExecuted](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) events
@@ -313,9 +364,7 @@ should be queried to find the preceding `RootBundleExecuted` event. This means i
 
 For each tuple of `l1Token` and `repaymentChainId`, we should have computed a total running balance value. In certain scenarios the bundle should "carry over" part of the running balance value to the `netSendAmount` parameter in the bundle proposal and "zero out" the running balance:
 
-See [this section](#computing-the-running-balance-at-any-point-in-time) and understand the `prb` logic to compute any pool rebalances that occur over the course of a bundle's events in which the running balance exceeds some hurdle. In these situations, `prb` should add some adjustment value. The bundle proposer should then set `netSendAmounts = prb` for this bundle.
-
-There can be multiple `prb` adjustments over the course of a bundle. For example, imagine that the hurdle is 100 tokens, and multiple times, the running balance exceeds 100 tokens. At these times, `prb` should be incremented by `-adjustment` so that if the running balance exceeds 100 tokens twice, `prb = -2*adjustment = netSendAmount` which will lead the bundle to send `2 * adjustments` from the SpokePool to the HubPool. 
+See [this section](#finding-the-running-balance-for-e) for computing the running balance for any bridging event. Over the course of a bundle, the running balance might exceed certain "running balance bounds". At these junctures, the running balance should be reset to the [target running balances](#selecting-running-balance-bounds-for-bridging-event). The amounts added to or subtracted from the current running balances to implement this "reset" should be accumulated throughout the bundle and set equal to the bundle's `netSendAmount` for the chain and token.
 
 Take the above running balances and net send amounts and group them by only `repaymentChainId` and sort by `repaymentChainId`. Within
 each group, sort by `l1Token`. If there are more than [`MAX_POOL_REBALANCE_LEAF_SIZE`](#global-constants) `l1Tokens`, a particular chain's leaf will
