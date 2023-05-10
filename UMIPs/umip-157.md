@@ -221,7 +221,7 @@ The default bounds are INFINITY for all variables.
 
 - `target_upper_bound_usd`
 - `target_upper_bound_min_usd`
-- The lower bound target running balance for a chain will be equal to `min(target_upper_bound_usd, target_upper_bound_min_usd)`
+- The upper bound target running balance for a chain will be equal to `min(target_upper_bound_usd, target_upper_bound_min_usd)`
 
 # Preliminary Information
 
