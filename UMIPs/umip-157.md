@@ -140,7 +140,7 @@ For each SpokePool on `chainId`, there will be an ordered series of Bridging Eve
 
 First we'll compute the "uncapped" incentive fee amount. This is equal to the inverse of the integral of the incentive curve between [`runningBalance`, `runningBalance + e.amount`] where `e.amount > 0` for deposits and `e.amount < 0` for refunds and fills.
 
-Intuitively, this means that for deposits that add balance to running balances that are signficantly under target, the incentive curve will return a higher % for the post-deposit running balance. Because the running balance is under target, the incentive curve will move from a negative % to a more negative % and the integral between these %'s will be a negative value. This means that the uncapped incentive fee amount will be a penalty applied to the deposit.
+Intuitively, this means that for deposits that add balance to running balances that are signficantly under target, the incentive curve will return a higher % for the post-deposit running balance. Because the running balance is under target, the incentive curve will move from a negative % to a more negative % and the integral between these %'s will be a negative value. This means that the uncapped incentive fee amount will be a penalty (i.e. a positive fee) applied to the deposit.
 
 Secondly, we need to determine the available amounts of incentives in case we need to cap the actual incentive fee. We already know this as the incentive pool size at the time of `e`.
 
@@ -352,14 +352,12 @@ The deposit has already set a `realizedLpFeePct`, so when the slow fill is execu
 
 However, slow fills are unlike normal fills in that there is no relayer to whom should be charged the refund incentive fee. Slow fills ultimately cause a token outflow from the destination spoke pool, so intuitively the slow fill should be charged the refund incentive fee.
 
-The `payoutAdjustmentPct` is therefore set equal to the `refundFee` at the time of the first partial fill `e` that triggered
-the deposit.
+The `payoutAdjustmentPct` is therefore set equal to the `refundFee` proportion of the outflow amount at the time of the first partial fill `e` that triggered
+the deposit. `payoutAdjustMentPct = refundFee / e.amount`.
 
 Follow [this guide](#computing-uba-fees) to determine the refund fee for `e`.
 
-TODO: Since refund fees [are denominated in tokens](#using-the-incentive-fee), its not straightforward how to set `payoutAdjustmentPct` since the amount to be executed can be less than the amount earmarked for the slow fill originally. 
-
-Slow fills always create outflows from the destination SpokePool, but its possible that follow-on partial fills can cause the slow fill execution to create a smaller outflow than originally earmarked for the fill. This means that the `refundFee` could be larger than the amount taken out of the pool by the ultimate slow fill execution.
+Slow fills always create outflows from the destination SpokePool, but its possible that follow-on partial fills can cause the slow fill execution to create a smaller outflow than originally earmarked for the fill. This is why the `payoutAdjustmentPct` is set as a percentage of the remaining fill. amount.
 
 # Constructing the PoolRebalanceRoot
 
