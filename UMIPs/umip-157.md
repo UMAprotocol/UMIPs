@@ -140,15 +140,61 @@ For each SpokePool on `chainId`, there will be an ordered series of Bridging Eve
 
 First we'll compute the "uncapped" incentive fee amount. This is equal to the inverse of the integral of the incentive curve between [`runningBalance`, `runningBalance + e.amount`] where `e.amount > 0` for deposits and `e.amount < 0` for refunds and fills.
 
-Intuitively, this means that for deposits that add balance to running balances that are signficantly under target, the incentive curve will return a higher % for the post-deposit running balance. Because the running balance is under target, the incentive curve will move from a negative % to a more negative % and the integral between these %'s will be a negative value. This means that the uncapped incentive fee amount will be a penalty (i.e. a positive fee) applied to the deposit.
+Intuitively, this means that for deposits that add balance to running balances that are significantly under target, the incentive curve will return a higher % for the post-deposit running balance. Because the running balance is under target, the incentive curve will move from a negative % to a more negative % and the integral between these %'s will be a negative value. This means that the uncapped incentive fee amount will be a penalty (i.e. a positive fee) applied to the deposit.
 
 Secondly, we need to determine the available amounts of incentives in case we need to cap the actual incentive fee. We already know this as the incentive pool size at the time of `e`.
 
-Third, we need to determine the total amount of theoretical rewards that would be paid to any Bridge event that brought the running balances back to target. This is the integral on the incentive curve between [`target`, and `runningBalance + e.amount`]. If this amount exceeds the `incentivePool` available, then we need to discount any rewards by  `(uncappedIncentiveFee - incentivePool) / uncappedIncentiveFee`, where `uncappedIncentiveFee` is actually a "reward" that would be paid out to the initiator of the bridge event `e`. This also implies that some future events pushing the running balance in the same direction as `e` could also incur a discounted reward until the incentive pool is built up large enough over time.
+Third, we need to determine the total amount of rewards that would need to be paid to bring the starting running balance back to target. Let's name this reward figure we are trying to compute `maxRewards`. `maxRewards` is equal to the integral on the incentive curve between [`target`, and `runningBalance`]. If this amount exceeds the `incentivePool` available, then we need to discount any rewards by  `(uncappedIncentiveFee - incentivePool) / uncappedIncentiveFee`, where `uncappedIncentiveFee` is the value we found in the first step of this section. This step ensures that the penalty pot is large enough to cover any potential future rewards.
 
-At this point we have a positive or negative incentive amount to be charged to `e`. If the amount is negative, then the incentive is a "reward" that will be rewarded to `e`. The final reward is equal to `reward * ubaRewardMultiplier`, a convenient scaler variable set in the [config store](#token-constants).
+So, in summary we will compute the `appliedIncentiveFee` which will be taken out of (or added to!) the recipient's deposit or the refund amount.
 
-The following sections explain how to find the inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
+```
+## Running balance right before e creates an inflow or outflow from SpokePool
+startingRunningBalance = S
+
+maxRewards = 0
+uncappedIncentiveFee = 0
+
+## Handling deposits
+if (e is "Deposit"):
+
+   ## Uncapped incentive fee owed to e before we apply any discounts based on size of penalty pool
+   uncappedIncentiveFee = integral_incentive_curve[startingRunningBalance, startingRunningBalance + e.amount]
+
+   ## Deposits are rewarded when startingRunningBalance is under target
+   if (startingRunningBalance < target):
+      maxRewards = integral_incentive_curve[startingRunningBalance, target]
+
+## Handling refunds
+if (e is "Refund"):
+
+   ## Uncapped incentive fee owed to e before we apply any discounts based on size of penalty pool
+   uncappedIncentiveFee = integral_incentive_curve[startingRunningBalance - e.amount, startingRunningBalance]
+
+   ## Refunds are rewarded when startingRunningBalance is over target.
+   if (startingRunningBalance > target):
+      maxRewards = integral_incentive_curve[target, startingRunningBalance]
+
+## Available penalty pot amount right before e creates an inflow or outflow
+penaltyPotSize = P
+
+appliedIncentiveFee = uncappedIncentiveFee
+
+## Discount fee if max reward exceeds penalty pot
+if (maxRewards > P):
+   
+   ## If P << uncappedIncentiveFee, discountFactor --> 100%
+   discountFactor = (uncappedIncentiveFee - P) / uncappedIncentiveFee
+   appliedIncentiveFee *= 1 - discountFactor
+
+## Apply hardcoded multiplier
+
+appliedIncentiveFee *= UBA_REWARD_MULTIPLIER
+```
+
+The final reward is equal to `reward * ubaRewardMultiplier`, a convenient scaler variable set in the [config store](#token-constants).
+
+The following sections explain how to find the specific inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
 
 ### Computing Running Balance for Bridging Event
 
