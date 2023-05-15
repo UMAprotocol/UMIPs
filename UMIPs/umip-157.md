@@ -200,9 +200,11 @@ The following sections explain how to find the specific inputs needed to [comput
 
 #### Finding the Starting Running Balance
 
-Identify the last validated `runningBalance` included with a `bundleEndBlock` preceding `e`. If `e` is an inflow, then use the `e.quoteTimestamp`, and if `e` is an outflow, then use the [matched inflow's](#TODO) `quoteTimestamp`. This `runningBalance` should be for the [L1 token equivalent of `e`'s L2 token](#finding-the-preceding-running-balance-for-an-l1-token) and should be included in the latest `ExecutedRootBundle` event (included in a validated bundle) for `e`'s `chainId`.
+Identify the last validated `runningBalance` included with a `bundleEndBlock` preceding `e`. To do this, we need to match the `PoolRebalanceLeaf` containing an `L1Token` matching `e`'s `L2Token` which also contains a `bundleEndBlock` most closely preceding `e` with the correct `e.chainId`.
 
 For example if `e` is an inflow on chain 1, then find the latest validated running balance for chain `1` and if `e` is an outflow on chain 5, then find the latest validated running balance for chain `5`. 
+
+To match `e`'s `L2Token` with an `L1Token`, follow the steps [here](#matching-l2-tokens-and-l1-tokens).
 
 Let's name this preceding running balance the "Opening Balance". Let's also name the proposed bundle associated with this starting running balance as the "Preceding Validated Bundle".
 
