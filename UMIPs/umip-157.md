@@ -136,6 +136,8 @@ A Bridging Event could be a `Deposit`, `Fill` or `Refund` event, which are intui
 
 For each SpokePool on `chainId`, there will be an ordered series of Bridging Events (sorted in [ascending](#comparing-events-chronologically) chronological order). To compute the incentive fee for any event `e` within `E` (the ordered series of Bridging Events), we need to determine the "Running Balance" and the "Incentive Pool" at the time that `e` was emitted. We also will need to select which Incentive Curve to use to find the Incentive fee given the running balance and available incentive pool.
 
+In the following sections we'll use "Deposit" interchangeably with "Inflow", to represent running balance added to the SpokePool. We'll also use "Outflow" interchangeably with "Fills" and "Refunds",which represent balance subtracted from the SpokePool.
+
 ### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
 
 First we'll compute the "uncapped" incentive fee amount. This is equal to the inverse of the integral of the incentive curve between [`runningBalance`, `runningBalance + e.amount`] where `e.amount > 0` for deposits and `e.amount < 0` for refunds and fills.
@@ -154,7 +156,7 @@ maxRewards = 0
 uncappedIncentiveFee = 0
 
 ## Handling deposits
-if (e is "Deposit"):
+if (e is "Inflow"):
 
    ## Uncapped incentive fee owed to e before we apply any discounts based on size of penalty pool
    uncappedIncentiveFee = integral_incentive_curve[startingRunningBalance, startingRunningBalance + e.amount]
@@ -163,8 +165,8 @@ if (e is "Deposit"):
    if (startingRunningBalance < target):
       maxRewards = integral_incentive_curve[startingRunningBalance, target]
 
-## Handling refunds
-if (e is "Refund"):
+## Handling refunds and fills
+if (e is "Outflow"):
 
    ## Uncapped incentive fee owed to e before we apply any discounts based on size of penalty pool
    uncappedIncentiveFee = integral_incentive_curve[startingRunningBalance - e.amount, startingRunningBalance]
@@ -194,36 +196,38 @@ The final reward is equal to `reward * ubaRewardMultiplier`, a convenient scaler
 
 The following sections explain how to find the specific inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
 
-### Computing Running Balance for Bridging Event
+### Computing Running Balance for Bridging Inflow and Outflow Events
 
 #### Finding the Starting Running Balance
 
-Identify the last validated `runningBalance` included with a `bundleEndBlock` preceding `e`. If `e` is a deposit, then use the `deposit.quoteTimestamp`, and if `e` is a fill, then use the [fill's matched deposit's](#TODO) `quoteTimstamp`. This `runningBalance` should be for the [L1 token equivalent of `e`'s L2 token](#finding-the-preceding-running-balance-for-an-l1-token) and should be included in the latest `ExecutedRootBundle` event (included in a validated bundle) for `e`'s `chainId`.
+Identify the last validated `runningBalance` included with a `bundleEndBlock` preceding `e`. If `e` is an inflow, then use the `e.quoteTimestamp`, and if `e` is an outflow, then use the [matched inflow's](#TODO) `quoteTimestamp`. This `runningBalance` should be for the [L1 token equivalent of `e`'s L2 token](#finding-the-preceding-running-balance-for-an-l1-token) and should be included in the latest `ExecutedRootBundle` event (included in a validated bundle) for `e`'s `chainId`.
 
-For example if `e` is a deposit on chain 1, then find the latest validated running balance for chain `1` and if `e` is a refund on chain 5, then find the latest validated running balance for chain `5`. 
+For example if `e` is an inflow on chain 1, then find the latest validated running balance for chain `1` and if `e` is an outflow on chain 5, then find the latest validated running balance for chain `5`. 
 
-Let's name this preceding running balance the "Starting Running Balance". Let's also name the proposed bundle associated with this starting running balance as the "Preceding Validated Bundle".
+Let's name this preceding running balance the "Opening Balance". Let's also name the proposed bundle associated with this starting running balance as the "Preceding Validated Bundle".
 
-#### Finding the Running Balance for e
+In the next section, we'll find the "Closing Balance" for e: the running balance of the SpokePool after `e` is executed.
 
-Step through all events between the last validated bundle's end block and `e` (e.g. all `e`'s with blocks >= the `bundleEndBlock` for the chain `e.chainId` in the preceding validated bundle and <= `e.block`). For each deposit, add the `e.amount` to the starting running balance, and for each refund or fill, subtract `e.amount` from the starting running balance.
+#### Finding the Closing Balance for e
+
+Step through all events between the last validated bundle's end block and `e` (e.g. all `e`'s with blocks >= the `bundleEndBlock` for the chain `e.chainId` in the preceding validated bundle and <= `e.block`). For each deposit, add the `e.amount` to the opening balance, and for each refund or fill, subtract `e.amount` from the opening balance.
 
 ##### Handling running balance bounds
-If at any point in time, the running balance exceeds the [target upper or lower bounds](#selecting-running-balance-bounds-for-bridging-event), then reset the running balance count to the target. The running balance for computing the incentive fee for `e` is computed as if the running balance at the time of the event `e` was added to `e.amount`. The next bridge event `e_{i+1}` just will use the target running balance instead of the starting running balance `+ e.amount`.
+If at any point in time, the running balance exceeds the [target upper or lower bounds](#selecting-running-balance-bounds-for-bridging-event), then reset the running balance count to the target. The running balance for computing the incentive fee for `e` is computed as if the running balance at the time of the event `e` was added to `e.amount`. The next bridge event `e_{i+1}` just will use the target running balance instead of the opening balance `+ e.amount`.
 
 Once you get to `e`, stop and you have the running balance for `e`.
 
 ### Computing Incentive Pool for Bridging Event
 
-#### Finding the Starting Incentive Pool
+#### Finding the Opening Incentive Pool
 
-Similar to [finding the starting running balance](#finding-the-starting-running-balance), we need to identify the last validated `incentivePool` included with a `bundleEndBlock` preceding `e`. Follow [these steps](#identifying-running-balances-and-incentive-pool-amounts-for-token-chain-combinations) to find the incentive pool size within a `runningBalance` array for the chain associated with `e`.
+Similar to [finding the closing balance](#finding-the-closing-balance-for-e), we need to identify the last validated `incentivePool` included with a `bundleEndBlock` preceding `e`. Follow [these steps](#identifying-running-balances-and-incentive-pool-amounts-for-token-chain-combinations) to find the incentive pool size within a `runningBalance` array for the chain associated with `e`.
 
-We now have the "Starting Incentive Pool" amount associated with a "Preceding Validated Bundle".
+We now have the "OPening Incentive Pool" amount associated with a "Preceding Validated Bundle".
 
-Finally, add the [incentive fee adjustment](#token-constants) to the Starting Incentive Pool amount to account for any donations to the pool. This rule implies that any time an Admin wants to donate to the incentive pool, they should increment the `incentiveFeeAdjustment` configuration variable to make sure that the [cap on the applied incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e) is raised.
+Finally, add the [incentive fee adjustment](#token-constants) to theOpening Incentive Pool amount to account for any donations to the pool. This rule implies that any time an Admin wants to donate to the incentive pool, they should increment the `incentiveFeeAdjustment` configuration variable to make sure that the [cap on the applied incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e) is raised.
 
-#### Finding the Incentive Pool size for e
+#### Finding the Closing Incentive Pool size for e
 
 Step through all events between the last validated bundle's end block and `e`. For each event, compute the incentive fee charged to `e` using the steps in [this section](#computing-uba-fees). Add this incentive fee to the starting incentive fee until you get to `e`. Now you have the incentive pool size at the time of `e`.
 
@@ -233,7 +237,7 @@ Identify the [UBA Fee Curve Parameters](#token-constants) for the L1 token equiv
 
 If `e` is a deposit, then use `deposit.quoteTimestamp` and if `e` is a fill or refund, then first find the matched deposit for `e` and then use `deposit.quoteTimestamp`.
 
-If `e` is a deposit, then find the Deposit Curve parameters, otherwise find the Refund Curve parameters.
+If `e` is a deposit, then find the Inflow Curve parameters, otherwise find the Outflow Curve parameters.
 
 #### Selecting Running Balance Bounds for Bridging Event
 
@@ -241,11 +245,11 @@ Identify the [UBA Fee Curve Bounds](#token-constants) for the L1 token equivalen
 
 ### Using the incentive fee
 
-The incentive fee is charged to deposits and refunds differently. For fills and refunds, the `realizedLpFeePct` should be a percentage equal to `incentive fee / deposit.amount`. Deposit recipients will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit incentive fee.
+The incentive fee is charged to inflows and outflows differently. For outflows the `realizedLpFeePct` should be set to a percentage equal to `incentive fee / deposit.amount`. Deposit recipients specified in Inflows will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit incentive fee.
 
-Relayers will receive a refund from the `HubPool` equal to `(1 - (fill.realizedLpFeePct + fillIncentiveFeePct)) * deposit.amount`. Therefore, relayers will be refunded the deposited amount minus the deposit and refund incentive fees. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee` andminus the refund incentive fee.
+Relayers will receive a refund from the `HubPool` equal to `(1 - (fill.realizedLpFeePct + fillIncentiveFeePct)) * deposit.amount`. Therefore, relayers will be refunded the deposited amount minus the deposit and refund incentive fees. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee` and minus the refund incentive fee.
 
-Dataworkers will add the incentive fees for each event in a bundle that they want to propose plus the starting incentive pool amount (from the last validated bundle) and store these in the `runningBalances` array to snapshot the latest validated incentive pool amounts.
+Dataworkers will add the incentive fees for each event in a bundle that they want to propose plus the opening incentive pool amount (from the last validated bundle) and store these in the `runningBalances` array to snapshot the latest validated incentive pool amounts.
 
 ## UBA Fee Curve Parameters
 
