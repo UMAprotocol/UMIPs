@@ -73,7 +73,7 @@ For example, if `l1Tokens` is "[0x123,0x456,0x789]" and `netSendAmounts` is "[1,
 
 The `l1Tokens`, `netSendAmounts`, `bundleLpFees` arrays emitted in `RootBundleExecuted` events should be equal length so we can match each L1 token to a value in the following arrays. The `runningBalances` should be of length exactly twice the `l1Tokens` length. 
 
-Let's say there are `X` L1 tokens. The values in `runningBalances[0:X)` are equal to the running balances, and the values in `runningBalances[X:2x)` are equal to the incentive pool amounts for each token. 
+Let's say there are `X` L1 tokens. The values in `runningBalances[0:X-1]` are equal to the running balances, and the values in `runningBalances[X:2x-1]` are equal to the incentive pool amounts for each token. 
 
 To find the running balance for a token at index `i` in the `l1Tokens` array, follow the steps [here](#matching-l1-tokens-to-running-balances-or-net-send-amounts).
 
