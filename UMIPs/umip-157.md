@@ -140,8 +140,6 @@ For each SpokePool on `chainId`, there will be an ordered series of Bridging Eve
 
 First we'll compute the "uncapped" incentive fee amount. This is equal to the inverse of the integral of the incentive curve between [`runningBalance`, `runningBalance + e.amount`] where `e.amount > 0` for deposits and `e.amount < 0` for refunds and fills.
 
-Intuitively, this means that for deposits that add balance to running balances that are significantly under target, the incentive curve will return a higher % for the post-deposit running balance. Because the running balance is under target, the incentive curve will move from a negative % to a more negative % and the integral between these %'s will be a negative value. This means that the uncapped incentive fee amount will be a penalty (i.e. a positive fee) applied to the deposit.
-
 Secondly, we need to determine the available amounts of incentives in case we need to cap the actual incentive fee. We already know this as the incentive pool size at the time of `e`.
 
 Third, we need to determine the total amount of rewards that would need to be paid to bring the starting running balance back to target. Let's name this reward figure we are trying to compute `maxRewards`. `maxRewards` is equal to the integral on the incentive curve between [`target`, and `runningBalance`]. If this amount exceeds the `incentivePool` available, then we need to discount any rewards by  `(uncappedIncentiveFee - incentivePool) / uncappedIncentiveFee`, where `uncappedIncentiveFee` is the value we found in the first step of this section. This step ensures that the penalty pot is large enough to cover any potential future rewards.
