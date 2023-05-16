@@ -138,6 +138,20 @@ For each SpokePool on `chainId`, there will be an ordered series of Bridging Eve
 
 In the following sections we'll use "Deposit" interchangeably with "Inflow", to represent running balance added to the SpokePool. We'll also use "Outflow" interchangeably with "Fills" and "Refunds",which represent balance subtracted from the SpokePool.
 
+### Incentive Curves
+
+Incentive curves are virtual mathematical functions that will be deterministically defined by a set of [global configuration variables stored in the ConfigStore](#global-constants). There will be exactly two curves for each chain:
+- Inflow Curve
+- Outflow Curve
+
+The curves are functions `f_i_t(x)` where the input `x` is denominated as a "running balance", which represents the amount of balance held on a SpokePool. `f_i_t(x)` is unique for chain ID `i` and token `t`. `f_i_t(x)` should return a percentage, representing a "marginal incentive fee" for the input `x` running balance.
+
+These curves can be piecewise functions and should be integratable. These curves will be used to figure out how to charge fees for an inflow or outflow event `e` which adds or subtracts, respectively, to a SpokePool's running balance. Typically, the incentive fee will be equal to the negative of the integral between `e.amount + x` for inflows (or `x - e.amount` for outflows) and `x`. This is intuitively the integral between the opening marginal incentive fee and the closing incentive fee after `e` inflows or outflows some tokens from the SpokePool's running balance.
+
+Inflow curves will be used to pay or penalize the senders of `e` (i.e. the "depositor") depending on the sign of the incentive fee.
+
+Outflow curves will also be used to pay or penalize the senders of `e`, but in this case these will be "relayers" (e.g. Relayers take refunds on SpokePools, creating outflows).
+
 ### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
 
 First we'll compute the "uncapped" incentive fee amount. This is equal to the inverse of the integral of the incentive curve between [`runningBalance`, `runningBalance + e.amount`] where `e.amount > 0` for deposits and `e.amount < 0` for refunds and fills.
