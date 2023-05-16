@@ -425,7 +425,7 @@ The deposit has already set a `realizedLpFeePct`, so when the slow fill is execu
 However, slow fills are unlike normal fills in that there is no relayer to whom should be charged the refund incentive fee. Slow fills ultimately cause a token outflow from the destination spoke pool, so intuitively the slow fill should be charged the refund incentive fee.
 
 The `payoutAdjustmentPct` is therefore set equal to the `refundFee` proportion of the outflow amount at the time of the first partial fill `e` that triggered
-the deposit. `payoutAdjustMentPct = refundFee / e.amount`.
+the deposit. `payoutAdjustmentPct = refundFee / e.amount`.
 
 Follow [this guide](#computing-uba-fees) to determine the refund fee for `e`.
 
