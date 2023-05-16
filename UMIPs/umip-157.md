@@ -136,7 +136,7 @@ A Bridging Event could be a `Deposit`, `Fill` or `Refund` event, which are intui
 
 For each SpokePool on `chainId`, there will be an ordered series of Bridging Events (sorted in [ascending](#comparing-events-chronologically) chronological order). To compute the incentive fee for any event `e` within `E` (the ordered series of Bridging Events), we need to determine the "Running Balance" and the "Incentive Pool" at the time that `e` was emitted. We also will need to select which Incentive Curve to use to find the Incentive fee given the running balance and available incentive pool.
 
-In the following sections we'll use "Deposit" interchangeably with "Inflow", to represent running balance added to the SpokePool. We'll also use "Outflow" interchangeably with "Fills" and "Refunds",which represent balance subtracted from the SpokePool.
+In the following sections we'll use "Deposit" interchangeably with "Inflow", to represent running balance added to the SpokePool. We'll also use "Outflow" interchangeably with "Fills" and "Refunds", which represent balance subtracted from the SpokePool.
 
 ### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
 
