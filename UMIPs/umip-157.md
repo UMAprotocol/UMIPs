@@ -418,7 +418,7 @@ Note: Since  we eliminated all fills where `totalFilledAmount == deposit.amount`
 
 ## Slow Fill payout adjustments
 
-Slow fills are implicitly created whenever there is a partial fill sent for a deposit and the fill is not eventually filled at the time of a bundle proposed including the deposit.
+Slow fills are implicitly created whenever there is at least one valid partial fill for a deposit, but where the deposit has not been filled completely at the time of the bundle being proposed.
 
 The deposit has already set a `realizedLpFeePct`, so when the slow fill is executed, the deposit recipient will receive the deposited amount minus the `realizedLpFeePct`, which is equal to the deposit incentive fee.
 
