@@ -394,7 +394,7 @@ Additionally, matching relays should have their `destinationToken` set such that
 
 ## Validating realizedLpFeePct
 
-To determine the validity of the `realizedLPFeePct` in the `FilledRelay` event, we must compute the [deposit incentive fee](#computing-uba-fees) for the matched deposit of the fill.
+To determine the validity of the `realizedLpFeePct` in the `FilledRelay` event, we must compute the [deposit incentive fee](#computing-uba-fees) for the matched deposit of the fill.
 
 ## Setting the realizedLpFeePct for a Fill
 
