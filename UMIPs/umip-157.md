@@ -429,7 +429,7 @@ the deposit. `payoutAdjustmentPct = refundFee / e.amount`.
 
 Follow [this guide](#computing-uba-fees) to determine the refund fee for `e`.
 
-Slow fills always create outflows from the destination SpokePool, but its possible that follow-on partial fills can cause the slow fill execution to create a smaller outflow than originally earmarked for the fill. This is why the `payoutAdjustmentPct` is set as a percentage of the remaining fill. amount.
+Slow fills always create outflows from the destination SpokePool, but its possible that follow-on partial fills can cause the slow fill execution to create a smaller outflow than originally earmarked for the fill. This is why the `payoutAdjustmentPct` is set as a percentage of the remaining fill amount.
 
 # Constructing the PoolRebalanceRoot
 
