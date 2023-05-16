@@ -422,7 +422,7 @@ Slow fills are implicitly created whenever there is a partial fill sent for a de
 
 The deposit has already set a `realizedLpFeePct`, so when the slow fill is executed, the deposit recipient will receive the deposited amount minus the `realizedLpFeePct`, which is equal to the deposit incentive fee.
 
-However, slow fills are unlike normal fills in that there is no relayer to whom should be charged the refund incentive fee. Slow fills ultimately cause a token outflow from the destination spoke pool, so intuitively the slow fill should be charged the refund incentive fee.
+However, slow fills are unlike normal fills in that there is no relayer who should be charged the refund incentive fee. Slow fills ultimately cause a token outflow from the destination spoke pool, so intuitively the slow fill should be charged the refund incentive fee.
 
 The `payoutAdjustmentPct` is therefore set equal to the `refundFee` proportion of the outflow amount at the time of the first partial fill `e` that triggered
 the deposit. `payoutAdjustmentPct = refundFee / e.amount`.
