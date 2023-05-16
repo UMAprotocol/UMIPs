@@ -420,7 +420,7 @@ Note: Since  we eliminated all fills where `totalFilledAmount == deposit.amount`
 
 Slow fills are implicitly created whenever there is at least one valid partial fill for a deposit, but where the deposit has not been filled completely at the time of the bundle being proposed.
 
-The deposit has already set a `realizedLpFeePct`, so when the slow fill is executed, the deposit recipient will receive the deposited amount minus the `realizedLpFeePct`, which is equal to the deposit incentive fee.
+Because the existing partial fill(s) have been successfully validated, the deposit has an associated `realizedLpFeePct`. If the resulting slow fill is ultimately executed, it inherits the same `realizedLpFeePct` as the previous validated partial fills. The recipient will therefore receive the deposited amount minus the `realizedLpFeePct`, which is equal to the deposit incentive fee.
 
 However, slow fills are unlike normal fills in that there is no relayer who should be charged the refund incentive fee. Slow fills ultimately cause a token outflow from the destination spoke pool, so intuitively the slow fill should be charged the refund incentive fee.
 
