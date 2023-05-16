@@ -158,13 +158,13 @@ First we'll compute the "uncapped" incentive fee amount. This is equal to the in
 
 Secondly, we need to determine the available amounts of incentives in case we need to cap the actual incentive fee. We already know this as the incentive pool size at the time of `e`.
 
-Third, we need to determine the total amount of rewards that would need to be paid to bring the starting running balance back to target. Let's name this reward figure we are trying to compute `maxRewards`. `maxRewards` is equal to the integral on the incentive curve between [`target`, and `runningBalance`]. If this amount exceeds the `incentivePool` available, then we need to discount any rewards by  `(uncappedIncentiveFee - incentivePool) / uncappedIncentiveFee`, where `uncappedIncentiveFee` is the value we found in the first step of this section. This step ensures that the penalty pot is large enough to cover any potential future rewards.
+Third, we need to determine the total amount of rewards that would need to be paid to bring the starting running balance back to target. Let's name this reward figure we are trying to compute `maxRewards`. `maxRewards` is equal to the integral on the incentive curve between [`zero_upper/lower_running_balance`, and `runningBalance`]. If this amount exceeds the `incentivePool` available, then we need to discount any rewards by  `(uncappedIncentiveFee - incentivePool) / uncappedIncentiveFee`, where `uncappedIncentiveFee` is the value we found in the first step of this section. This step ensures that the penalty pot is large enough to cover any potential future rewards.
 
 So, in summary we will compute the `appliedIncentiveFee` which will be taken out of (or added to!) the recipient's deposit or the refund amount.
 
 ```
 ## Running balance right before e creates an inflow or outflow from SpokePool
-startingRunningBalance = S
+openingRunningBalance = S
 
 maxRewards = 0
 uncappedIncentiveFee = 0
@@ -173,21 +173,21 @@ uncappedIncentiveFee = 0
 if (e is "Inflow"):
 
    ## Uncapped incentive fee owed to e before we apply any discounts based on size of penalty pool
-   uncappedIncentiveFee = integral_incentive_curve[startingRunningBalance, startingRunningBalance + e.amount]
+   uncappedIncentiveFee = integral_incentive_curve[openingRunningBalance, openingRunningBalance + e.amount]
 
-   ## Deposits are rewarded when startingRunningBalance is under target
-   if (startingRunningBalance < target):
-      maxRewards = integral_incentive_curve[startingRunningBalance, target]
+   ## Deposits are rewarded when openingRunningBalance is under the zero fee range
+   if (openingRunningBalance < zero_lower_running_balance):
+      maxRewards = integral_incentive_curve[openingRunningBalance, zero_lower_running_balance]
 
 ## Handling refunds and fills
 if (e is "Outflow"):
 
    ## Uncapped incentive fee owed to e before we apply any discounts based on size of penalty pool
-   uncappedIncentiveFee = integral_incentive_curve[startingRunningBalance - e.amount, startingRunningBalance]
+   uncappedIncentiveFee = integral_incentive_curve[openingRunningBalance - e.amount, openingRunningBalance]
 
-   ## Refunds are rewarded when startingRunningBalance is over target.
-   if (startingRunningBalance > target):
-      maxRewards = integral_incentive_curve[target, startingRunningBalance]
+   ## Refunds are rewarded when openingRunningBalance is over the zero fee range.
+   if (openingRunningBalance > zero_upper_running_balance):
+      maxRewards = integral_incentive_curve[zero_upper_running_balance, openingRunningBalance]
 
 ## Available penalty pot amount right before e creates an inflow or outflow
 penaltyPotSize = P
@@ -229,7 +229,9 @@ In the next section, we'll find the "Closing Balance" for e: the running balance
 Step through all events between the last validated bundle's end block and `e` (e.g. all `e`'s with blocks >= the `bundleEndBlock` for the chain `e.chainId` in the preceding validated bundle and <= `e.block`). For each deposit, add the `e.amount` to the opening balance, and for each refund or fill, subtract `e.amount` from the opening balance.
 
 ##### Handling running balance bounds
-If at any point in time, the running balance exceeds the [target upper or lower bounds](#selecting-running-balance-bounds-for-bridging-event), then reset the running balance count to the target. The running balance for computing the incentive fee for `e` is computed as if the running balance at the time of the event `e` was added to `e.amount`. The next bridge event `e_{i+1}` just will use the target running balance instead of the opening balance `+ e.amount`.
+If at any point in time, the running balance exceeds the [threshold upper or lower running balance](#selecting-running-balance-bounds-for-bridging-event), then reset the running balance count to the "target lower" or "target upper". The running balance for computing the incentive fee for `e` is computed as if the running balance at the time of the event `e` was added to `e.amount`. The next bridge event `e_{i+1}` just will use the target running balance instead of the opening balance `+ e.amount`.
+
+For example, if the `threshold_upper_bound=100`, `target_upper_bound=50`, then if the running balance exceeds 100, then reset it to 50. Similarly if the threshold lower bound is passed, then go to the target lower bound.
 
 Once you get to `e`, stop and you have the running balance for `e`.
 
@@ -270,22 +272,28 @@ Dataworkers will add the incentive fees for each event in a bundle that they wan
 ## UBA Fee Curve Parameters
 
 UBA Fee Curves are defined completely by parameters set in the `ConfigStore` at a specific point in time. If there are no parameters set for a timestamp, then the default values should be used.
+
+### UBA Shared Curve Parameters
+
+- `zero_upper_running_balance`
+- `zero_lower_running_balance`
+
+(Maybe?) The marginal incentive fee charged between the "zero" upper and lower running balances is always 0%.
+
 ### UBA Deposit Curve Parameters
 
 ### UBA Refund Curve Parameters 
 
 ### UBA Running Balance Bounds
 
-The default bounds are INFINITY for all variables.
-
-- `target_lower_bound_usd`
-- `target_lower_bound_min_usd`
-- The lower bound target running balance for a chain will be equal to `min(target_lower_bound_usd, target_lower_bound_min_usd)`. 
-
-
-- `target_upper_bound_usd`
-- `target_upper_bound_min_usd`
-- The upper bound target running balance for a chain will be equal to `min(target_upper_bound_usd, target_upper_bound_min_usd)`
+- `threshold_lower_bound`
+   - The default for this variable is 0.
+- `target_lower_bound`
+   - The default for this variable is INFINITY
+- `threshold_upper_bound`
+   - The default for this variable is 0.
+- `target_upper_bound`
+   - The default for this variable is INFINITY
 
 # Preliminary Information
 
