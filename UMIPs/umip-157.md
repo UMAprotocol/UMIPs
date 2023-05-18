@@ -263,7 +263,7 @@ Once you get to `e`, stop and you have the running balance for `e`.
 
 Similar to [finding the closing balance](#finding-the-closing-balance-for-e), we need to identify the last validated `incentivePool` included with a `bundleEndBlock` preceding `e`. Follow [these steps](#identifying-running-balances-and-incentive-pool-amounts-for-token-chain-combinations) to find the incentive pool size within a `runningBalance` array for the chain associated with `e`.
 
-We now have the "OPening Incentive Pool" amount associated with a "Preceding Validated Bundle".
+We now have the "Opening Incentive Pool" amount associated with a "Preceding Validated Bundle".
 
 Finally, add the [incentive fee adjustment](#token-constants) to theOpening Incentive Pool amount to account for any donations to the pool. This rule implies that any time an Admin wants to donate to the incentive pool, they should increment the `incentiveFeeAdjustment` configuration variable to make sure that the [cap on the applied incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e) is raised.
 
