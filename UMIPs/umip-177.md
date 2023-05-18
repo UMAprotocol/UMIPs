@@ -117,6 +117,28 @@ In case a violation happened with a block coming from a MEV-relay, in order to m
 
 💡 The fee recipient addresses on the ROPU report should be different than those on the table above, for their respective penalty types.
 
+### An example:
+
+This transaction is a new report brought by Rated on chain: [transaction](https://goerli.etherscan.io/tx/0xd767d6b92354273068c4078028c86f37f0e89754f7f56fe590b2edd42fac5a5f)
+
+The new report creates a claim on the Optimistic Oracle v3.
+
+![umip-177_a](./images/umip-177_a.png)
+
+This claim is linked to the report number 5 on the Rated Oracle. The voters should retrieve the content of this report by reading the **`reports`** mapping in the Rated Oracle.
+
+![umip-177_b](./images/umip-177_b.png)
+
+The voters should also look for the violations contained in the said report by calling the getter **`getViolationsInReport`:**
+
+![umip-177_c](./images/umip-177_c.png)
+
+Now that those value were retrieved, the voters have all the elements to determine the validity of the report. As seen above, this report covers the period of time between epoch `176809` and `176829` of the beacon chain (prater in this example).
+
+In this example, the report contains 1 violation. It is said to be perpetrated on epoch `176819`. Indeed, this block was proposed by a validator from the ETHx set. This validator’s pubkey is `0x810e0df7e6b08dbb0528099432fc4e60acbc5a2f5bc3d6e3559c1003dc58137de0ff2e868e5ec414d7f4e0886cf096d4` and the Validator Identifier is correct, this can be checked by calling the pure function `getPubkeyRoot`.
+
+This validator belongs to the permission-less pool. Voters have therefore to check that either the transaction at the end of the block or the fee recipient is one of acceptable addresses as defined in the previous table. For this slot, the recipient of the transaction at the end of the block is `0x6da4c7af13ecb85c5283b0b78fbd3c204efb2c0c` which is the ETHx permissionless socializing pool. Therefore, this validator did not violate the ETHx policy, and this does not constitue a valid violation, making this example report incorrect.
+
 # Security Considerations
 
 When resolving a dispute, the process in the DVM shall ensure two things at once:
