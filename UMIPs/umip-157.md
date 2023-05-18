@@ -465,6 +465,10 @@ The running balance for a chain and token can be found by following [this sectio
 
 The bundle LP fees for the chain and token combination can be found by summing the [LP Fee components](#breaking-down-the-incentive-fee) of the total incentive fees for each bridging event in the bundle.
 
+Set the `runningBalances` array equal to the running balances found above concatenated with a [closing incentive pool](#finding-the-closing-incentive-pool-size-for-e) array.
+
+Set the `netSendAmounts` array equal to the sum of all manual running balance adjustments that occur when certain running balance [bounds are breached](#handling-running-balance-bounds).
+
 ## Handling Slow Fill Excesses
 
 - _Excesses from partially executed slow fills_: In the case that a previous slow fill payment was sent to a `SpokePool`, but before the slow fill leaf could be executed, a relayer partially "fast" filled the deposit. Afterwards, the slow fill leaf was executed to complete the remainder of the deposit. The `SpokePool` now has a surplus amount of tokens because the original slow fill payment was not fully used to complete the deposit, so this excess must be returned to Mainnet. This step therefore explains how to identify excesses and determine how much to send back (i.e. subtract from running balances). Find all `FilledRelay` events in the block range that have `isSlowRelay` set to true. For each, use a similar method
@@ -505,14 +509,12 @@ for how to construct these types of trees.
 
 # Constructing RelayerRefundRoot
 
-In the previous section, groups of relays were found for each `destinationChainId` and `l1Token`. Then, the rebalance
-parameters were determined for each group. All `FillRelay` events found for a particular `destinationChainId` and
-`l1Token` that were found in the previous section that also have `isSlowRelay` set to false will be referred to as
-"fast relays" in this section. For each `destinationChainId` and `l1Token` grouping in the previous section, a net send
-amount was found. This value will be used in this section as well.
+Let's assume that we've [identified groups of valid relays](#finding-valid-relays) for each `destinationChainId` and `l1Token` combination. All `FillRelay` events found for a particular `destinationChainId` and
+`l1Token` that have `isSlowRelay` set to `false` will be referred to as
+"fast relays" in this section.
 
-For each group from the previous section defined by a `destinationChainId` and `l1Token` that either a) has fast relays
-or b) has a negative net send amount, a RelayerRefundRoot must be constructed. The data structure is shown
+For each combination of `destinationChainId` and `l1Token` that either a) has fast relays
+or b) has a negative net send amount arising from [exceeding running balance bounds](#handling-running-balance-bounds), a RelayerRefundRoot must be constructed. The data structure is shown
 [here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePoolInterface.sol#L9-L23).
 One or more (in the case of leafs with more than [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](#global-constants) refunds) `RelayerRefundLeaf` will be
 constructed for each of these applicable groups. The following defines how to construct each of these leaves given the
