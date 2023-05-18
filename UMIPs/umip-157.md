@@ -115,8 +115,7 @@ The following constants are currently specified in this UMIP directly, but shoul
 The following constants are also stored in the `AcrossConfigStore` contract but are specific to an Ethereum token address. Therefore, they are fetched by querying the config store's `tokenConfig(address)` function.
 - "UBAFeeModel"
   - This is a JSON struct of parameters keyed to a specific `chain` and `token` that defines a fee curve for that token given an input `balance`. This model is described in more detail [here](#TODO) along with visual aids. The parameters are used to construct curves that return percentages given an input running balance.
-- "routeUBAFeeModel"
-  - Similar to `UBAFeeModel`, this is a dictionary of `originChain-destinationChain` keys mapped to models that take precedence over the `UBAFeeModel` for a token on that specific deposit route. The route rate models should contain exactly the same parameters as the default `UBAFeeModel`
+  Depending on the parameter, it might be customizable for different `originChain->destinationChain` routes and/or different `chainIds` and `tokens`.
 - "incentivePoolAdjustment"
   - Used by DAO to keep track of any donations made to add to `incentivePool` liquidity.
 - "ubaRewardMultiplier"
@@ -148,9 +147,15 @@ These curves can be piecewise functions and should be integratable. These curves
 
 Depending on whether `e` is an inflow or outflow, the curve defined by `f(x)` will be modified. For example, inflows might use `f(x)` which would means that outflows would use `-f(x) = g(x)`. This intuively implies that incentive penalties levied on inflows are opposite in sign to incentive rewards given to outflows. This allows the UBA model to accumulate a pool of incentive penalties out of which the incentive rewards can be paid. This also means that the absolute value of rewards should be less than the absolute value of penalties.
 
-Another important point is about paying LP's. The LP fee should be equal to the difference between the penalty and the reward for any flow. For example, if `e` creates an outflow of 100 tokens and `f(e.outflow)` returns `-0.5%`, then we also need to figure out what the reward for the inflow of `e` would look like. So we'd compute `g(e.inflow)` and it might return `+0.3%`. This implies that LPs are earning `0.5 - 0.3 = 0.2%` for `e`. This means that the incentive pool has been built up by `0.3%` for `e` and the extra `0.2%` penalty is given to LPs. We can name this `0.3%` accretion to the incentive pool as the "Balancing fee" and the `0.2%` earned by LPs as the LP fee
+The specifications for how `g(x)` (the incentive curve for outflows) is derived from `f(x)` (the incentive curve for inflows)  will be defined in the UBA Fee Configuration variables [in the ConfigStore](#global-constants).
 
-In summary, for any event `e` that causes a flow for a SpokePool's balance, we can use the incentive curve `f(x)` to compute:
+#### Breaking down the Incentive Fee
+
+In Across, passive liquidity providers in the HubPool need to be compensated for providing backstop liquidity. In the UBA model, LPs accrue fees for *every* bridging event, regardless if its an inflow or outflow. This section describes how an incentive fee comprises both the "LP Fee" and the remainder of the fee otherwise known as the "Balancing Fee".
+
+The LP fee should be equal to the difference between the penalty and the reward for any flow. For example, if `e` creates an outflow of 100 tokens and `f(e.outflow)` returns `-0.5%`, then we also need to figure out what the reward for the inflow of `e` would look like. So we'd compute `g(e.inflow)` and it might return `+0.3%`. This implies that LPs are earning `0.5 - 0.3 = 0.2%` for `e`. This means that the incentive pool has been built up by `0.3%` for `e` and the extra `0.2%` penalty is given to LPs. We can name this `0.3%` accretion to the incentive pool as the "Balancing fee" and the `0.2%` earned by LPs as the LP fee
+
+In summary, for any event `e` that causes a flow for a SpokePool's balance, we can use the incentive curve `f(x)` (and its inverse `g(x)`) to compute:
 - the incentive fee for `e` which is comprised of:
    - the LP fee for `e`
    - the balancing fee for `e`
@@ -216,9 +221,9 @@ if (maxRewards > P):
    discountFactor = (uncappedIncentiveFee - P) / uncappedIncentiveFee
    appliedIncentiveFee *= 1 - discountFactor
 
-## Apply hardcoded multiplier
-
-appliedIncentiveFee *= UBA_REWARD_MULTIPLIER
+## Apply hardcoded multiplier if incentive fee is a reward instead of a penalty
+if (appliedIncentiveFee < 0):
+   appliedIncentiveFee *= UBA_REWARD_MULTIPLIER
 ```
 
 The final reward is equal to `reward * ubaRewardMultiplier`, a convenient scaler variable set in the [config store](#token-constants).
@@ -241,7 +246,9 @@ In the next section, we'll find the "Closing Balance" for e: the running balance
 
 #### Finding the Closing Balance for e
 
-Step through all events between the last validated bundle's end block and `e` (e.g. all `e`'s with blocks >= the `bundleEndBlock` for the chain `e.chainId` in the preceding validated bundle and <= `e.block`). For each deposit, add the `e.amount` to the opening balance, and for each refund or fill, subtract `e.amount` from the opening balance.
+Step through all events between the last validated bundle's end block and `e` (e.g. all `e`'s with blocks >= the `bundleEndBlock` for the chain `e.chainId` in the preceding validated bundle and <= `e.block`). For each bridging event, compute the total incentive fee following this [algorithm](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e).
+
+We now need to [break down](#breaking-down-the-incentive-fee) the total incentive fee into the LP Fee and Balancing Fee component parts. For each of these events preceding the target event `e`, add to the running balance the `e.amount - BalancingFee`. This means that running balances should only count the LP fee plus the event inflow/outflow minus Balancing fees.
 
 ##### Handling running balance bounds
 If at any point in time, the running balance exceeds the [threshold upper or lower running balance](#selecting-running-balance-bounds-for-bridging-event), then reset the running balance count to the "target lower" or "target upper". The running balance for computing the incentive fee for `e` is computed as if the running balance at the time of the event `e` was added to `e.amount`. The next bridge event `e_{i+1}` just will use the target running balance instead of the opening balance `+ e.amount`.
@@ -262,7 +269,7 @@ Finally, add the [incentive fee adjustment](#token-constants) to theOpening Ince
 
 #### Finding the Closing Incentive Pool size for e
 
-Step through all events between the last validated bundle's end block and `e`. For each event, compute the incentive fee charged to `e` using the steps in [this section](#computing-uba-fees). Add this incentive fee to the starting incentive fee until you get to `e`. Now you have the incentive pool size at the time of `e`.
+Step through all events between the last validated bundle's end block and `e`. For each event, compute the total incentive fee charged to `e` using the steps in [this section](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e). Break down the incentive fee into the LP Fee and the Balancing Fee by following [these steps](#breaking-down-the-incentive-fee). Each of these events preceding `e` should add their `BalancingFee` to the Incentive Pool, where the Balancing Fee is negative for rewards and positive for penalties (i.e. penalties add to the pot and rewards are withdrawn from the pot).
 
 #### Selecting Incentive Curve for Bridging Event
 
