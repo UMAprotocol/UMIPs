@@ -138,19 +138,24 @@ For each SpokePool on `chainId`, there will be an ordered series of Bridging Eve
 
 In the following sections we'll use "Deposit" interchangeably with "Inflow", to represent running balance added to the SpokePool. We'll also use "Outflow" interchangeably with "Fills" and "Refunds", which represent balance subtracted from the SpokePool.
 
-### Incentive Curves
+### Incentive Curve
 
-Incentive curves are virtual mathematical functions that will be deterministically defined by a set of [global configuration variables stored in the ConfigStore](#global-constants). There will be exactly two curves for each chain:
-- Inflow Curve
-- Outflow Curve
+The incentive curve is a mathematical function that will be deterministically defined by a set of [global configuration variables stored in the ConfigStore](#global-constants). 
 
-The curves are functions `f_i_t(x)` where the input `x` is denominated as a "running balance", which represents the amount of balance held on a SpokePool. `f_i_t(x)` is unique for chain ID `i` and token `t`. `f_i_t(x)` should return a percentage, representing a "marginal incentive fee" for the input `x` running balance.
+There will be a different curve for each chain and token combination. Therefore the curve is a function `f_i_t(x)` where the input `x` is denominated as a "running balance", which represents the amount of balance held on a SpokePool on chain `i`. `f_i_t(x)` is unique for chain ID `i` and token `t`. `f_i_t(x)` should return a percentage, representing a "marginal incentive fee" for the input `x` running balance.
 
 These curves can be piecewise functions and should be integratable. These curves will be used to figure out how to charge fees for an inflow or outflow event `e` which adds or subtracts, respectively, to a SpokePool's running balance. Typically, the incentive fee will be equal to the negative of the integral between `e.amount + x` for inflows (or `x - e.amount` for outflows) and `x`. This is intuitively the integral between the opening marginal incentive fee and the closing incentive fee after `e` inflows or outflows some tokens from the SpokePool's running balance.
 
-Inflow curves will be used to pay or penalize the senders of `e` (i.e. the "depositor") depending on the sign of the incentive fee.
+Depending on whether `e` is an inflow or outflow, the curve defined by `f(x)` will be modified. For example, inflows might use `f(x)` which would means that outflows would use `-f(x) = g(x)`. This intuively implies that incentive penalties levied on inflows are opposite in sign to incentive rewards given to outflows. This allows the UBA model to accumulate a pool of incentive penalties out of which the incentive rewards can be paid. This also means that the absolute value of rewards should be less than the absolute value of penalties.
 
-Outflow curves will also be used to pay or penalize the senders of `e`, but in this case these will be "relayers" (e.g. Relayers take refunds on SpokePools, creating outflows).
+Another important point is about paying LP's. The LP fee should be equal to the difference between the penalty and the reward for any flow. For example, if `e` creates an outflow of 100 tokens and `f(e.outflow)` returns `-0.5%`, then we also need to figure out what the reward for the inflow of `e` would look like. So we'd compute `g(e.inflow)` and it might return `+0.3%`. This implies that LPs are earning `0.5 - 0.3 = 0.2%` for `e`. This means that the incentive pool has been built up by `0.3%` for `e` and the extra `0.2%` penalty is given to LPs. We can name this `0.3%` accretion to the incentive pool as the "Balancing fee" and the `0.2%` earned by LPs as the LP fee
+
+In summary, for any event `e` that causes a flow for a SpokePool's balance, we can use the incentive curve `f(x)` to compute:
+- the incentive fee for `e` which is comprised of:
+   - the LP fee for `e`
+   - the balancing fee for `e`
+
+Both the relayer and the dataworker will have to compute the component parts of the incentive fee in order to calculate the running balance change introduced by `e`. This is because the balancing fee component should not be included in the running balance, since this is separately accounted for in the incentive pool amount. Once the Relayer knows the correct running balance adjustment, they will then charge the full incentive fee to the depositor. The Dataworker will additionally have to add the LP fee to the `bundleLpFees` array (to return funds back to LPs).
 
 ### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
 
