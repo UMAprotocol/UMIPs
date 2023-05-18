@@ -157,6 +157,16 @@ In summary, for any event `e` that causes a flow for a SpokePool's balance, we c
 
 Both the relayer and the dataworker will have to compute the component parts of the incentive fee in order to calculate the running balance change introduced by `e`. This is because the balancing fee component should not be included in the running balance, since this is separately accounted for in the incentive pool amount. Once the Relayer knows the correct running balance adjustment, they will then charge the full incentive fee to the depositor. The Dataworker will additionally have to add the LP fee to the `bundleLpFees` array (to return funds back to LPs).
 
+At this point we'll present an example to demonstrate this idea of breaking down the incentive fee into the LP fee and balancing fee:
+
+#### Example computation of incentive fee for e
+
+Let's say that `e` is a deposit into SpokePool on chain `i` for 10 tokens. The SpokePool has a running balance at the time of `e` of 100. If we integrate `f(x)` between `100` and `110` (100 + 10 = 110, the closing running balance after `e` is executed), then we are returned `1`, meaning that `e` should be penalized an incentive fee of `1` token. If we integrate `g(x)` (the "outflow curve") between `100` and `110`, then we are returned `0.8`, meaning that a refund for the same amount as `e` is depositing would be rewarded an incentive fee of `0.8` tokens. This implies that the LP fee component of the `1` incentive fee amount is `1 - 0.8 = 0.2` tokens. 
+
+We now know how much to add to LP fees for `e`: `0.2` tokens. 
+
+We also know how much the running balance should be adjusted following `e`: `10 - 1 + 0.2`. Intuitively, we should be removing the incentive pool addition of `0.8` tokens (out of which we'll pay incentive rewards) from the running balance, but including the LP fees.
+
 ### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
 
 First we'll compute the "uncapped" incentive fee amount. This is equal to the inverse of the integral of the incentive curve between [`runningBalance`, `runningBalance + e.amount`] where `e.amount > 0` for deposits and `e.amount < 0` for refunds and fills.
