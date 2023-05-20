@@ -143,11 +143,21 @@ The incentive curve is a mathematical function that will be deterministically de
 
 There will be a different curve for each chain and token combination. Therefore the curve is a function `f_i_t(x)` where the input `x` is denominated as a "running balance", which represents the amount of balance held on a SpokePool on chain `i`. `f_i_t(x)` is unique for chain ID `i` and token `t`. `f_i_t(x)` should return a percentage, representing a "marginal incentive fee" for the input `x` running balance.
 
-These curves can be piecewise functions and should be integratable. These curves will be used to figure out how to charge fees for an inflow or outflow event `e` which adds or subtracts, respectively, to a SpokePool's running balance. Typically, the incentive fee will be equal to the negative of the integral between `e.amount + x` for inflows (or `x - e.amount` for outflows) and `x`. This is intuitively the integral between the opening marginal incentive fee and the closing incentive fee after `e.amount` is added to or subtracted from SpokePool's running balance:
+These curves can be piecewise functions and should be integratable. These curves will be used to figure out how to charge fees for an inflow or outflow event `e` which adds or subtracts, respectively, to a SpokePool's running balance. Typically, the incentive fee will be equal to the negative of the integral between `e.amount + x` for inflows (or `x - e.amount` for outflows) and `x`. This is intuitively the integral between the opening marginal incentive fee and the closing incentive fee after the transferred amount is added to or subtracted from SpokePool's running balance:
 
 $\text{Incentive Fee} = \int_{\text{Running Balance}_i}^{\text{Running Balance}_i + \text{e.amount}} f_i(x) dx$
 
-Depending on whether `e` is an inflow or outflow, the curve defined by `f(x)` will be modified. For example, inflows might use `f(x)` which would means that outflows would use `-f(x) = g(x)`. This intuively implies that incentive penalties levied on inflows are opposite in sign to incentive rewards given to outflows. This allows the UBA model to accumulate a pool of incentive penalties out of which the incentive rewards can be paid. This also means that the absolute value of rewards should be less than the absolute value of penalties.
+Depending on whether `e` is an inflow or outflow, the curve defined by `f(x)` will be modified. For example, inflows might use `f(x)` which would means that outflows would use `-f(x) = g(x)`. This intuively implies that incentive penalties levied on inflows are opposite in sign to incentive rewards given to outflows. This allows the UBA model to accumulate a pool of incentive penalties out of which the incentive rewards can be paid. In other words, we need to charge enough penalties to build an "incentive pot" to pay future rewards.
+
+This means that:
+
+- For $z < x_l$ (i.e. the pool is under-capitalized) we must have:
+
+$$\underbrace{\int_{z}^{x_l} \omega_d(x) dx}_{\text{rewards paid for depositing capital}} \leq \underbrace{\int_{x_l}^{z} \omega_f(x) dx}_{\text{penalties paid by fills}}$$
+
+- For $z > x_u$ (i.e. the pool is over-capitalized) we must have:
+   
+$$\underbrace{\int_{z}^{x_u} \omega_f(x) dx}_{\text{rewards paid for doing fills}} \leq \underbrace{\\int_{x_u}^{z} \omega_d(x) dx}_{\text{penalties paid by depositors}}$$
 
 The specifications for how `g(x)` (the incentive curve for outflows) is derived from `f(x)` (the incentive curve for inflows)  will be defined in the UBA Fee Configuration variables [in the ConfigStore](#global-constants).
 
@@ -168,7 +178,11 @@ At this point we'll present an example to demonstrate this idea of breaking down
 
 #### Example computation of incentive fee for e
 
-Let's say that `e` is a deposit into SpokePool on chain `i` for 10 tokens. The SpokePool has a running balance at the time of `e` of 100. If we integrate `f(x)` between `100` and `110` (100 + 10 = 110, the closing running balance after `e` is executed), then we are returned `1`, meaning that `e` should be penalized an incentive fee of `1` token. If we integrate `g(x)` (the "outflow curve") between `100` and `110`, then we are returned `0.8`, meaning that a refund for the same amount as `e` is depositing would be rewarded an incentive fee of `0.8` tokens. This implies that the LP fee component of the `1` incentive fee amount is `1 - 0.8 = 0.2` tokens. 
+Let's say that `e` is a deposit into SpokePool on chain `i` for 10 tokens. The SpokePool has a running balance at the time of `e` of 100. If we integrate `f(x)` between `100` and `110` (100 + 10 = 110, the closing running balance after `e` is executed), then we are returned `1`, meaning that `e` should be penalized an incentive fee of `1` token. If we integrate `g(x)` (the "outflow curve") between `100` and `110`, then we are returned `0.8`. 
+
+Integrating `g(x)` in this opposite direction from `110` to `100` is equivalent to computing the incentive fee for an outflow from `110` to `100`. In this case, the outflow is rewarded an incentive of `0.8` tokens, and the LP fee component of the total incentive fee is the difference between the incentive *penalty* and the incentive *reward*.
+
+This implies that the LP fee component of the `1` incentive fee amount is `1 - 0.8 = 0.2` tokens.
 
 We now know how much to add to LP fees for `e`: `0.2` tokens. 
 
