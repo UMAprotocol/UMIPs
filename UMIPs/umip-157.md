@@ -246,6 +246,19 @@ The final reward is equal to `reward * ubaRewardMultiplier`, a convenient scaler
 
 The following sections explain how to find the specific inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
 
+### Adding the Utilization Fee
+
+This fee is an additional fee charged to allow the bridge to stay operational during times of high bridge demand.
+
+"Utilization" is defined as:
+
+$$\text{utilization} = 1 - \frac{\text{amount in hub} + \text{amount in Ethereum spoke} + \sum_{i \notin \text{Ethereum}} \text{spoke target}_i}{ \text{total hub equity}}$$
+
+The Utilization Fee is determined through the following steps:
+
+1. Determine the utilization before the event occurs.
+2. Determine the utilization after the event occurs. This value can only be different from the utilization before the event occurs if the inflow or outflow takes place on Ethereum. A deposit on Ethereum lowers the utilization while a refund on Ethereum raises it.
+3. Compute the Utilization fee percentage as $\text{lp fee} = \max \{ 0, \alpha + \frac{1}{\text{abs} \left(u_{\text{post}} - u_{\text{pre}} \right) } \int_{u_{\text{pre}}}^{u_{\text{post}}} \gamma(u) du \}$
 ### Computing Running Balance for Bridging Inflow and Outflow Events
 
 #### Finding the Starting Running Balance
@@ -305,11 +318,17 @@ Identify the [UBA Fee Curve Bounds](#token-constants) for the L1 token equivalen
 
 ### Using the incentive fee
 
-The incentive fee is charged to inflows and outflows differently. For outflows the `realizedLpFeePct` should be set to a percentage equal to `incentive fee / deposit.amount`. Deposit recipients specified in Inflows will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit incentive fee.
+The total fee to charge is equal to the [incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e) plus the [utilization fee](#adding-the-utilization-fee). We'll label this total fee as the "UBA Fee".
 
-Relayers will receive a refund from the `HubPool` equal to `(1 - (fill.realizedLpFeePct + fillIncentiveFeePct)) * deposit.amount`. Therefore, relayers will be refunded the deposited amount minus the deposit and refund incentive fees. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee` and minus the refund incentive fee.
+The UBA fee is charged to inflows and outflows differently. For outflows the `realizedLpFeePct` should be set to a percentage equal to `UBA fee / deposit.amount`. Deposit recipients specified in Inflows will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit UBA fee.
 
-Dataworkers will add the incentive fees for each event in a bundle that they want to propose plus the opening incentive pool amount (from the last validated bundle) and store these in the `runningBalances` array to snapshot the latest validated incentive pool amounts.
+Relayers will receive a refund from the `HubPool` equal to `(1 - (fill.realizedLpFeePct + fillIncentiveFeePct)) * deposit.amount`. Therefore, relayers will be refunded the deposited amount minus the deposit and refund UBA fees. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee` and minus the refund UBA fee.
+
+To determine the `bundleLpFees`, Dataworkers should sum all of the utilization fees and [LP components of the incentive fee](#breaking-down-the-incentive-fee) produced by each bridging event.
+
+The running balances to set for a bundle are equal to the closing running balances following the final bridging event per chain in the bundle.
+
+The incentive pool balances to set are equal to the closing incentive pool amounts following the final bridging event per chain in the bundle.
 
 ## UBA Fee Curve Parameters
 
