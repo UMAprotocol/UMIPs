@@ -14,31 +14,28 @@ The DVM should support the ACROSS-V2 price identifier.
 
 # Across V2 Architecture
 
-The basic architecture of Across V2 is a single LP ("Liquidity Provider") pool sitting on Ethereum mainnet connected to many "spoke pools" deployed on
-various chains to facilitate user "deposits". A deposit is a cross-chain transfer request from an "origin" chain to a different "destination" chain, which is fulfilled when a "relayer" sends the depositor their desired transfer amount (less fees) on their desired destination chain.
+Across provides utility to users who want send or "bridge" tokens across chains. The way Across achieves this is by offering a market for lenders who credit users their desired tokens on their desired destination chain in exchange for receiving interest payments.
 
-Relayers lend capital to the Across V2 system by fulfilling users' deposits via the spokes and are eventually repaid by the LP pool. "Bundles" containing many of these repayments are validated together by the [Optimistic Oracle ("OO")](https://docs.umaproject.org/protocol-overview/how-does-umas-oracle-work). In addition to validating individual repayment instructions, the OO also validates rebalance instructions that tell the LP pool how to transfer funds to and from the spoke pools in order to execute the repayments and pull deposited funds from the spoke to the LP pool.
+Imagine a user wants to bridge a stablecoin from an L2 to Ethereum. In Across, that user would "deposit" the stablecoin on an L2 contract and offer a fee in exchange for receiving the Ethereum equivalent of that stablecoin on Ethereum. "Relayers", also known as lenders, will compete to credit the user the equivalent stablecoin on Ethereum.
 
+The lender will later receive a refund plus fee once the system has validated that their loan was transmitted correctly. A loan can be fulfilled improperly for many reasons, including setting the wrong fee, destination token, etc. The system validates batches of these loans at once via an optimistic challenge mechanism secured by the [UMA Oracle](https://docs.umaproject.org/protocol-overview/how-does-umas-oracle-work).
 
-If there is no relayer who can provide all the capital for a given deposit request, a "slow relay" (or "slow fill") is performed where the funds are sent from the
-LP pool to the destination spoke to fulfill the deposit. These slow fill requests are also included in the aforementioned bundles.
+The fundamental architecture of this system is a "Hub and Spoke" model, where users and lenders who participate in the bridging of tokens interact with Spokes on the origin and destination networks, while the Hub pools capital on Ethereum and uses it to collateralize refunds to lenders. Liquidity Providers are therefore passive capital providers who interact with the Hub on Ethereum and earn fees for backstopping the system.
 
-Bundles are implemented on-chain as [Merkle Roots](https://www.youtube.com/watch?v=JXn4GqyS7Gg) which uniquely identify the set of all repayments and rebalance instructions over a specific block range. Therefore, Across V2 moves capital to repay relayers and fulfil bridge requests through periodic bundles, all validated by the OO.
-
-This UMIP explains exactly how to construct and verify a bundle.
+This UMIP will explain how to properly validate batches of these refunds, including all of the detail needed to verify that the fees are set and charged correctly. These batches of refunds are summarized on-chain within [Merkle Roots](https://www.youtube.com/watch?v=JXn4GqyS7Gg). In addition to a merkle root containing all of the refunds to be sent to lenders, an additional merkle root can be included that instructs the Hub and Spoke as to how to "rebalance" capital amongst themselves. Respectively, these two merkle roots are intuitively named the "Relayer Refund root" and the "Pool Rebalance root".
 
 ![](./images/across-architecture.png?raw=true "Across V2 Architecture")
 
 # Motivation
 
-The ACROSS-V2 price identifier is intended to be used by the Across v2 contracts to verify whether a bundle of bridge-related
+The ACROSS-V2 price identifier is intended to be used by off-chain agents to verify whether a bundle of bridge-related
 transactions submitted to mainnet is valid.
 
 
 # Data Specifications and Implementation
 
 Note 1: the following details will often refer to the [Across V2](https://github.com/across-protocol/contracts-v2) repo
-at commit hash: a8ab11fef3d15604c46bba6439291432db17e745. This allows the UMIP to have a constant reference rather than
+at commit hash: 4f83f549e37582f268a5811c9ac33ca11a42b0d7. This allows the UMIP to have a constant reference rather than
 depending on a changing repository.
 
 Note 2: when referencing "later" or "earlier" events, the primary sort should be on the block number, the secondary
@@ -126,28 +123,50 @@ For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")
 
 _This UMIP will explain later how global and token-specific configuration settings are used._
 
-## Computing UBA Fees
 
-This section gives an overview for computing "UBA" (Universal Bridge Adapter) incentive fees, which are charged on all "Bridging Events".
+## Across Agents
+
+- User: Also known as a Depositor or Bridger. The User deposits tokens on an "origin" SpokePool contract and expects to receive their deposited amount less fees from a "destination" SpokePool on the destination chain.
+- Relayer: Also known as a Lender. Credits the User their destination tokens less fees on the destination SpokePool, which is also known as a "relay" attempt. Receives a refund plus fees from the system after their loan is validated optimistically.
+- Liquidity Provider (LP): Lends capital to the HubPool on Ethereum. Their capital is used to backstop refunds to Relayers and assure users that there is enough capital in the system to fulfill their bridge request. Earns interest for lending capital passively.
+- Dataworker: Submits bundles of relay attempts that the system should refund. The bundles are validated optimistically over a challenge period.
+
+## Across Fees
+
+This section will first explain all of the fees charged to Across agents and then explain how the fees are collected. Across charges fees via the "UBA" fee model in order to incentivize agents to deposit or take refunds on SpokePools such that a target balance is maintained. For example, when a SpokePool has a target of 100 tokens, then it will reward users who deposit on it when it has 90 tokens and also reward relayers who take refunds from it when it has 110 tokens.
+
+The following list of fees are charged in Across:
+
+- System Fee: The sum of the LP fee and deposit balancing fee. This is included in the `realizedLpFeePct` for a deposit.
+  - LP Fee: The portion of the deposit that goes to LPs.
+  - Deposit Balancing Fee: The penalty or reward included in the System Fee to incentivize balancing the SpokePool on the origin chain.
+- Relayer Fee: The fee paid to the relayer to relay the deposit. The sum of the gas, capital and refund balancing fees.
+  - Relayer gas fee: The component of the Relayer Fee to account for expected gas expenditures on the destination chain.
+  - Relayer capital fee: The component of the Relayer Fee to account for the expected relayer cost of lending capital to the user on the destination chain.
+  - Refund balancing fee: The penalty or reward that is applied to the relayer’s refund to incentivize balancing the SpokePool on the refund chain. Because this is included in the relayer fee, which is set by the user at the time of deposit, the user should estimate this based on where they believe their relayer will take a deposit.
+
+## Computing Deposit and Refund Balancing Fees
+
+This section gives an overview for computing the fees charged to users and relayers to incentivize them to maintain a SpokePool's target balance. These are labeled as Balancing Fees in this UMIP. Balancing fees are charged to any agent who causes an Inflow or Outflow to a SpokePool via a "Bridging Event".
 
 ### Defining Bridging Events
-A Bridging Event could be a `Deposit`, `Fill` or `Refund` event, which are intuitively the only events that lead to inflows and outflows to and from a SpokePool. Every deposit is counted as a bridging event, but not all fills and refunds are. A fill is counted if it is the first valid fill for a deposit on another chain, and its `repaymentChainId` is set to the `destinationChainId`, i.e. the fill will eventually be taking funds out of the SpokePool via a refund. If a fill's `repaymentChainId` is not set equal to the `destinationChainId`, then a corresponding refund event on the `repaymentChainId` should be emitted in order to signal when the refund from the SpokePool on the repayment chain should be counted as an outflow. See the section on [validating Refunds](#TODO) for  more details on matching refunds with fills.
+A Bridging Event is a `Deposit`, `Fill` or `Refund` event, which are intuitively the only events that lead to inflows and outflows to and from a SpokePool. Every deposit is counted as a bridging event, but not all fills and refunds are. A fill is counted if it is the first valid fill for a deposit on another chain, and its `repaymentChainId` is set to the `destinationChainId`, i.e. the fill will eventually be taking funds out of the SpokePool via a refund. If a fill's `repaymentChainId` is not set equal to the `destinationChainId`, then a corresponding refund event on the `repaymentChainId` should be emitted in order to signal when the refund from the SpokePool on the repayment chain should be counted as an outflow. See the section on [validating Refunds](#TODO) for  more details on matching refunds with fills.
 
-For each SpokePool on `chainId`, there will be an ordered series of Bridging Events (sorted in [ascending](#comparing-events-chronologically) chronological order). To compute the incentive fee for any event `e` within `E` (the ordered series of Bridging Events), we need to determine the "Running Balance" and the "Incentive Pool" at the time that `e` was emitted. We also will need to select which Incentive Curve to use to find the Incentive fee given the running balance and available incentive pool.
+For each SpokePool on `chainId`, there will be an ordered series of Bridging Events (sorted in [ascending](#comparing-events-chronologically) chronological order). To compute the balancing fee for any event `e` within `E` (the ordered series of Bridging Events), we need to determine the "Running Balance" and the "Incentive Pool" at the time that `e` was emitted. We also will need to select which Incentive Curve to use to find the balancing fee given the running balance and available incentive pool.
 
-In the following sections we'll use "Deposit" interchangeably with "Inflow", to represent running balance added to the SpokePool. We'll also use "Outflow" interchangeably with "Fills" and "Refunds", which represent balance subtracted from the SpokePool.
+In the following sections we'll use "Deposit" interchangeably with "Inflow", to represent balance added to the SpokePool. We'll also use "Outflow" interchangeably with "Fills" and "Refunds", which represent balance subtracted from the SpokePool.
 
 ### Incentive Curve
 
 The incentive curve is a mathematical function that will be deterministically defined by a set of [global configuration variables stored in the ConfigStore](#global-constants). 
 
-There will be a different curve for each chain and token combination. Therefore the curve is a function `f_i_t(x)` where the input `x` is denominated as a "running balance", which represents the amount of balance held on a SpokePool on chain `i`. `f_i_t(x)` is unique for chain ID `i` and token `t`. `f_i_t(x)` should return a percentage, representing a "marginal incentive fee" for the input `x` running balance.
+There will be a different curve for each chain and token combination. Therefore the curve is a function `f_i_t(x)` where the input `x` is denominated as a "running balance", which represents the amount of balance held on a SpokePool on chain `i` at some point in time. `f_i_t(x)` is unique for chain ID `i` and token `t`. `f_i_t(x)` should return a percentage, representing a "marginal incentive fee" for the input `x` running balance.
 
-These curves can be piecewise functions and should be integratable. These curves will be used to figure out how to charge fees for an inflow or outflow event `e` which adds or subtracts, respectively, to a SpokePool's running balance. Typically, the incentive fee will be equal to the negative of the integral between `e.amount + x` for inflows (or `x - e.amount` for outflows) and `x`. This is intuitively the integral between the opening marginal incentive fee and the closing incentive fee after the transferred amount is added to or subtracted from SpokePool's running balance:
+These curves can be piecewise functions and should be integratable. These curves will be used to figure out how to charge fees for an inflow or outflow event `e` which adds or subtracts, respectively, to a SpokePool's running balance. Typically, the balancing fee will be equal to the negative of the integral between `e.amount + x` for inflows (or `x - e.amount` for outflows) and `x`. This is intuitively the integral between the opening marginal incentive fee and the closing incentive fee after the transferred amount is added to or subtracted from SpokePool's running balance:
 
-$\text{Incentive Fee} = \int_{\text{Running Balance}_i}^{\text{Running Balance}_i + \text{e.amount}} f_i(x) dx$
+$\text{Balancing Fee} = \int_{\text{Running Balance}_i}^{\text{Running Balance}_i + \text{e.amount}} f_{it}(x) dx$
 
-Depending on whether `e` is an inflow or outflow, the curve defined by `f(x)` will be modified. For example, inflows might use `f(x)` which would means that outflows would use `-f(x) = g(x)`. This intuively implies that incentive penalties levied on inflows are opposite in sign to incentive rewards given to outflows. This allows the UBA model to accumulate a pool of incentive penalties out of which the incentive rewards can be paid. In other words, we need to charge enough penalties to build an "incentive pot" to pay future rewards.
+When the Balancing Fee is positive, the fee is paid by the agent (i.e. User or Relayer) to the SpokePool. These fees contribute to a pot of penalties or an "incentive pool" out of which future negative Balancing Fees or "rewards" are paid out. 
 
 This means that:
 
@@ -157,40 +176,12 @@ $$\underbrace{\int_{z}^{x_l} \omega_d(x) dx}_{\text{rewards paid for depositing 
 
 - For $z > x_u$ (i.e. the pool is over-capitalized) we must have:
    
-$$\underbrace{\int_{z}^{x_u} \omega_f(x) dx}_{\text{rewards paid for doing fills}} \leq \underbrace{\\int_{x_u}^{z} \omega_d(x) dx}_{\text{penalties paid by depositors}}$$
+$$\underbrace{\int_{z}^{x_u} \omega_f(x) dx}_{\text{rewards paid for doing fills}} \leq \underbrace{\int_{x_u}^{z} \omega_d(x) dx}_{\text{penalties paid by depositors}}$$
 
-The specifications for how `g(x)` (the incentive curve for outflows) is derived from `f(x)` (the incentive curve for inflows)  will be defined in the UBA Fee Configuration variables [in the ConfigStore](#global-constants).
 
-#### Breaking down the Incentive Fee
+### Computing Balancing Fee using incentive pool size, running balance, and incentive curve for e
 
-In Across, passive liquidity providers in the HubPool need to be compensated for providing backstop liquidity. In the UBA model, LPs accrue fees for *every* bridging event, regardless if its an inflow or outflow. This section describes how an incentive fee comprises both the "LP Fee" and the remainder of the fee otherwise known as the "Balancing Fee".
-
-The LP fee should be equal to the difference between the penalty and the reward for any flow. For example, if `e` creates an outflow of 100 tokens and `f(e.outflow)` returns `-0.5%`, then we also need to figure out what the reward for the inflow of `e` would look like. So we'd compute `g(e.inflow)` and it might return `+0.3%`. This implies that LPs are earning `0.5 - 0.3 = 0.2%` for `e`. This means that the incentive pool has been built up by `0.3%` for `e` and the extra `0.2%` penalty is given to LPs. We can name this `0.3%` accretion to the incentive pool as the "Balancing fee" and the `0.2%` earned by LPs as the LP fee
-
-In summary, for any event `e` that causes a flow for a SpokePool's balance, we can use the incentive curve `f(x)` (and its inverse `g(x)`) to compute:
-- the incentive fee for `e` which is comprised of:
-   - the LP fee for `e`
-   - the balancing fee for `e`
-
-Both the relayer and the dataworker will have to compute the component parts of the incentive fee in order to calculate the running balance change introduced by `e`. This is because the balancing fee component should not be included in the running balance, since this is separately accounted for in the incentive pool amount. Once the Relayer knows the correct running balance adjustment, they will then charge the full incentive fee to the depositor. The Dataworker will additionally have to add the LP fee to the `bundleLpFees` array (to return funds back to LPs).
-
-At this point we'll present an example to demonstrate this idea of breaking down the incentive fee into the LP fee and balancing fee:
-
-#### Example computation of incentive fee for e
-
-Let's say that `e` is a deposit into SpokePool on chain `i` for 10 tokens. The SpokePool has a running balance at the time of `e` of 100. If we integrate `f(x)` between `100` and `110` (100 + 10 = 110, the closing running balance after `e` is executed), then we are returned `1`, meaning that `e` should be penalized an incentive fee of `1` token. If we integrate `g(x)` (the "outflow curve") between `100` and `110`, then we are returned `0.8`. 
-
-Integrating `g(x)` in this opposite direction from `110` to `100` is equivalent to computing the incentive fee for an outflow from `110` to `100`. In this case, the outflow is rewarded an incentive of `0.8` tokens, and the LP fee component of the total incentive fee is the difference between the incentive *penalty* and the incentive *reward*.
-
-This implies that the LP fee component of the `1` incentive fee amount is `1 - 0.8 = 0.2` tokens.
-
-We now know how much to add to LP fees for `e`: `0.2` tokens. 
-
-We also know how much the running balance should be adjusted following `e`: `10 - 1 + 0.2`. Intuitively, we should be removing the incentive pool addition of `0.8` tokens (out of which we'll pay incentive rewards) from the running balance, but including the LP fees.
-
-### Computing Incentive Fee using incentive pool size, running balance, and incentive curve for e
-
-First we'll compute the "uncapped" incentive fee amount. This is equal to the inverse of the integral of the incentive curve between [`runningBalance`, `runningBalance + e.amount`] where `e.amount > 0` for deposits and `e.amount < 0` for refunds and fills.
+First we'll compute the "uncapped" balancing fee amount. This is equal to the inverse of the integral of the incentive curve between [`runningBalance`, `runningBalance + e.amount`] where `e.amount > 0` for deposits and `e.amount < 0` for refunds and fills.
 
 Secondly, we need to determine the available amounts of incentives in case we need to cap the actual incentive fee. We already know this as the incentive pool size at the time of `e`.
 
@@ -246,22 +237,9 @@ The final reward is equal to `reward * ubaRewardMultiplier`, a convenient scaler
 
 The following sections explain how to find the specific inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
 
-### Adding the Utilization Fee
+### Computing Running Balances for Bridging Inflow and Outflow Events
 
-This fee is an additional fee charged to allow the bridge to stay operational during times of high bridge demand.
-
-"Utilization" is defined as:
-
-$$\text{utilization} = 1 - \frac{\text{amount in hub} + \text{amount in Ethereum spoke} + \sum_{i \notin \text{Ethereum}} \text{spoke target}_i}{ \text{total hub equity}}$$
-
-The Utilization Fee is determined through the following steps:
-
-1. Determine the utilization before the event occurs.
-2. Determine the utilization after the event occurs. This value can only be different from the utilization before the event occurs if the inflow or outflow takes place on Ethereum. A deposit on Ethereum lowers the utilization while a refund on Ethereum raises it.
-3. Compute the Utilization fee percentage as $\text{lp fee} = \max \{ 0, \alpha + \frac{1}{\text{abs} \left(u_{\text{post}} - u_{\text{pre}} \right) } \int_{u_{\text{pre}}}^{u_{\text{post}}} \gamma(u) du \}$
-### Computing Running Balance for Bridging Inflow and Outflow Events
-
-#### Finding the Starting Running Balance
+#### Finding the Opening Running Balance
 
 Identify the last validated `runningBalance` included with a `bundleEndBlock` preceding `e`. To do this, we need to match the `PoolRebalanceLeaf` containing an `L1Token` matching `e`'s `L2Token` which also contains a `bundleEndBlock` most closely preceding `e` with the correct `e.chainId`.
 
@@ -273,7 +251,7 @@ Let's name this preceding running balance the "Opening Balance". Let's also name
 
 In the next section, we'll find the "Closing Balance" for e: the running balance of the SpokePool after `e` is executed.
 
-#### Finding the Closing Balance for e
+#### Finding the Closing Balance
 
 Step through all events between the last validated bundle's end block and `e` (e.g. all `e`'s with blocks >= the `bundleEndBlock` for the chain `e.chainId` in the preceding validated bundle and <= `e.block`). For each bridging event, compute the total incentive fee following this [algorithm](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e).
 
@@ -316,36 +294,34 @@ If `e` is a deposit, then find the Inflow Curve parameters, otherwise find the O
 
 Identify the [UBA Fee Curve Bounds](#token-constants) for the L1 token equivalent and chain for `e` similarly to finding the incentive curve for `e`.
 
-### Using the incentive fee
+### Collecting Fees in Across
 
-The total fee to charge is equal to the [incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e) plus the [utilization fee](#adding-the-utilization-fee). We'll label this total fee as the "UBA Fee".
+The Across contracts enforce that users receive their deposited amount minus the `relayerFeePct` and `realizedLpFeePct`. The `relayerFeePct` is set by the user and includes compensation to the Relayer for their cost of capital and gas expenditures on the destination chain. The `relayerFeePct` should also include enough to pay out the relayer's Refund Balancing Fee. The user will therefore need to estimate where the refund will take place. If the `relayerFeePct` is not large enough to fairly compensate a relayer, then the user can "speed up" their deposit by increasing the `relayerFeePct` by signing and broadcasting a message on-chain.
 
-The UBA fee is charged to inflows and outflows differently. For outflows the `realizedLpFeePct` should be set to a percentage equal to `UBA fee / deposit.amount`. Deposit recipients specified in Inflows will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit UBA fee.
+The `realizedLpFeePct` will be computed at relay time and set by the relayer. It should include the LP and Deposit Balancing fee using fee curve parameters defined on-chain. If the `realizedLpFeePct` is set incorrectly, then the relayer will not be refunded as the relay will not be included in a bundle of valid relays by the Dataworker.
 
-Relayers will receive a refund from the `HubPool` equal to `(1 - (fill.realizedLpFeePct + fillIncentiveFeePct)) * deposit.amount`. Therefore, relayers will be refunded the deposited amount minus the deposit and refund UBA fees. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee` and minus the refund UBA fee.
+The dataworker will need to compute the expected LP and Deposit Balancing fee for each relay and accumulate the LP fees in the `bundleLpFees`. 
 
-To determine the `bundleLpFees`, Dataworkers should sum all of the utilization fees and [LP components of the incentive fee](#breaking-down-the-incentive-fee) produced by each bridging event.
+Any bridging action will contain Deposit and Refund Balancing Fees which are either penalties or rewards paid out on the origin and destination SpokePools respectively. The dataworker will need to recompute these balancing fees to determine the size of the incentive pool at the end of the bundle for each SpokePool.
+
+Deposit recipients specified in Inflows will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit balancing fee.
+
+Relayers will receive a refund out of the SpokePool's balance equal to `(1 - (fill.realizedLpFeePct)) * deposit.amount`. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee`.
 
 The running balances to set for a bundle are equal to the closing running balances following the final bridging event per chain in the bundle.
-
-The incentive pool balances to set are equal to the closing incentive pool amounts following the final bridging event per chain in the bundle.
 
 ## UBA Fee Curve Parameters
 
 UBA Fee Curves are defined completely by parameters set in the `ConfigStore` at a specific point in time. If there are no parameters set for a timestamp, then the default values should be used.
 
-### UBA Shared Curve Parameters
+### Incentive Curve Parameters
 
 - `zero_upper_running_balance`
 - `zero_lower_running_balance`
 
 (Maybe?) The marginal incentive fee charged between the "zero" upper and lower running balances is always 0%.
 
-### UBA Deposit Curve Parameters
-
-### UBA Refund Curve Parameters 
-
-### UBA Running Balance Bounds
+### Running Balance Bounds
 
 - `threshold_lower_bound`
    - The default for this variable is 0.
@@ -355,6 +331,22 @@ UBA Fee Curves are defined completely by parameters set in the `ConfigStore` at 
    - The default for this variable is 0.
 - `target_upper_bound`
    - The default for this variable is INFINITY
+
+### Computing the LP Fee
+
+This fee is an additional fee charged to allow the bridge to stay operational during times of high bridge demand and reward LPs for backstopping all bridges.
+
+"Utilization" is defined as:
+
+$$\text{utilization} = 1 - \frac{\text{amount in hub} + \text{amount in Ethereum spoke} + \sum_{i \notin \text{Ethereum}} \text{spoke target}_i}{ \text{total hub equity}}$$
+
+The LP Fee will be structured as a constant plus a piecewise linear function of utilization. For each bridging event, LP's always earn $\alpha$, the baseline LP fee, plus some utilization portion. The full LP Fee is determined through the following steps:
+
+1. Determine the utilization before the event occurs.
+2. Determine the utilization after the event occurs. This value can only be different from the utilization before the event occurs if the inflow or outflow takes place on Ethereum. A deposit on Ethereum lowers the utilization while a refund on Ethereum raises it.
+3. Compute the Utilization fee percentage as $\text{lp fee} = \max \{ 0, \alpha + \frac{1}{\text{abs} \left(u_{\text{post}} - u_{\text{pre}} \right) } \int_{u_{\text{pre}}}^{u_{\text{post}}} \gamma(u) du \}$
+
+The Dataworker will sum the LP fees from a bundle of bridging events and them to the `bundleLpFees` array to return funds back to LPs. The `bundeLpFees` array is included in the [PoolRebalanceRoot](#constructing-the-poolrebalanceroot).
 
 # Preliminary Information
 
@@ -455,11 +447,11 @@ Additionally, matching relays should have their `destinationToken` set such that
 
 ## Validating realizedLpFeePct
 
-To determine the validity of the `realizedLpFeePct` in the `FilledRelay` event, we must compute the [deposit incentive fee](#computing-uba-fees) for the matched deposit of the fill.
+To determine the validity of the `realizedLpFeePct` in the `FilledRelay` event, we must compute the [deposit balancing fee](#computing-deposit-and-refund-balancing-fees) for the matched deposit of the fill.
 
 ## Setting the realizedLpFeePct for a Fill
 
-The `realizedLpFeePct` should be equal to `depositorFee` for the matched deposit.  The `refundFee` will ultimately be returned to the Relayer and be included in the refund amount by the Dataworker.
+The `realizedLpFeePct` should be equal to deposit balancing fee plus the LP fee for the matched deposit.
 
 # Finding Slow Relays
 
@@ -483,12 +475,12 @@ Slow fills are implicitly created whenever there is at least one valid partial f
 
 Because the existing partial fill(s) have been successfully validated, the deposit has an associated `realizedLpFeePct`. If the resulting slow fill is ultimately executed, it inherits the same `realizedLpFeePct` as the previous validated partial fills. The recipient will therefore receive the deposited amount minus the `realizedLpFeePct`, which is equal to the deposit incentive fee.
 
-However, slow fills are unlike normal fills in that there is no relayer who should be charged the refund incentive fee. Slow fills ultimately cause a token outflow from the destination spoke pool, so intuitively the slow fill should be charged the refund incentive fee.
+However, slow fills are unlike normal fills in that there is no relayer who should be charged the refund balancing fee. Slow fills ultimately cause a token outflow from the destination spoke pool, so intuitively the slow fill should be charged the refund balancing fee.
 
-The `payoutAdjustmentPct` is therefore set equal to the `refundFee` proportion of the outflow amount at the time of the first partial fill `e` that triggered
-the deposit. `payoutAdjustmentPct = refundFee / e.amount`.
+The `payoutAdjustmentPct` is therefore set equal to the refund balancing fee percentage for the outflow amount at the time of the first partial fill `e` that triggered
+the deposit. `payoutAdjustmentPct = refundBalancingFee / e.amount`.
 
-Follow [this guide](#computing-uba-fees) to determine the refund fee for `e`.
+Follow [this guide](#computing-deposit-and-refund-balancing-fees) to determine the refund balancing fee for `e`.
 
 Slow fills always create outflows from the destination SpokePool, but its possible that follow-on partial fills can cause the slow fill execution to create a smaller outflow than originally earmarked for the fill. This is why the `payoutAdjustmentPct` is set as a percentage of the remaining fill amount.
 
@@ -498,7 +490,7 @@ To construct the `poolRebalanceRoot`, you need to form a list of running balance
 
 The running balance for a chain and token can be found by following [this section](#finding-the-closing-balance-for-e) up until the bundle end block for the `chain`. 
 
-The bundle LP fees for the chain and token combination can be found by summing the [LP Fee components](#breaking-down-the-incentive-fee) of the total incentive fees for each bridging event in the bundle.
+The bundle LP fees for the chain and token combination can be found by summing the [LP Fee components](#computing-the-lp-fee) for each bridging event in the bundle.
 
 Set the `runningBalances` array equal to the running balances found above concatenated with a [closing incentive pool](#finding-the-closing-incentive-pool-size-for-e) array.
 
