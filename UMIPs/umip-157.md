@@ -163,11 +163,14 @@ for the
 [ProposeRootBundle](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L148-L156)
 event that is as late as possible, but earlier than the RootBundleExecuted event we just identified. Once this proposal event is found, determine its
 mapping of indices to `chainId` in its `bundleEvaluationBlockNumbers` array using "CHAIN_ID_LIST". For
-each `chainId`, their starting block number is that chain's `bundleEvaluationBlockNumber + 1` in this previous [valid proposal](#valid-bundle-proposals) event.
+each `chainId`, their starting block number is the minimum of that chain's `bundleEvaluationBlockNumber + 1` in this previous [valid proposal](#valid-bundle-proposals) event and the `latest` block height for the chain.
+
+Using the minimum allows the block range to handle the edge case where a chain has not advanced its block height since the last proposal, for example when a chain is undergoing a known hard fork.
+
 Use this mechanism to determine the starting block numbers for each `chainId` represented in the original
 `bundleEvaluationBlockNumbers`.
 
-Note that the above rules require that the `bundleEvaluationBlockNumbers` for each `chainId` are strictly greater than the preceding [valid proposal's](#valid-bundle-proposals) `bundleEvaluationBlockNumbers` for the same `chainId`. The block range for each proposal starts at the preceding proposal's `bundleEvaluationBlockNumbers` plus 1 and go to the next `bundleEvaluationBlockNumbers`.
+Note that the above rules require that the `bundleEvaluationBlockNumbers` for each `chainId` are greater than or equal to the preceding [valid proposal's](#valid-bundle-proposals) `bundleEvaluationBlockNumbers` for the same `chainId`. In the normal case where the chain has not paused and is producing blocks at a normal frequency, the block range for each proposal starts at the preceding proposal's `bundleEvaluationBlockNumbers` plus 1 and go to the next `bundleEvaluationBlockNumbers`. In the case where the `latest` block height hasn't advanced beyond the previous `bundleEvaluationBlockNumber`, then the block range for the proposal will go from the preceding proposal's `bundleEvaluationBlockNumbers` to the same number, i.e. block ranges of 0.
 
 Note also that the above rules for determining an end block don't apply if the chain ID is in the "DISABLED_CHAINS" list. if a chain exists in DISABLED_CHAINS, the proposed bundle must reuse the bundle end block from the last valid proposal before it was added. Specifically, if a chain exists in DISABLED_CHAINS at the "mainnet" end block (chain ID 1) for a particular proposal, the end block for that chain should be identical to its value in the latest executed bundle.
 
