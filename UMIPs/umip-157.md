@@ -140,10 +140,10 @@ The following list of fees are charged in Across:
 - System Fee: The sum of the LP fee and deposit balancing fee. This is included in the `realizedLpFeePct` for a deposit.
   - LP Fee: The portion of the deposit that goes to LPs.
   - Deposit Balancing Fee: The penalty or reward included in the System Fee to incentivize balancing the SpokePool on the origin chain.
-- Relayer Fee: The fee paid to the relayer to relay the deposit. The sum of the gas, capital and refund balancing fees.
+- Relayer Fee: The fee paid to the relayer to relay the deposit. This might be the sum of the gas, capital and refund balancing fees to properly incentivize the relayer to fill the deposit. However, its up to the depositor to set the relayer fee how they wish. The Across protocol only requires that the relayer use the same relayer fee set by the depositor.
   - Relayer gas fee: The component of the Relayer Fee to account for expected gas expenditures on the destination chain.
   - Relayer capital fee: The component of the Relayer Fee to account for the expected relayer cost of lending capital to the user on the destination chain.
-  - Refund balancing fee: The penalty or reward that is applied to the relayer’s refund to incentivize balancing the SpokePool on the refund chain. Because this is included in the relayer fee, which is set by the user at the time of deposit, the user should estimate this based on where they believe their relayer will take a deposit.
+  - Refund balancing fee: The penalty or reward that is applied to the relayer’s refund to incentivize balancing the SpokePool on the refund chain. The user should estimate this based on where they believe their relayer will take a deposit.
 
 ## Computing Deposit and Refund Balancing Fees
 
@@ -282,6 +282,8 @@ Finally, add the [incentive fee adjustment](#token-constants) to the Opening Inc
 
 Step through all events between the last validated bundle's end block and `e`. For each event, compute the total incentive fee charged to `e` using the steps in [this section](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e). Break down the incentive fee into the LP Fee and the Balancing Fee by following [these steps](#breaking-down-the-incentive-fee). Each of these events preceding `e` should add their `BalancingFee` to the Incentive Pool, where the Balancing Fee is negative for rewards and positive for penalties (i.e. penalties add to the pot and rewards are withdrawn from the pot).
 
+On the origin chain, add `depositBalancingFee * deposit.amount` to the incentive pool, and on the destination chain, add `refundBalancingFee * refundAmount` to the incentive pool. Balancing fees can be negative if they are rewards to the depositor or relayer. The "refundAmount" is equal to `((1 - (fill.realizedLpFeePct)) * deposit.amount)`, i.e. the original deposited amount minus the LP fee.
+
 #### Selecting Incentive Curve for Bridging Event
 
 Identify the [UBA Fee Curve Parameters](#token-constants) for the L1 token equivalent for `e` and the chain ID where `e` was emitted by finding the parameters preceding the `quoteTimestamp` for `e`. We use the `quoteTimestamp` in order to compare the L1 timestamp of `e` with the time that the UBA fee curve parameters were set in the `ConfigStore` on L1. 
@@ -296,17 +298,17 @@ Identify the [UBA Fee Curve Bounds](#token-constants) for the L1 token equivalen
 
 ### Collecting Fees in Across
 
-The Across contracts enforce that users receive their deposited amount minus the `relayerFeePct` and `realizedLpFeePct`. The `relayerFeePct` is set by the user and includes compensation to the Relayer for their cost of capital and gas expenditures on the destination chain. The `relayerFeePct` should also include enough to pay out the relayer's Refund Balancing Fee. The user will therefore need to estimate where the refund will take place. If the `relayerFeePct` is not large enough to fairly compensate a relayer, then the user can "speed up" their deposit by increasing the `relayerFeePct` by signing and broadcasting a message on-chain.
+The Across contracts enforce that users receive their deposited amount minus the `relayerFeePct` and `realizedLpFeePct`. The `relayerFeePct` is set by the user and includes compensation to the Relayer for their cost of capital and gas expenditures on the destination chain. The `relayerFeePct` might also include enough to pay out the relayer's Refund Balancing Fee, but its ultimately up to the user to set this as high as they want to bid for a relayer's service. If the `relayerFeePct` is not large enough to fairly compensate a relayer, then the user can "speed up" their deposit by increasing the `relayerFeePct` by signing and broadcasting a message on-chain.
 
 The `realizedLpFeePct` will be computed at relay time and set by the relayer. It should include the LP and Deposit Balancing fee using fee curve parameters defined on-chain. If the `realizedLpFeePct` is set incorrectly, then the relayer will not be refunded as the relay will not be included in a bundle of valid relays by the Dataworker.
 
-The dataworker will need to compute the expected LP and Deposit Balancing fee for each relay and accumulate the LP fees in the `bundleLpFees`. 
+The dataworker will need to compute the expected LP and Deposit Balancing fee for each relay and accumulate the LP fees in the `bundleLpFees`.
 
-Any bridging action will contain Deposit and Refund Balancing Fees which are either penalties or rewards paid out on the origin and destination SpokePools respectively. The dataworker will need to recompute these balancing fees to determine the size of the incentive pool at the end of the bundle for each SpokePool.
+Any bridging action will contain Deposit and Refund Balancing Fees which are either penalties or rewards paid out on the origin and destination SpokePools respectively. The dataworker will need to recompute these balancing fees to determine the size of the incentive pool at the end of the bundle for each SpokePool, and payout correct refunds.
 
-Deposit recipients specified in Inflows will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit balancing fee.
+Deposit recipients specified in Inflows will ultimately receive `(1 - (deposit.relayerFeePct + fill.realizedLpFeePct)) * deposit.amount` from the relayer. In other words, relayers will send to deposit recipients the deposited amount minus the relayer fee and the deposit balancing fee. This amount refunded is the "refund amount".
 
-Relayers will receive a refund out of the SpokePool's balance equal to `(1 - (fill.realizedLpFeePct)) * deposit.amount`. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee`.
+Relayers will receive a refund out of the SpokePool's balance equal to `((1 - (fill.realizedLpFeePct)) * deposit.amount) * (1 - refundBalancingFee)`. This is equal to the amount that the relayer sent to the deposit recipient plus the `relayerFee` minus the refund balancing fee.
 
 The running balances to set for a bundle are equal to the closing running balances following the final bridging event per chain in the bundle.
 
