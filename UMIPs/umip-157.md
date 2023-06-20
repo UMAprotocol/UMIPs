@@ -344,8 +344,8 @@ $$\text{utilization} = 1 - \frac{\text{amount in hub} + \text{amount in Ethereum
 
 The LP Fee will be structured as a constant plus a piecewise linear function of utilization. For each bridging event, LP's always earn $\alpha$, the baseline LP fee, plus some utilization portion. The full LP Fee is determined through the following steps:
 
-1. Determine the utilization before the event occurs.
-2. Determine the utilization after the event occurs. This value can only be different from the utilization before the event occurs if the inflow or outflow takes place on Ethereum. A deposit on Ethereum lowers the utilization while a refund on Ethereum raises it.
+1. Determine the utilization before the event occurs. The "event" refers to the inflow stemming from the deposit and the outflow assumed to be on the destination chain. Ignore the fact that the relayer has the option to set the repayment chain differently from the destination chain.
+2. Determine the utilization after the event occurs. This value can only be different from the utilization before the event occurs if the origin or destination is on Ethereum. A deposit originating on Ethereum lowers the utilization while a deposit to Ethereum raises it. Assume that `destinationChainId == refundChainId`.
 3. Compute the Utilization fee percentage as $\text{lp fee} = \max \{ 0, \alpha + \frac{1}{\text{abs} \left(u_{\text{post}} - u_{\text{pre}} \right) } \int_{u_{\text{pre}}}^{u_{\text{post}}} \gamma(u) du \}$
 
 The Dataworker will sum the LP fees from a bundle of bridging events and them to the `bundleLpFees` array to return funds back to LPs. The `bundeLpFees` array is included in the [PoolRebalanceRoot](#constructing-the-poolrebalanceroot).
