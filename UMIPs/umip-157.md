@@ -143,7 +143,7 @@ The following list of fees are charged in Across:
 - Relayer Fee: The fee paid to the relayer to relay the deposit. This might be the sum of the gas, capital and refund balancing fees to properly incentivize the relayer to fill the deposit. However, its up to the depositor to set the relayer fee how they wish. The Across protocol only requires that the relayer use the same relayer fee set by the depositor.
   - Relayer gas fee: The component of the Relayer Fee to account for expected gas expenditures on the destination chain.
   - Relayer capital fee: The component of the Relayer Fee to account for the expected relayer cost of lending capital to the user on the destination chain.
-  - Refund balancing fee: The penalty or reward that is applied to the relayer’s refund to incentivize balancing the SpokePool on the refund chain. The user should estimate this based on where they believe their relayer will take a deposit.
+  - Refund balancing fee: The penalty or reward that is applied to the relayer’s refund to incentivize balancing the SpokePool on the refund chain. The user should estimate this based on where they believe their relayer will take a refund.
 
 ## Computing Deposit and Refund Balancing Fees
 
