@@ -20,7 +20,7 @@ Imagine a user wants to bridge a stablecoin from an L2 to Ethereum. In Across, t
 
 The lender will later receive a refund plus fee once the system has validated that their loan was transmitted correctly. A loan can be fulfilled improperly for many reasons, including setting the wrong fee, destination token, etc. The system validates batches of these loans at once via an optimistic challenge mechanism secured by the [UMA Oracle](https://docs.umaproject.org/protocol-overview/how-does-umas-oracle-work).
 
-The fundamental architecture of this system is a "Hub and Spoke" model, where users and lenders who participate in the bridging of tokens interact with Spokes on the origin and destination networks, while the Hub pools capital on Ethereum and uses it to collateralize refunds to lenders. Liquidity Providers are therefore passive capital providers who interact with the Hub on Ethereum and earn fees for backstopping the system.
+The fundamental architecture of this system is a "Hub and Spoke" model, where users and lenders who participate in the bridging of tokens interact with Spokes on the origin and destination networks, while the Hub pools capital on Ethereum and uses it to collateralize refunds to lenders. Liquidity Providers are therefore passive capital providers who interact with the Hub on Ethereum and earn fees for backstopping the system and allowing relayers to have flexibility when choosing the chain they want to be refunded on.
 
 This UMIP will explain how to properly validate batches of these refunds, including all of the detail needed to verify that the fees are set and charged correctly. These batches of refunds are summarized on-chain within [Merkle Roots](https://www.youtube.com/watch?v=JXn4GqyS7Gg). In addition to a merkle root containing all of the refunds to be sent to lenders, an additional merkle root can be included that instructs the Hub and Spoke as to how to "rebalance" capital amongst themselves. Respectively, these two merkle roots are intuitively named the "Relayer Refund root" and the "Pool Rebalance root".
 
@@ -35,7 +35,7 @@ transactions submitted to mainnet is valid.
 # Data Specifications and Implementation
 
 Note 1: the following details will often refer to the [Across V2](https://github.com/across-protocol/contracts-v2) repo
-at commit hash: 4f83f549e37582f268a5811c9ac33ca11a42b0d7. This allows the UMIP to have a constant reference rather than
+at commit hash: 0d8bb01605a850d8b72a32a494a9f9d762240311. This allows the UMIP to have a constant reference rather than
 depending on a changing repository.
 
 Note 2: when referencing "later" or "earlier" events, the primary sort should be on the block number, the secondary
@@ -54,15 +54,15 @@ that `e1` is "earlier" than `e2` if `e1.blockNumber < e2.blockNumber` OR if `e1.
 So, "earlier" events have a lower block number, transaction index, or log index, and we should compare event properties in that order.
 
 ## Valid bundle proposals
-A root bundle can be proposed by calling `HubPool.proposeRootBundle()`, which will will emit a [`ProposedRootBundle`](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L148-L156) event.
+A root bundle can be proposed by calling `HubPool.proposeRootBundle()`, which will will emit a [`ProposedRootBundle`](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L148-L156) event.
 
 The root bundle is valid once *all* of its `PoolRebalanceLeaves` are executed via `HubPool.executeRootBundle()`, which can only be called after the proposed root bundle's `challengePeriodEndTimestamp` is passed. 
 
 ## Comparing deposit events chronologically for different origin chains
-Each deposit emits a [`quoteTimestamp`](https://github.com/across-protocol/contracts-v2/blob/aac42df9192145b5f4dc17162ef229c66f401ebe/contracts/SpokePool.sol#L73) parameter. This timestamp should be evaluated within the context of the Ethereum network, and should be mapped to the Ethereum block who's [`timestamp`](https://ethereum.org/en/developers/docs/data-and-analytics/block-explorers/#blocks) is closest to the `deposit.quoteTimestamp` but not greater (i.e. `block.timestamp` closest to and `<= deposit.quoteTimestamp`).
+Each deposit emits a [`quoteTimestamp`](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/SpokePool.sol#L125) parameter. This timestamp should be evaluated within the context of the Ethereum network, and should be mapped to the Ethereum block who's [`timestamp`](https://ethereum.org/en/developers/docs/data-and-analytics/block-explorers/#blocks) is closest to the `deposit.quoteTimestamp` but not greater (i.e. `block.timestamp` closest to and `<= deposit.quoteTimestamp`).
 
 ## Matching L1 tokens to Running Balances or Net Send Amounts
-The [`RootBundleExecuted`](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) event and [`PoolRebalanceLeaf`] structure both contain arrays: `l1Tokens`, `netSendAmounts`, `bundleLpFees`, and `runningBalances`. Each element in `l1Tokens` is an address corresponding to an ERC20 token deployed on Ethereum Mainnet. It should be mapped to the value in any of the other three arrays (`netSendAmounts`, `bundleLpFees`, and `runningBalances`) that shares the same index within the array.
+The [`RootBundleExecuted`](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L157-L166) event and [`PoolRebalanceLeaf`] structure both contain arrays: `l1Tokens`, `netSendAmounts`, `bundleLpFees`, and `runningBalances`. Each element in `l1Tokens` is an address corresponding to an ERC20 token deployed on Ethereum Mainnet. It should be mapped to the value in any of the other three arrays (`netSendAmounts`, `bundleLpFees`, and `runningBalances`) that shares the same index within the array.
 
 For example, if `l1Tokens` is "[0x123,0x456,0x789]" and `netSendAmounts` is "[1,2,3]", then the "net send amount" for token with address "0x456" is equal to "2".
 
@@ -77,7 +77,7 @@ To find the running balance for a token at index `i` in the `l1Tokens` array, fo
 To find the incentive pool for the same token at index `i`, simply return `runningBalances[X+i]` where `X` is the length of `l1Tokens`.
 
 ## Versions
-The `ConfigStore` stores a "VERSION" value in the `globalConfig`. This is used to protect relayers and dataworkers from using outdated code when interacting with Across. The "VERSION" should be mapped to an integer string that can only increase over time. The "VERSION" is updated by calling `updateGlobalConfig` so it is emitted as an on-chain event. The block time of the event that included the "VERSION" indicates when that "VERSION" became active. Relayers should support the version at the quote timestamp for a deposit, otherwise they risk sending an invalid fill. Proposers and Disputers should support the latest version for a bundle block range to validate or propose a new bundle. This version is independent from the version included in [speed up deposit signatures](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePool.sol#L668).
+The `ConfigStore` stores a "VERSION" value in the `globalConfig`. This is used to protect relayers and dataworkers from using outdated code when interacting with Across. The "VERSION" should be mapped to an integer string that can only increase over time. The "VERSION" is updated by calling `updateGlobalConfig` so it is emitted as an on-chain event. The block time of the event that included the "VERSION" indicates when that "VERSION" became active. Relayers should support the version at the quote timestamp for a deposit, otherwise they risk sending an invalid fill. Proposers and Disputers should support the latest version for a bundle block range to validate or propose a new bundle.
 
 # Ancillary Data Specifications
 
@@ -119,7 +119,7 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
   - Used by DAO to scale rewards unilaterally.
 
 For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")` might return:
-> TODO
+> TODO: Add new UBA curve params
 
 _This UMIP will explain later how global and token-specific configuration settings are used._
 
@@ -150,7 +150,7 @@ The following list of fees are charged in Across:
 This section gives an overview for computing the fees charged to users and relayers to incentivize them to maintain a SpokePool's target balance. These are labeled as Balancing Fees in this UMIP. Balancing fees are charged to any agent who causes an Inflow or Outflow to a SpokePool via a "Bridging Event".
 
 ### Defining Bridging Events
-A Bridging Event is a `Deposit`, `Fill` or `Refund` event, which are intuitively the only events that lead to inflows and outflows to and from a SpokePool. Every deposit is counted as a bridging event, but not all fills and refunds are. A fill is counted if it is the first valid fill for a deposit on another chain, and its `repaymentChainId` is set to the `destinationChainId`, i.e. the fill will eventually be taking funds out of the SpokePool via a refund. If a fill's `repaymentChainId` is not set equal to the `destinationChainId`, then a corresponding refund event on the `repaymentChainId` should be emitted in order to signal when the refund from the SpokePool on the repayment chain should be counted as an outflow. See the section on [validating Refunds](#TODO) for  more details on matching refunds with fills.
+A Bridging Event is a `Deposit`, `Fill` or `Refund` event, which are intuitively the only events that lead to inflows and outflows to and from a SpokePool. Every deposit is counted as a bridging event, but not all fills and refunds are. A fill is counted if it is the first valid fill for a deposit on another chain, and its `repaymentChainId` is set to the `destinationChainId`, i.e. the fill will eventually be taking funds out of the SpokePool via a refund. If a fill's `repaymentChainId` is not set equal to the `destinationChainId`, then a corresponding refund event on the `repaymentChainId` should be emitted in order to signal when the refund from the SpokePool on the repayment chain should be counted as an outflow. See the section on [validating Refunds](#finding-valid-relays) for  more details on matching refunds with fills.
 
 For each SpokePool on `chainId`, there will be an ordered series of Bridging Events (sorted in [ascending](#comparing-events-chronologically) chronological order). To compute the balancing fee for any event `e` within `E` (the ordered series of Bridging Events), we need to determine the "Running Balance" and the "Incentive Pool" at the time that `e` was emitted. We also will need to select which Incentive Curve to use to find the balancing fee given the running balance and available incentive pool.
 
@@ -298,6 +298,8 @@ Identify the [UBA Fee Curve Bounds](#token-constants) for the L1 token equivalen
 
 ### Collecting Fees in Across
 
+_[This page](https://docs.across.to/how-across-works/fees) should provide an up to date overview of how the fee model is implemented in Across._
+
 The Across contracts enforce that users receive their deposited amount minus the `relayerFeePct` and `realizedLpFeePct`. The `relayerFeePct` is set by the user and includes compensation to the Relayer for their cost of capital and gas expenditures on the destination chain. The `relayerFeePct` might also include enough to pay out the relayer's Refund Balancing Fee, but its ultimately up to the user to set this as high as they want to bid for a relayer's service. If the `relayerFeePct` is not large enough to fairly compensate a relayer, then the user can "speed up" their deposit by increasing the `relayerFeePct` by signing and broadcasting a message on-chain.
 
 The `realizedLpFeePct` will be computed at relay time and set by the relayer. It should include the LP and Deposit Balancing fee using fee curve parameters defined on-chain. If the `realizedLpFeePct` is set incorrectly, then the relayer will not be refunded as the relay will not be included in a bundle of valid relays by the Dataworker.
@@ -353,13 +355,13 @@ The Dataworker will sum the LP fees from a bundle of bridging events and them to
 # Preliminary Information
 
 The ooRequester address is expected to be an instance of the
-[HubPool contract](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol).
+[HubPool contract](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol).
 
 If any of the expected details in the ooRequester are not available in the expected form because the HubPool does not
 match the expected interface, the identifier should return `0`.
 
 To get the proposal data, the voter should find events that match
-[this signature](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L148-L156)
+[this signature](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L148-L156)
 on the ooRequester. The event that describes this proposal is the matching event with the highest block number whose
 timestamp is less than or equal to the timestamp of the price request. If there are two matching events that both
 satisfy this criteria, then it can be resolved in one of two ways. If the timestamp matches the request timestamp,
@@ -379,10 +381,10 @@ The `bundleEvaluationBlockNumbers` is an ordered array of end block numbers for 
 corresponds to which chain is denoted by the "CHAIN_ID_LIST" in the [global config](#global-constants).
 
 To determine the start block number for each chainId, search for the latest
-[RootBundleExecuted event](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166)
+[RootBundleExecuted event](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L157-L166)
 with a matching `chainId` while still being earlier than the timestamp of the request. Once that event is found, search
 for the
-[ProposeRootBundle](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L148-L156)
+[ProposeRootBundle](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L148-L156)
 event that is as late as possible, but earlier than the RootBundleExecuted event we just identified. Once this proposal event is found, determine its
 mapping of indices to `chainId` in its `bundleEvaluationBlockNumbers` array using "CHAIN_ID_LIST". For
 each `chainId`, their starting block number is that chain's `bundleEvaluationBlockNumber + 1` in this previous [valid proposal](#valid-bundle-proposals) event.
@@ -394,21 +396,21 @@ Note that the above rules require that the `bundleEvaluationBlockNumbers` for ea
 Note also that the above rules for determining an end block don't apply if the chain ID is in the "DISABLED_CHAINS" list. if a chain exists in DISABLED_CHAINS, the proposed bundle must reuse the bundle end block from the last valid proposal before it was added. Specifically, if a chain exists in DISABLED_CHAINS at the "mainnet" end block (chain ID 1) for a particular proposal, the end block for that chain should be identical to its value in the latest executed bundle.
 
 Evaluate the
-[crossChainContracts](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L59)
+[crossChainContracts](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L59)
 method on the HubPool contract (passing each `chainId`) at the block number of the proposal to determine the addresses
 for the
-[SpokePool contract](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePool.sol)
+[SpokePool contract](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/SpokePool.sol)
 for each destination chain. We'll use these SpokePool addresses to query correct event data in the next section.
 
 # Finding Valid Relays
 
 For each destination chain, find all
-[FilledRelay events](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePool.sol#L84-L100)
+[FilledRelay events](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/SpokePool.sol#L139-L100L155)
 on its `SpokePool` between the starting block number and ending block number for that chain. For this query, exclude
 any `FilledRelay` events that have `isSlowRelay` set to `true` or have `fillAmount` equal to `0`.
 
 For all `FilledRelay` events, you can find the `SpokePool` address for the deposit's origin chain by querying
-[CrossChainContractsSet](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L119)
+[CrossChainContractsSet](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L119)
 and finding all matching events where the `l2ChainId` matches the `originChainId` value in the FilledRelay event. The
 `spokePool` values in these events are all possible spoke pools that this deposit could have been from. 
 
@@ -419,7 +421,7 @@ Note: in the sections below, if the relay is considered to be invalid at any poi
 when constructing the bundle.
 
 For each `FilledRelay` event found earlier, a
-[FundsDeposited](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePool.sol#L67-L77)
+[FundsDeposited](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/SpokePool.sol#L119-L130)
 event should be found in one of the spoke pools for the originChainId where the following parameters match:
 
 - `amount`
@@ -436,7 +438,7 @@ event should be found in one of the spoke pools for the originChainId where the 
 Additionally, matching relays should have their `destinationToken` set such that the following process is satisfied:
 
 1. Find the latest
-   [SetRebalanceRoute](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L137-L141)
+   [SetRebalanceRoute](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L137-L141)
    events [with a block timestamp at or before the `quoteTimestamp`](#comparing-deposit-events-chronologically-for-different-origin-chains) in the associated `FundsDeposited` event where the
    `originChainId` and `originToken` match the `destinationChainId` and `destinationToken`. Pull the `l1Token` value
    from the matching event. If there is no matching event, the relay is invalid.
@@ -511,7 +513,7 @@ Set the `netSendAmounts` array equal to the sum of all manual running balance ad
 ## Finding the Preceding Running Balance for an L1 Token
 We now need to add the preceding running balance value to the current one for a given `repaymentChainId` and `l1Token`.
 For each `repaymentChainId` and `l1Token` combination, older
-[RootBundleExecuted](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) events
+[RootBundleExecuted](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L157-L166) events
 should be queried to find the preceding `RootBundleExecuted` event. This means identifying the most recent `RootBundleExecuted` event with a `chainId` matching the `repaymentChainId` and [identifying the `runningBalanceValue` at the index of the `l1Token`](#matching-l1-tokens-to-running-balances-or-net-send-amounts).
 
 For each tuple of `l1Token` and `repaymentChainId`, we should have computed a total running balance value. In certain scenarios the bundle should "carry over" part of the running balance value to the `netSendAmount` parameter in the bundle proposal and "zero out" the running balance:
@@ -526,7 +528,7 @@ need to be broken up into multiple leaves, starting at `groupIndex` 0 and each s
 Now that we have ordered leaves, we can assign each one a unique `leafId` starting from 0.
 
 With all of that information, each leaf should be possible to construct in the format given
-[here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPoolInterface.sol#L13-L42).
+[here](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPoolInterface.sol#L13-L42).
 Importantly, the `l1Tokens`, `bundleLpFees`, `netSendAmounts` and `runningBalances` arrays should all be the same length. The latter three arrays are values mapped to the `l1Tokens` entry of the same index. See [this section](#matching-l1-tokens-to-running-balances-or-net-send-amounts) to better explain how to map `l1Tokens` to the other three arrays.
 
 Once the leaves are constructed, the merkle root can be constructed by hashing each leaf data structure using
@@ -544,7 +546,7 @@ Let's assume that we've [identified groups of valid relays](#finding-valid-relay
 
 For each combination of `destinationChainId` and `l1Token` that either a) has fast relays
 or b) has a negative net send amount arising from [exceeding running balance bounds](#handling-running-balance-bounds), a RelayerRefundRoot must be constructed. The data structure is shown
-[here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePoolInterface.sol#L9-L23).
+[here](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/interfaces/SpokePoolInterface.sol#L9-L23).
 One or more (in the case of leafs with more than [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](#global-constants) refunds) `RelayerRefundLeaf` will be
 constructed for each of these applicable groups. The following defines how to construct each of these leaves given the
 information about each group determined in the previous section.
@@ -573,7 +575,7 @@ Once these leaves are constructed, they can be used to form a merkle root as des
 # Constructing SlowRelayRoot
 
 To construct the SlowRelayRoot leaves as described
-[here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePoolInterface.sol#L29-L49),
+[here](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/interfaces/SpokePoolInterface.sol#L29-L49),
 just form leaves based on all the slow relays found in the "Finding Slow Relays" section above. The information in the
 relays should map directly to the leaf data structure.
 
@@ -588,7 +590,7 @@ Three conditions must be met for the proposal to be deemed valid:
 2. The poolRebalanceLeafCount specified in the proposal event matches the number of pool rebalance leaves computed in
    the PoolRebalanceRoot above.
 3. `bundleEvaluationBlockNumbers` must include all `chainIds` that have a nonzero
-   [CrossChainContractsSet](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L119)
+   [CrossChainContractsSet](https://github.com/across-protocol/contracts-v2/blob/0d8bb01605a850d8b72a32a494a9f9d762240311/contracts/HubPool.sol#L119)
    at the time of proposal.
 4. No obvious griefing or manipulation of the system is being performed via this proposal.
 
