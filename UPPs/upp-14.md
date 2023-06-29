@@ -20,9 +20,9 @@ In order to implement this upgrade, the final fees for all the mentioned currenc
 
 **WETH**
 - WETH Mainnet: [0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2](https://etherscan.io/token/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
-- WETH Polygon: [0x7ceb23fd6bc0add59e62ac25578270cff1b9f619](https://etherscan.io/token/0x7ceb23fd6bc0add59e62ac25578270cff1b9f619)
-- WETH Optimism: [0x4200000000000000000000000000000000000006](https://etherscan.io/token/0x4200000000000000000000000000000000000006)
-- WETH Arbitrum: [0x82af49447d8a07e3bd95bd0d56f35241523fbab1](https://etherscan.io/token/0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
+- WETH Polygon: [0x7ceb23fd6bc0add59e62ac25578270cff1b9f619](https://polygonscan.com/token/0x7ceb23fd6bc0add59e62ac25578270cff1b9f619)
+- WETH Optimism: [0x4200000000000000000000000000000000000006](https://optimistic.etherscan.io/token/0x4200000000000000000000000000000000000006)
+- WETH Arbitrum: [0x82af49447d8a07e3bd95bd0d56f35241523fbab1](https://arbiscan.io/token/0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
 
 **DAI**
 - DAI Mainnet: [0x6b175474e89094c44da98b954eedeac495271d0f](https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f)
