@@ -21,7 +21,7 @@ This UMIP does not attempt to put any restrictions on the types of claims that c
 
 Price settlement can happen only in one of two ways:
 
-- Return the `1` value if the claim is true.
+- Return the `1` value if the claim is true and publicly verifiable.
 - Return the `0` value if the claim is false or cannot be resolved.
 
 # Motivation
