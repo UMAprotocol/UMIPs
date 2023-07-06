@@ -277,11 +277,11 @@ In the following sections we'll use "Deposit" interchangeably with "Inflow", to 
 
 ### Incentive Curve
 
-The incentive curve is a mathematical function that will be deterministically defined by a set of [token-specific configuration variables stored in the ConfigStore](#token-constants). The mathematical function relating the token constants is described [here](#TODO).
+The incentive curve is a mathematical function that will be deterministically defined by a set of [token-specific configuration variables stored in the ConfigStore](#token-constants). The balancing fee curve is a piecewise linear curve defined solely by `omega` and in this section we use `f(x)` and `omega` interchangeably.
 
 There will be a different curve for each chain and token combination. Therefore the curve is a function `f_i_t(x)` where the input `x` is denominated as a "running balance", which represents the amount of balance held on a SpokePool on chain `i` at some point in time. `f_i_t(x)` is unique for chain ID `i` and token `t`. `f_i_t(x)` should return a percentage, representing a "marginal incentive fee" for the input `x` running balance.
 
-These curves can be piecewise functions and should be integratable. These curves will be used to figure out how to charge fees for an inflow or outflow event `e` which adds or subtracts, respectively, to a SpokePool's running balance. Typically, the balancing fee will be equal to the negative of the integral between `e.amount + x` for inflows (or `x - e.amount` for outflows) and `x`. This is intuitively the integral between the opening marginal incentive fee and the closing incentive fee after the transferred amount is added to or subtracted from SpokePool's running balance:
+These curves will be used to figure out how to charge fees for an inflow or outflow event `e` which adds or subtracts, respectively, to a SpokePool's running balance. Typically, the balancing fee will be equal to the negative of the integral between `e.amount + x` for inflows (or `x - e.amount` for outflows) and `x`. This is intuitively the integral between the opening marginal incentive fee and the closing incentive fee after the transferred amount is added to or subtracted from SpokePool's running balance:
 
 $\text{Balancing Fee} = \int_{\text{Running Balance}_i}^{\text{Running Balance}_i + \text{e.amount}} f_{it}(x) dx$
 
@@ -439,6 +439,8 @@ UBA Fee Curves are defined completely by parameters set in the `ConfigStore` und
 
 ### Running Balance Bounds
 
+These are described in the `ubaKey` dictionary (under the subkey `rebalance`) in the [config store](#token-constants). The following defaults are to be used if there is entry for a token.
+
 - `threshold_lower_bound`
    - The default for this variable is 0.
 - `target_lower_bound`
@@ -456,7 +458,7 @@ This fee is an additional fee charged to allow the bridge to stay operational du
 
 $$\text{utilization} = 1 - \frac{\text{amount in hub} + \text{amount in Ethereum spoke} + \sum_{i \notin \text{Ethereum}} \text{spoke target}_i}{ \text{total hub equity}}$$
 
-The LP Fee will be structured as a constant plus a piecewise linear function of utilization. For each bridging event, LP's always earn $\alpha$, the baseline LP fee, plus some utilization portion. The full LP Fee is determined through the following steps:
+The LP Fee will be structured as a constant plus a piecewise linear function of utilization. The linear function are descibed solely by `alpha` and `omega` in the [config store](#token-constants)'s `ubaKey` dictionary. For each bridging event, LP's always earn $\alpha$, the baseline LP fee, plus some utilization portion. The full LP Fee is determined through the following steps:
 
 1. Determine the utilization before the event occurs. The "event" refers to the inflow stemming from the deposit and the outflow assumed to be on the destination chain. Ignore the fact that the relayer has the option to set the repayment chain differently from the destination chain.
 2. Determine the utilization after the event occurs. This value can only be different from the utilization before the event occurs if the origin or destination is on Ethereum. A deposit originating on Ethereum lowers the utilization while a deposit to Ethereum raises it. Assume that `destinationChainId == refundChainId`.
