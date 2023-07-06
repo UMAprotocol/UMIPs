@@ -277,7 +277,7 @@ In the following sections we'll use "Deposit" interchangeably with "Inflow", to 
 
 ### Incentive Curve
 
-The incentive curve is a mathematical function that will be deterministically defined by a set of [token-specific configuration variables stored in the ConfigStore](#token-constants). 
+The incentive curve is a mathematical function that will be deterministically defined by a set of [token-specific configuration variables stored in the ConfigStore](#token-constants). The mathematical function relating the token constants is described [here](#TODO).
 
 There will be a different curve for each chain and token combination. Therefore the curve is a function `f_i_t(x)` where the input `x` is denominated as a "running balance", which represents the amount of balance held on a SpokePool on chain `i` at some point in time. `f_i_t(x)` is unique for chain ID `i` and token `t`. `f_i_t(x)` should return a percentage, representing a "marginal incentive fee" for the input `x` running balance.
 
