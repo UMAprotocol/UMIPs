@@ -14,6 +14,8 @@ The DVM should support the ACROSS-V2 price identifier.
 
 # Across V2 Architecture
 
+This [documents](https://docs.across.to/how-across-works/how-across-guarantees-transfers) an overview of how Across fulfills bridge requests.
+
 Across provides utility to users who want send or "bridge" tokens across chains. The way Across achieves this is by offering a market for lenders who credit users their desired tokens on their desired destination chain in exchange for receiving interest payments.
 
 Imagine a user wants to bridge a stablecoin from an L2 to Ethereum. In Across, that user would "deposit" the stablecoin on an L2 contract and offer a fee in exchange for receiving the Ethereum equivalent of that stablecoin on Ethereum. "Relayers", also known as lenders, will compete to credit the user the equivalent stablecoin on Ethereum.
@@ -23,8 +25,6 @@ The lender will later receive a refund plus fee once the system has validated th
 The fundamental architecture of this system is a "Hub and Spoke" model, where users and lenders who participate in the bridging of tokens interact with Spokes on the origin and destination networks, while the Hub pools capital on Ethereum and uses it to collateralize refunds to lenders. Liquidity Providers are therefore passive capital providers who interact with the Hub on Ethereum and earn fees for backstopping the system and allowing relayers to have flexibility when choosing the chain they want to be refunded on.
 
 This UMIP will explain how to properly validate batches of these refunds, including all of the detail needed to verify that the fees are set and charged correctly. These batches of refunds are summarized on-chain within [Merkle Roots](https://www.youtube.com/watch?v=JXn4GqyS7Gg). In addition to a merkle root containing all of the refunds to be sent to lenders, an additional merkle root can be included that instructs the Hub and Spoke as to how to "rebalance" capital amongst themselves. Respectively, these two merkle roots are intuitively named the "Relayer Refund root" and the "Pool Rebalance root".
-
-![](./images/across-architecture.png?raw=true "Across V2 Architecture")
 
 # Motivation
 
@@ -110,16 +110,135 @@ The following constants are currently specified in this UMIP directly, but shoul
 
 ## Token Constants
 The following constants are also stored in the `AcrossConfigStore` contract but are specific to an Ethereum token address. Therefore, they are fetched by querying the config store's `tokenConfig(address)` function.
-- "UBAFeeModel"
-  - This is a JSON struct of parameters keyed to a specific `chain` and `token` that defines a fee curve for that token given an input `balance`. This model is described in more detail [here](#TODO) along with visual aids. The parameters are used to construct curves that return percentages given an input running balance.
-  Depending on the parameter, it might be customizable for different `originChain->destinationChain` routes and/or different `chainIds` and `tokens`.
+- "uba"
+  - This is a dictionary of parameters that defines a fee curve for the token. These parameters can be further subindexed by a route (e.g. using the key "1-10" or "42161-1") to create a specific fee curve for a token per route. The subkeys are:
+      - alpha: This is a scalar value that is a constant percentage of each transfer that is allocated for LPs. This value can be determined by token and route-by-route.
+      - gamma: This is a piecewise linear function (defined by a vector of cut-off points and the values at those points) that determine additional LP fees as a function of utilization. This piecewise linear function can be determined by token and chain-by-chain.
+          - cutoff
+          - value
+      - omega: This is a piecewise linear function (defined by a vector of cut-off points and the values at those points) that determine the balancing fees (rewards) that are imposed on (paid to) a user who makes a transfer involving a particular chain. There is a single piecewise linear function for each token/chain combination. A transfer will incur a balancing fee on both the origin and destination chains.
+         - cutoff
+         - value
+      - rebalance
+         - threshold_lower: See threshold_upper
+         - threshold_upper: For tokens/chains that have a supported bridge, these are the lower and upper threshold that trigger the reallocation of funds. i.e. If the running balance on a chain moves below (above) threshold_lower (threshold_upper) then the bridge moves funds from Ethereum to the chain (from the chain to Ethereum).
+         - target_lower: See target_upper
+         - threshold_upper: For tokens/chains that have a supported bridge, these are the values that are targeted whenever funds are reallocated.
 - "incentivePoolAdjustment"
   - Used by DAO to keep track of any donations made to add to `incentivePool` liquidity.
 - "ubaRewardMultiplier"
   - Used by DAO to scale rewards unilaterally.
 
 For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")` might return:
-> TODO: Add new UBA curve params
+
+```json
+{
+    "alpha": {
+        "default": 200000000000000,
+        "1-10": 0,
+        "1-137": 0,
+        "1-42161": 0
+    },
+    "gamma": {
+        "default": {
+            "cutoff": [
+                500000000000000000,
+                650000000000000000,
+                750000000000000000,
+                850000000000000000,
+                900000000000000000,
+                950000000000000000
+            ],
+            "value": [
+                0,
+                50000000000000000,
+                100000000000000000,
+                250000000000000000,
+                500000000000000000,
+                5000000000000000000
+            ]
+        }
+    },
+    "omega": {
+        "default": {
+            "cutoff": [0],
+            "value": [0]
+        },
+        "10": {
+            "cutoff": [
+                350000000000000000000,
+                750000000000000000000,
+                1000000000000000000000,
+                1500000000000000000000,
+                2000000000000000000000,
+                2500000000000000000000
+            ],
+            "value": [
+                0,
+                2500000000000000,
+                5000000000000000,
+                15000000000000000,
+                100000000000000000,
+                250000000000000000
+            ]
+        },
+        "137": {
+            "cutoff": [
+                50000000000000000000,
+                500000000000000000000
+            ],
+            "value": [
+                0,
+                2000000000000000
+            ]
+        },
+        "42161": {
+            "cutoff": [
+                450000000000000000000,
+                750000000000000000000,
+                1000000000000000000000,
+                1500000000000000000000,
+                2000000000000000000000,
+                2500000000000000000000
+            ],
+            "value": [
+                0,
+                2500000000000000,
+                5000000000000000,
+                15000000000000000,
+                100000000000000000,
+                250000000000000000
+            ]
+        }
+    },
+    "rebalance": {
+        "default": {
+            "threshold_lower": 0,
+            "target_lower": 50000000000000000000,
+            "threshold_upper": 150000000000000000000,
+            "target_upper": 150000000000000000000
+        },
+        "10": {
+            "threshold_lower": 150000000000000000000,
+            "target_lower": 150000000000000000000,
+            "threshold_upper": 150000000000000000000,
+            "target_upper": 150000000000000000000
+        },
+        "137": {
+            "threshold_lower": 150000000000000000000,
+            "target_lower": 150000000000000000000,
+            "threshold_upper": 150000000000000000000,
+            "target_upper": 150000000000000000000
+        },
+        "42161": {
+            "threshold_lower": 150000000000000000000,
+            "target_lower": 150000000000000000000,
+            "threshold_upper": 150000000000000000000,
+            "target_upper": 150000000000000000000
+        }
+    }
+}
+```
 
 _This UMIP will explain later how global and token-specific configuration settings are used._
 
@@ -158,7 +277,7 @@ In the following sections we'll use "Deposit" interchangeably with "Inflow", to 
 
 ### Incentive Curve
 
-The incentive curve is a mathematical function that will be deterministically defined by a set of [global configuration variables stored in the ConfigStore](#global-constants). 
+The incentive curve is a mathematical function that will be deterministically defined by a set of [token-specific configuration variables stored in the ConfigStore](#token-constants). 
 
 There will be a different curve for each chain and token combination. Therefore the curve is a function `f_i_t(x)` where the input `x` is denominated as a "running balance", which represents the amount of balance held on a SpokePool on chain `i` at some point in time. `f_i_t(x)` is unique for chain ID `i` and token `t`. `f_i_t(x)` should return a percentage, representing a "marginal incentive fee" for the input `x` running balance.
 
@@ -316,14 +435,7 @@ The running balances to set for a bundle are equal to the closing running balanc
 
 ## UBA Fee Curve Parameters
 
-UBA Fee Curves are defined completely by parameters set in the `ConfigStore` at a specific point in time. If there are no parameters set for a timestamp, then the default values should be used.
-
-### Incentive Curve Parameters
-
-- `zero_upper_running_balance`
-- `zero_lower_running_balance`
-
-(Maybe?) The marginal incentive fee charged between the "zero" upper and lower running balances is always 0%.
+UBA Fee Curves are defined completely by parameters set in the `ConfigStore` under a token configuration's `uba` key at a specific point in time. If there are no parameters set for a timestamp, then the following default values should be used:
 
 ### Running Balance Bounds
 
