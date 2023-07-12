@@ -120,8 +120,8 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
          - `cutoff`
          - `value`
       - `rebalance`
-         - `threshold_lower`: See threshold_upper. If this is blank, then a reallocation of funds via running balance adjustments should never occur due to an outflow.
-         - `threshold_upper`: For tokens/chains that have a supported bridge, these are the lower and upper threshold that trigger the reallocation of funds. i.e. If the running balance on a chain moves below (above) threshold_lower (threshold_upper) then the bridge moves funds from Ethereum to the chain (from the chain to Ethereum). If this is blank, then a reallocation of funds via running balance adjustments should never occur due to an inflow.
+         - `threshold_lower`: See threshold_upper. If this is 0, then a reallocation of funds via running balance adjustments should never occur due to an outflow.
+         - `threshold_upper`: For tokens/chains that have a supported bridge, these are the lower and upper threshold that trigger the reallocation of funds. i.e. If the running balance on a chain moves below (above) threshold_lower (threshold_upper) then the bridge moves funds from Ethereum to the chain (from the chain to Ethereum). If this is 0, then a reallocation of funds via running balance adjustments should never occur due to an inflow.
          - `target_lower`: See target_upper
          - `target_upper`: For tokens/chains that have a supported bridge, these are the values that are targeted whenever funds are reallocated.
 - `incentivePoolAdjustment`
