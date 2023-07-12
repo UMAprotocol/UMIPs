@@ -120,20 +120,19 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
          - `cutoff`
          - `value`
       - `rebalance`
-         - `threshold_lower`: See threshold_upper
-         - `threshold_upper`: For tokens/chains that have a supported bridge, these are the lower and upper threshold that trigger the reallocation of funds. i.e. If the running balance on a chain moves below (above) threshold_lower (threshold_upper) then the bridge moves funds from Ethereum to the chain (from the chain to Ethereum).
+         - `threshold_lower`: See threshold_upper. If this is blank, then a reallocation of funds via running balance adjustments should never occur due to an outflow.
+         - `threshold_upper`: For tokens/chains that have a supported bridge, these are the lower and upper threshold that trigger the reallocation of funds. i.e. If the running balance on a chain moves below (above) threshold_lower (threshold_upper) then the bridge moves funds from Ethereum to the chain (from the chain to Ethereum). If this is blank, then a reallocation of funds via running balance adjustments should never occur due to an inflow.
          - `target_lower`: See target_upper
-         - `threshold_upper`: For tokens/chains that have a supported bridge, these are the values that are targeted whenever funds are reallocated.
+         - `target_upper`: For tokens/chains that have a supported bridge, these are the values that are targeted whenever funds are reallocated.
 - `incentivePoolAdjustment`
-  - Used by DAO to keep track of any donations made to add to `incentivePool` liquidity.
+  - Used by DAO to keep track of any donations made to add to `incentivePool` liquidity for this token and a chain. This is a dictionary with a key of `chainId` and a scalar value. 
 - `ubaRewardMultiplier`
-  - Used by DAO to scale rewards unilaterally.
+  - Used by DAO to scale rewards unilaterally. This is also a dictionary with a key of `chainId` and a scalar value.
 
 For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")` might return:
 
 ```json
 {
-    ...,
     "uba": {
       "alpha": {
           "default": 200000000000000,
@@ -238,9 +237,14 @@ For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")
               "threshold_upper": 150000000000000000000,
               "target_upper": 150000000000000000000
           }
+      },
+      "incentivePoolAdjustment": { 
+        "1": 10000000000000000000
+      },
+      "ubaRewardMultiplier": {
+        "1": 0.95
       }
-  },
-  ...
+  }
 }
 ```
 
