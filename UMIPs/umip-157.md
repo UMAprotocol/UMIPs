@@ -113,10 +113,10 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
 - `uba`
   - This is a dictionary of parameters that defines a fee curve for the token. These parameters can be further subindexed by a route (e.g. using the key "1-10" or "42161-1") to create a specific fee curve for a token per route. The subkeys are:
       - `alpha`: This is a scalar value that is a constant percentage of each transfer that is allocated for LPs. This value can be determined by token and route-by-route.
-      - `gamma`: This is a piecewise linear function (defined by a vector of cut-off points and the values at those points) that determine additional LP fees as a function of utilization. This piecewise linear function can be determined by token and chain-by-chain.
+      - `gamma`: This is a piecewise linear function (defined by tuples where the first elements are cut-off points and the second elements are values at those points) that determine additional LP fees as a function of utilization. This piecewise linear function can be determined by token and chain-by-chain.
           - `cutoff`
           - `value`
-      - `omega`: This is a piecewise linear function (defined by a vector of cut-off points and the values at those points) that determine the balancing fees (rewards) that are imposed on (paid to) a user who makes a transfer involving a particular chain. There is a single piecewise linear function for each token/chain combination. A transfer will incur a balancing fee on both the origin and destination chains.
+      - `omega`: This is a piecewise linear function (defined by tuples of cut-off points and the values at those points) that determine the balancing fees (rewards) that are imposed on (paid to) a user who makes a transfer involving a particular chain. There is a single piecewise linear function for each token/chain combination. A transfer will incur a balancing fee on both the origin and destination chains.
          - `cutoff`
          - `value`
       - `rebalance`
@@ -141,76 +141,28 @@ For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")
           "1-42161": 0
       },
       "gamma": {
-          "default": {
-              "cutoff": [
-                  500000000000000000,
-                  650000000000000000,
-                  750000000000000000,
-                  850000000000000000,
-                  900000000000000000,
-                  950000000000000000
-              ],
-              "value": [
-                  0,
-                  50000000000000000,
-                  100000000000000000,
-                  250000000000000000,
-                  500000000000000000,
-                  5000000000000000000
-              ]
-          }
+          "default": [
+            [500000000000000000, 0],
+            [650000000000000000, 500000000000000],
+            [750000000000000000, 1000000000000000],
+            [850000000000000000, 2500000000000000],
+            [900000000000000000, 5000000000000000],
+            [950000000000000000, 50000000000000000]
+          ]
       },
       "omega": {
-          "default": {
-              "cutoff": [0],
-              "value": [0]
-          },
-          "10": {
-              "cutoff": [
-                  350000000000000000000,
-                  750000000000000000000,
-                  1000000000000000000000,
-                  1500000000000000000000,
-                  2000000000000000000000,
-                  2500000000000000000000
-              ],
-              "value": [
-                  0,
-                  2500000000000000,
-                  5000000000000000,
-                  15000000000000000,
-                  100000000000000000,
-                  250000000000000000
-              ]
-          },
-          "137": {
-              "cutoff": [
-                  50000000000000000000,
-                  500000000000000000000
-              ],
-              "value": [
-                  0,
-                  2000000000000000
-              ]
-          },
-          "42161": {
-              "cutoff": [
-                  450000000000000000000,
-                  750000000000000000000,
-                  1000000000000000000000,
-                  1500000000000000000000,
-                  2000000000000000000000,
-                  2500000000000000000000
-              ],
-              "value": [
-                  0,
-                  2500000000000000,
-                  5000000000000000,
-                  15000000000000000,
-                  100000000000000000,
-                  250000000000000000
-              ]
-          }
+          "default": [
+                [0, 0]
+            ],
+          "10": [
+                [0, 0]
+            ],
+            "137": [
+                [0, 0]
+            ],
+            "42161": [
+                [0, 0]
+            ],
       },
       "rebalance": {
           "default": {
