@@ -347,8 +347,8 @@ appliedIncentiveFee = uncappedIncentiveFee
 ## Discount fee if max reward exceeds penalty pot
 if (maxRewards > P):
    
-   ## If P << uncappedIncentiveFee, discountFactor --> 100%
-   discountFactor = (uncappedIncentiveFee - P) / uncappedIncentiveFee
+   ## If P << uncappedIncentiveFee, discountFactor approaches 100%. Capped at 100%
+   discountFactor = min(1, (uncappedIncentiveFee - P) / uncappedIncentiveFee)
    appliedIncentiveFee *= 1 - discountFactor
 
 ## Apply hardcoded multiplier if incentive fee is a reward instead of a penalty
