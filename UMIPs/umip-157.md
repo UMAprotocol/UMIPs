@@ -348,16 +348,16 @@ penaltyPotSize = P
 
 appliedIncentiveFee = uncappedIncentiveFee
 
+## Apply hardcoded multiplier if incentive fee is a reward instead of a penalty
+if (appliedIncentiveFee < 0):
+   appliedIncentiveFee *= UBA_REWARD_MULTIPLIER
+
 ## Discount fee if max reward exceeds penalty pot
 if (maxRewards > P):
    
    ## If P << uncappedIncentiveFee, discountFactor approaches 100%. Capped at 100%
    discountFactor = min(1, (uncappedIncentiveFee - P) / uncappedIncentiveFee)
    appliedIncentiveFee *= 1 - discountFactor
-
-## Apply hardcoded multiplier if incentive fee is a reward instead of a penalty
-if (appliedIncentiveFee < 0):
-   appliedIncentiveFee *= UBA_REWARD_MULTIPLIER
 ```
 
 The final reward is equal to `reward * ubaRewardMultiplier`, a convenient scaler variable set in the [config store](#token-constants).
