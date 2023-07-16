@@ -250,13 +250,10 @@ When the Balancing Fee is positive, the fee is paid by the agent (i.e. User or R
 This means that:
 
 - For $z < x_l$ (i.e. the pool is under-capitalized) we must have:
-
 $$\underbrace{\int_{z}^{x_l} \omega_d(x) dx}_{\text{rewards paid for depositing capital}} \leq \underbrace{\int_{x_l}^{z} \omega_f(x) dx}_{\text{penalties paid by fills}}$$
 
 - For $z > x_u$ (i.e. the pool is over-capitalized) we must have:
-   
 $$\underbrace{\int_{z}^{x_u} \omega_f(x) dx}_{\text{rewards paid for doing fills}} \leq \underbrace{\int_{x_u}^{z} \omega_d(x) dx}_{\text{penalties paid by depositors}}$$
-
 
 ### Computing Balancing Fee using incentive pool size, running balance, and incentive curve for e
 
@@ -399,7 +396,7 @@ UBA Fee Curves are defined completely by parameters set in the `ConfigStore` und
 
 ### Running Balance Bounds
 
-These are described in the `ubaKey` dictionary (under the subkey `rebalance`) in the [config store](#token-constants). The following defaults are to be used if there is entry for a token.
+These are described in the `uba` dictionary (under the subkey `rebalance`) in the [config store](#token-constants). The following defaults are to be used if there is entry for a token.
 
 - `threshold_lower_bound`
    - The default for this variable is 0.
@@ -418,11 +415,12 @@ This fee is an additional fee charged to allow the bridge to stay operational du
 
 $$\text{utilization} = 1 - \frac{\text{amount in hub} + \text{amount in Ethereum spoke} + \sum_{i \notin \text{Ethereum}} \text{spoke target}_i}{ \text{total hub equity}}$$
 
-The LP Fee will be structured as a constant plus a piecewise linear function of utilization. The linear function are descibed solely by `alpha` and `omega` in the [config store](#token-constants)'s `ubaKey` dictionary. For each bridging event, LP's always earn $\alpha$, the baseline LP fee, plus some utilization portion. The full LP Fee is determined through the following steps:
+The LP Fee will be structured as a constant plus a piecewise linear function of utilization. The linear functions are described solely by `alpha` and `omega` in the [config store](#token-constants)'s `uba` dictionary. For each bridging event, LP's always earn $\alpha$, the baseline LP fee, plus some utilization portion. The full LP Fee is determined through the following steps:
 
 1. Determine the utilization before the event occurs. The "event" refers to the inflow stemming from the deposit and the outflow assumed to be on the destination chain. Ignore the fact that the relayer has the option to set the repayment chain differently from the destination chain.
-2. Determine the utilization after the event occurs. This value can only be different from the utilization before the event occurs if the origin or destination is on Ethereum. A deposit originating on Ethereum lowers the utilization while a deposit to Ethereum raises it. Assume that `destinationChainId == refundChainId`.
-3. Compute the Utilization fee percentage as $\text{lp fee} = \max \{ 0, \alpha + \frac{1}{\text{abs} \left(u_{\text{post}} - u_{\text{pre}} \right) } \int_{u_{\text{pre}}}^{u_{\text{post}}} \gamma(u) du \}$
+2. Determine the utilization after the event occurs. This value can only be different from the utilization before the event occurs if the origin or destination is on Ethereum. A deposit originating on Ethereum adds to the "amount in Etherem spoke" (i.e. lowers the utilization) while a deposit to Ethereum raises it by subtracting from the "amount in Ethereum spoke". Assume that `destinationChainId == refundChainId`.
+3. The above two rules suggest that the only change in the pre and post utilization values can stem from a change in the "amount in Ethereum spoke". To calculate the sum of the spoke targets, query the [running balance bounds](#running-balance-bounds) in the `AcrossConfigStore` at the start block of the bundle containing the flow. The spoke targets to add are the `target_upper_bounds` for each chain that is not equal to the hub pool chain ID.
+4. Compute the Utilization fee percentage as $\text{lp fee} = \max \{ 0, \alpha + \frac{1}{\text{abs} \left(u_{\text{post}} - u_{\text{pre}} \right) } \int_{u_{\text{pre}}}^{u_{\text{post}}} \gamma(u) du \}$
 
 The Dataworker will sum the LP fees from a bundle of bridging events and them to the `bundleLpFees` array to return funds back to LPs. The `bundeLpFees` array is included in the [PoolRebalanceRoot](#constructing-the-poolrebalanceroot).
 
