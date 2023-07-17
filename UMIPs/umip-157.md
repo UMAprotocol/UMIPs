@@ -413,7 +413,7 @@ This fee is an additional fee charged to allow the bridge to stay operational du
 
 "Utilization" is defined as:
 
-$$\text{utilization} = 1 - \frac{\text{amount in hub} + \text{amount in Ethereum spoke} + \sum_{i \notin \text{Ethereum}} \text{spoke target}_i}{ \text{total hub equity}}$$
+$$\text{utilization} = 1 - \frac{\text{liquid reserves amount in Hub pool} + \text{amount in Hub spoke} + \sum_{i \notin \text{hubChainId}} \text{spoke target}_i}{ \text{token balance in Hub pool}}$$
 
 The LP Fee will be structured as a constant plus a piecewise linear function of utilization. The linear functions are described solely by `alpha` and `omega` in the [config store](#token-constants)'s `uba` dictionary. For each bridging event, LP's always earn $\alpha$, the baseline LP fee, plus some utilization portion. The full LP Fee is determined through the following steps:
 
