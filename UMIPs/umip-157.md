@@ -411,16 +411,9 @@ These are described in the `uba` dictionary (under the subkey `rebalance`) in th
 
 This fee is an additional fee charged to allow the bridge to stay operational during times of high bridge demand and reward LPs for backstopping all bridges.
 
-"Utilization" is defined as:
+The LP Fee will be structured as a constant plus a piecewise linear function of utilization. The linear functions are described solely by `alpha` and `gamma` in the [config store](#token-constants)'s `uba` dictionary. For each bridging event, LP's always earn $\alpha$, the baseline LP fee, plus some utilization portion. 
 
-$$\text{utilization} = 1 - \frac{\text{liquid reserves amount in Hub pool} + \text{amount in Hub spoke} + \sum_{i \notin \text{hubChainId}} \text{spoke target}_i}{ \text{token balance in Hub pool}}$$
-
-The LP Fee will be structured as a constant plus a piecewise linear function of utilization. The linear functions are described solely by `alpha` and `omega` in the [config store](#token-constants)'s `uba` dictionary. For each bridging event, LP's always earn $\alpha$, the baseline LP fee, plus some utilization portion. The full LP Fee is determined through the following steps:
-
-1. Determine the utilization before the event occurs. The "event" refers to the inflow stemming from the deposit and the outflow assumed to be on the destination chain. Ignore the fact that the relayer has the option to set the repayment chain differently from the destination chain.
-2. Determine the utilization after the event occurs. This value can only be different from the utilization before the event occurs if the origin or destination is on Ethereum. A deposit originating on Ethereum adds to the "amount in Etherem spoke" (i.e. lowers the utilization) while a deposit to Ethereum raises it by subtracting from the "amount in Ethereum spoke". Assume that `destinationChainId == refundChainId`.
-3. The above two rules suggest that the only change in the pre and post utilization values can stem from a change in the "amount in Ethereum spoke". To calculate the sum of the spoke targets, query the [running balance bounds](#running-balance-bounds) in the `AcrossConfigStore` at the start block of the bundle containing the flow. The spoke targets to add are the `target_upper_bounds` for each chain that is not equal to the hub pool chain ID.
-4. Compute the Utilization fee percentage as $\text{lp fee} = \max \{ 0, \alpha + \frac{1}{\text{abs} \left(u_{\text{post}} - u_{\text{pre}} \right) } \int_{u_{\text{pre}}}^{u_{\text{post}}} \gamma(u) du \}$
+For now, `gamma` is an undefined curve so only `alpha` is charged as the LP fee. In the near future, `gamma` will be used as the function to integrate utilization pre and post relay over. The pre and post utilization values will depend only on the relay origin chain, destination chain, amount, and hub pool block number equivalent.
 
 The Dataworker will sum the LP fees from a bundle of bridging events and them to the `bundleLpFees` array to return funds back to LPs. The `bundeLpFees` array is included in the [PoolRebalanceRoot](#constructing-the-poolrebalanceroot).
 
