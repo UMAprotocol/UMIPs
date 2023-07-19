@@ -362,12 +362,7 @@ On the origin chain, add `depositBalancingFee * deposit.amount` to the incentive
 
 #### Selecting Incentive Curve for Bridging Event
 
-Identify the [UBA Fee Curve Parameters](#token-constants) for the L1 token equivalent for `e` and the chain ID where `e` was emitted by finding the parameters preceding the `quoteTimestamp` for `e`. We use the `quoteTimestamp` in order to compare the L1 timestamp of `e` with the time that the UBA fee curve parameters were set in the `ConfigStore` on L1. 
-
-If `e` is a deposit, then use `deposit.quoteTimestamp` and if `e` is a fill or refund, then first find the matched deposit for `e` and then use `deposit.quoteTimestamp`.
-
-If `e` is a deposit, then find the Inflow Curve parameters, otherwise find the Outflow Curve parameters.
-
+Identify the [UBA Fee Curve Parameters](#token-constants) for the L1 token equivalent for `e` and the chain ID where `e` was emitted by finding the parameters preceding L1 start block of the bundle containing `e`. This implies that each `e` in a bundle uses the same bundle config.
 #### Selecting Running Balance Bounds for Bridging Event
 
 Identify the [UBA Fee Curve Bounds](#token-constants) for the L1 token equivalent and chain for `e` similarly to finding the incentive curve for `e`.
