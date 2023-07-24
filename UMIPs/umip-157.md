@@ -307,7 +307,7 @@ y axis.
 if (balanceFeesRequiredToBringFeePctToZero > P):
    
    ## If P << balanceFeesRequiredToBringFeePctToZero, discountFactor approaches 100%. Capped at 100%
-   discountFactor = (balanceFeesRequiredToBringFeePctToZero - P) / balanceFeesRequiredToBringFeePctToZero
+   discountFactor = P / balanceFeesRequiredToBringFeePctToZero
    appliedIncentiveFee = P * (1 - discountFactor)
 ```
 
