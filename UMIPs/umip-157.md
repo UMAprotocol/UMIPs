@@ -307,8 +307,8 @@ y axis.
 if (balanceFeesRequiredToBringFeePctToZero > P):
    
    ## If P << balanceFeesRequiredToBringFeePctToZero, discountFactor approaches 100%. Capped at 100%
-   discountFactor = min(1, balanceFeesRequiredToBringFeePctToZero / P)
-   appliedIncentiveFee *= discountFactor
+   discountFactor = P / balanceFeesRequiredToBringFeePctToZero
+   appliedIncentiveFee *= (1 - discountFactor)
 ```
 
 The following sections explain how to find the specific inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
