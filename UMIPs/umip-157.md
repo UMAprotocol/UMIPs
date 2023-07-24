@@ -301,15 +301,15 @@ appliedIncentiveFee = uncappedIncentiveFee
 if (appliedIncentiveFee < 0):
    appliedIncentiveFee *= UBA_REWARD_MULTIPLIER
 
-## Discount fee if max reward exceeds penalty pot
-if (maxRewards > P):
+## Discount fee if fees needed to bring fee % back to 0 exceeds penalty pot
+balanceFeesRequiredToBringFeePctToZero; # Easy way to do this is find point on fee curve where it crosses 0 on the
+y axis.
+if (balanceFeesRequiredToBringFeePctToZero > P):
    
-   ## If P << uncappedIncentiveFee, discountFactor approaches 100%. Capped at 100%
-   discountFactor = min(1, (uncappedIncentiveFee - P) / uncappedIncentiveFee)
-   appliedIncentiveFee *= 1 - discountFactor
+   ## If P << balanceFeesRequiredToBringFeePctToZero, discountFactor approaches 100%. Capped at 100%
+   discountFactor = min(1, balanceFeesRequiredToBringFeePctToZero / P)
+   appliedIncentiveFee *= discountFactor
 ```
-
-The final reward is equal to `reward * ubaRewardMultiplier`, a convenient scaler variable set in the [config store](#token-constants).
 
 The following sections explain how to find the specific inputs needed to [compute the incentive fee](#computing-incentive-fee-using-incentive-pool-size-running-balance-and-incentive-curve-for-e)
 
