@@ -231,7 +231,11 @@ This section gives an overview for computing the fees charged to users and relay
 ### Defining Bridging Events
 A Bridging Event is a `Deposit`, `Fill` or `Refund` event, which are intuitively the only events that lead to inflows and outflows to and from a SpokePool. Every deposit is counted as a bridging event, but not all fills and refunds are. A fill is counted if it is the first valid fill for a deposit on another chain, and its `repaymentChainId` is set to the `destinationChainId`, i.e. the fill will eventually be taking funds out of the SpokePool via a refund. If a fill's `repaymentChainId` is not set equal to the `destinationChainId`, then a corresponding refund event on the `repaymentChainId` should be emitted in order to signal when the refund from the SpokePool on the repayment chain should be counted as an outflow. See the section on [validating Refunds](#finding-valid-relays) for  more details on matching refunds with fills.
 
-For each SpokePool on `chainId`, there will be an ordered series of Bridging Events (sorted in [ascending](#comparing-events-chronologically) chronological order). To compute the balancing fee for any event `e` within `E` (the ordered series of Bridging Events), we need to determine the "Running Balance" and the "Incentive Pool" at the time that `e` was emitted. We also will need to select which Incentive Curve to use to find the balancing fee given the running balance and available incentive pool.
+For each SpokePool on `chainId`, there will be an ordered series of Bridging Events sorted by `block.timestamp` in the block on `chainId` that contained the event. To compute the balancing fee for any event `e` within `E` (the ordered series of Bridging Events), we need to determine the "Running Balance" and the "Incentive Pool" at the time that `e` was emitted. We also will need to select which Incentive Curve to use to find the balancing fee given the running balance and available incentive pool.
+
+Events on the same chain, `x` and `y`, with matching `block.timestamp` are tie broken using the following rules:
+ - If `x` is an Inflow and `y` is an Outflow (or vice versa, i.e. they are not the same direction), then order the inflow first
+ - If they are the same, then order by `amount` with smaller amounts coming first.
 
 In the following sections we'll use "Deposit" interchangeably with "Inflow", to represent balance added to the SpokePool. We'll also use "Outflow" interchangeably with "Fills" and "Refunds", which represent balance subtracted from the SpokePool.
 
@@ -492,6 +496,8 @@ event should be found in one of the spoke pools for the originChainId where the 
 - `recipient`
 - `depositor`
 - `message`
+
+Importantly also, fills can only be matched against deposits with a smaller or equal `block.timestamp`. This is a somewhat arbitrary decision but it does allow for a total ordering determinism for [Bridging Events](#defining-bridging-events) across multiple chains, which is required to make the UBA fee model work. This is because in the UBA model, fees for one chain's flow are dependent on the history of prior flows on the chain which themselves could be Outflows that depend on the history of another chain's inflow, and so on.
 
 ## Matching L2 tokens and L1 tokens
 
