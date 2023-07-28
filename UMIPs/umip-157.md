@@ -235,7 +235,7 @@ For each SpokePool on `chainId`, there will be an ordered series of Bridging Eve
 
 Events on the same chain, `x` and `y`, with matching `block.timestamp` are tie broken using the following rules:
  - If `x` is an Inflow and `y` is an Outflow (or vice versa, i.e. they are not the same direction), then order the inflow first
- - If they are the same, then order by `amount` with smaller amounts coming first.
+ - If they are the same type, then order by `blockNumber`, `transactionIndex` and then `logIndex`
 
 In the following sections we'll use "Deposit" interchangeably with "Inflow", to represent balance added to the SpokePool. We'll also use "Outflow" interchangeably with "Fills" and "Refunds", which represent balance subtracted from the SpokePool.
 
