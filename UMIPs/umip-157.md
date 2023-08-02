@@ -93,9 +93,9 @@ The following constants should reflect what is stored in the [`AcrossConfigStore
 - "VERSION"
   - Across protocol version number. Supporting implementations should query this value against the value defined in their implementation to determine compatibility with the current protocol version. Failure to correctly evaluate the version number may mean that filled relays are not refunded from the HubPool, and may therefore result in loss of funds. For more information go [here](#versions).
 - "DISABLED_CHAINS"
-  - This must be a stringified list of chain ID numbers. This cannot contain the chain ID "1". Chains in here must be contained in `CHAIN_ID_INDICES`.
+  - This must be a stringified list of chain ID numbers. This cannot contain the chain ID "1", or the HubPool chain ID. Chains in here must be contained in `CHAIN_ID_INDICES`.
 - "CHAIN_ID_INDICES"
-  - This should default to the value [1,10,137,288,42161]. Chains can only be added to this list to be valid.
+  - This should default to the value [1,10,137,288,42161] for any blocks older than the first time that this global variable was published. This is to account for the initial version of this UMIP which defined this ID list in the UMIP rather than in the ConfigStore contract. Chains can only be added to this list to be valid.
 
 To query the value for any of the above constants, the `AcrossConfigStore` contract's `globalConfig(bytes32)` function should be called with the hex value of the variable name. For example, the "MAX_POOL_REBALANCE_LEAF_SIZE" can be queried by calling `globalConfig(toHex("MAX_POOL_REBALANCE_LEAF_SIZE"))` which is equivalent to `globalConfig("0x4d41585f504f4f4c5f524542414c414e43455f4c4541465f53495a45")`. For example, this might return 
 >"25"
