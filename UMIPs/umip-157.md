@@ -93,13 +93,12 @@ The following constants should reflect what is stored in the [`AcrossConfigStore
 - "VERSION"
   - Across protocol version number. Supporting implementations should query this value against the value defined in their implementation to determine compatibility with the current protocol version. Failure to correctly evaluate the version number may mean that filled relays are not refunded from the HubPool, and may therefore result in loss of funds. For more information go [here](#versions).
 - "DISABLED_CHAINS"
-  - This must be a stringified list of chain ID numbers. This cannot contain the chain ID "1".
+  - This must be a stringified list of chain ID numbers. This cannot contain the chain ID "1", or the HubPool chain ID. Chains in here must be contained in `CHAIN_ID_INDICES`.
+- "CHAIN_ID_INDICES"
+  - This should default to the value [1,10,137,288,42161] for any blocks older than the first time that this global variable was published. This is to account for the initial version of this UMIP which defined this ID list in the UMIP rather than in the ConfigStore contract. Chains can only be added to this list to be valid.
 
 To query the value for any of the above constants, the `AcrossConfigStore` contract's `globalConfig(bytes32)` function should be called with the hex value of the variable name. For example, the "MAX_POOL_REBALANCE_LEAF_SIZE" can be queried by calling `globalConfig(toHex("MAX_POOL_REBALANCE_LEAF_SIZE"))` which is equivalent to `globalConfig("0x4d41585f504f4f4c5f524542414c414e43455f4c4541465f53495a45")`. For example, this might return 
 >"25"
-
-The following constants are currently specified in this UMIP directly, but should be moved to the `AcrossConfigStore` in the future. Once that happens, this UMIP can be amended to move the following constants in to the above section.
-- "CHAIN_ID_LIST"=[1,10,137,288,42161] # Mainnet, Optimism, Polygon, Boba, Arbitrum
 
 ## Token Constants
 The following constants are also stored in the `AcrossConfigStore` contract but are specific to an Ethereum token address. Therefore, they are fetched by querying the config store's `tokenConfig(address)` function.
@@ -154,7 +153,7 @@ From the selected event, one should be able to glean the following information:
 
 ## Determining block range for root bundle proposal
 The `bundleEvaluationBlockNumbers` is an ordered array of end block numbers for each destination chain for this bundle. Which index
-corresponds to which chain is denoted by the "CHAIN_ID_LIST" in the [global config](#global-constants).
+corresponds to which chain is denoted by the "CHAIN_ID_INDICES" in the [global config](#global-constants).
 
 To determine the start block number for each chainId, search for the latest
 [RootBundleExecuted event](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166)
@@ -162,7 +161,7 @@ with a matching `chainId` while still being earlier than the timestamp of the re
 for the
 [ProposeRootBundle](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L148-L156)
 event that is as late as possible, but earlier than the RootBundleExecuted event we just identified. Once this proposal event is found, determine its
-mapping of indices to `chainId` in its `bundleEvaluationBlockNumbers` array using "CHAIN_ID_LIST". For
+mapping of indices to `chainId` in its `bundleEvaluationBlockNumbers` array using "CHAIN_ID_INDICES". For
 each `chainId`, their starting block number is the minimum of that chain's `bundleEvaluationBlockNumber + 1` in this previous [valid proposal](#valid-bundle-proposals) event and the `latest` block height for the chain.
 
 Using the minimum allows the block range to handle the edge case where a chain has not advanced its block height since the last proposal, for example when a chain is undergoing a known hard fork.
