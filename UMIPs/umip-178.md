@@ -3,7 +3,7 @@
 | UMIP-167            |                                                      |
 | ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add ABT as a supported collateral currency           |
-| Authors             | paul@uma.xzy                                         |
+| Authors             | paul@uma.xyz                                         |
 | Status              | Draft                                                |
 | Created             | 2023-08-23                                           |
 | Discourse Link      | https://github.com/UMAprotocol/UMIPs/pull/591        |
