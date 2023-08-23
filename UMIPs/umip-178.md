@@ -24,7 +24,7 @@ The Across Bond Token has been designed specifically to enhance the security of 
 
 The following changes are proposed:
 
--   The ABT address [0xtbd](https://etherscan.io/address/0xtbd) shall be added to the collateral currency list introduced by UMIP-8.
+-   The ABT address [0xee1DC6BCF1Ee967a350e9aC6CaaAA236109002ea](https://etherscan.io/address/0xee1DC6BCF1Ee967a350e9aC6CaaAA236109002ea) shall be added to the collateral currency list introduced by UMIP-8.
 -   A final fee of 0.135 shall be configured for ABT in the relevant Store contract (nominally [0x54f44eA3D2e7aA0ac089c4d8F7C93C27844057BF](https://etherscan.io/address/0x54f44eA3D2e7aA0ac089c4d8F7C93C27844057BF).
 
 ## Rationale
