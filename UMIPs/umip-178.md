@@ -10,7 +10,7 @@
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding the Across Bond Token (ABT) for use as collateral in UMA contracts. ABT implements custom transfer logic, permitting Across to realise a permissioned set of HubPool proposers, thereby reducing the "proposal attack surface" of Across.
+This UMIP proposes adding the Across Bond Token (ABT) for use as collateral in UMA contracts. ABT inherits directly from a standard WETH9 implementation, and wraps the transferFrom() function to apply custom transfer logic. This permits Across to realise a permissioned set of HubPool proposers, thereby reducing the "proposal attack surface" of Across. All other ERC20 functions are completely standard.
 
 ## Motivation
 
