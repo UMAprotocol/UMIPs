@@ -6,11 +6,10 @@
 | Authors             | paul@uma.xyz                                         |
 | Status              | Draft                                                |
 | Created             | 2023-08-23                                           |
-| Discourse Link      | https://github.com/UMAprotocol/UMIPs/pull/591        |
 
 ## Summary (2-5 sentences)
 
-This UMIP proposes adding the Across Bond Token (ABT) for use as collateral in UMA contracts. ABT inherits directly from a standard WETH9 implementation, and wraps the transferFrom() function to apply custom transfer logic. This permits Across to realise a permissioned set of HubPool proposers, thereby reducing the "proposal attack surface" of Across. All other ERC20 functions are completely standard.
+This UMIP proposes adding the Across Bond Token (ABT) for use as collateral in UMA contracts. ABT inherits directly from a standard WETH9 implementation, and wraps the transferFrom() function to apply custom transfer logic. This permits Across to realise a permissioned set of HubPool proposers, thereby reducing the attack surface of Across. All other ERC20 functions are completely standard.
 
 ## Motivation
 
@@ -18,7 +17,7 @@ Across relies on an Optimistic Asserter proposal pattern in order to verify that
 
 As with disputing, it is currently permissionless to propose a root bundle proposal in Across. This unfortunately provides an opportunity for malicious third-parties to submit invalid proposals in order to extract funds from the system. This marginal risk dictates the need for a lengthy challenge window on proposals in order to ensure that any such proposals are detected and disputed. This thereby reduces the number of proposals that can be made and ultimately limits the frequency at which Across HubPool funds can be allocated to bridging activities, such as refunding relayers for user deposits that they have filled.
 
-The Across Bond Token has been designed specifically to enhance the security of Across by limiting the set of possible Across proposers, whilst still allowing any independent observer to dispute an invalid proposal. By ensuring that proposals only originate from pre-approved actors, Across will have reduced its "proposal attack surface" and will therefore be able to reduce its 2 hour challenge window. This will allow Across to scale further by reducing the time that relayers must wait for refunds, thereby improving their capital efficiency, and will ultimately deliver a better experience for the users of Across.
+The Across Bond Token has been designed specifically to enhance the security of Across by limiting the set of possible Across proposers, whilst still allowing any independent observer to dispute an invalid proposal. By ensuring that proposals only originate from pre-approved actors, Across will have reduced its attack surface and will therefore be able to reduce its 2 hour challenge window. This will allow Across to scale further by reducing the time that relayers must wait for refunds, thereby improving their capital efficiency, and will ultimately deliver a better experience for the users of Across.
 
 ## Technical Specification
 
