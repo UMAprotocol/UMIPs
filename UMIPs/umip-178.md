@@ -1,6 +1,6 @@
 ## Headers
 
-| UMIP-167            |                                                      |
+| UMIP-178            |                                                      |
 | ------------------- | ---------------------------------------------------- |
 | UMIP Title          | Add ABT as a supported collateral currency           |
 | Authors             | paul@uma.xyz                                         |
