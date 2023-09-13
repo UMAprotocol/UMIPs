@@ -119,11 +119,9 @@ The following constants are also stored in the `AcrossConfigStore` contract but 
     it contained the same value as the "target" integer when used.
   - If "spokeTargetBalances", a particular chainId is missing from the mapping, or "target" or "threshold" is missing,
     the missing "target" and "threshold" should be defaulted to 0.
-- "transferThreshold"
-  - This field should be a single integer value represented as a string (to allow unlimited precision).
 
 For example, querying `tokenConfig("0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2")` might return:
-> "{"rateModel":{"UBar":"750000000000000000","R0":"50000000000000000","R1":"0","R2":"600000000000000000"},"transferThreshold":"100000000000000000","spokeTargetBalances":{"1":{"threshold":"200000000000000000000","target":"100000000000000000000"},"42161":{"threshold":"400000000000000000000","target":"200000000000000000000"}}}"
+> "{"rateModel":{"UBar":"750000000000000000","R0":"50000000000000000","R1":"0","R2":"600000000000000000"},"spokeTargetBalances":{"1":{"threshold":"200000000000000000000","target":"100000000000000000000"},"42161":{"threshold":"400000000000000000000","target":"200000000000000000000"}}}"
 
 _This UMIP will explain later how global and token-specific configuration settings are used._
 
@@ -291,17 +289,17 @@ For each tuple of `l1Token` and `repaymentChainId`, we should have computed a to
 following algorithm describes the process of computing running balance and net send amount:
 
 ```
-transfer_threshold = the transfer threshold for this token
 spoke_balance_threshold = the "threshold" value in `spokeTargetBalances` for this token
-spoke_balance_target = the "threshold" value in `spokeTargetBalances` for this token
+spoke_balance_target = the "target" value in `spokeTargetBalances` for this token
 
 net_send_amount = 0
-if running_balance >= 0 && running_balance >= transfer_threshold:
+# If running balance is positive, then hub owes spoke funds and always send funds
+if running_balance >= 0:
   net_send_amount = running_balance
   running_balance = 0
+# If running balance is negative, send over enough to get running balance back to target
 else if abs(running_balance) >= spoke_balance_threshold:
-  desired_transfer_amount = min(running_balance + spoke_balance_target, 0)
-  net_send_amount = abs(desired_transfer_amount) >= transfer_threshold ? desired_transfer_amount : 0
+  net_send_amount = min(running_balance - spoke_balance_target, 0)
   running_balance = running_balance - net_send_amount
 ```
 
