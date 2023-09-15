@@ -293,8 +293,7 @@ spoke_balance_threshold = the "threshold" value in `spokeTargetBalances` for thi
 spoke_balance_target = the "target" value in `spokeTargetBalances` for this token
 
 net_send_amount = 0
-# If running balance is positive, then hub owes spoke funds and always send funds
-if running_balance >= 0:
+# If running balance is positive, then the hub owes the spoke funds.
   net_send_amount = running_balance
   running_balance = 0
 # If running balance is negative, send over enough to get running balance back to target
