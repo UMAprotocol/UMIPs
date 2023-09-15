@@ -296,7 +296,7 @@ net_send_amount = 0
 # If running balance is positive, then the hub owes the spoke funds.
   net_send_amount = running_balance
   running_balance = 0
-# If running balance is negative, send over enough to get running balance back to target
+# If running balance is negative, withdraw enough from the spoke to the hub to return the running balance to its target
 else if abs(running_balance) >= spoke_balance_threshold:
   net_send_amount = min(running_balance - spoke_balance_target, 0)
   running_balance = running_balance - net_send_amount
