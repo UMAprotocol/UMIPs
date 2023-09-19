@@ -294,6 +294,7 @@ spoke_balance_target = the "target" value in `spokeTargetBalances` for this toke
 
 net_send_amount = 0
 # If running balance is positive, then the hub owes the spoke funds.
+if running_balance > 0:
   net_send_amount = running_balance
   running_balance = 0
 # If running balance is negative, withdraw enough from the spoke to the hub to return the running balance to its target
