@@ -94,7 +94,7 @@ It's important to note that a validator's status regarding the ETHx MEV policy m
 In order for voters to determine the validity of the claim, they should refer to the following contracts:
 
 - The Rated smart contract, which is the original creator of the claim.
-- The ETHx config, which lists all the addresses of the ETHx protocol. Information needed to get validators’ state will be held in `PermissionlessNodeRegistry` and `PermissionedNodeRegistry`.
+- The ETHx config, which lists all the addresses of the ETHx protocol. Information needed to get validators’ state will be held in `PermissionlessNodeRegistry` and `PermissionedNodeRegistry`. On Ethereum mainnet, this contract is deployed at `0x4ABEF2263d5A5ED582FC9A9789a41D85b68d69DB`.
 
 **The steps to evaluate a report are the following:**
 
