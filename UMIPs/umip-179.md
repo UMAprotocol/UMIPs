@@ -64,16 +64,18 @@ Note:
 - A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instance, allowing the status for each fill to be queried.
 
 ### FillType
+A FillType instance is emitted with each `FilledV3Relay` event (see below).
+
 | Name | Value | Description |
 | :--- | :---- | :---------- |
 | FastFill | 0 | The relay was completed by a relayer as a fast fill. |
 | ReplacedSlowFill | 1 | The relay was initially requested to be completed via slow fill, but was subsequently fast-filled by a relayer. |
 | SlowFill | 2 | The relay was completed via slow fill. |
 
-Note:
-- A FillType instance is emitted by each `FilledV3Relay` event (see below).
 
 ### V3RelayExecutionEventInfo
+A V3RelayExecutionEventInfo instanace is emitted with each `FilledV3Relay` event (see below).
+
 | Name | Type | Description |
 | :--- |:---- | :---------- |
 | updatedRecipient | address | The recipient of the funds being transferred. May have been the `recipient` identified in the original deposit, or an updated `recipient` following a `RequestedSpeedUpV3Deposit` event. |
