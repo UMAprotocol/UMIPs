@@ -60,12 +60,18 @@ The V3RelayData type underpins the transfer of funds in or out of a SpokePool in
 | RequestedSlowFill | 1 | A SlowFill request has been made for this V3RelayData hash. A corresponding `RequestedSlowFill` event has been previously emitted. |
 | Filled | 2 | A fill (fast or slow) for this `V3RelayData` hash has been completed. |
 
+Note:
+- A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instance, allowing the status for each fill to be queried.
+
 ### FillType
 | Name | Value | Description |
 | :--- | :---- | :---------- |
-| FastFill | 0 |  |
-| ReplacedSlowFill | 1 |  |
-| SlowFill | 2 | |
+| FastFill | 0 | The relay was completed by a relayer as a fast fill. |
+| ReplacedSlowFill | 1 | The relay was initially requested to be completed via slow fill, but was subsequently fast-filled by a relayer. |
+| SlowFill | 2 | The relay was completed via slow fill. |
+
+Note:
+- A FillType instance is emitted by each `FilledV3Relay` event (see below).
 
 ### V3RelayExecutionEventInfo
 | Name | Type | Description |
@@ -155,6 +161,7 @@ The current SpokePool address for a specific chain is available by querying `Hub
 3. Using the `l1Token` value found in step 1, search for the latest SetRebalanceRoute event at or before the quoteTimestamp with that l1Token and with the destinationChainId that matches the destinationChainId value from the FundsDeposited event. If a match is found, the destinationToken should match the destinationToken value in the FilledRelay event. If they don't match or if no matching event is found, the relay is invalid.
 
 ## Computing LP Fees
+<!-- todo: Check that the link to `Matching SpokePool & HubPool tokens` is working -->
 Each `FilledV3Relay` event is subject to an LP fee. The procedure for computing LP fees is as defined in [UMIP-136 Add IS_RELAY_VALID as a supported price identifier](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-136.md), with the following amendments:
 - The AcrossConfigStore contract is used to identify the correct rate model, instead of a `RateModelStore` contract.
 - The `FilledV3Relay` inputToken can be mapped to a HubPool token `l1Token` by following [step 2](https://github.com/UMAprotocol/UMIPs/blob/master/UMIPs/umip-179.md#Matching-SpokePool-&-HubPool-tokens) above.
