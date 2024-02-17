@@ -180,7 +180,7 @@ Each `FilledV3Relay` event is subject to an LP fee. The procedure for computing 
 <!-- todo: Complete this section -->
 
 Note:
-- Deposits with disparate output tokens (i.e. where the outputToken is not the equivalent of inputToken on the destination chain) are explicitly not eligible for slow fills. Any instances of `V3SlowFill` for non-equivalent tokens shall be ignored. 
+- Deposits with disparate output tokens (i.e. where the outputToken is not the equivalent of inputToken on the destination chain) are explicitly not eligible for slow fills. Any instances of `RequestedV3SlowFill` events for non-equivalent tokens shall be ignored. 
 
 # Recommendations
 - Proposers are responsible for detecting and mitigating incorrect or inconsistent RPC data. Proposers should take steps to validate the correctness of their RPC data before proposing.
