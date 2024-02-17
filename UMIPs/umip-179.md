@@ -59,7 +59,7 @@ A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instanc
 | Name | Value | Description |
 | :--- | :---- | :---------- |
 | Unfilled | 0 | The SpokePool has no known state for the corresponding `V3RelayData` hash. |
-| RequestedSlowFill | 1 | A SlowFill request has been made for this V3RelayData hash. A corresponding `RequestedSlowFill` event has been previously emitted. |
+| RequestedSlowFill | 1 | A SlowFill request has been made for this V3RelayData hash. A corresponding `RequestedV3SlowFill` event has been previously emitted. |
 | Filled | 2 | A fill (fast or slow) for this `V3RelayData` hash has been completed. |
 
 ### FillType
@@ -142,13 +142,13 @@ Note:
 ## Finding Slow Fill Requests
 A slow fill is requested a when a _destination_ SpokePool contract emits a `RequestedV3SlowFill` event. A slow fill request is made by supplying a complete copy of the relvant `V3RelayData` emitted by a `V3FundsDeposited` event.
 
-1. For each `SlowFillRequested` event, identify whether the request is eligible for a slow fill by determining whether the `inputToken` and `outputToken` addresses are equivalent.
-2. For each resulting `SlowFillRequested` event, determine whether it has been completed by either of the following methods:
+1. For each `RequestedV3SlowFill` event, identify whether the request is eligible for a slow fill by determining whether the `inputToken` and `outputToken` addresses are equivalent.
+2. For each resulting `RequestedV3SlowFill` event, determine whether it has been completed by either of the following methods:
    - Querying the destination SpokePool `FillStatus` mapping with the corresponding `V3RelayData` hash, OR
    - Searching for a corresponding `FilledV3Relay` event.
-3. For each of `SlowFillRequested` event, apply filtering on the basis of its destination SpokePool `FillStatus`, such that only `SlowFillRequested` fills are retained.
-4. Each resulting `SlowFillRequested` shall be matched against a corresponding `V3FundsDeposited` event on the origin SpokePool. Any events that cannot be matched shall be dropped.
-6. The resulting set of matched and validated `SlowFillRequested` events shall be included as SlowFills in the subsequent RootBundle.
+3. For each `RequestedV3SlowFill` event, apply filtering on the basis of its destination SpokePool `FillStatus`, such that only `RequestedV3SlowFill` fills are retained.
+4. Each resulting `RequestedV3SlowFill` event shall be matched against a corresponding `V3FundsDeposited` event on the origin SpokePool. Any events that cannot be matched shall be dropped.
+6. The resulting set of matched and validated `RequestedV3SlowFill` events shall be included as SlowFills in the subsequent RootBundle.
 
 ## Computing Slow Fill payment amounts
 `V3FundsDeposited` `outputAmount` values specify the exact amount to be received by the `recipient`, and therefore exclude any relayer or LP fees paid. In the event of a Slow Fill, the relayer portion of the implicit fee is effectively nulled. Therefore, the outputAmount shall be increased by the amount corresponding 
@@ -180,7 +180,7 @@ Each `FilledV3Relay` event is subject to an LP fee. The procedure for computing 
 <!-- todo: Complete this section -->
 
 Note:
-- Deposits with disparate output tokens (i.e. where the outputToken is not the equivalent of inputToken on the destination chain) are explicitly not eligible for slow fills. Any instances of `RequestedV3SlowFill` for non-equivalent tokens shall be ignored. 
+- Deposits with disparate output tokens (i.e. where the outputToken is not the equivalent of inputToken on the destination chain) are explicitly not eligible for slow fills. Any instances of `V3SlowFill` for non-equivalent tokens shall be ignored. 
 
 # Recommendations
 - Proposers are responsible for detecting and mitigating incorrect or inconsistent RPC data. Proposers should take steps to validate the correctness of their RPC data before proposing.
