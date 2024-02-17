@@ -150,10 +150,10 @@ A slow fill is requested a when a _destination_ SpokePool contract emits a `Requ
 4. Each resulting `RequestedV3SlowFill` event shall be matched against a corresponding `V3FundsDeposited` event on the origin SpokePool. Any events that cannot be matched shall be dropped.
 6. The resulting set of matched and validated `RequestedV3SlowFill` events shall be included as SlowFills in the subsequent RootBundle.
 
-## Computing Slow Fill payment amounts
-`V3FundsDeposited` `outputAmount` values specify the exact amount to be received by the `recipient`, and therefore exclude any relayer or LP fees paid. In the event of a Slow Fill, the relayer portion of the implicit fee is effectively nulled. Therefore, the outputAmount shall be increased by the amount corresponding 
+## Computing Slow Fill output amounts
+`V3FundsDeposited` `outputAmount` values specify the exact amount to be received by the `recipient`, and therefore exclude any relayer or LP fees paid. In the event of a Slow Fill, the relayer portion of the implicit fee is effectively nulled. Therefore, SlowFill `outputAmount` shall be increased by the amount corresponding the `relayerFeePct`. This can be identified as follows: `updatedOutputAmount = inputAmount * (1 - realizedLpFeePct), where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
 
-### Identifying SpokePool Contracts
+## Identifying SpokePool Contracts
 The current SpokePool address for a specific chain is available by querying `HubPool.crossChainContracts()`. The chainId must be specified in the query. In case of SpokePool migations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events.
 
 ## Matching SpokePool & HubPool tokens
