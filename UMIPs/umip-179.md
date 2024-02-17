@@ -53,10 +53,6 @@ The V3RelayData type underpins the transfer of funds in or out of a SpokePool in
 | exclusivityDeadline | uint32 | The Unix timestamp on the destination chain after which any relayer can fill the deposit. |
 | message | bytes | Data that is forwarded to the recipient as part of a relay. |
 
-Notes:
-- Any attempted fill that occurs after `fillDeadline` has elapsed shall be rejected by the destination SpokePool. The corresponding deposit shall be refunded via the origin SpokePool in the relevant settlement bundle.
-- Any attempted fill 
-
 #### FillStatus
 | Name | Value | Description |
 | :--- | :---- | :---------- |
@@ -104,15 +100,18 @@ The `RequestedSpeedUpV3Deposit` emits specifies the following fields:
 | updatedMessage | bytes | The new message to be supplied to the recipient. |
 | depositorSignature | bytes | A signature by the depositor authorizing the above updated fields. |
 
-Note:
+Notes:
 - Relayers may optionally append the updated request from a `RequestedSpeedUpV3Deposit` when filling a relay, but have no obligation to use the updated request.
+- The address identified by `exclusiveRelayer` has exclusive right to complete the relay on the destination chain until `exclusivityDeadline` has elapsed.
+- If `exclusivityDeadline` is set to a past timestamp, any address is eligible to fill the relay.
+- Any attempted fill that occurs after `fillDeadline` has elapsed shall be rejected by the destination SpokePool. The corresponding deposit shall be refunded via the origin SpokePool in the relevant settlement bundle.
 
 #### RequestedV3SlowFill
 The `RequestedV3SlowFill` event emits `V3RelayData`. This event is emitted on the destination chain and is intended to signal to proposers that a slow fill has been requested.
 
 Note:
-- `RequestedV3SlowFill` events cannot be emitted once the `fillDeadline` timestamp has elapsed on the destination chain.
 - `RequestedV3SlowFill` events cannot occur until the `exclusivityDeadline` timestamp has elapsed on the destination chain.
+- `RequestedV3SlowFill` events cannot be emitted once the `fillDeadline` timestamp has elapsed on the destination chain.
 
 #### FilledV3Relay
 The `FilledV3Relay` event extends the `V3RelayData` type by adding the following fields:
@@ -120,7 +119,7 @@ The `FilledV3Relay` event extends the `V3RelayData` type by adding the following
 | :--- | :--- | :---------- |
 | relayer | address | The address completing relay on the destination SpokePool. |
 | repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
-| relayExecutionInfo | V3RelayExecutionInfo | The effective recipient, message and outputAmount 
+| relayExecutionInfo | V3RelayExecutionInfo | The effective `recipient`, `message` and `outputAmount`. | 
 
 Consumers of this event should append the `destinationChainId` attribute in order to avoid unintentioanlly mixing events from different chains.
 
