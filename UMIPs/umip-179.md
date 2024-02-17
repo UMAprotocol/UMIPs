@@ -54,14 +54,13 @@ The V3RelayData type underpins the transfer of funds in or out of a SpokePool in
 | message | bytes | Data that is forwarded to the recipient as part of a relay. |
 
 ### FillStatus
+A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instance. This mapping can be queried with the hashed `V3RelayData` for a deposit, allowing the status for the corresponding fill to be queried.
+
 | Name | Value | Description |
 | :--- | :---- | :---------- |
 | Unfilled | 0 | The SpokePool has no known state for the corresponding `V3RelayData` hash. |
 | RequestedSlowFill | 1 | A SlowFill request has been made for this V3RelayData hash. A corresponding `RequestedSlowFill` event has been previously emitted. |
 | Filled | 2 | A fill (fast or slow) for this `V3RelayData` hash has been completed. |
-
-Note:
-- A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instance, allowing the status for each fill to be queried.
 
 ### FillType
 A FillType instance is emitted with each `FilledV3Relay` event (see below).
@@ -127,7 +126,7 @@ The `FilledV3Relay` event extends the `V3RelayData` type by adding the following
 | :--- | :--- | :---------- |
 | relayer | address | The address completing relay on the destination SpokePool. |
 | repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
-| relayExecutionInfo | V3RelayExecutionInfo | The effective `recipient`, `message` and `outputAmount`. | 
+| relayExecutionInfo | V3RelayExecutionInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). | 
 
 Consumers of this event should append the `destinationChainId` attribute in order to avoid unintentioanlly mixing events from different chains.
 
