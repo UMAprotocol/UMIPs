@@ -9,7 +9,7 @@
 | Discourse Link      |                                                                                               |
 
 # Note
-Unless otherwise specified in [UMIP-179]((https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-179.md)), this UMIP is superseded by UMIP-179.
+Unless otherwise specified in [UMIP-179](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-179.md), this UMIP is superseded by UMIP-179.
 
 # Summary 
 
