@@ -132,7 +132,7 @@ Consumers of this event should append the `destinationChainId` attribute in orde
 
 # Method
 ## Finding Valid Relays
-For each enabled destination chain, find all `FilledV3Relay` events emitted by its SpokePool between the starting block number and ending block number for that chain. Exclude any FilledV3Relay events that have `FillType` set to `SlowFill`.
+For each enabled destination chain, find all `FilledV3Relay` events emitted by its SpokePool between the starting block number and ending block number for that chain. Exclude any `FilledV3Relay` events that have `FillType` set to `SlowFill`.
 
 For each `FilledV3Relay` event found, search the relevant SpokePool contract on the origin chain for a matching `V3FundsDeposited` event. Events can be reliably matched by directly comparing their component `V3RelayData` (or comparing their hashes).
 
