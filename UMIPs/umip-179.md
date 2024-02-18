@@ -414,11 +414,9 @@ Across v3 is supplementary to Across v2, adding extra logic support new types of
 The V3 rules defined in this UMIP will apply beginning when the VERSION field in the ConfigStore is updated to 3 or higher. The ability for Across bundles to support V2 events may cease in a future VERSION increment.
 
 # Implementation
-<!-- todo: add SHA256 hash (or git tag?) for the relevant repository state -->
 The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts-v2) repository.
 
 # Security considerations
-<!-- todo: add audit reference -->
 Across v3 has been audited by OpenZeppelin.
 
 Note:
