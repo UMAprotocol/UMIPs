@@ -235,7 +235,7 @@ For the purpose of computing slow fills to be issued to recipients, each `Reques
 4. The `RequestedV3SlowFill` `V3RelayData` is matched by a corresponding `V3FundsDeposited` event on the origin SpokePool,
 
 Note:
-- A slow fill request is made by supplying a complete copy of the relvant `V3RelayData` emitted by a `V3FundsDeposited` event.
+- A slow fill request is made by supplying a complete copy of the relevant `V3RelayData` emitted by a `V3FundsDeposited` event.
 - The resulting set of validated `RequestedV3SlowFill` events shall be included as SlowFills in the subsequent root bundle proposal.
 
 ### Computing LP Fees
