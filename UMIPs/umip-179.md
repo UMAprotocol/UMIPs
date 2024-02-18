@@ -207,7 +207,8 @@ For the purpose of identifying the equivalent HubPool token given a SpokePool to
 ### Identifying Bundle Block Ranges
 In addition to the description [UMIP-157](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#determining-block-range-for-root-bundle-proposal):
 - Proposers may opt to reduce the size of the proposal block range for each chain in the event that RPC provider data inconsistencies are detected, and
-- A "soft pause" of a chain is permitted in the event that the proposer cannot
+- A "soft pause" of a chain is permitted in the event that the proposer cannot safely increment the bundle block range, or has no events to propose beyond the previous bundle block range. In this case, the proposer may repeat the procedure for
+  DISABLED_CHAINS by proposing from and to the previous bundle end block.
 
 ### Finding Valid Relays
 For the purpose of computing relayer repayments, each `FilledV3Relay` event emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
