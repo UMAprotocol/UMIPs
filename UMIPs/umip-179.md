@@ -82,6 +82,17 @@ A V3RelayExecutionEventInfo instanace is emitted with each `FilledV3Relay` event
 | repaymentChainId | uint256 | The chain specified by the depositor for fill repayment. |
 | fillType | FillType | Type of fill completed. |
 
+### V3SlowFill
+A V3SlowFill instanace is emitted with each `FilledV3Relay` event (see below).
+
+| Name | Type | Description |
+| :--- |:---- | :---------- |
+| relayData | V3RelayData | `V3RelayData` instance to uniquely associate the SlowFill with `V3FundsDeposited` and `RequestedV3SlowFill` events. |
+| chainId | uint256 | The chain ID of the SpokePool completing the SlowFill. |
+| updatedOutputAmount | uint256 | The amount sent to `recipient` as part of a SlowFill. This should typically be equal to or greater than the `V3FundsDeposited` `outputAmount`. |
+| repaymentChainId | uint256 | The chain specified by the depositor for fill repayment. |
+| fillType | FillType | Type of fill completed. |
+
 #### Notes
 The `updatedRecipient` field is normally set to the `recipient` from the corresponding `V3FundsDeposited` event. In the event that the relayer completes the fill with an accompanying `RequestedSpeedUpV3Deposit` event, `updatedRecipient` will be set to the address approved by the update.
 
@@ -95,6 +106,9 @@ Across V3 defines the following new events:
 ### V3FundsDeposited
 The `V3FundsDeposited` event emits the unique `V3RelayData` for an individual deposit. No additional fields are defined. Consumers of this event should append the `originChainId` in order to avoid unintentioanlly mixing events from different chains.
 
+Note:
+- The `V3FundsDeposited` `outputToken` is not required to be a known HubPool `l1Token`. In-protocol arbitrary token swaps are technically supported by Across v3.
+
 ### RequestedSpeedUpV3Deposit
 The `RequestedSpeedUpV3Deposit` emits specifies the following fields:
 | Name | Type | Description |
@@ -106,7 +120,7 @@ The `RequestedSpeedUpV3Deposit` emits specifies the following fields:
 | updatedMessage | bytes | The new message to be supplied to the recipient. |
 | depositorSignature | bytes | A signature by the depositor authorizing the above updated fields. |
 
-Notes:
+Note:
 - Relayers may optionally append the updated request from a `RequestedSpeedUpV3Deposit` when filling a relay, but have no obligation to use the updated request.
 - The address identified by `exclusiveRelayer` has exclusive right to complete the relay on the destination chain until `exclusivityDeadline` has elapsed.
 - If `exclusivityDeadline` is set to a past timestamp, any address is eligible to fill the relay.
@@ -125,26 +139,38 @@ The `FilledV3Relay` event extends the `V3RelayData` type by adding the following
 | :--- | :--- | :---------- |
 | relayer | address | The address completing relay on the destination SpokePool. |
 | repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
-| relayExecutionInfo | V3RelayExecutionInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). | 
+| relayExecutionInfo | V3RelayExecutionInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). |
 
-Consumers of this event should append the `destinationChainId` attribute in order to avoid unintentioanlly mixing events from different chains.
+Note:
+- Consumers of this event should append the `destinationChainId` attribute in order to avoid unintentioanlly mixing events from different chains.
 
 # Root Bundle Proposals
 
 ## Requirements
 A Root Bundle Propopsal shall contain:
 - One array of bundle evaluation block numbers, where each entry represents the end block of the proposal for the corresponding chain ID. The array shall be sorted such that each entry corresponds to the chain ID configured in the AcrossConfigStore `CHAIN_ID_INDICES` configuration item.
-- One poolRebalanceRoot.
-- One relayerRefundRoot.
-- One slowRelayRoot. 
+- One Pool Rebalance Root.
+- One Relayer Refund Root.
+- One Slow Relay Root. 
 
 ### Pool Rebalance Roots
-Each Pool Rebalance Root shall be the Merkle Root of an array of 
+The Pool Rebalance Root shall be the Merkle Root computed over an ordered array of Pool Rebalance leaves, each describing the movement of funds from `HubPool` to `SpokePool`.
+
+Note:
+- The format of Pool Rebalance leaves is unchanged from Across v2.
 
 ### Relayer Refund Roots
-The _format_ of Relayer Refund leaves is unchanged from Across v2, as described in [UMIP-157 Constructing RelayerRefundRoot](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#constructing-relayerrefundroot). Across v3 expands Relayer Refund leaves to include depositor refunds on origin chains in the event of an expired `fillDeadline`.
+The Relayer Refund Root shall be the Merkle Root computed over an ordered array of Relayer Refund leaves, each describing the movement of funds out of a `SpokePool`. 
+
+Note:
+- The format of Relayer Refund leaves is unchanged from Across v2, as described in [UMIP-157 Constructing RelayerRefundRoot](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#constructing-relayerrefundroot).
+- Across v3 expands Relayer Refund leaves to include depositor refunds on origin chains in the event of an expired `fillDeadline`.
 
 ### Slow Relay Roots
+The Slow Relay Root shall be the Merkle Root computed over an ordered array of Slow Relay leaves, each describing the movement of funds out of a `SpokePool`.
+
+Note:
+- The format of Slow Relay leaves is updated from Across v2 to consist of the V3SlowFill structure described in [Data Types](#data-types).
 
 ## Method
 ### Identifying SpokePool Contracts
@@ -237,7 +263,9 @@ The procedure for computing running balances shall implement the follows steps:
 
 ### Constructing the PoolRebalanceRoot
 The procedure for constructing a Pool Rebalance Root shall 
-1. For each combination of SpokePool and supported token, compute the running balance.
+1. For each combination of SpokePool and supported token:
+    1. Compute the running balance.
+    2. Compute the bundle LP fees.
 
 ### Constructing the RelayerRefundRoot
 Relayer Refund leaves are produced by aggregating the set of eligible repayment events:
