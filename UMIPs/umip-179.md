@@ -2,7 +2,7 @@
 - UMIP 179
 - Title: Update the **ACROSS-V2** price identifier to support Across v3
 - Author paul@across.to
-- Status: Draft
+- Status: Last Call
 - Created: 2023-02-17
 - Discourse Link: N/A
 
