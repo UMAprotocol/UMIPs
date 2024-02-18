@@ -51,7 +51,7 @@ The V3RelayData type underpins the transfer of funds in or out of a SpokePool in
 | depositId | uint32 | The ID uniquely identifying a deposit on the origin chain. |
 | fillDeadline | uint32 | The Unix timestamp on the destination chain after which the deposit can no longer be filled. |
 | exclusivityDeadline | uint32 | The optional Unix timestamp on the destination chain after which any relayer can fill the deposit. |
-| message | bytes | Optional sata that is forwarded to the recipient as part of a relay. |
+| message | bytes | Optional data that is forwarded to the recipient as part of a relay. |
 
 ### FillStatus
 A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instance. This mapping can be queried with the hashed `V3RelayData` for a deposit, allowing the status for the corresponding fill to be queried.
