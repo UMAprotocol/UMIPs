@@ -366,7 +366,7 @@ Each Relayer Refund Leaf shall be constructed as follows:
         - Expired deposits.
 - The `refundAddresses` and `refundAmounts` arrays shall be ordered according to the following criteria:
     1. `refundAmount` descending order, then
-    2. `relayerAddress`ascending order (in case of duplicate `refundAmount` values).
+    2. `relayerAddress` ascending order (in case of duplicate `refundAmount` values).
 
 In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`]((https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants) refunds:
 1. Additional `RelayerRefundLeaf` instances shall be produced to accomodate the excess.
