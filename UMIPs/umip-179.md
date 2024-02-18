@@ -258,7 +258,7 @@ The Opening Running Balance for each unique `l1Token` and `repaymentChainId` pai
 2. For the preceding event, identify the index of `l1Token` in the `l1Tokens` array, and lookup the corresponding index in the `runningBalances` array.
 3. In the event that no preceding runningBalance is idenfied, the Opening Running Balance shall default to 0.
 
-### Computing Running Balances
+### Computing Running Balances & Net Send Amounts
 The procedure for computing running balances for an `l1Token` and `chainId` pair shall implement the follows steps:
 1. Initialize the running balance to 0.
 
@@ -275,21 +275,65 @@ The procedure for computing running balances for an `l1Token` and `chainId` pair
     - For each group of validated `FilledV3Relay` events where the `FillType` is `ReplacedSlowFill`, subtract the SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill will never be executed.
 
 6. Add the Opening Running Balance for the selected `l1Token` and `chainId` pair.
+ 
+8. Set the Net Send Amount and update the Running Balance  for each `l1Token` and `chainId` pair subject to the outcome of `Computing Net Send Amounts` as described by the following algorithm:
+```
+spoke_balance_threshold = the "threshold" value in `spokeTargetBalances` for this token
+spoke_balance_target = the "target" value in `spokeTargetBalances` for this token
 
-### Constructing the PoolRebalanceRoot
-The procedure for constructing a Pool Rebalance Root shall 
-1. For each combination of SpokePool and supported token:
-    1. Compute the running balance.
-    2. Compute the bundle LP fees.
+net_send_amount = 0
+# If running balance is positive, then the hub owes the spoke funds.
+if running_balance > 0:
+  net_send_amount = running_balance
+  running_balance = 0
+# If running balance is negative, withdraw enough from the spoke to the hub to return the running balance to its target
+else if abs(running_balance) >= spoke_balance_threshold:
+  net_send_amount = min(running_balance + spoke_balance_target, 0)
+  running_balance = running_balance - net_send_amount
+```
+
+Note:
+The referenced `SpokeTargetBalances` is as specified by [UMIP-157 Token Constants](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#token-constants):
+
+### Constructing the Pool Rebalance Root
+One Pool Rebalance Leavef shall be produced per unique `chainId` & `l1Token` pair, where the corresponding SpokePool emitted `V3FundsDeposited`, `FilledV3Relay` or`RequestedV3SlowFill` events within the target block range.
+
+The Pool Rebalance Leaf format specified [here](xxx) shall be used.
+
+Each Pool Rebalance Leaf shall be constructed as follows:
+1. For each unique `chainId` and `l1Token` pair:
+    1. Compute the arrays `runningBalances`, `netSendAmounts` and `bundleLpFees` according to the procedures outlined above.
+    2. Set the `groupIndex` to 0.
+2. Within each `PoolRebalanceLeaf` instance, the arrays `l1Tokens`, `runningBalances`, `netSendAmounts` and `bundleLpFees` shall be:
+    1 Ordered by `l1Token`, and
+    2 Of the same (on-zero length.
+
+In the event that the number of `l1Token` entries contained within a single Pool Rebalance Leaf exceeds [`MAX_POOL_REBALANCE_LEAF_SIZE`](#global-constants):
+1. Additional `PoolRebalanceLeaf` instanes shall be produced to accomodate the excess.
+2. The ordering of `l1Tokens`, `bundleLpFees`, `runningBalance` and `neSendAmounts,` shall be maintained across the ordered array of leaves.
+3. `groupIndex` shall be incremented for each subsequent leaf.
+
+The set of PoolRebalanceLeaf objects shall be ordered by:
+1, `chainId`, then
+2. `l1Tokens`.
+
+The PoolRebalanceLeaf `leafId` shall be set to indicate its position with the ordered array, starting at 0.
+
+The hash for each `PoolRebalanceLeaf` shall be constructed by using Solidity's standard process of `keccak256(abi.encode(poolRebalanceLeaf))`.
+
+The PoolRebalance Merkle Tree shall be constructed such that it is verifyable using [OpenZeppelin's MerkleProof](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/contracts/utils/cryptography/MerkleProof.sol) library.
+
+Note:
+- See examples [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/test/utils/cryptography/MerkleProof.test.js) for how to construct these types of trees.
 
 ### Constructing the RelayerRefundRoot
-At least one Relayer Refund leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
+At least one Relayer Refund Leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
 - Valid `FilledV3Relay` events, OR
 - Expired `V3Fundsdeposited` events, OR
 - A negative running balance net send amount.
 
 <!-- todo: Update the Relayer Refund leaf structure link -->
-The Relayer Refund leaf structure as specified [here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePoolInterface.sol#L9-L23) shall be used.
+The Relayer Refund Leaf structure as specified [here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePoolInterface.sol#L9-L23) shall be used.
 
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
