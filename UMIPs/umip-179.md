@@ -321,7 +321,7 @@ The referenced `SpokeTargetBalances` is as specified by [UMIP-157 Token Constant
 ## Constructing Root Bundles
 
 ### Constructing the Pool Rebalance Root
-One Pool Rebalance Leavef shall be produced per unique `chainId` & `l1Token` pair, where the corresponding SpokePool emitted `V3FundsDeposited`, `FilledV3Relay` or`RequestedV3SlowFill` events within the target block range.
+One Pool Rebalance Leaf shall be produced per unique `chainId` & `l1Token` pair, where the corresponding SpokePool emitted `V3FundsDeposited`, `FilledV3Relay` or`RequestedV3SlowFill` events within the target block range.
 
 Each Pool Rebalance Leaf shall be constructed as follows:
 1. For each unique `chainId` and `l1Token` pair:
@@ -358,7 +358,7 @@ At least one `RelayerRefundLeaf` shall be produced for each unique combination o
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
 - `l2TokenAddress` shall be set to the L2 token address for the corresponding `l1Token` considered in PoolRebalanceRoot production.
-    - HubPool and SpokePool token mappings shall done according to the highest `quoteTimestamp` of any relays in the group.
+    - HubPool and SpokePool token mappings shall made according to the highest `quoteTimestamp` of any relays in the group.
     - If no relays are present, then the relevant token mapping from the previous successful proposal shall be used.
 - Each element of the `refundAddresses` and `refundAmounts` arrays shall be produced according to the defined procedure for computing relayer repayments.
     - One entry shall exist per unique address, containing the sum of any outstanding:
