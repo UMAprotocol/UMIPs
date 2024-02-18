@@ -80,7 +80,7 @@ A V3RelayExecutionEventInfo instanace is emitted with each `FilledV3Relay` event
 | updatedOutputAmount | uint256 | The amount sent to `updatedRecipient` by the relayer completing the fill. |
 | updatedMessage | bytes | Data that is forwarded to the recipient as part of a relay. |
 | repaymentChainId | uint256 | The chain specified by the depositor for fill repayment. |
-| fillType | FillType | Type of fill completed. |
+| fillType | FillType | Type of fill completed (see `FillType` above). |
 
 ### V3SlowFill
 A V3SlowFill instanace is emitted with each `FilledV3Relay` event (see below).
@@ -232,12 +232,15 @@ The bundle LP fee for a target block range on a SpokePool and token pair shall b
 
 ### Computing Relayer Repayments
 For a validated `FilledV3Relay` event, the relayer repayment amount shall be computed as follows:
-- `inputAmount * (1 - realizedLpFeePct)`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
+- `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
+
+## Computing Deposit Refunds
+For an expired `V3FundsDeposited` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
 
 ### Computing Slow Fill updated output amounts
 For the purpose of computing the amount to issue to a recipient for a SlowFill, the relayer fee shall be nulled by applying the following procedure:
-- `updatedOutputAmount = inputAmount * (1 - realizedLpFeePct)`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
+- `updatedOutputAmount = (inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
 
 Constraint:
 - The `V3FundsDeposited` `outputAmount` shall _not_ be considered when determining SlowFill amounts.
@@ -272,9 +275,40 @@ Relayer Refund leaves are produced by aggregating the set of eligible repayment 
 - Repayment amounts for valid fills.
 - Deposit amounts for expired deposits.
 
-The above items are sorted and ordered according to:
-1. Repayment amount.
-2. Repayment address (relayer or depositor).
+At least one Relayer Refund leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
+    - Valid `FilledV3Relay` events, OR
+    - Expired `V3Fundsdeposited` events, OR
+    - A negative running balance net send amount.
+
+<!-- todo: Update the Relayer Refund leaf structure link -->
+The Relayer Refund leaf structure as specified [here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePoolInterface.sol#L9-L23) shall be used.
+
+Each Relayer Refund Leaf shall be constructed as follows:
+- `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
+- `l2TokenAddress` shall be set to the L2 token address for the corresponding `l1Token` considered in PoolRebalanceRoot production.
+    - HubPool and SpokePool token mappings shall done according to the highest `quoteTimestamp` of any relays in the group.
+    - If no relays are present, then the relevant token mapping from the previous successful proposal shall be used.
+- Each element of the `refundAddresses` and `refundAmounts` arrays shall be produced according to the defined procedure for computing relayer repayments.
+    - One entry shall exist per unique address, containing the sum of any outstanding:
+        - Relayer repayments, and/or
+        - Expired deposits.
+- The `refundAddresses` and `refundAmounts` arrays shall be ordered according to the following criteria:
+    1. `refundAmount` descending order, then
+    2. `relayerAddress`ascending order (in case of duplicate `refundAmount` values).
+
+In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](#global-constants) refunds:
+1. Additional `RelayerRefundLeaf` instanes shall be produced to accomodate the excess.
+2. The ordering of `refundAddresses` and `refundAmounts` shall be maintained across the ordered array of leaves.
+3. Only the first leaf for a given `l2TokenAddress` shall contain a non-zero `amountToReturn`.
+
+The set of relayer refund leaves shall be ordered according to:
+- chainId, then
+- `l2TokenAddress`, then
+- leaf sub-index (in case of > [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](#global-constants) repayments).
+
+The Relayer Refund Leaf `leafId` field shall be numbered according to the ordering established above, starting at 0.
+
+Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
 ### Constructing the SlowRelayRoot
 <!-- todo: Complete this section -->
