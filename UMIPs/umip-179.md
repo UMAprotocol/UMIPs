@@ -1,6 +1,6 @@
 # Headers
 - UMIP 179
-- UMIP title: Update the **ACROSS-V2** price identifier to support Across v3
+- Title: Update the **ACROSS-V2** price identifier to support Across v3
 - Author paul@across.to
 - Status: Draft
 - Created: 2023-02-17
