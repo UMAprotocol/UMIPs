@@ -331,8 +331,8 @@ Each Pool Rebalance Leaf shall be constructed as follows:
     1 Ordered by `l1Token`, and
     2 Of the same (on-zero length.
 
-In the event that the number of `l1Token` entries contained within a single Pool Rebalance Leaf exceeds [`MAX_POOL_REBALANCE_LEAF_SIZE`](#global-constants):
-1. Additional `PoolRebalanceLeaf` instanes shall be produced to accomodate the excess.
+In the event that the number of `l1Token` entries contained within a single Pool Rebalance Leaf exceeds [`MAX_POOL_REBALANCE_LEAF_SIZE`](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants):
+1. Additional `PoolRebalanceLeaf` instances shall be produced to accomodate the excess.
 2. The ordering of `l1Tokens`, `bundleLpFees`, `runningBalance` and `neSendAmounts,` shall be maintained across the ordered array of leaves.
 3. `groupIndex` shall be incremented for each subsequent leaf.
 
@@ -358,7 +358,7 @@ At least one `RelayerRefundLeaf` shall be produced for each unique combination o
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
 - `l2TokenAddress` shall be set to the L2 token address for the corresponding `l1Token` considered in PoolRebalanceRoot production.
-    - HubPool and SpokePool token mappings shall made according to the highest `quoteTimestamp` of any relays in the group.
+    - HubPool and SpokePool token mappings shall be made according to the highest `quoteTimestamp` of any relays in the group.
     - If no relays are present, then the relevant token mapping from the previous successful proposal shall be used.
 - Each element of the `refundAddresses` and `refundAmounts` arrays shall be produced according to the defined procedure for computing relayer repayments.
     - One entry shall exist per unique address, containing the sum of any outstanding:
@@ -368,8 +368,8 @@ Each Relayer Refund Leaf shall be constructed as follows:
     1. `refundAmount` descending order, then
     2. `relayerAddress`ascending order (in case of duplicate `refundAmount` values).
 
-In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](#global-constants) refunds:
-1. Additional `RelayerRefundLeaf` instanes shall be produced to accomodate the excess.
+In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`]((https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants) refunds:
+1. Additional `RelayerRefundLeaf` instances shall be produced to accomodate the excess.
 2. The ordering of `refundAddresses` and `refundAmounts` shall be maintained across the ordered array of leaves.
 3. Only the first leaf for a given `l2TokenAddress` shall contain a non-zero `amountToReturn`.
 
