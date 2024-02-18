@@ -50,8 +50,8 @@ The V3RelayData type underpins the transfer of funds in or out of a SpokePool in
 | originChainId | uint256 | The chain ID of the origin SpokePool. |
 | depositId | uint32 | The ID uniquely identifying a deposit on the origin chain. |
 | fillDeadline | uint32 | The Unix timestamp on the destination chain after which the deposit can no longer be filled. |
-| exclusivityDeadline | uint32 | The Unix timestamp on the destination chain after which any relayer can fill the deposit. |
-| message | bytes | Data that is forwarded to the recipient as part of a relay. |
+| exclusivityDeadline | uint32 | The optional Unix timestamp on the destination chain after which any relayer can fill the deposit. |
+| message | bytes | Optional sata that is forwarded to the recipient as part of a relay. |
 
 ### FillStatus
 A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instance. This mapping can be queried with the hashed `V3RelayData` for a deposit, allowing the status for the corresponding fill to be queried.
@@ -410,7 +410,8 @@ Note:
 
 # Across v2 -> V3 Transition
 Across v3 is supplementary to Across v2, adding extra logic support new types of deposits, fills and slow fill requests. At the point of upgrading to Across v3, it will no longer be possible for Across v2 `FundsDeposited` events to be emitted. In order to support continuity of service and to minimise disruption for third-party integrators, it will be possible for pre-existing `FundsDeposited` events to be filled via `FilledRelay` events. During this period, RootBundleProposals will contain relayer repayment and slow fill leaves for both Across v2 and v3.
-<!-- todo: Should the end of this dual-operation period be signalled by a bump in the ConfigStore VERSION flag? -->
+
+The V3 rules defined in this UMIP will apply beginning when the VERSION field in the ConfigStore is updated to 3 or higher. The ability for Across bundles to support V2 events may cease in a future VERSION increment.
 
 # Implementation
 <!-- todo: add SHA256 hash (or git tag?) for the relevant repository state -->
