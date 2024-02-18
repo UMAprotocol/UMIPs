@@ -271,10 +271,6 @@ The procedure for constructing a Pool Rebalance Root shall
     2. Compute the bundle LP fees.
 
 ### Constructing the RelayerRefundRoot
-Relayer Refund leaves are produced by aggregating the set of eligible repayment events:
-- Repayment amounts for valid fills.
-- Deposit amounts for expired deposits.
-
 At least one Relayer Refund leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
     - Valid `FilledV3Relay` events, OR
     - Expired `V3Fundsdeposited` events, OR
