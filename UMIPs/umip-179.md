@@ -248,8 +248,18 @@ Constraint:
 Note:
 - The `V3FundsDeposited` `outputAmount` specifies the exact amount to be received by the `recipient` for a standard fill, and is therefore exclusive of any relayer or LP fees paid.
 
+### Finding the Opening Running Balance
+The Opening Running Balance is defined as the cumulative running balance as at the previous successful (undisputed) Root Bundle Proposal.
+
+The Opening Running Balance for each unique `l1Token` and `repaymentChainId` pair shall be determined as follows:
+1. Search for the preceding [RootBundleExecuted](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/HubPool.sol#L157-L166) event where:
+    1. The `RootBundleExecuted` `chainId` matches `repaymentChainId`, and
+    2. The `l1Token` address appears in the `l1Tokens` array.
+2. For the preceding event, identify the index of `l1Token` in the `l1Tokens` array, and lookup the corresponding index in the `runningBalances` array.
+3. In the event that no preceding runningBalance is idenfied, the Opening Running Balance shall default to 0.
+
 ### Computing Running Balances
-The procedure for computing running balances shall implement the follows steps:
+The procedure for computing running balances for an `l1Token` and `chainId` pair shall implement the follows steps:
 1. Initialize the running balance to 0.
 
 2. Add relayer refunds:
@@ -264,6 +274,8 @@ The procedure for computing running balances shall implement the follows steps:
 5. Subtract excesses from unexecuted slow fills:
     - For each group of validated `FilledV3Relay` events where the `FillType` is `ReplacedSlowFill`, subtract the SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill will never be executed.
 
+6. Add the Opening Running Balance for the selected `l1Token` and `chainId` pair.
+
 ### Constructing the PoolRebalanceRoot
 The procedure for constructing a Pool Rebalance Root shall 
 1. For each combination of SpokePool and supported token:
@@ -272,9 +284,9 @@ The procedure for constructing a Pool Rebalance Root shall
 
 ### Constructing the RelayerRefundRoot
 At least one Relayer Refund leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
-    - Valid `FilledV3Relay` events, OR
-    - Expired `V3Fundsdeposited` events, OR
-    - A negative running balance net send amount.
+- Valid `FilledV3Relay` events, OR
+- Expired `V3Fundsdeposited` events, OR
+- A negative running balance net send amount.
 
 <!-- todo: Update the Relayer Refund leaf structure link -->
 The Relayer Refund leaf structure as specified [here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePoolInterface.sol#L9-L23) shall be used.
