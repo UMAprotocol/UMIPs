@@ -16,7 +16,7 @@ Across v3 is a major refinement of the Across v2 specification, adding support f
 The Across Protocol proposes an update to its specification to better support the intent-based future of cross-chain bridging. This includes:
  - Supporting enforceable time-limited agreements between users and relayers for intent execution.
  - Enabling Across to be used by third-parties as an efficient, modular cross-chain settlement system.
- - Permitting depositors to be refunded directly on the origin chain in the event that their relay is not completed within a timeframe specified at deposit time. 
+ - Permitting depositors to be refunded directly on the origin chain in the event that their relay is not completed within a timeframe specified at deposit time.
  - Reducing relayer risk exposure by elimintating the need for onchain publication of the `realizedLpFeePct` component of a bridge transfer.
  - Supporting relayer exclusivity to mitigate onchain gas auctions.
 
@@ -42,7 +42,7 @@ The V3RelayData type underpins the transfer of funds in or out of a SpokePool in
 | :--- |:---- | :---------- |
 | depositor | address | The address that made the deposit on the origin chain. |
 | recipient | address | The recipient address on the destination chain. |
-| exclusiveRelayer | address | The optional exclusive relayer who can fill the deposit before the exclusivity deadline. | 
+| exclusiveRelayer | address | The optional exclusive relayer who can fill the deposit before the exclusivity deadline. |
 | inputToken | address | The token that is deposited on the origin chain by the depositor. |
 | outputToken | address | The token that is received on the destination chain by the recipient. |
 | inputAmount | uint256 | The amount of inputToken that is deposited by the depositor. |
@@ -197,7 +197,7 @@ Note:
 The current SpokePool address for a specific chain is available by querying `HubPool.crossChainContracts()`. The chainId must be specified in the query. In case of SpokePool migations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events.
 
 ### Resolving SpokePool tokens to their HubPool equivalent
-For the purpose of identifying the equivalent HubPool token given a SpokePool token, the following shall be followed: 
+For the purpose of identifying the equivalent HubPool token given a SpokePool token, the following shall be followed:
 1. Find the latest `SetRebalanceRoute` event with a block timestamp at or before the relevant HubPool block number, where the relevant SpokePool chain ID and token address  match the `SetRebalanceRoute` `destinationChainId` and `destinationToken` fields.
     - In the case of a `V3FundsDeposited` event, the relevant HubPool block number is identified by resolving the `quoteTimestamp` to a HubPool block number.
 3. From the resulting `SetRebalanceRoute` event, select the associated `l1Token` field.
@@ -207,7 +207,7 @@ For the purpose of identifying the equivalent HubPool token given a SpokePool to
 ### Identifying Bundle Block Ranges
 In addition to the description [UMIP-157](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#determining-block-range-for-root-bundle-proposal):
 - Proposers may opt to reduce the size of the proposal block range for each chain in the event that RPC provider data inconsistencies are detected, and
-- A "soft pause" of a chain is permitted in the event that the proposer cannot 
+- A "soft pause" of a chain is permitted in the event that the proposer cannot
 
 ### Finding Valid Relays
 For the purpose of computing relayer repayments, each `FilledV3Relay` event emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
@@ -245,7 +245,7 @@ Each valid `FilledV3Relay` event is subject to an LP fee. The procedure for comp
 - The LP fee is computed between the `originChainId` and `FilledV3Relay.repaymentChainId` where the `relayExecutionInfo.FillType != SlowFill` and `FilledV3Relay.destinationChainId` otherwise.
 
 Note:
-- The LP fee is typically referenced as a multiplier of the `V3FundsDeposited` `inputAmount`, named `realizedLpFeePct` elsewhere in this document. 
+- The LP fee is typically referenced as a multiplier of the `V3FundsDeposited` `inputAmount`, named `realizedLpFeePct` elsewhere in this document.
 
 ### Computing Bundle LP Fees
 The bundle LP fee for a target block range on a SpokePool and token pair shall be determined by summing the applicable LP fees for each of the following validated events:
@@ -287,7 +287,7 @@ The procedure for computing running balances for an `l1Token` and `chainId` pair
     - For each group of validated `FilledV3Relay` events, initialize a running balance at 0 and add the add the relayer repayment.
 
 3. Add deposit refunds:
-    - For each group of `V3FundsDeposited` events that expired within the target block range, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain. 
+    - For each group of `V3FundsDeposited` events that expired within the target block range, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain.
 
 4. Add slow fills:
     - For each group of validated `RequestedV3SlowFill` events, add each slow relay's `updatedOutputAmount` to the group's running balance.
@@ -297,7 +297,7 @@ The procedure for computing running balances for an `l1Token` and `chainId` pair
     - For each expired deposit refund identified above where the `FillStatus` on the deposit destination chain for the deposit's relay data is `RequestedSlowFill` and the matching slow fill request is not in the current bundle range, subtract the associated SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill cannot be executed past the `fillDeadline`.
 
 6. Add the Opening Running Balance for the selected `l1Token` and `chainId` pair.
- 
+
 8. Set the Net Send Amount and update the Running Balance  for each `l1Token` and `chainId` pair subject to the outcome of `Computing Net Send Amounts` as described by the following algorithm:
 ```
 spoke_balance_threshold = the "threshold" value in `spokeTargetBalances` for this token
@@ -401,7 +401,7 @@ The array of `V3SlowRelayLeaf` instances shall be sorted according to;
 
 Note:
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
-- Deposits with disparate output tokens (i.e. where the outputToken is not the equivalent of inputToken on the destination chain) are explicitly not eligible for slow fills. Any instances of `RequestedV3SlowFill` events for non-equivalent tokens shall be ignored. 
+- Deposits with disparate output tokens (i.e. where the outputToken is not the equivalent of inputToken on the destination chain) are explicitly not eligible for slow fills. Any instances of `RequestedV3SlowFill` events for non-equivalent tokens shall be ignored.
 
 # Recommendations
 - Proposers are responsible for detecting and mitigating incorrect or inconsistent RPC data. Proposers should take steps to validate the correctness of their RPC data before proposing.
