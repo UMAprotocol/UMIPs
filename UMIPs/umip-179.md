@@ -72,18 +72,18 @@ A FillType instance is emitted with each `FilledV3Relay` event (see below).
 | SlowFill | 2 | The relay was completed via slow fill. |
 
 ### V3RelayExecutionEventInfo
-A V3RelayExecutionEventInfo instanace is emitted with each `FilledV3Relay` event (see below).
+A V3RelayExecutionEventInfo instance is emitted with each `FilledV3Relay` event (see below).
 
 | Name | Type | Description |
 | :--- |:---- | :---------- |
-| updatedRecipient | address | The recipient of the funds being transferred. May have been the `recipient` identified in the original deposit, or an updated `recipient` following a `RequestedSpeedUpV3Deposit` event. |
+| updatedRecipient | address | The recipient of the funds being transferred. This may be the `recipient` identified in the original deposit, or an updated `recipient` following a `RequestedSpeedUpV3Deposit` event. |
 | updatedOutputAmount | uint256 | The amount sent to `updatedRecipient` by the relayer completing the fill. |
 | updatedMessage | bytes | Data that is forwarded to the recipient as part of a relay. |
 | repaymentChainId | uint256 | The chain specified by the depositor for fill repayment. |
 | fillType | FillType | Type of fill completed (see `FillType` above). |
 
 ### V3SlowFill
-A V3SlowFill instanace is emitted with each `FilledV3Relay` event (see below).
+A V3SlowFill instance is emitted with each `FilledV3Relay` event (see below).
 
 | Name | Type | Description |
 | :--- |:---- | :---------- |
