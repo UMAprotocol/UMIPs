@@ -323,8 +323,6 @@ The referenced `SpokeTargetBalances` is as specified by [UMIP-157 Token Constant
 ### Constructing the Pool Rebalance Root
 One Pool Rebalance Leavef shall be produced per unique `chainId` & `l1Token` pair, where the corresponding SpokePool emitted `V3FundsDeposited`, `FilledV3Relay` or`RequestedV3SlowFill` events within the target block range.
 
-The Pool Rebalance Leaf format specified [here](xxx) shall be used.
-
 Each Pool Rebalance Leaf shall be constructed as follows:
 1. For each unique `chainId` and `l1Token` pair:
     1. Compute the arrays `runningBalances`, `netSendAmounts` and `bundleLpFees` according to the procedures outlined above.
@@ -356,9 +354,6 @@ At least one `RelayerRefundLeaf` shall be produced for each unique combination o
 - Valid `FilledV3Relay` events, OR
 - Expired `V3Fundsdeposited` events, OR
 - A negative running balance net send amount.
-
-<!-- todo: Update the Relayer Refund leaf structure link -->
-The Relayer Refund Leaf structure as specified [here](https://github.com/across-protocol/contracts-v2/blob/a8ab11fef3d15604c46bba6439291432db17e745/contracts/SpokePoolInterface.sol#L9-L23) shall be used.
 
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
