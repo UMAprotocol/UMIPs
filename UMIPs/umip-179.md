@@ -420,3 +420,6 @@ The Across v3 implementation is available in the Across [contracts-v2](https://g
 # Security considerations
 <!-- todo: add audit reference -->
 Across v3 has been audited by OpenZeppelin.
+
+Note:
+- If a particular relayer refund is known to be unexecutable, it can be removed from the bundle by the proposer if a sufficient public justification is made before the proposal. This is intended to deal with unlikely situations, such as ag centralized token issuer blacklisting an address that is due a refund. If this leaf were to remain unaltered, this blacklisted address could block other addresses from recieving refunds.
