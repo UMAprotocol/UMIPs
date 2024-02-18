@@ -147,7 +147,7 @@ Note:
 # Root Bundle Proposals
 
 ## Requirements
-A Root Bundle Propopsal shall consist of the following:
+A Root Bundle Proposal shall consist of the following:
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | bundleEvaluationBlockNumbers | uint256[] | The ordered array of block numbers signifying the end block of the proposal for each respective `chainId`. |
