@@ -147,30 +147,49 @@ Note:
 # Root Bundle Proposals
 
 ## Requirements
-A Root Bundle Propopsal shall contain:
-- One array of bundle evaluation block numbers, where each entry represents the end block of the proposal for the corresponding chain ID. The array shall be sorted such that each entry corresponds to the chain ID configured in the AcrossConfigStore `CHAIN_ID_INDICES` configuration item.
-- One Pool Rebalance Root.
-- One Relayer Refund Root.
-- One Slow Relay Root. 
+A Root Bundle Propopsal shall consist of the following:
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| bundleEvaluationBlockNumbers | uint256[] | The ordered array of block numbers signifying the end block of the proposal for each respective `chainId`. |
+| poolRebalanceLeafCount | uint8 | The number of `PoolRebalanceLeaf` instances represented by the `poolRebalanceRoot`. |
+| poolRebalanceRoot | bytes32 | The Merkle Root of the tree representing the ordered array of `PoolRebalanceLeaf` objects comprising the proposal. |
+| relayerRefundRoot | bytes32 | The Merkle Root of the tree representing the ordered array of `RelayerRefundLeaf` objects comprising the proposal. |
+| slowRelayRoot | bytes32 | The Merkle Root of the tree representing the ordered array of `SlowFillLeaf` objects comprising the proposal. |
 
-### Pool Rebalance Roots
-The Pool Rebalance Root shall be the Merkle Root computed over an ordered array of Pool Rebalance leaves, each describing the movement of funds from `HubPool` to `SpokePool`.
+### Pool Rebalance Leaves
+A `PoolRebalanceLeaf` shall consist of the following:
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| chainId | uint256 | The SpokePool `chainId` referenced by the `PoolRebalanceLeaf`. |
+| bundleLpFees | uint256[] | Ordered array of `bungleLpFee` values for the corresponding `l1Token`. |
+| netSendAmounts | uint256[] | Ordered array of `netSendAmount` values for the corresponding `l1Token`. |
+| runningBalances | uint256[] | Ordered array of `runningBalance` values for the corresponding `l1Token`. |
+| groupIndex | uint256 | Indicates whether the corresponding `RelayerRefund` and `SlowRelay` roots shall be relayed to the corresponding SpokePool. |
+| leafId | uint8 | Index of the `PoolRebalanceLeaf` within the ordered array of `PoolRebalanceLeaves`. |
+| l1Tokens | address[] | Ordered array of HubPool `l1Token` addresses.
 
 Note:
 - The format of Pool Rebalance leaves is unchanged from Across v2.
 
-### Relayer Refund Roots
-The Relayer Refund Root shall be the Merkle Root computed over an ordered array of Relayer Refund leaves, each describing the movement of funds out of a `SpokePool`. 
+### Relayer Refund Leaves
+| :--- | :--- | :---------- |
+| chainId | uint256 | The SpokePool `chainId` referenced by the `RelayerRebalanceLeaf`. |
+| leafId | uint8 | Index of the `RelayerRefundLeaf` within the ordered array of `RelayerRefundLeaves`. |
+| l2TokenAddress | address[] | The SpokePool token used by this `RelayerRefundLeaf`.
+| amountToReturn | uint256 | Amount of `l2TokenAddress` to return to the HubPool. |
+| refundAddresses | uint256[] | Ordered array of addresses to be refunded by this `RelayerRefundLeaf`. |
+| refundAmounts | uint256[] | Ordered array of amounts of `l2TokenAddress`to be refunded to the corresponding `refundAddress`. |
 
 Note:
-- The format of Relayer Refund leaves is unchanged from Across v2, as described in [UMIP-157 Constructing RelayerRefundRoot](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#constructing-relayerrefundroot).
-- Across v3 expands Relayer Refund leaves to include depositor refunds on origin chains in the event of an expired `fillDeadline`.
+- The format of Relayer Refund leaves is unchanged from Across v2.
+- Across v3 expands the utility of the `RelayerRefundLeaf` to include issuing depositor refunds on origin chains in the event of an expired `V3FundsDeposited` `fillDeadline`.
 
-### Slow Relay Roots
-The Slow Relay Root shall be the Merkle Root computed over an ordered array of Slow Relay leaves, each describing the movement of funds out of a `SpokePool`.
+### Slow Relay Leaves
+Across v3 `SlowRelayLeaf` objects are defined by the `V3SlowFill` [data type](#data-types).
 
 Note:
-- The format of Slow Relay leaves is updated from Across v2 to consist of the V3SlowFill structure described in [Data Types](#data-types).
+- The format of Slow Relay leaves is updated from Across v2.
 
 ## Method
 ### Identifying SpokePool Contracts
@@ -185,7 +204,9 @@ For the purpose of identifying the equivalent HubPool token given a SpokePool to
 5. Using the `l1Token` value found in step 2, search for the latest `SetRebalanceRoute` event at or before the applicable HubPool block number where `l1Token` and `destinationChainId` that match the extracted `l1Token` and SpokePool chain ID. If a match is found, the addresses match and are considered cross-chain equivalents.
 
 ### Identifying Bundle Block Ranges
-<!-- tbd -->
+In addition to the description [UMIP-157](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#determining-block-range-for-root-bundle-proposal):
+- Proposers may opt to reduce the size of the proposal block range for each chain in the event that RPC provider data inconsistencies are detected, and
+- A "soft pause" of a chain is permitted in the event that the proposer cannot 
 
 ### Finding Valid Relays
 For the purpose of computing relayer repayments, each `FilledV3Relay` event emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
@@ -235,7 +256,7 @@ For a validated `FilledV3Relay` event, the relayer repayment amount shall be com
 - `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 
-## Computing Deposit Refunds
+### Computing Deposit Refunds
 For an expired `V3FundsDeposited` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
 
 ### Computing Slow Fill updated output amounts
@@ -295,6 +316,8 @@ else if abs(running_balance) >= spoke_balance_threshold:
 Note:
 The referenced `SpokeTargetBalances` is as specified by [UMIP-157 Token Constants](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#token-constants):
 
+## Constructing Root Bundles
+
 ### Constructing the Pool Rebalance Root
 One Pool Rebalance Leavef shall be produced per unique `chainId` & `l1Token` pair, where the corresponding SpokePool emitted `V3FundsDeposited`, `FilledV3Relay` or`RequestedV3SlowFill` events within the target block range.
 
@@ -327,7 +350,7 @@ Note:
 - See examples [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/test/utils/cryptography/MerkleProof.test.js) for how to construct these types of trees.
 
 ### Constructing the RelayerRefundRoot
-At least one Relayer Refund Leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
+At least one `RelayerRefundLeaf` shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
 - Valid `FilledV3Relay` events, OR
 - Expired `V3Fundsdeposited` events, OR
 - A negative running balance net send amount.
@@ -360,12 +383,23 @@ The set of relayer refund leaves shall be ordered according to:
 
 The Relayer Refund Leaf `leafId` field shall be numbered according to the ordering established above, starting at 0.
 
-Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
+Note:
+- Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
 ### Constructing the SlowRelayRoot
-<!-- todo: Complete this section -->
+One `V3SlowRelayLeaf` shall be produced per valid `RequestedV3SlowRelay` event emitted within the target block range for a destination SpokePool.
+
+Each `V3SlowRelayLeaf` shall be constructed as follows:
+1. Set `relayData` to the `V3RelayData` data emitted by the validated `RequestedV3SlowFill` event.
+2. Set `chainId` to `destinationChainId` from the corresponding validated `RequestedV3SlowFill` event.
+3. Set `updatedOutputAmount` to the updated amount computed for the SlowFill.
+
+The array of `V3SlowRelayLeaf` instances shall be sorted according to;
+1. `originChainId`, then
+2. `depositId`.
 
 Note:
+- Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 - Deposits with disparate output tokens (i.e. where the outputToken is not the equivalent of inputToken on the destination chain) are explicitly not eligible for slow fills. Any instances of `RequestedV3SlowFill` events for non-equivalent tokens shall be ignored. 
 
 # Recommendations
