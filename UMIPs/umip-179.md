@@ -147,71 +147,89 @@ The _format_ of Relayer Refund leaves is unchanged from Across v2, as described 
 ### Slow Relay Roots
 
 ## Method
-### Finding Valid Relays
-For each enabled destination chain, find all `FilledV3Relay` events emitted by its SpokePool between the starting block number and ending block number for that chain. Exclude any `FilledV3Relay` events where `FillType` is set to `SlowFill`.
-
-For each `FilledV3Relay` event found, search the relevant SpokePool contract on the origin chain for a matching `V3FundsDeposited` event. Events can be reliably matched by directly comparing their component `V3RelayData` (or derivative hashes).
-
-Note:
-- If a fill is considered to be invalid at any point due to a `V3RelayData` mismatch (or no corresponding `V3FundsDeposited` event having been emitted via the origin SpokePool), that fill must be excluded from the resulting bundle.
-
-### Finding Expired Deposits
-For each `V3FundsDeposited` event containing a `fillDeadline` that expires within the proposal block range on the destination SpokePool, where the destination `FillStatus` is `Unfilled`, it shall be refunded to the `depositor` address on the origin SpokePool. The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion. Depositor refunds are issued as part of the relayer refund procedure.
-
-### Finding Slow Fill Requests
-A slow fill is requested a when a _destination_ SpokePool contract emits a `RequestedV3SlowFill` event. A slow fill request is made by supplying a complete copy of the relvant `V3RelayData` emitted by a `V3FundsDeposited` event.
-
-1. For each `RequestedV3SlowFill` event emitted within the target block range on the destination SpokePool, identify whether the request is eligible for a slow fill by determining whether the `inputToken` and `outputToken` addresses are equivalent.
-2. For each resulting `RequestedV3SlowFill` event, determine whether it has been completed by either of the following methods:
-   - Querying the destination SpokePool `FillStatus` mapping with the corresponding `V3RelayData` hash, OR
-   - Searching for a corresponding `FilledV3Relay` event.
-3. For each `RequestedV3SlowFill` event, apply filtering on the basis of its destination SpokePool `FillStatus`, such that only `RequestedV3SlowFill` fills are retained.
-4. Each resulting `RequestedV3SlowFill` event shall be matched against a corresponding `V3FundsDeposited` event on the origin SpokePool. Any events that cannot be matched shall be dropped.
-6. The resulting set of matched and validated `RequestedV3SlowFill` events shall be included as SlowFills in the subsequent RootBundle.
+### Identifying SpokePool Contracts
+The current SpokePool address for a specific chain is available by querying `HubPool.crossChainContracts()`. The chainId must be specified in the query. In case of SpokePool migations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events.
 
 ### Matching SpokePool & HubPool tokens
 1. Find the latest `SetRebalanceRoute` event with a block timestamp at or before the `quoteTimestamp` in the associated `V3FundsDeposited` event, where `originChainId` and `inputToken` match the `destinationChainId` and `destinationToken`. Pull the `l1Token` value from the resulting event. If there is no matching event, the relay is invalid.
 2. Search the `SetPoolRebalanceRoute` events for the same `l1Token` and `destinationChainId` before or at the `quoteTimestamp`. If there are any matching events later than the one found in step 1, the relay is invalid.
 3. Using the `l1Token` value found in step 1, search for the latest SetRebalanceRoute event at or before the quoteTimestamp with that l1Token and with the destinationChainId that matches the destinationChainId value from the FundsDeposited event. If a match is found, the destinationToken should match the destinationToken value in the FilledRelay event. If they don't match or if no matching event is found, the relay is invalid.
 
-### Computing LP Fees
-<!-- todo: Check that the link to `Matching SpokePool & HubPool tokens` is working -->
-Each valid `FilledV3Relay` event is subject to an LP fee. The procedure for computing LP fees is as defined in [UMIP-136 Add IS_RELAY_VALID as a supported price identifier](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-136.md), with the following amendments:
-- The AcrossConfigStore contract is used to identify the correct rate model, instead of a `RateModelStore` contract.
-- The `FilledV3Relay` inputToken can be mapped from a SpokePool token to a HubPool token `l1Token` by following the matching procedure outlined above.
-- The LP fee is computed between the `FilledV3Relay` `originChainId` and `repaymentChainId`.
-- The `HubPool` `liquidityUtilizationCurrent()` and `liquidityUtilizationPostRelay()` functions are used instead of the `BridgePool` variant.
+### Identifying Bundle Block Ranges
+<!-- tbd -->
 
-The LP fee is typically referenced as a multiplier of the `V3FundsDeposited` `inputAmount`, named `realizedLpFeePct` elsewhere in this document. 
+### Finding Valid Relays
+For the purpose of computing relayer repayments, each `FilledV3Relay` event emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
+1. The `FilledV3Relay` `FillType` field is not set to `SlowFill`,
+2. The component `V3RelayData` maps exactly to a corresponding `V3FundsDeposited` event emitted on the relevant `originChainId`. This may be compared by comparing the hashes of the two objects.
+
+### Finding Expired Deposits
+For the purpose of computing depositor refunds, each `V3FundsDeposited` event shall be considered expired by verifying that:
+1. The `fillDeadline` timestamp elapsed within the target block range on the destination SpokePool,
+2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested`.
+
+Note:
+- Expired deposits shall be refunded to the `depositor` address on the origin SpokePool.
+- Depositor refunds are to be issued as part of the relayer refund procedure.
+- The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion within the target block range.
+
+### Finding Slow Fill Requests
+For the purpose of computing slow fills to be issued to recipients, each `RequestedV3SlowFill` event emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
+1. The `inputToken` and `outputToken` addresses are equivalent at the deposit `quoteTimestamp`,
+2. The `fillDeadline` has not already elapsed relative to the `destinationChainId` bundle end block number,
+3. The destination SpokePool `FillStatus` mapping for the relevant `V3RelayData` hash is `SlowFillRequested`,
+4. The `RequestedV3SlowFill` `V3RelayData` is matched by a corresponding `V3FundsDeposited` event on the origin SpokePool,
+
+Note:
+- A slow fill request is made by supplying a complete copy of the relvant `V3RelayData` emitted by a `V3FundsDeposited` event.
+- The resulting set of validated `RequestedV3SlowFill` events shall be included as SlowFills in the subsequent root bundle proposal.
+
+### Computing LP Fees
+Each valid `FilledV3Relay` and `RequestedV3SlowFill` event is subject to an LP fee. The procedure for computing LP fees is as defined in [UMIP-136 Add IS_RELAY_VALID as a supported price identifier](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-136.md), with the following amendments:
+- The AcrossConfigStore contract shall be used to identify the correct rate model, instead of a `RateModelStore` contract.
+- The `HubPool` `liquidityUtilizationCurrent()` and `liquidityUtilizationPostRelay()` functions shall be used instead of the `BridgePool` variant.
+- The event `inputToken` shall be mapped from the SpokePool address to a HubPool `l1Token` address by following the matching procedure outlined above.
+- The LP fee is computed between the `originChainId` and:
+  - `FilledV3Relay`: `repaymentChainId`
+  - `RequestedV3SlowFill`: `destinationChainId`.
+
+Note:
+- The LP fee is typically referenced as a multiplier of the `V3FundsDeposited` `inputAmount`, named `realizedLpFeePct` elsewhere in this document. 
+
+### Computing Bundle LP Fees
+The bundle LP fee for a given block range on a SpokePool and token pair shall be determined by summing the applicable LP fees for all valid:
+- `FilledV3Relay` events.
+- `RequestedV3SlowFill` events.
 
 ### Computing Relayer Repayments
-For a given `FilledV3Relay` event that has been matched with a `V3FundsDeposited` event, relayer repayment amount is computed as follows: `inputAmount * (1 - realizedLpFeePct)`, where `realizedLpFeePct` is computed over the set of l1Token, originChainId and destinationChainId at the HubPool block number corresponding to the deposit `quoteTimestamp`. The applicable rate model is sourced from the AcrossConfigStore contract for the relevant `l1Token`.
+For a given `FilledV3Relay` event that has been matched with a `V3FundsDeposited` event, the relayer repayment amount shall be comput
+- `inputAmount * (1 - realizedLpFeePct)`, where `realizedLpFeePct` is computed over the set of l1Token, originChainId and destinationChainId at the HubPool block number corresponding to the deposit `quoteTimestamp`.
+
+Note:
+- The applicable rate model is sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 
 ### Computing Slow Fill updated output amounts
-`V3FundsDeposited` `outputAmount` specifies the exact amount to be received by the `recipient` for a standard fill, and is therefore exclusive of any relayer or LP fees paid. In the event of a Slow Fill, the relayer fee is effectively nulled. Therefore, the amount to be received by the recipient in the event of a SlowFill shall be increased by the relayer fee, assuming the relayer would take repayment on the destination chain. The SlowFill `updatedOutputAmount` is computed as follows: `updatedOutputAmount = inputAmount * (1 - realizedLpFeePct)`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
+For the purpose of computing the amount to issue to a recipient for a SlowFill, the relayer fee shall be nulled by applying the following procedure:
+- Therefore, the amount to be received by the recipient in the event of a SlowFill shall be increased by the relayer fee, assuming the relayer would take repayment on the destination chain. The SlowFill `updatedOutputAmount` is computed as follows: `updatedOutputAmount = inputAmount * (1 - realizedLpFeePct)`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
+
+Note:
+- `V3FundsDeposited` `outputAmount` specifies the exact amount to be received by the `recipient` for a standard fill, and is therefore exclusive of any relayer or LP fees paid.
 
 ### Computing Running Balances
 1. Add relayer refunds
-
-     For each group of validated `FilledV3Relay` events, initialize a running balance at 0 and add the add the relayer repayment.
+    - For each group of validated `FilledV3Relay` events, initialize a running balance at 0 and add the add the relayer repayment.
 
 2. Add deposit refunds
-   
-    For each group of `V3FundsDeposited` events that expired within the target block range, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain. 
+    - For each group of `V3FundsDeposited` events that expired within the target block range, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain. 
 
 3. Add slow fills
-   
-    For each group of validated `RequestedV3SlowFill` events, add each slow relay's `updatedOutputAmount` to the group's running balance.
+    - For each group of validated `RequestedV3SlowFill` events, add each slow relay's `updatedOutputAmount` to the group's running balance.
 
 4. Subtract excesses from unexecuted slow fills
-   
-    For each group of validated `FilledV3Relay` events where the `FillType` is `ReplacedSlowFill`, subtract the SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill will never be executed.
-
-### Identifying SpokePool Contracts
-The current SpokePool address for a specific chain is available by querying `HubPool.crossChainContracts()`. The chainId must be specified in the query. In case of SpokePool migations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events.
+    - For each group of validated `FilledV3Relay` events where the `FillType` is `ReplacedSlowFill`, subtract the SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill will never be executed.
 
 ### Constructing the PoolRebalanceRoot
-<!-- todo: Can the v2 description be used here? -->
+1. For each combination of SpokePool and supported token, compute the running balance.
 
 ### Constructing the RelayerRefundRoot
 Relayer Refund leaves are produced by aggregating the set of eligible repayment events:
