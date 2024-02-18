@@ -238,13 +238,11 @@ Note:
 - The resulting set of validated `RequestedV3SlowFill` events shall be included as SlowFills in the subsequent root bundle proposal.
 
 ### Computing LP Fees
-Each valid `FilledV3Relay` and `RequestedV3SlowFill` event is subject to an LP fee. The procedure for computing LP fees is as defined in [UMIP-136 Add IS_RELAY_VALID as a supported price identifier](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-136.md), with the following amendments:
+Each valid `FilledV3Relay` event is subject to an LP fee. The procedure for computing LP fees is as defined in [UMIP-136 Add IS_RELAY_VALID as a supported price identifier](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-136.md), with the following amendments:
 - The AcrossConfigStore contract shall be used to identify the correct rate model, instead of a `RateModelStore` contract.
 - The `HubPool` `liquidityUtilizationCurrent()` and `liquidityUtilizationPostRelay()` functions shall be used instead of the `BridgePool` variant.
 - The event `inputToken` shall be mapped from the SpokePool address to a HubPool `l1Token` address by following the matching procedure outlined above.
-- The LP fee is computed between the `originChainId` and:
-  - `FilledV3Relay`: `repaymentChainId`
-  - `RequestedV3SlowFill`: `destinationChainId`.
+- The LP fee is computed between the `originChainId` and `FilledV3Relay.repaymentChainId` where the `relayExecutionInfo.FillType != SlowFill` and `FilledV3Relay.destinationChainId` otherwise.
 
 Note:
 - The LP fee is typically referenced as a multiplier of the `V3FundsDeposited` `inputAmount`, named `realizedLpFeePct` elsewhere in this document. 
@@ -252,7 +250,6 @@ Note:
 ### Computing Bundle LP Fees
 The bundle LP fee for a target block range on a SpokePool and token pair shall be determined by summing the applicable LP fees for each of the following validated events:
 - `FilledV3Relay`
-- `RequestedV3SlowFill`
 
 ### Computing Relayer Repayments
 For a validated `FilledV3Relay` event, the relayer repayment amount shall be computed as follows:
