@@ -142,7 +142,7 @@ A Root Bundle Propopsal shall contain:
 Each Pool Rebalance Root shall be the Merkle Root of an array of 
 
 ### Relayer Refund Roots
-
+The _format_ of Relayer Refund leaves is unchanged from Across v2, as described in [UMIP-157 Constructing RelayerRefundRoot](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#constructing-relayerrefundroot). Across v3 expands Relayer Refund leaves to include depositor refunds on origin chains in the event of an expired deposit `fillDeadline`.
 
 ### Slow Relay Roots
 
@@ -192,16 +192,20 @@ For a given `FilledV3Relay` event that has been matched with a `V3FundsDeposited
 
 ### Computing Running Balances
 1. Add relayer refunds
-   For each group of valid fills, initialize a running balance at 0 and add the add the relayer repayment.
+
+     For each group of validated `FilledV3Relay` events, initialize a running balance at 0 and add the add the relayer repayment.
 
 2. Add deposit refunds
-   For each group of `V3FundsDeposited` events that expired, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain. 
+   
+    For each group of `V3FundsDeposited` events that expired within the target block range, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain. 
 
 3. Add slow fills
-   For each slow relay group, add each slow relay's `updatedOutputAmount` to the group's running balance.
+   
+    For each group of validated `RequestedV3SlowFill` events, add each slow relay's `updatedOutputAmount` to the group's running balance.
 
 4. Subtract excesses from unexecuted slow fills
-   For each group of valid fills where the `FillType` is `ReplacedSlowFill`, subtract the SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill will never be executed.
+   
+    For each group of validated `FilledV3Relay` events where the `FillType` is `ReplacedSlowFill`, subtract the SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill will never be executed.
 
 ### Identifying SpokePool Contracts
 The current SpokePool address for a specific chain is available by querying `HubPool.crossChainContracts()`. The chainId must be specified in the query. In case of SpokePool migations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events.
@@ -210,8 +214,13 @@ The current SpokePool address for a specific chain is available by querying `Hub
 <!-- todo: Can the v2 description be used here? -->
 
 ### Constructing the RelayerRefundRoot
-<!-- todo: Complete this section-->
-<!-- todo: Placeholder for subsection on refunding expired deposits -->
+Relayer Refund leaves are produced by aggregating the set of eligible repayment events:
+- Repayment amounts for valid fills.
+- Deposit amounts for expired deposits.
+
+The above items are sorted and ordered according to:
+1. Repayment amount.
+2. Repayment address (relayer or depositor).
 
 ### Constructing the SlowRelayRoot
 <!-- todo: Complete this section -->
