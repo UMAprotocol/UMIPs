@@ -218,7 +218,7 @@ If the `V3FundsDeposited` event specifies `outputToken` 0x0 (i.e. the Zero Addre
 
 ### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `V3FundsDeposited` event shall be considered expired by verifying that:
-1. The `fillDeadline` timestamp elapsed within the target block range on the destination SpokePool,
+1. The `fillDeadline` timestamp elapsed within the target block range on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
 2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested`.
 
 Note:
