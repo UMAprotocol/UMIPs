@@ -173,6 +173,7 @@ Note:
 - The format of Pool Rebalance leaves is unchanged from Across v2.
 
 ### Relayer Refund Leaves
+| Name | Type | Description |
 | :--- | :--- | :---------- |
 | chainId | uint256 | The SpokePool `chainId` referenced by the `RelayerRebalanceLeaf`. |
 | leafId | uint8 | Index of the `RelayerRefundLeaf` within the ordered array of `RelayerRefundLeaves`. |
