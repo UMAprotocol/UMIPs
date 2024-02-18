@@ -327,37 +327,37 @@ Each Pool Rebalance Leaf shall be constructed as follows:
 1. For each unique `chainId` and `l1Token` pair:
     1. Compute the arrays `runningBalances`, `netSendAmounts` and `bundleLpFees` according to the procedures outlined above.
     2. Set the `groupIndex` to 0.
-2. Within each `PoolRebalanceLeaf` instance, the arrays `l1Tokens`, `runningBalances`, `netSendAmounts` and `bundleLpFees` shall be:
+2. Within each Pool Rebalance Leaf instance, the arrays `l1Tokens`, `runningBalances`, `netSendAmounts` and `bundleLpFees` shall be:
     1 Ordered by `l1Token`, and
     2 Of the same (on-zero length.
 
 In the event that the number of `l1Token` entries contained within a single Pool Rebalance Leaf exceeds [`MAX_POOL_REBALANCE_LEAF_SIZE`](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants):
-1. Additional `PoolRebalanceLeaf` instances shall be produced to accomodate the excess.
+1. Additional Pool Rebalance Leaf instances shall be produced to accomodate the excess.
 2. The ordering of `l1Tokens`, `bundleLpFees`, `runningBalance` and `neSendAmounts,` shall be maintained across the ordered array of leaves.
 3. `groupIndex` shall be incremented for each subsequent leaf.
 
-The set of PoolRebalanceLeaf objects shall be ordered by:
+The set of Pool Rebalance Leaf objects shall be ordered by:
 1, `chainId`, then
 2. `l1Tokens`.
 
-The PoolRebalanceLeaf `leafId` shall be set to indicate its position with the ordered array, starting at 0.
+The Pool Rebalance Leaf `leafId` shall be set to indicate its position with the ordered array, starting at 0.
 
-The hash for each `PoolRebalanceLeaf` shall be constructed by using Solidity's standard process of `keccak256(abi.encode(poolRebalanceLeaf))`.
+The hash for each Pool Rebalance Leaf shall be constructed by using Solidity's standard process of `keccak256(abi.encode(poolRebalanceLeaf))`.
 
-The PoolRebalance Merkle Tree shall be constructed such that it is verifyable using [OpenZeppelin's MerkleProof](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/contracts/utils/cryptography/MerkleProof.sol) library.
+The Pool Rebalance Merkle Tree shall be constructed such that it is verifyable using [OpenZeppelin's MerkleProof](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/contracts/utils/cryptography/MerkleProof.sol) library.
 
 Note:
 - See examples [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/test/utils/cryptography/MerkleProof.test.js) for how to construct these types of trees.
 
-### Constructing the RelayerRefundRoot
-At least one `RelayerRefundLeaf` shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
+### Constructing the Relayer Refund Root
+At least one Relayer Refund Leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
 - Valid `FilledV3Relay` events, OR
 - Expired `V3Fundsdeposited` events, OR
 - A negative running balance net send amount.
 
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
-- `l2TokenAddress` shall be set to the L2 token address for the corresponding `l1Token` considered in PoolRebalanceRoot production.
+- `l2TokenAddress` shall be set to the L2 token address for the corresponding `l1Token` considered in Pool Rebalance Root production.
     - HubPool and SpokePool token mappings shall be made according to the highest `quoteTimestamp` of any relays in the group.
     - If no relays are present, then the relevant token mapping from the previous successful proposal shall be used.
 - Each element of the `refundAddresses` and `refundAmounts` arrays shall be produced according to the defined procedure for computing relayer repayments.
@@ -383,15 +383,15 @@ The Relayer Refund Leaf `leafId` field shall be numbered according to the orderi
 Note:
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
-### Constructing the SlowRelayRoot
-One `V3SlowRelayLeaf` shall be produced per valid `RequestedV3SlowRelay` event emitted within the target block range for a destination SpokePool.
+### Constructing the Slow Relay Root
+One Slow Relay Leaf shall be produced per valid `RequestedV3SlowRelay` event emitted within the target block range for a destination SpokePool.
 
-Each `V3SlowRelayLeaf` shall be constructed as follows:
+Each Slow Relay Leaf shall be constructed as follows:
 1. Set `relayData` to the `V3RelayData` data emitted by the validated `RequestedV3SlowFill` event.
 2. Set `chainId` to `destinationChainId` from the corresponding validated `RequestedV3SlowFill` event.
 3. Set `updatedOutputAmount` to the updated amount computed for the SlowFill.
 
-The array of `V3SlowRelayLeaf` instances shall be sorted according to;
+The array of Slow Relay Leaf instances shall be sorted according to;
 1. `originChainId`, then
 2. `depositId`.
 
