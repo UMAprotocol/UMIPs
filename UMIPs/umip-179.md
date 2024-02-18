@@ -17,7 +17,7 @@ The Across Protocol proposes an update to its specification to better support th
  - Supporting enforceable time-limited agreements between users and relayers for intent execution.
  - Enabling Across to be used by third-parties as an efficient, modular cross-chain settlement system.
  - Permitting depositors to be refunded directly on the origin chain in the event that their relay is not completed within a timeframe specified at deposit time.
- - Reducing relayer risk exposure by elimintating the need for onchain publication of the `realizedLpFeePct` component of a bridge transfer.
+ - Reducing relayer risk exposure by eliminating the need for onchain publication of the `realizedLpFeePct` component of a bridge transfer.
  - Supporting relayer exclusivity to mitigate onchain gas auctions.
 
 Updating the specification of the ACROSS-V2 price identifier is required in order for the UMA DVM to verify whether Across v3 proposed settlement bundles are valid.
