@@ -296,7 +296,8 @@ The procedure for computing running balances for an `l1Token` and `chainId` pair
     - For each group of validated `RequestedV3SlowFill` events, add each slow relay's `updatedOutputAmount` to the group's running balance.
 
 5. Subtract excesses from unexecuted slow fills:
-    - For each group of validated `FilledV3Relay` events where the `FillType` is `ReplacedSlowFill`, subtract the SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill will never be executed.
+    - For each group of validated `FilledV3Relay` events where the `FillType` is `ReplacedSlowFill` and where there is no valid `RequestedV3SlowFill` event with an identical relay data hash in the current bundle data, subtract the SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill will never be executed because the fill amount has already been transferred.
+    - For each expired deposit refund identified above where the `FillStatus` on the deposit destination chain for the deposit's relay data is `RequestedSlowFill` and the matching slow fill request is not in the current bundle data, subtract the associated SlowFill `updatedOutputAmount` from the running balance in recognition that the SlowFill cannot be executed past the `fillDeadline`.
 
 6. Add the Opening Running Balance for the selected `l1Token` and `chainId` pair.
  
