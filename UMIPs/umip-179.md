@@ -214,6 +214,8 @@ For the purpose of computing relayer repayments, each `FilledV3Relay` event emit
 1. The `FilledV3Relay` `FillType` field is not set to `SlowFill`,
 2. The component `V3RelayData` maps exactly to a corresponding `V3FundsDeposited` event emitted on the relevant `originChainId`. This may be compared by comparing the hashes of the two objects.
 
+If the `V3FundsDeposited` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `V3RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
+
 ### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `V3FundsDeposited` event shall be considered expired by verifying that:
 1. The `fillDeadline` timestamp elapsed within the target block range on the destination SpokePool,
