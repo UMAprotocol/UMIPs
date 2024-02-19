@@ -4,9 +4,12 @@
 | ------------------- | --------------------------------------------------------------------------------------------- |
 | UMIP Title          | Add **ACROSS-V2** as a supported price identifier                                             |
 | Authors             | Matt Rice                                                                                     |
-| Status              | Approved                                                                                    |
+| Status              | Deprecated (See UMIP-179 for Across v3)                                                       |
 | Created             | 03/30/2022                                                                                    |
 | Discourse Link      |                                                                                               |
+
+# Note
+Unless otherwise specified in [UMIP-179](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-179.md), this UMIP is superseded by UMIP-179.
 
 # Summary 
 
