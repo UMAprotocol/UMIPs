@@ -4,7 +4,7 @@
 | ---------- | ----------------------------------------------------------- |
 | UMIP Title | Register Base Parent Messenger in OracleHub and GovernorHub |
 | Authors    | Pablo Maldonado                                             |
-| Status     | Draft                                                       |
+| Status     | Approved                                                    |
 | Created    | 03/28/24                                                    |
 
 ## Summary
