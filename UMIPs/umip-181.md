@@ -12,9 +12,10 @@
 The DVM should support requests for the `MULTIPLE_CHOICE_QUERY` price identifier. `MULTIPLE_CHOICE_QUERY` is intended to allow any requester to pose a question with specific answers. This UMIP does not attempt to put any other restrictions on the content of the query, and instead leaves construction of the query up to the requester within ancillary data.
 
 Price settlement should happen based on inspecting the ancillary data choices and can be settled in the following ways:
-- Options are specified, and a valid answer is among them, then return the value associated with that answer.
+- Options can be specified, and if a valid answer is among them, then return the value associated with that answer.
 - No options are specified, and the answer should be intepreted as yes or no, with a value of 1 and 0 respectively.
-- If none of the options, specified or not, can be considered valid answers to the question, in that case submit the "Magic number" (-57896044618658097711785492504343953926634992332820282019728792003956564819968) which signals that the question is not answerable.
+- If the question cannot ever be answered; For instance, it cant be parsed, is unitelligble, the options do not represent a valid answer, it should be answered with a value representing no answer possible: 57896044618658097711785492504343953926634992332820282019728792003956564819967 ( max int 256).
+- If the question can be answered eventually, just not at the current time, or at the time an answer was proposed, submit an error representing "too early", ie "magic number": -57896044618658097711785492504343953926634992332820282019728792003956564819968.
 
 # Motivation
 This identifier is meant to address limitations of the YES_OR_NO_QUERY identifier when prediction markets try to integrate their requests in the [Optimistic Oracle UI](https://oracle.uma.xyz).
@@ -52,7 +53,8 @@ When converted from bytes to UTF-8, interpret the string as a stringified JSON o
   // The full description of the question, optionally using markdown.
   description: string; 
   // Optionally specify labels and values for each option a user can select. 
-  // If not specified the default is ["no", "yes"], which corresponds to prices [0,1] in wei.
+  // If not specified the default is ["no", "yes"], which corresponds to prices ['0','1'] in wei.
+  // numbers must be convertible to a signed int256, and specified as integers in base 10.
   options?:[label:string,value:string][];
 }
 ```
@@ -63,28 +65,31 @@ An example vote, decoding ancillary data back into a JS object:
   description:`In the upcoming NCAAB game, scheduled for March 28 at 7:09 PM ET:
 If the Arizona Wildcats win, the market will resolve to “Arizona”.
 If the Clemson Tigers win, the market will resolve to “Clemson”.
-If the game is not completed by April 10, 2024 (11:59 PM ET), the market will resolve 50-50.
 `,
   // The values specified are in wei, and are passed through to consuming contract as is. 
   options:[
     ["Arizona",'0'],  
     ["Clemson",'1'],
-    ["50-50",'5000000000000000000'], 
   ]
 })
 ```
-The description instructs the voter on how to interpret the options, and submit the numerical value (0,1,5000000000000000000) according to which option is correct. Magic number is also a valid response if for some reason the question cannot be answered according to the description.
+The description instructs the voter on how to interpret the options, and submit the numerical value (0,1) according to which option is correct.
+Other values that are valid votes are
+No answer possible - This is a possible response if for instance the game was cancelled.
+Answer is too early - This is a possible response if an answer was optimistically proposed before the game ended, the proposer could not have known the answer, but the question is valid.
 
 # Rationale
-This specification is not as compact as YES_OR_NO in terms of bytes used, but allows a safer and more expressive format for proposers and improved user experience when interacting with the Oracle UI.
+This specification is not as compact as YES_OR_NO in terms of bytes used, but allows a more expressive format for proposers and improved user experience when interacting with the Oracle UI.
 With this specification requesters can easily validate their ancillary data using typescript, or a javascript runtime schema validator, giving them confidence that their data will be rendered correctly to end users.
 
 # Implementation
-- Voters should decode the ancillary data and attempt to interpret the question.
-- Voters should determine if any of the options specified are valid answers to the question based on the description, or if no options are specified, if yes or no are valid answers.
-- Vote with the value of the option provided. Each value is specified in wei. If yes, submit 1, if no submit 0.
-- If a voter cannot make a determination about what the correct answer to the question is or if there is no question present, UMA voters should return the magic number (-57896044618658097711785492504343953926634992332820282019728792003956564819968).
-- If there is no ancillary data or it is not interpretable to UTF-8, voters should return magic number.
+- Voters should decode the ancillary data and attempt to interpret the question. Interpreting the ancillary data may require ignoring any ancillary data past the last closing bracket, "}", in order to properly parse the data as JSON.
+- If there is no valid json, or the JSON data does not match the typescript type specified above, voters should return "no answer possible" (57896044618658097711785492504343953926634992332820282019728792003956564819967).
+- Voters should determine the time at which an answer was proposed (proposal timestamp) and make a judgement if the proposed answer could have been known at that time, according to the question.
+- If the answer could not have been known at the time it was proposed, answer with "early answer" (-57896044618658097711785492504343953926634992332820282019728792003956564819968).
+- If none of those error conditions apply, voters should determine if any of the options specified are valid answers to the question based on the description, or if no options are specified, if yes or no are valid answers.
+- Vote with the value of the option provided. Each value is specified in wei and should be used as is ( no conversions ). If no options are provided assume yes is 1 and no is 0.
+- If a voter believes no answer can be determined based on the question and the options provided, return the value representing "no answer possible".
 
 # Security Considerations
 
