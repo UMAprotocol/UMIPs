@@ -83,7 +83,7 @@ Other examples of why no answer possible can be considered as a response:
 - The description is unintelligable or nonsensical.
 - The proposed options are unintelligable or cannot possibly answer the question.
 
-Answer is too early - This is a possible response if an answer was optimistically proposed before the game ended, the proposer could not have known the answer, but the question is valid.
+Answer is too early - When a request has event based expiry, this is a possible response if an answer was optimistically proposed before the game ended, the proposer could not have known the answer, but the question is valid.
 
 # Rationale
 This specification is not as compact as YES_OR_NO in terms of bytes used, but allows a more expressive format for proposers and improved user experience when interacting with the Oracle UI.
@@ -92,9 +92,8 @@ With this specification requesters can easily validate their ancillary data usin
 # Implementation
 - Voters should decode the ancillary data and attempt to interpret the question. Interpreting the ancillary data may require ignoring any ancillary data past the last closing bracket, "}", in order to properly parse the data as JSON.
 - If there is no valid json, or the JSON data does not match the typescript type specified above, voters should return "no answer possible" (57896044618658097711785492504343953926634992332820282019728792003956564819967).
-- If the request is "event based expiry", voters should determine the time at which an answer was proposed (proposal timestamp) and make a judgement if the proposed answer could have been known at that time, according to the question.
-- If the request is not "event based expiry", voters should attempt to determine the answer at the time the request was proposed, in the case where the answer could change, based on the time the question is asked.
-- If the answer could not have been known at the time the answer was proposed, answer with "early answer" (-57896044618658097711785492504343953926634992332820282019728792003956564819968).
+- Voters should take into consideration the timestamp of the request in order to determine as best they can the correct answer at that time.
+- If the request is "event based expiry", consider the "early answer" (-57896044618658097711785492504343953926634992332820282019728792003956564819968) response if the timestamp is before the time an answer could have been known.
 - If none of those error conditions apply, voters should determine if any of the options specified are valid answers to the question based on the description, or if no options are specified, if yes or no are valid answers.
 - Vote with the value of the option provided. Each value is specified in wei and should be used as is ( no conversions ). If no options are provided assume yes is 1 and no is 0.
 - If a voter believes no answer can be determined based on the question and the options provided, return the value representing "no answer possible".
