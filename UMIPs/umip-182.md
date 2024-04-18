@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP-182       |                                                              |
-| -------------- | ------------------------------------------------------------ |
-| UMIP Title     | Register Blast Parent Messenger in OracleHub and GovernorHub |
-| Authors        | Reinis Martinsons (reinis@umaproject.org)                    |
-| Status         | Draft                                                        |
-| Created        | April 18, 2024                                               |
-| Discourse Link | [UMA's Discourse]()                                          |
+| UMIP-182       |                                                                                              |
+| -------------- | -------------------------------------------------------------------------------------------- |
+| UMIP Title     | Register Blast Parent Messenger in OracleHub and GovernorHub                                 |
+| Authors        | Reinis Martinsons (reinis@umaproject.org)                                                    |
+| Status         | Draft                                                                                        |
+| Created        | April 18, 2024                                                                               |
+| Discourse Link | [UMA's Discourse](https://discourse.uma.xyz/t/umip-182-register-blast-parent-messenger/2117) |
 
 ## Summary
 
