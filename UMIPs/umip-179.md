@@ -355,6 +355,11 @@ At least one Relayer Refund Leaf shall be produced for each unique combination o
 - Expired `V3Fundsdeposited` events, OR
 - A negative running balance net send amount.
 
+If a validated `FilledV3Relay` event specifies an invalid `repaymentChainId`, the proposer shall issue repayment on the HubPool chain.
+Reasons for the `repaymentChainId` to be considered invalid are:
+- `repaymentChainId` is not supported by Across.
+- `inputToken` is not supported as a repayment token on `repaymentChainId`.
+
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
 - `l2TokenAddress` shall be set to the L2 token address for the corresponding `l1Token` considered in Pool Rebalance Root production.
@@ -368,7 +373,7 @@ Each Relayer Refund Leaf shall be constructed as follows:
     1. `refundAmount` descending order, then
     2. `relayerAddress` ascending order (in case of duplicate `refundAmount` values).
 
-In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`]((https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants) refunds:
+In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants) refunds:
 1. Additional `RelayerRefundLeaf` instances shall be produced to accomodate the excess.
 2. The ordering of `refundAddresses` and `refundAmounts` shall be maintained across the ordered array of leaves.
 3. Only the first leaf for a given `l2TokenAddress` shall contain a non-zero `amountToReturn`.
@@ -379,6 +384,12 @@ The set of relayer refund leaves shall be ordered according to:
 - leaf sub-index (in case of > [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](#global-constants) repayments).
 
 The Relayer Refund Leaf `leafId` field shall be numbered according to the ordering established above, starting at 0.
+
+If a Relayer Refund Leaf would be unable to be executed due to an ERC20 reversion when transferring the repayment token to the recipient on the destination chain, the proposer may exclude the relayer repayment from the Relayer Refund Root.
+Note:
+- This is intended to deal with unlikely situations, such as a centralized token issuer censoring transactions concerning a relayer address, and is required to prevent deadlocking of all other relayer repayments in the same Relayer Refund Leaf.
+- In the event of relayer repayment exclusion, the proposer should provide reproducible evidence that the relayer repayment would fail as part of any subsequent dispute.
+
 
 Note:
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
@@ -413,7 +424,4 @@ The V3 rules defined in this UMIP will apply beginning when the VERSION field in
 The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts-v2) repository.
 
 # Security considerations
-Across v3 has been audited by OpenZeppelin.
-
-Note:
-- If a particular relayer refund is known to be unexecutable, it can be removed from the bundle by the proposer if a sufficient public justification is made before the proposal. This is intended to deal with unlikely situations, such as ag centralized token issuer blacklisting an address that is due a refund. If this leaf were to remain unaltered, this blacklisted address could block other addresses from recieving refunds.
+Across v3 has been [audited by OpenZeppelin](https://blog.openzeppelin.com/across-v3-incremental-audit).
