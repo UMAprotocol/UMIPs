@@ -257,6 +257,11 @@ For a validated `FilledV3Relay` event, the relayer repayment amount shall be com
 - `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 
+If a validated `FilledV3Relay` event specifies an invalid `repaymentChainId`, the proposer shall issue repayment on the fill destination chain.
+Reasons for the `repaymentChainId` to be considered invalid are:
+- `repaymentChainId` is not supported by Across.
+- `inputToken` is not supported as a repayment token on `repaymentChainId`.
+
 ### Computing Deposit Refunds
 For an expired `V3FundsDeposited` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
 
@@ -354,11 +359,6 @@ At least one Relayer Refund Leaf shall be produced for each unique combination o
 - Valid `FilledV3Relay` events, OR
 - Expired `V3Fundsdeposited` events, OR
 - A negative running balance net send amount.
-
-If a validated `FilledV3Relay` event specifies an invalid `repaymentChainId`, the proposer shall issue repayment on the HubPool chain.
-Reasons for the `repaymentChainId` to be considered invalid are:
-- `repaymentChainId` is not supported by Across.
-- `inputToken` is not supported as a repayment token on `repaymentChainId`.
 
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
