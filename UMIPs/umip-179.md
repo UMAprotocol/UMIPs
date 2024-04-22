@@ -254,7 +254,7 @@ The bundle LP fee for a target block range on a SpokePool and token pair shall b
 
 ### Computing Relayer Repayments
 For a validated `FilledV3Relay` event, the relayer repayment amount shall be computed as follows:
-- `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
+- `(inputAmount * (1e18 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 
 If a validated `FilledV3Relay` event specifies an invalid `repaymentChainId`, the proposer shall issue repayment on the fill destination chain.
@@ -267,7 +267,7 @@ For an expired `V3FundsDeposited` event, the depositor refund amount shall be co
 
 ### Computing Slow Fill updated output amounts
 For the purpose of computing the amount to issue to a recipient for a SlowFill, the relayer fee shall be nulled by applying the following procedure:
-- `updatedOutputAmount = (inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
+- `updatedOutputAmount = (inputAmount * (1e18 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
 
 Constraint:
 - The `V3FundsDeposited` `outputAmount` shall _not_ be considered when determining SlowFill amounts.
