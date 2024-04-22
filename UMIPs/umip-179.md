@@ -244,9 +244,9 @@ Each valid `FilledV3Relay` event is subject to an LP fee. The procedure for comp
 - The `HubPool` `liquidityUtilizationCurrent()` and `liquidityUtilizationPostRelay()` functions shall be used instead of the `BridgePool` variant.
 - The event `inputToken` shall be mapped from the SpokePool address to a HubPool `l1Token` address by following the matching procedure outlined above.
 - The LP fee is computed between the `originChainId` and `FilledV3Relay.repaymentChainId` where the `relayExecutionInfo.FillType != SlowFill` and `FilledV3Relay.destinationChainId` otherwise.
-
-Note:
-- The LP fee is typically referenced as a multiplier of the `V3FundsDeposited` `inputAmount`, named `realizedLpFeePct` elsewhere in this document.
+- The LP fee as a multiplier of `inputAmount` (typically named `realizedLpFeePct` elsewhere in this document) shall be:
+  - Promoted to 18 decimals, where 1e18 represents 100%, and
+  - Truncated (zeroed) between 0 and 1e10, providing 8 decimals of effective precision.
 
 ### Computing Bundle LP Fees
 The bundle LP fee for a target block range on a SpokePool and token pair shall be determined by summing the applicable LP fees for each of the following validated events:
