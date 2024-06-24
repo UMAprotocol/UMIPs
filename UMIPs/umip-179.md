@@ -202,7 +202,7 @@ Note:
 The current SpokePool address for a specific chain is available by querying `HubPool.crossChainContracts()`. The chainId must be specified in the query. In case of SpokePool migations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events.
 
 ### Identifying a chains inclusion as a "Lite" Chain
-We consider a deposit to originate or be destined to a "Lite chain" if the "LITE_CHAIN_ID_INDICES" constant in the AcrossConfigStore has an entry at a deposit's `quoteTimestamp` field. These chains will have constraints for relayer repayments and slow fills to support faster development and expansion for the protocol.
+We consider a deposit to "originate" or be "destined to" a "Lite chain" if the "LITE_CHAIN_ID_INDICES" value in the AcrossConfigStore includes the deposit's origin chain or destination chain respectively as of the deposit's `quoteTimestamp` field. These chains will have constraints for relayer repayments and slow fills to support faster development and expansion for the protocol.
 
 ### Resolving SpokePool tokens to their HubPool equivalent
 For the purpose of identifying the equivalent HubPool token given a SpokePool token, the following shall be followed:
