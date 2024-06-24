@@ -242,7 +242,6 @@ For the purpose of computing slow fills to be issued to recipients, each `Reques
 3. The destination SpokePool `FillStatus` mapping for the relevant `V3RelayData` hash is `SlowFillRequested`,
 4. The `RequestedV3SlowFill` `V3RelayData` is matched by a corresponding `V3FundsDeposited` event on the origin SpokePool,
 5. The `originChainId` and `destinationChainId` are not Lite chains.
-6. Slow fills requested on a lite chain are considered invalid,
 
 Note:
 - A slow fill request is made by supplying a complete copy of the relevant `V3RelayData` emitted by a `V3FundsDeposited` event.
