@@ -36,7 +36,7 @@ The following sections from UMIP-157 are explicitly retained for use in Across v
 ## Global Constants
 All global constants from UMIP-157 will be retained for use in Across v3. The global variables stored in addition to UMIP-157 in the [AcrossConfigStore](https://etherscan.io/address/0x3b03509645713718b78951126e0a6de6f10043f5#code) are:
 * "LITE_CHAIN_ID_INDICES"
-    * This should be a stringified list of chain ID numbers and these chains should be contained in the "CHAIN_ID_INDICES" list. There should be no duplicates in this list.
+    * This shall be a stringified list of chain ID numbers. Each chain in this list shall also appear in the `CHAIN_ID_INDICES` list. There shall be no duplicates in this list; any `LITE_CHAIN_ID_INDICES` update containing duplicates may be ignored. Chains may be removed from the `LITE_CHAIN_ID_INDICES` list in order to remove their "Lite" chain designation.
 
 ## Data Types
 Across v3 introduces the following new data types:
