@@ -265,7 +265,7 @@ The bundle LP fee for a target block range on a SpokePool and token pair shall b
 For a validated `FilledV3Relay` event, the relayer repayment amount shall be computed as follows:
 - `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
-- Deposits where the `originChainId` is a "Lite" chain in the AcrossConfigStore as of the `quoteTimestamp` will always be repaid on the deposit's origin chain. This means the protocol will replace the filler's set `repaymentChainId` to be equal to the `originChainId`.
+- Deposits where the `originChainId` is a "Lite" chain in the AcrossConfigStore as of the `quoteTimestamp` shall always be repaid on the deposit's origin chain. This means the protocol overrides the relayer's requested `repaymentChainId` with the `originChainId` instead.
 
 ### Computing Deposit Refunds
 For an expired `V3FundsDeposited` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
