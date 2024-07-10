@@ -33,6 +33,11 @@ The following sections from UMIP-157 are explicitly retained for use in Across v
 - [Proposal Information](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#proposal-information)
 - [Determining the Result](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#determining-the-result)
 
+## Global Constants
+All global constants from UMIP-157 will be retained for use in Across v3. The global variables stored in addition to UMIP-157 in the [AcrossConfigStore](https://etherscan.io/address/0x3b03509645713718b78951126e0a6de6f10043f5#code) are:
+* "LITE_CHAIN_ID_INDICES"
+    * This shall be a stringified list of chain ID numbers. Each chain in this list shall also appear in the `CHAIN_ID_INDICES` list. There shall be no duplicates in this list; any `LITE_CHAIN_ID_INDICES` update containing duplicates may be ignored. Chains may be removed from the `LITE_CHAIN_ID_INDICES` list in order to remove their "Lite" chain designation.
+
 ## Data Types
 Across v3 introduces the following new data types:
 
@@ -196,6 +201,9 @@ Note:
 ### Identifying SpokePool Contracts
 The current SpokePool address for a specific chain is available by querying `HubPool.crossChainContracts()`. The chainId must be specified in the query. In case of SpokePool migations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events.
 
+### Identifying a chains inclusion as a "Lite" Chain
+We consider a deposit to "originate" or be "destined for" a "Lite chain" if the `LITE_CHAIN_ID_INDICES` value in the AcrossConfigStore includes the deposit's origin chain or destination chain respectively as of the deposit's `quoteTimestamp` field. These chains impose constraints on relayer repayments and slow fills.
+
 ### Resolving SpokePool tokens to their HubPool equivalent
 For the purpose of identifying the equivalent HubPool token given a SpokePool token, the following shall be followed:
 1. Find the latest `SetRebalanceRoute` event with a block timestamp at or before the relevant HubPool block number, where the relevant SpokePool chain ID and token address  match the `SetRebalanceRoute` `destinationChainId` and `destinationToken` fields.
@@ -233,6 +241,7 @@ For the purpose of computing slow fills to be issued to recipients, each `Reques
 2. The `fillDeadline` has not already elapsed relative to the `destinationChainId` bundle end block number,
 3. The destination SpokePool `FillStatus` mapping for the relevant `V3RelayData` hash is `SlowFillRequested`,
 4. The `RequestedV3SlowFill` `V3RelayData` is matched by a corresponding `V3FundsDeposited` event on the origin SpokePool,
+5. The `originChainId` and `destinationChainId` are not Lite chains.
 
 Note:
 - A slow fill request is made by supplying a complete copy of the relevant `V3RelayData` emitted by a `V3FundsDeposited` event.
@@ -256,6 +265,7 @@ The bundle LP fee for a target block range on a SpokePool and token pair shall b
 For a validated `FilledV3Relay` event, the relayer repayment amount shall be computed as follows:
 - `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
+- Deposits where the `originChainId` is a "Lite" chain in the AcrossConfigStore as of the `quoteTimestamp` shall always be repaid on the deposit's origin chain. This means the protocol overrides the relayer's requested `repaymentChainId` with the `originChainId` instead.
 
 ### Computing Deposit Refunds
 For an expired `V3FundsDeposited` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
