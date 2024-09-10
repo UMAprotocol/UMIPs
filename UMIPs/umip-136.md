@@ -32,28 +32,28 @@ In the same event, the voter should see a `depositData` field containing `Deposi
 
 In the `RelayData` struct in the DepositRelayed event queried earlier, there is a field called `realizedLpFeePct`. Note: the `RelayData` struct is called `relay` in the event, and to decode the `realizedFeePct` field, one may need to decode with web3.js/ethers and extract the 4th field, since structs are sommetimes decoded as tuples rather than a struct with named fields. This field is specifified by the relayer and needs to be computed using the `quoteTimestamp` specified in the `depositData`. The algorithm for computing the `realizedLpFeePct` is specified below where:
 
-* <img src="https://render.githubusercontent.com/render/math?math=X"> denotes the size of a particular transaction someone is seeking to bridge
-* <img src="https://render.githubusercontent.com/render/math?math=0 \leq U_t \leq 1"> denotes the utilization of the liquidity providers' capital prior to the transaction, i.e. the amount of the liquidity providers' capital that is in use prior to the current transaction
-* <img src="https://render.githubusercontent.com/render/math?math=0 \leq \hat{U}_t \leq 1"> denotes the utilization of the liquidity providers' capital after to the transaction, i.e. the amount of the liquidity providers' capital that would be in use if the user chose to execute their transaction
-* <img src="https://render.githubusercontent.com/render/math?math=\bar{U}"> denotes the "kink utilization" where the slope on the interest rate changes
-* <img src="https://render.githubusercontent.com/render/math?math=R_0, R_1, R_2"> denotes the parameters governing the interest rate model slopes:
-  * <img src="https://render.githubusercontent.com/render/math?math=R_0"> is the interest rate that would be charged at 0% utilization
-  * <img src="https://render.githubusercontent.com/render/math?math=R_0 %2b R_1"> is the interest rate that would be charged at <img src="https://render.githubusercontent.com/render/math?math=\bar{U}\%25"> utilization
-  * <img src="https://render.githubusercontent.com/render/math?math=R_0 %2b R_1 %2b R_2"> is the interest rate that would be charged at 100% utilization
+* $X$ denotes the size of a particular transaction someone is seeking to bridge
+* $0 \leq U_t \leq 1$ denotes the utilization of the liquidity providers' capital prior to the transaction, i.e. the amount of the liquidity providers' capital that is in use prior to the current transaction
+* $0 \leq \hat{U}_t \leq 1$ denotes the utilization of the liquidity providers' capital after to the transaction, i.e. the amount of the liquidity providers' capital that would be in use if the user chose to execute their transaction
+* $\bar{U}$ denotes the "kink utilization" where the slope on the interest rate changes
+* $R_0, R_1, R_2$ denotes the parameters governing the interest rate model slopes:
+  * $R_0$ is the interest rate that would be charged at 0% utilization
+  * $R_0 + R_1$ is the interest rate that would be charged at $\bar{U}\%25$ utilization
+  * $R_0 + R_1 + R_2$ is the interest rate that would be charged at 100% utilization
 
 An interest rate at any given amount of utilization would be given by the following equation:
 
-<img src="https://render.githubusercontent.com/render/math?math=R(U_t) = R_0 %2b \frac{\min(\bar{U}, U_t)}{\bar{U}} R_1 %2b \frac{\max(0, U_t %2d \bar{U})}{1 %2d \bar{U}} R_2">
+$R(U_t) = R_0 + \frac{\min(\bar{U}, U_t)}{\bar{U}} R_1 + \frac{\max(0, U_t - \bar{U})}{1 - \bar{U}} R_2$
 
 In our case for a loan, we must integrate over a range of utilizations because each dollar of the loan pushes up the interest rate for the next dollar of the loan. This effect is captured using an integral:
 
-<img src="https://render.githubusercontent.com/render/math?math=R^a_t = \int_{U_t}^{\hat{U}_t} R(u) du">
+$R^a_t = \int_{U_t}^{\hat{U}_t} R(u) du$
 
 To get the true rate charged on these loans, we need to de-annualize it to get the percentage:
 
-<img src="https://render.githubusercontent.com/render/math?math=R^w_t = (1 %2b R^a_t)^{\frac{1}{52}} %2d 1">
+$R^w_t = (1 + R^a_t)^{\frac{1}{52}} - 1$
 
-<img src="https://render.githubusercontent.com/render/math?math=U_t"> can be fetched on-chain by calling `liquidityUtilizationCurrent` method on the `BridgePool` contract at the latest available block number at or before the `quoteTimestamp`. <img src="https://render.githubusercontent.com/render/math?math=\hat{U}_t"> can be fetched by calling `liquidityUtilizationPostRelay` method on the `BridgePool` contract at the same block number passing the `amount` field from the `DepositData` struct as `relayedAmount` parameter. Normally the `BridgePool` contract for calling these methods should be the same as the `requester`, but in the unlikely scenario when `BridgePool` gets migrated with pending deposits on L2 one should calculate the utilization ratio on the `BridgePool` contract that was active at the time of `quoteTimestamp`. In order to identify the previous `BridgePool` one should look up the last `WhitelistToken` event emitted by the deposit contract on L2 before the relayed transaction's `quoteTimestamp` and use the address from event's `bridgePool` field.
+$U_t$ can be fetched on-chain by calling `liquidityUtilizationCurrent` method on the `BridgePool` contract at the latest available block number at or before the `quoteTimestamp`. $\hat{U}_t$ can be fetched by calling `liquidityUtilizationPostRelay` method on the `BridgePool` contract at the same block number passing the `amount` field from the `DepositData` struct as `relayedAmount` parameter. Normally the `BridgePool` contract for calling these methods should be the same as the `requester`, but in the unlikely scenario when `BridgePool` gets migrated with pending deposits on L2 one should calculate the utilization ratio on the `BridgePool` contract that was active at the time of `quoteTimestamp`. In order to identify the previous `BridgePool` one should look up the last `WhitelistToken` event emitted by the deposit contract on L2 before the relayed transaction's `quoteTimestamp` and use the address from event's `bridgePool` field.
 
 Since the notion of `block.timestamp` might be different on other L2 chains compared to main ethereum L1 EVM, deposit contracts on L2 allow setting the `quoteTimestamp` within 10 minute range from current time. In order to deterministically calculate LP fees based on pool utilization ratio the relayer should wait until L1 block timestamp reaches the `quoteTimestamp`. Any relayed transaction that is mined with earlier block timestamp than `quoteTimestamp` field from `DepositData` struct in the `DepositRelayed` event should be invalid.
 
@@ -62,8 +62,8 @@ Please see the example [implementation](https://github.com/UMAprotocol/protocol/
 The rate model parameters used for the above computation should be fetched on-chain from the `RateModelStore` contract deployed on mainnet at [0xd18fFeb5fdd1F2e122251eA7Bf357D8Af0B60B50](https://etherscan.io/address/0xd18fFeb5fdd1F2e122251eA7Bf357D8Af0B60B50) and governed by Across protocol [multi-signature account](https://etherscan.io/address/0xb524735356985d2f267fa010d681f061dff03715). Rate model parameters should be fetched by calling `l1TokenRateModels` method on the `RateModelStore` contract passing `l1Token` address as its argument at the block whose timestamp corresponds or is the latest available relative to the `quoteTimestamp` field.
 
 The call to `l1TokenRateModels` should return a stringified JSON object containing the following key-value pairs:
-* `UBar` corresponds to the <img src="https://render.githubusercontent.com/render/math?math=\bar{U}"> rate model parameter;
-* `R0`, `R1` and `R2` correspond to <img src="https://render.githubusercontent.com/render/math?math=R_0">, <img src="https://render.githubusercontent.com/render/math?math=R_1"> and <img src="https://render.githubusercontent.com/render/math?math=R_2"> parameters respectively.
+* `UBar` corresponds to the $\bar{U}$ rate model parameter;
+* `R0`, `R1` and `R2` correspond to $R_0$, $R_1$ and $R_2$ parameters respectively.
 
 Rate model parameter values obtained above should be scaled down by 18 decimals.
 
