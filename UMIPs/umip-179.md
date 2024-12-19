@@ -397,7 +397,7 @@ Note:
 ### Constructing the Slow Relay Root
 One Slow Relay Leaf shall be produced per valid `RequestedV3SlowFill` event emitted within the target block range for a destination SpokePool.
 
-A Slow Relay Leaf should not be produced if the `RequestedV3SlowFill` event's `inputAmount` is equal to 0 and the message is a zero bytes string.
+A Slow Relay Leaf shall not be produced if the `RequestedV3SlowFill` event's `inputAmount` is equal to 0 and the message is a zero bytes string.
 
 Each Slow Relay Leaf shall be constructed as follows:
 1. Set `relayData` to the `V3RelayData` data emitted by the validated `RequestedV3SlowFill` event.
