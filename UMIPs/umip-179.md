@@ -109,7 +109,7 @@ Across V3 defines the following new events:
 - FilledV3Relay
 
 ### V3FundsDeposited
-The `V3FundsDeposited` event emits the unique `V3RelayData` for an individual deposit. No additional fields are defined. Consumers of this event should append the `originChainId` in order to avoid unintentioanlly mixing events from different chains.
+The `V3FundsDeposited` event emits the unique `V3RelayData` for an individual deposit. No additional fields are defined. Consumers of this event should append the `originChainId` in order to avoid unintentionally mixing events from different chains.
 
 Note:
 - The `V3FundsDeposited` `outputToken` is not required to be a known HubPool `l1Token`. In-protocol arbitrary token swaps are technically supported by Across v3.
@@ -377,8 +377,9 @@ Each Relayer Refund Leaf shall be constructed as follows:
 - The `refundAddresses` and `refundAmounts` arrays shall be ordered according to the following criteria:
     1. `refundAmount` descending order, then
     2. `relayerAddress` ascending order (in case of duplicate `refundAmount` values).
+- Remove any elements from `refundAmounts` where the amount is 0 and also remove the same indexed element from `refundAddresses`. These two arrays shall be the same length after this step.
 
-In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`]((https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants) refunds:
+In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants) refunds:
 1. Additional `RelayerRefundLeaf` instances shall be produced to accomodate the excess.
 2. The ordering of `refundAddresses` and `refundAmounts` shall be maintained across the ordered array of leaves.
 3. Only the first leaf for a given `l2TokenAddress` shall contain a non-zero `amountToReturn`.
@@ -394,7 +395,9 @@ Note:
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
 ### Constructing the Slow Relay Root
-One Slow Relay Leaf shall be produced per valid `RequestedV3SlowRelay` event emitted within the target block range for a destination SpokePool.
+One Slow Relay Leaf shall be produced per valid `RequestedV3SlowFill` event emitted within the target block range for a destination SpokePool.
+
+A Slow Relay Leaf shall not be produced if the `RequestedV3SlowFill` event's `inputAmount` is equal to 0 and the `message` is a zero bytes string.
 
 Each Slow Relay Leaf shall be constructed as follows:
 1. Set `relayData` to the `V3RelayData` data emitted by the validated `RequestedV3SlowFill` event.
