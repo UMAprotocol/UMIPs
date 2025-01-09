@@ -69,7 +69,7 @@ Voters should decode the ancillary data to decipher the values requested and the
   ```ts
     Int256  
     | 32 bits  | 32 bits | 32 bits |...  
-    | unused   | value0  | value1  |... | value7  |  
+    | unused   | value0  | value1  |... | value6  |  
     | 224-255  | 192-223 | 160-191 |... |  0-31   |  
   ```
 - Example Encoding:
@@ -77,15 +77,15 @@ Voters should decode the ancillary data to decipher the values requested and the
     uint32 value0 = 107;  
     uint32 value1 = 133;  
     ...  
-    uint32 value7 = 157;  
-    int256 price = int256(uint256(value0)) << 192  |  int256(uint256(value1)) << 160 | … |  int256(uint256(value7))
+    uint32 value6 = 157;  
+    int256 price = int256(uint256(value0)) << 192  |  int256(uint256(value1)) << 160 | … |  int256(uint256(value6))
   ```
 - Example Decoding:  
   ```ts
   uint32 value0_decoded = uint32(uint256(price >> 192));  
   uint32 value1_decoded = uint32(uint256(price >> 160));  
   …  
-  uint32 value7_decoded = uint32(uint256(price));
+  uint32 value6_decoded = uint32(uint256(price));
   ```
 
 Other valid responses are:  
