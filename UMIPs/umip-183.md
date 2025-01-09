@@ -51,12 +51,24 @@ Example ancillary data for a sports game:
 ```ts
 {
     "title": "Los Angeles Lakers vs Boston Celtics",
-    "description": "Final scores for the Los Angeles Lakers vs Boston Celtics NBA game scheduled for Jan 7, 2025.",
+    "description": `Final scores for the "Los Angeles Lakers" vs "Boston Celtics" NBA game scheduled for Jan 7, 2025.`,
     "labels": [
             "Lakers",
             "Celtics"
      ]
 }
+```
+
+When converting UTF-8 stringified JSON to hex, all double quotes (") within the ancillary data must be escaped with a backslash (\) to ensure proper ancillary data parsing and support for automated verification.
+
+For example, with the above JSON string the string to be converted to hex is:
+```
+'{\"title\":\"Los Angeles Lakers vs Boston Celtics\",\"description\":\"Final scores for the \\"Los Angeles Lakers\\" vs \\"Boston Celtics\\" NBA game scheduled for Jan 7, 2025.\",\"labels\":[\"Lakers\",\"Celtics\"]}'
+```
+
+The hex representation of the above string is:
+```
+0x7b227469746c65223a224c6f7320416e67656c6573204c616b65727320767320426f73746f6e2043656c74696373222c226465736372697074696f6e223a2246696e616c2073636f72657320666f7220746865205c224c6f7320416e67656c6573204c616b6572735c22207673205c22426f73746f6e2043656c746963735c22204e42412067616d65207363686564756c656420666f72204a616e20372c20323032352e222c226c6162656c73223a5b224c616b657273222c2243656c74696373225d7d
 ```
 
 # Rationale
@@ -88,8 +100,13 @@ Voters should decode the ancillary data to decipher the values requested and the
   uint32 value6_decoded = uint32(uint256(price));
   ```
 
+If there are fewer than 7 labels provided, the values should be encoded starting with the most significant positions, leaving the least significant positions unused. The unused positions must be set to zero. Any non-zero values present in these unused positions will render the price invalid.
+
 Other valid responses are:  
-- **No answer possible**: if values can not be resolved (e.g. the specified event was cancelled) or encoded into a price as per the above (e.g. the ancillary data of the request specified more than 7 labels, any single value exceeds 32 bits) the request should resolve to `57896044618658097711785492504343953926634992332820282019728792003956564819967` or `type(int256).max`.  
+- **No answer possible**: Voters should resolve the request to `57896044618658097711785492504343953926634992332820282019728792003956564819967` or `type(int256).max` if any of the following conditions are met:
+  - The event cannot be resolved (e.g., it was canceled).
+  - The price cannot be encoded as specified (e.g., more than 7 labels, any value exceeds 32 bits).
+  - The ancillary data is invalid JSON or does not match the specified TypeScript schema. However, voters should attempt to decode and interpret the ancillary data, and ignoring any data beyond the last closing bracket (}) is acceptable to properly parse the JSON.
 - **Early answer**: if the request is marked as “event based expiry” and proposed before the game has expired, the request should resolve to `-57896044618658097711785492504343953926634992332820282019728792003956564819968` or `type(int256).min`
 
 
