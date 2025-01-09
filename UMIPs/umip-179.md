@@ -253,9 +253,9 @@ Each valid `FilledV3Relay` event is subject to an LP fee. The procedure for comp
 - The `HubPool` `liquidityUtilizationCurrent()` and `liquidityUtilizationPostRelay()` functions shall be used instead of the `BridgePool` variant.
 - The event `inputToken` shall be mapped from the SpokePool address to a HubPool `l1Token` address by following the matching procedure outlined above.
 - The LP fee is computed between the `originChainId` and `FilledV3Relay.repaymentChainId` where the `relayExecutionInfo.FillType != SlowFill` and `FilledV3Relay.destinationChainId` otherwise.
-
-Note:
-- The LP fee is typically referenced as a multiplier of the `V3FundsDeposited` `inputAmount`, named `realizedLpFeePct` elsewhere in this document.
+- The LP fee as a multiplier of `inputAmount` (typically named `realizedLpFeePct` elsewhere in this document) shall be:
+  - Promoted to 18 decimals, where 1e18 represents 100%, and
+  - Truncated (zeroed) between 0 and 1e10, providing 8 decimals of effective precision.
 
 ### Computing Bundle LP Fees
 The bundle LP fee for a target block range on a SpokePool and token pair shall be determined by summing the applicable LP fees for each of the following validated events:
@@ -263,16 +263,21 @@ The bundle LP fee for a target block range on a SpokePool and token pair shall b
 
 ### Computing Relayer Repayments
 For a validated `FilledV3Relay` event, the relayer repayment amount shall be computed as follows:
-- `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
+- `(inputAmount * (1e18 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `V3FundsDeposited` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 - Deposits where the `originChainId` is a "Lite" chain in the AcrossConfigStore as of the `quoteTimestamp` shall always be repaid on the deposit's origin chain. This means the protocol overrides the relayer's requested `repaymentChainId` with the `originChainId` instead.
+
+If a validated `FilledV3Relay` event specifies an invalid `repaymentChainId`, the proposer shall issue repayment on the fill destination chain.
+Reasons for the `repaymentChainId` to be considered invalid are:
+- `repaymentChainId` is not supported by Across.
+- `inputToken` is not supported as a repayment token on `repaymentChainId`.
 
 ### Computing Deposit Refunds
 For an expired `V3FundsDeposited` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
 
 ### Computing Slow Fill updated output amounts
 For the purpose of computing the amount to issue to a recipient for a SlowFill, the relayer fee shall be nulled by applying the following procedure:
-- `updatedOutputAmount = (inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
+- `updatedOutputAmount = (inputAmount * (1e18 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
 
 Constraint:
 - The `V3FundsDeposited` `outputAmount` shall _not_ be considered when determining SlowFill amounts.
@@ -391,6 +396,12 @@ The set of relayer refund leaves shall be ordered according to:
 
 The Relayer Refund Leaf `leafId` field shall be numbered according to the ordering established above, starting at 0.
 
+If a Relayer Refund Leaf would be unable to be executed due to an ERC20 reversion when transferring the repayment token to the recipient on the destination chain, the proposer may exclude the relayer repayment from the Relayer Refund Root.
+Note:
+- This is intended to deal with unlikely situations, such as a centralized token issuer censoring transactions concerning a relayer address, and is required to prevent deadlocking of all other relayer repayments in the same Relayer Refund Leaf.
+- In the event of relayer repayment exclusion, the proposer should provide reproducible evidence that the relayer repayment would fail as part of any subsequent dispute.
+
+
 Note:
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
@@ -426,7 +437,4 @@ The V3 rules defined in this UMIP will apply beginning when the VERSION field in
 The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts-v2) repository.
 
 # Security considerations
-Across v3 has been audited by OpenZeppelin.
-
-Note:
-- If a particular relayer refund is known to be unexecutable, it can be removed from the bundle by the proposer if a sufficient public justification is made before the proposal. This is intended to deal with unlikely situations, such as ag centralized token issuer blacklisting an address that is due a refund. If this leaf were to remain unaltered, this blacklisted address could block other addresses from recieving refunds.
+Across v3 has been [audited by OpenZeppelin](https://blog.openzeppelin.com/across-v3-incremental-audit).
