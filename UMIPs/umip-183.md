@@ -42,7 +42,7 @@ When converted from bytes to UTF-8, interpret the string as a stringified JSON o
   // description of the request
   description: string; 
   // Values will be encoded into the settled price in the same order as the provided Labels. The oracle UI will display each Label along with an input field. 7 Labels maximum.
-  Labels: string[] 
+  labels: string[] 
 }
 
 ```
