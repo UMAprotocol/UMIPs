@@ -24,7 +24,6 @@ No price feed is defined for this price identifier.
 
 # Technical Specifications
 
------------------------------------------
 - Price identifier name: MULTIPLE_VALUES
 - Base Currency: N/A
 - Quote Currency: N/A
@@ -33,7 +32,7 @@ No price feed is defined for this price identifier.
 
 
 # Ancillary Data Specifications
-When converted from bytes to UTF-8, interpret the string as a stringified JSON object in the following form:
+When converted from bytes to UTF-8, the ancillary data must be a valid stringified JSON object in the following form:
 
 ```ts
 {
@@ -42,28 +41,14 @@ When converted from bytes to UTF-8, interpret the string as a stringified JSON o
   // description of the request
   description: string; 
   // Values will be encoded into the settled price in the same order as the provided Labels. The oracle UI will display each label along with an input field. 7 labels maximum.
-  labels: string[] 
+  labels: string[];
 }
 
 ```
 
-Example ancillary data for a sports game:
-```ts
-{
-    "title": "Los Angeles Lakers vs Boston Celtics",
-    "description": `Final scores for the "Los Angeles Lakers" vs "Boston Celtics" NBA game scheduled for Jan 7, 2025.`,
-    "labels": [
-            "Lakers",
-            "Celtics"
-     ]
-}
+Example of a correctly formatted stringified JSON object:
 ```
-
-When converting UTF-8 stringified JSON to hex, all double quotes (") within the ancillary data must be escaped with a backslash (\) to ensure proper ancillary data parsing and support for automated verification.
-
-For example, with the above JSON string the string to be converted to hex is:
-```
-'{\"title\":\"Los Angeles Lakers vs Boston Celtics\",\"description\":\"Final scores for the \\"Los Angeles Lakers\\" vs \\"Boston Celtics\\" NBA game scheduled for Jan 7, 2025.\",\"labels\":[\"Lakers\",\"Celtics\"]}'
+{"title":"Los Angeles Lakers vs Boston Celtics","description":"Final scores for the \"Los Angeles Lakers\" vs \"Boston Celtics\" NBA game scheduled for Jan 7, 2025.","labels":["Lakers","Celtics"]}
 ```
 
 The hex representation of the above string is:
