@@ -85,6 +85,11 @@ Voters should decode the ancillary data to decipher the values requested and the
     | 224-255  | 192-223 | 160-191 |... |  0-31   |  
   ```
 
+For each label provided in the `labels` array, its corresponding value (if present) is encoded into the following bit ranges:
+- The **first label** (`labels[0]`) corresponds to the first 32 bits (bits 0–31).
+- The **second label** (`labels[1]`) corresponds to the next 32 bits (bits 32–63).
+- This pattern continues up to the **seventh label** (`labels[6]`), which corresponds to bits 192–223.
+
 If there are fewer than 7 labels provided, the values should be encoded starting with the least significant positions, leaving the most significant positions unused. The unused positions must be set to zero. Any non-zero values present in these unused positions will render the price invalid. The most significant 32 bits are always unused to prevent collisions with the other valid responses below.
 
 Other valid price responses are:  
