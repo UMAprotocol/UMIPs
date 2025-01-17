@@ -117,19 +117,26 @@ Note: when decoding a price, to prevent misinterpretation prices should first be
   ```
 - Example Encoding in Javascript:
   ```js
-  encodeValues(values) {
-      if (values.length > 7) {
-          throw new Error("Maximum of 7 values allowed");
+  function encodeValues(values: number[]): bigint {
+    if (values.length > 7) {
+      throw new Error("Maximum of 7 values allowed");
+    }
+
+    let encodedPrice = BigInt(0);
+
+    for (let i = 0; i < values.length; i++) {
+      if (!Number.isInteger(values[i])) {
+        throw new Error("All values must be integers");
       }
-      let encodedPrice = BigInt(0);
-      for (let i = 0; i < values.length; i++) {
-          if (values[i] > 0xFFFFFFFF || values[i] < 0) {
-              throw new Error("Values must be uint32 (0 <= value <= 2^32 - 1)");
-          }
-          encodedPrice |= BigInt(values[i]) << BigInt(32 * i);
+      if (values[i] > 0xffffffff || values[i] < 0) {
+        throw new Error("Values must be uint32 (0 <= value <= 2^32 - 1)");
       }
+      encodedPrice |= BigInt(values[i]) << BigInt(32 * i);
+    }
+
     return encodedPrice;
   }
+
   ```
 - Example Decoding in Solidity:  
   ```solidity
@@ -150,28 +157,27 @@ Note: when decoding a price, to prevent misinterpretation prices should first be
   ```
 - Example Decoding in Javascript:
   ```js
-  isTooEarly(price) {
-        const MIN_INT256 = -(BigInt(2) ** BigInt(255));
-        return price === MIN_INT256;
+  function isTooEarly(price: bigint): boolean {
+    const MIN_INT256 = -(BigInt(2) ** BigInt(255));
+    return price === MIN_INT256;
   }
 
-  isUnresolvable(price) {
-        const MAX_INT256 = (BigInt(2) ** BigInt(255)) - BigInt(1);
-        return price === MAX_INT256;
+  function isUnresolvable(price: bigint): boolean {
+    const MAX_INT256 = (BigInt(2) ** BigInt(255)) - BigInt(1);
+    return price === MAX_INT256;
   }
 
-  decodePriceAtIndex(encodedPrice, index) {
-        if (index < 0 || index >= 7) {
-            throw new Error("Index out of range");
-        }
-        const decodedValue = Number((encodedPrice >> BigInt(32 * index)) & BigInt(0xFFFFFFFF));
-        return decodedValue;
+  function decodePriceAtIndex(encodedPrice: bigint, index: number): number {
+    if (index < 0 || index > 6) {
+      throw new Error("Index out of range");
+    }
+    return Number((encodedPrice >> BigInt(32 * index)) & BigInt(0xFFFFFFFF));
   }
   ```
 - For example, encoding the following values:
   [0, 1, 2, 3, 4, 5, 6],
   results in the following price:
-  43939712156475775172537355306597378876443456848946572296193
+  37662610419627592771030380598185861001628732695723288559616
   
 
 # Security Considerations
