@@ -384,6 +384,14 @@ For a validated `Deposit` event, the relayer repayment amount shall be computed 
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 - Deposits where the `originChainId` is a "Lite" chain in the AcrossConfigStore as of the `quoteTimestamp` shall always be repaid on the deposit's origin chain. This means the protocol overrides the relayer's requested `repaymentChainId` with the `originChainId` instead.
 
+The recipient of relayer repayments shall be the `Fill` `relayer` address. If the `relayer` address is invalid for the respective `repaymentChainId`, the proposer shall:
+- Issue the refund on the `destinationChainId` instead of the `repaymentChainId`, AND
+- Issue the refund to the `msg.sender` address, instead of the `relayer` address.
+
+#### Note
+- Examples of an invalid `relayer` address include:
+    - An SVM address on an EVM chain.
+
 ### Computing Deposit Refunds
 For an expired `Deposit` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
 
@@ -546,6 +554,3 @@ The Across v3 implementation is available in the Across [contracts-v2](https://g
 
 # Security considerations
 Across v3 has been audited by OpenZeppelin.
-
-Note:
-- If a particular relayer refund is known to be unexecutable, it can be removed from the bundle by the proposer if a sufficient public justification is made before the proposal. This is intended to deal with unlikely situations, such as ag centralized token issuer blacklisting an address that is due a refund. If this leaf were to remain unaltered, this blacklisted address could block other addresses from recieving refunds.
