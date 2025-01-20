@@ -265,22 +265,22 @@ Note:
 ## Definitions
 
 ### Deposits
-A Deposit event is defined as an instance of either of the following events:
+A `Deposit` is defined as an instance of either of the following events:
 - `FundsDeposited`.
 - `V3FundsDeposited`.
 
 ### Fills
-A Fill event is defined as an instance of either of the following events:
+A `Fill` is defined as an instance of either of the following events:
 - `FilledRelay`.
 - `FilledV3Relay`.
 
 ### Slow Fill Requests
-A Slow Fill event is defined as an instance of either of the following events:
+A `Slow Fill` is defined as an instance of either of the following events:
 - `RequestedSlowFill`.
 - `RequestedV3SlowFill`.
 
 ### RelayData
-RelayData is defined as an instance of etiher of the following data types:
+`RelayData` is defined as an instance of etiher of the following data types:
 - `V3RelayData`.
 - `V3RelayDataLegacy`.
 
@@ -316,14 +316,36 @@ The `V3RelayDataLegacy` hash is computed as the `keccak256` hash over the ABI-en
 - `relayData` is of type `V3RelayDataLegacy`
 - `destinationChainId` is of type `uint256`.
 
-### Finding Valid Relays
-For the purpose of computing relayer repayments, each of the `Fill` events emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
+### Computing Relayer Repayments & Depositor Refunds
+For the purpose of computing relayer repayments, the following procedures are completed:
+- Finding Valid Fills
+- Finding Valid Pre-Fills
+- Finding Expired Deposits
+
+#### Note
+- Depositor refunds are issued via the Relayer Repayment workflow.
+
+#### Validating Fills
+Each of the `Fills` emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
 1. The `Fill` event `FillType` field is not set to `SlowFill`,
-2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`. This may be compared by comparing the hashes of the two objects.
+2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`. This may be determined by comparing the hashes of the two objects.
 
 If the `Deposit` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
 
-### Finding Expired Deposits
+#### Validating Pre-fills
+For each of the `Deposits` emitted within the target block range where no corresponding `Fill` is identified on the destination chain, identify the valid `Fill` according to the following criteria:
+1. Verify that the destination chain `FillStatus` for the `Deposit` `RelayData` is `Filled` as at the destination chain end block number for the proposal.
+2. Resolve the corresponding `Fill` on the destination chain.
+
+#### Note
+- No specific method is prescribed for resolving the fill on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the target block range could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
+
+1. The `Fill` event `FillType` field is not set to `SlowFill`,
+2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`. This may be determined by comparing the hashes of the two objects.
+
+If the `Deposit` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
+
+#### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `Deposit` event shall be considered expired by verifying that:
 1. The `fillDeadline` timestamp elapsed within the target block range on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
 2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested`.
@@ -346,7 +368,7 @@ Note:
 - The resulting set of validated `Slow Fill Requests` shall be included as SlowFills in the subsequent root bundle proposal.
 
 ### Computing LP Fees
-Each valid `Fill` event is subject to an LP fee. The procedure for computing LP fees is as defined in [UMIP-136 Add IS_RELAY_VALID as a supported price identifier](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-136.md), with the following amendments:
+Each valid `Fill` is subject to an LP fee. The procedure for computing LP fees is as defined in [UMIP-136 Add IS_RELAY_VALID as a supported price identifier](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-136.md), with the following amendments:
 - The AcrossConfigStore contract shall be used to identify the correct rate model, instead of a `RateModelStore` contract.
 - The `HubPool` `liquidityUtilizationCurrent()` and `liquidityUtilizationPostRelay()` functions shall be used instead of the `BridgePool` variant.
 - The event `inputToken` shall be mapped from the SpokePool address to a HubPool `l1Token` address by following the matching procedure outlined above.
@@ -394,7 +416,7 @@ The procedure for computing running balances for an `l1Token` and `chainId` pair
 1. Initialize the running balance to 0.
 
 2. Add relayer refunds:
-    - For each group of validated `Fill` events, initialize a running balance at 0 and add the add the relayer repayment.
+    - For each group of validated `Fill` and `Pre-fill` events, initialize a running balance at 0 and add the add the relayer repayment.
 
 3. Add deposit refunds:
     - For each group of `Deposit` events that expired within the target block range, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain.
