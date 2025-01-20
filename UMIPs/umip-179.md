@@ -340,11 +340,6 @@ For each of the `Deposits` emitted within the target block range where no corres
 #### Note
 - No specific method is prescribed for resolving the fill on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the target block range could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
 
-1. The `Fill` event `FillType` field is not set to `SlowFill`,
-2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`. This may be determined by comparing the hashes of the two objects.
-
-If the `Deposit` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
-
 #### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `Deposit` event shall be considered expired by verifying that:
 1. The `fillDeadline` timestamp elapsed within the target block range on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
