@@ -327,8 +327,9 @@ For the purpose of computing relayer repayments, the following procedures are co
 
 #### Validating Fills
 Each of the `Fills` emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
-1. The `Fill` event `FillType` field is not set to `SlowFill`,
-2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`. This may be determined by comparing the hashes of the two objects.
+1. The `Fill` event `FillType` field is not set to `SlowFill`, AND
+2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`. This may be determined by comparing the hashes of the two objects, AND
+3. The corresponding `Deposit` event occurred within or before the target block range on the origin chain SpokePool.
 
 If the `Deposit` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
 
