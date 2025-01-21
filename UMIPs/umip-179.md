@@ -219,7 +219,7 @@ In addition to the description [UMIP-157](https://github.com/UMAprotocol/UMIPs/b
   DISABLED_CHAINS by proposing from and to the previous bundle end block.
 
 ### Finding Valid Relays
-For the purpose of computing relayer repayments, each `FilledV3Relay` event emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
+For the purpose of computing relayer repayments, each `FilledV3Relay` event emitted within the [Bundle Block Range](#identifying-bundle-block-ranges) on a destination SpokePool shall be considered valid by verifying that:
 1. The `FilledV3Relay` `FillType` field is not set to `SlowFill`,
 2. The component `V3RelayData` maps exactly to a corresponding `V3FundsDeposited` event emitted on the relevant `originChainId`. This may be compared by comparing the hashes of the two objects.
 
@@ -227,16 +227,16 @@ If the `V3FundsDeposited` event specifies `outputToken` 0x0 (i.e. the Zero Addre
 
 ### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `V3FundsDeposited` event shall be considered expired by verifying that:
-1. The `fillDeadline` timestamp elapsed within the target block range on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
+1. The `fillDeadline` timestamp elapsed within the [Bundle Block Range](#identifying-bundle-block-ranges) on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
 2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested`.
 
 Note:
 - Expired deposits shall be refunded to the `depositor` address on the origin SpokePool.
 - Depositor refunds are to be issued as part of the relayer refund procedure.
-- The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion within the target block range.
+- The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion within the [Bundle Block Range](#identifying-bundle-block-ranges).
 
 ### Finding Slow Fill Requests
-For the purpose of computing slow fills to be issued to recipients, each `RequestedV3SlowFill` event emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
+For the purpose of computing slow fills to be issued to recipients, each `RequestedV3SlowFill` event emitted within the [Bundle Block Range](#identifying-bundle-block-ranges) on a destination SpokePool shall be considered valid by verifying that:
 1. The `inputToken` and `outputToken` addresses are equivalent at the deposit `quoteTimestamp`,
 2. The `fillDeadline` has not already elapsed relative to the `destinationChainId` bundle end block number,
 3. The destination SpokePool `FillStatus` mapping for the relevant `V3RelayData` hash is `SlowFillRequested`,
@@ -258,7 +258,7 @@ Note:
 - The LP fee is typically referenced as a multiplier of the `V3FundsDeposited` `inputAmount`, named `realizedLpFeePct` elsewhere in this document.
 
 ### Computing Bundle LP Fees
-The bundle LP fee for a target block range on a SpokePool and token pair shall be determined by summing the applicable LP fees for each of the following validated events:
+The bundle LP fee for a [Bundle Block Range](#identifying-bundle-block-ranges) on a SpokePool and token pair shall be determined by summing the applicable LP fees for each of the following validated events:
 - `FilledV3Relay`
 
 ### Computing Relayer Repayments
@@ -298,7 +298,7 @@ The procedure for computing running balances for an `l1Token` and `chainId` pair
     - For each group of validated `FilledV3Relay` events, initialize a running balance at 0 and add the add the relayer repayment.
 
 3. Add deposit refunds:
-    - For each group of `V3FundsDeposited` events that expired within the target block range, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain.
+    - For each group of `V3FundsDeposited` events that expired within the [Bundle Block Range](#identifying-bundle-block-ranges), sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain.
 
 4. Add slow fills:
     - For each group of validated `RequestedV3SlowFill` events, add each slow relay's `updatedOutputAmount` to the group's running balance.
@@ -361,8 +361,8 @@ Note:
 
 ### Constructing the Relayer Refund Root
 At least one Relayer Refund Leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
-- Valid `FilledV3Relay` events, OR
-- Expired `V3Fundsdeposited` events, OR
+- Valid `Fills`, OR
+- Expired `Deposits`, OR
 - A negative running balance net send amount.
 
 Each Relayer Refund Leaf shall be constructed as follows:
@@ -395,7 +395,7 @@ Note:
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
 ### Constructing the Slow Relay Root
-One Slow Relay Leaf shall be produced per valid `RequestedV3SlowFill` event emitted within the target block range for a destination SpokePool.
+One Slow Relay Leaf shall be produced per valid `RequestedV3SlowFill` event emitted within the [Bundle Block Range](#identifying-bundle-block-ranges) for a destination SpokePool.
 
 A Slow Relay Leaf shall not be produced if the `RequestedV3SlowFill` event's `inputAmount` is equal to 0 and the `message` is a zero bytes string.
 
