@@ -384,7 +384,8 @@ For a validated `Deposit` event, the relayer repayment amount shall be computed 
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 
 The applied `repaymentChainId` shall be determined as follows:
-- When the `originChainId` is a `Lite chain` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE:
+- When the `originChainId` is a `Lite chain` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE
+- When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId`: `destinationChainId`, ELSE
 - The `repaymentChainId` as specified in the `Fill`.
 
 The applied repayment address shall be determined as follows:
