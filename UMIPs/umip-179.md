@@ -152,7 +152,7 @@ The `V3FundsDeposited` event emits the unique `V3RelayDataLegacy` for an individ
 Consumers of these events should append the `originChainId` in order to avoid unintentionally mixing events from different chains.
 
 Note:
-- The `FundsDeposited` and `V3FundsDeposited` `outputToken` field is not required to be a known HubPool `l1Token`. In-protocol arbitrary token swaps are technically supported by Across v3.
+- The `FundsDeposited` and `V3FundsDeposited` `outputToken` field is not required to be a known HubPool `l1Token`. In-protocol arbitrary token swaps are supported by Across v3.
 - The address identified by `exclusiveRelayer` has exclusive right to complete the relay on the destination chain until `exclusivityDeadline` has elapsed.
 - If `exclusivityDeadline` is set to a past timestamp, any address is eligible to fill the relay.
 - Any deposit that remains unfilled after the specified `fillDeadline` shall be refunded to the `depositor` address via the origin SpokePool in a subsequent settlement bundle.
