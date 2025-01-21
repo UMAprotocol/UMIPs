@@ -382,11 +382,14 @@ The bundle LP fee for a [Bundle Block Range](#identifying-bundle-block-ranges) o
 For a validated `Deposit` event, the relayer repayment amount shall be computed as follows:
 - `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `Deposit` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
-- Deposits where the `originChainId` is a "Lite" chain in the AcrossConfigStore as of the `quoteTimestamp` shall always be repaid on the deposit's origin chain. This means the protocol overrides the relayer's requested `repaymentChainId` with the `originChainId` instead.
 
-The recipient of relayer repayments shall be the `Fill` `relayer` address. If the `relayer` address is invalid for the respective `repaymentChainId`, the proposer shall:
-- Issue the refund on the `destinationChainId` instead of the `repaymentChainId`, AND
-- Issue the refund to the `msg.sender` address, instead of the `relayer` address.
+The applied `repaymentChainId` shall be determined as follows:
+- When the `originChainId` is a `Lite chain` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE:
+- The `repaymentChainId` as specified in the `Fill`.
+
+The applied repayment address shall be determined as follows:
+- When the `Fill` `relayer` address is valid for the applied `repaymentChainId`: `relayer`, ELSE
+- The `Fill` `msg.sender` address.
 
 #### Note
 - Examples of an invalid `relayer` address include:
