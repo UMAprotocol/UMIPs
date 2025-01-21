@@ -326,33 +326,33 @@ For the purpose of computing relayer repayments, the following procedures are co
 - Depositor refunds are issued via the Relayer Repayment workflow.
 
 #### Validating Fills
-Each of the `Fills` emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
+Each of the `Fills` emitted within the [Bundle Block Range](#identifying-bundle-block-ranges) on a destination SpokePool shall be considered valid by verifying that:
 1. The `Fill` event `FillType` field is not set to `SlowFill`, AND
 2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`. This may be determined by comparing the hashes of the two objects, AND
-3. The corresponding `Deposit` event occurred within or before the target block range on the origin chain SpokePool.
+3. The corresponding `Deposit` event occurred within or before the [Bundle Block Range](#identifying-bundle-block-ranges) on the origin chain SpokePool.
 
 If the `Deposit` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
 
 #### Validating Pre-fills
-For each of the `Deposits` emitted within the target block range where no corresponding `Fill` is identified on the destination chain, identify the valid `Fill` according to the following criteria:
+For each of the `Deposits` emitted within the [Bundle Block Range](#identifying-bundle-block-ranges) where no corresponding `Fill` is identified on the destination chain, identify the valid `Fill` according to the following criteria:
 1. Verify that the destination chain `FillStatus` for the `Deposit` `RelayData` is `Filled` as at the destination chain end block number for the proposal.
 2. Resolve the corresponding `Fill` on the destination chain.
 
 #### Note
-- No specific method is prescribed for resolving the fill on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the target block range could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
+- No specific method is prescribed for resolving the fill on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the [Bundle Block Range](#identifying-bundle-block-ranges) could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
 
 #### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `Deposit` event shall be considered expired by verifying that:
-1. The `fillDeadline` timestamp elapsed within the target block range on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
+1. The `fillDeadline` timestamp elapsed within the [Bundle Block Range](#identifying-bundle-block-ranges) on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
 2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested`.
 
 Note:
 - Expired deposits shall be refunded to the `depositor` address on the origin SpokePool.
 - Depositor refunds are to be issued as part of the relayer refund procedure.
-- The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion within the target block range.
+- The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion within the [Bundle Block Range](#identifying-bundle-block-ranges).
 
 ### Finding Slow Fill Requests
-For the purpose of computing slow fills to be issued to recipients, each `Slow Fill Request` emitted within the target block range on a destination SpokePool shall be considered valid by verifying that:
+For the purpose of computing slow fills to be issued to recipients, each `Slow Fill Request` emitted within the [Bundle Block Range](#identifying-bundle-block-ranges) on a destination SpokePool shall be considered valid by verifying that:
 1. The `inputToken` and `outputToken` addresses are equivalent at the deposit `quoteTimestamp`,
 2. The `fillDeadline` has not already elapsed relative to the `destinationChainId` bundle end block number,
 3. The destination SpokePool `FillStatus` mapping for the relevant `RelayData` hash is `SlowFillRequested`,
@@ -374,7 +374,7 @@ Note:
 - The LP fee is typically referenced as a multiplier of the `Deposit` `inputAmount`, named `realizedLpFeePct` elsewhere in this document.
 
 ### Computing Bundle LP Fees
-The bundle LP fee for a target block range on a SpokePool and token pair shall be determined by summing the applicable LP fees for each of the following validated events:
+The bundle LP fee for a [Bundle Block Range](#identifying-bundle-block-ranges) on a SpokePool and token pair shall be determined by summing the applicable LP fees for each of the following validated events:
 - `FilledRelay`.
 - `FilledV3Relay`.
 
@@ -423,7 +423,7 @@ The procedure for computing running balances for an `l1Token` and `chainId` pair
     - For each group of validated `Fill` and `Pre-fill` events, initialize a running balance at 0 and add the add the relayer repayment.
 
 3. Add deposit refunds:
-    - For each group of `Deposit` events that expired within the target block range, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain.
+    - For each group of `Deposit` events that expired within the [Bundle Block Range](#identifying-bundle-block-ranges), sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain.
 
 4. Add slow fills:
     - For each group of validated `Slow Fill Requests`, add each slow relay's `updatedOutputAmount` to the group's running balance.
@@ -456,7 +456,7 @@ The referenced `SpokeTargetBalances` is as specified by [UMIP-157 Token Constant
 ## Constructing Root Bundles
 
 ### Constructing the Pool Rebalance Root
-One Pool Rebalance Leaf shall be produced per unique `chainId` & `l1Token` pair, where the corresponding `Deposit`, `Fill` or`Slow Fill Request` events were emitted by the relevant SpokePool within the target block range.
+One Pool Rebalance Leaf shall be produced per unique `chainId` & `l1Token` pair, where the corresponding `Deposit`, `Fill` or`Slow Fill Request` events were emitted by the relevant SpokePool within the [Bundle Block Range](#identifying-bundle-block-ranges).
 
 Each Pool Rebalance Leaf shall be constructed as follows:
 1. For each unique `chainId` and `l1Token` pair:
@@ -520,7 +520,7 @@ Note:
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
 ### Constructing the Slow Relay Root
-One Slow Relay Leaf shall be produced per valid `Slow Fill Request` emitted within the target block range for a destination SpokePool.
+One Slow Relay Leaf shall be produced per valid `Slow Fill Request` emitted within the [Bundle Block Range](#identifying-bundle-block-ranges) for a destination SpokePool.
 
 A Slow Relay Leaf shall not be produced if the relevant `Slow Fill Request` `inputAmount` is equal to 0 and the `message` is a zero bytes string.
 
