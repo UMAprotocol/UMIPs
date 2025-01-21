@@ -199,7 +199,7 @@ The `FilledRelay` event extends the `V3RelayData` type by applying the following
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | message | omitted | This field is omitted from the `FilledRelay` event in favour of the `messageHash` field. |
-| messageHash | bytes32 | The keccak256 hash of the `V3RelayData` message field. This field is included in place of the `V3RelayData` message field. See also [Computing RelayData hashes](#computing-relaydata-hashes). |
+| messageHash | bytes32 | The keccak256 hash of the `V3RelayData` message field. This field is included in place of the `V3RelayData` message field. |
 | relayer | bytes32 | The address completing relay on the destination SpokePool. |
 | repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
 | relayExecutionInfo | V3RelayExecutionEventInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). |
@@ -313,7 +313,7 @@ The `V3RelayData` hash is computed as the `keccak256` hash over the ABI-encoded 
 
 #### V3RelayDataLegacy
 The `V3RelayDataLegacy` hash is computed as the `keccak256` hash over the ABI-encoded representation of the arguments `relayData`, `destinationChainId`, where:
-- `relayData` is of type `V3RelayDataLegacy`
+- `relayData` is of type `V3RelayDataLegacy`.
 - `destinationChainId` is of type `uint256`.
 
 ### Computing Relayer Repayments & Depositor Refunds
@@ -348,6 +348,7 @@ For the purpose of computing depositor refunds, each `Deposit` event shall be co
 
 Note:
 - Expired deposits shall be refunded to the `depositor` address on the origin SpokePool.
+  - If the `depositor` address is not valid 
 - Depositor refunds are to be issued as part of the relayer refund procedure.
 - The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion within the [Bundle Block Range](#identifying-bundle-block-ranges).
 
