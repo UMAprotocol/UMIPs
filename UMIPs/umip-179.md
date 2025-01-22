@@ -342,13 +342,13 @@ For each of the `Deposits` emitted within the [Bundle Block Range](#identifying-
 - No specific method is prescribed for resolving the fill on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the [Bundle Block Range](#identifying-bundle-block-ranges) could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
 
 #### Finding Expired Deposits
-For the purpose of computing depositor refunds, each `Deposit` event shall be considered expired by verifying that:
+For the purpose of computing depositor refunds, each `Deposit` shall be considered expired by verifying that:
 1. The `fillDeadline` timestamp elapsed within the [Bundle Block Range](#identifying-bundle-block-ranges) on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
 2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested`.
 
 Note:
 - Expired deposits shall be refunded to the `depositor` address on the origin SpokePool.
-  - If the `depositor` address is not valid 
+  - If the `depositor` address is not valid on the `originChainId`, the deposit refund shall be discarded.
 - Depositor refunds are to be issued as part of the relayer refund procedure.
 - The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion within the [Bundle Block Range](#identifying-bundle-block-ranges).
 
@@ -389,9 +389,11 @@ The applied `repaymentChainId` shall be determined as follows:
 - When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId`: `destinationChainId`, ELSE
 - The `repaymentChainId` as specified in the `Fill`.
 
-The applied repayment address shall be determined as follows:
+The applied `repayment address` shall be determined as follows:
 - When the `Fill` `relayer` address is valid for the applied `repaymentChainId`: `relayer`, ELSE
 - The `Fill` `msg.sender` address.
+
+If the applied `repayment address` is not valid for the applied `repaymentChainId`, the repayment shall be discarded.
 
 #### Note
 - Examples of an invalid `relayer` address include:
