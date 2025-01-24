@@ -139,7 +139,7 @@ Across V3 defines the following events:
 - ClaimedRelayerRefund
 
 ### Event Deprecation
-The following events are marked for future deprecation. Deprecation will be announced in a future update to this specification.
+The following events are marked for deprecation. See [Migration](#migration) for more information.
 - V3FundsDeposited
 - RequestedSpeedUpV3Deposit
 - FilledV3Relay
@@ -149,9 +149,8 @@ The following events are marked for future deprecation. Deprecation will be anno
 The `FundsDeposited` event emits the unique `V3RelayData` for an individual deposit. No additional fields are defined. 
 The `V3FundsDeposited` event emits the unique `V3RelayDataLegacy` for an individual deposit. No additional fields are defined.
 
-Consumers of these events should append the `originChainId` in order to avoid unintentionally mixing events from different chains.
-
-Note:
+#### Note
+- Consumers of these events should append the `originChainId` in order to avoid unintentionally mixing events from different chains.
 - The `FundsDeposited` and `V3FundsDeposited` `outputToken` field is not required to be a known HubPool `l1Token`. In-protocol arbitrary token swaps are supported by Across v3.
 - The address identified by `exclusiveRelayer` has exclusive right to complete the relay on the destination chain until `exclusivityDeadline` has elapsed.
 - If `exclusivityDeadline` is set to a past timestamp, any address is eligible to fill the relay.
@@ -180,16 +179,15 @@ The `RequestedSpeedUpV3Deposit` event emits the following data:
 | updatedMessage | bytes | The new message to be supplied to the recipient. |
 | depositorSignature | bytes | A signature by the depositor authorizing the above updated fields. |
 
-Note:
+#### Note
 - Relayers may optionally append the updated request from a `RequestedSpeedUpDeposit` or `RequestedSpeedUpV3Deposit` event when filling a relay, but have no obligation to use the updated request.
 
 ### RequestedSlowFill, RequestedV3SlowFill
 The `RequestedSlowFill` event emits an `V3RelayData` instance.
 The `RequestedV3SlowFill` event emits an `V3RelayDataLegacy` instance.
 
-These events are emitted on the destination chain and signal to proposers that a slow fill has been requested for a specific deposit.
-
-Note:
+#### Note
+- These events are emitted on the destination chain and signal to proposers that a slow fill has been requested for a specific deposit.
 - `RequestedV3SlowFill` events cannot be emitted until the `exclusivityDeadline` timestamp has elapsed on the destination chain.
 - `RequestedV3SlowFill` events cannot be emitted once the `fillDeadline` timestamp has elapsed on the destination chain.
 
@@ -211,7 +209,7 @@ The `FilledV3Relay` event extends the `V3RelayDataLegacy` type by adding the fol
 | repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
 | relayExecutionInfo | V3RelayExecutionEventInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). |
 
-Note:
+#### Note
 - Consumers of these events should append the `destinationChainId` attribute in order to avoid unintentioanlly mixing events from different chains.
 
 # Root Bundle Proposals
@@ -239,7 +237,7 @@ A `PoolRebalanceLeaf` shall consist of the following:
 | leafId | uint8 | Index of the `PoolRebalanceLeaf` within the ordered array of `PoolRebalanceLeaves`. |
 | l1Tokens | address[] | Ordered array of HubPool `l1Token` addresses.
 
-Note:
+#### Note
 - The format of Pool Rebalance leaves is unchanged from Across v2.
 
 ### Relayer Refund Leaves
@@ -252,14 +250,14 @@ Note:
 | refundAddresses | uint256[] | Ordered array of addresses to be refunded by this `RelayerRefundLeaf`. |
 | refundAmounts | uint256[] | Ordered array of amounts of `l2TokenAddress`to be refunded to the corresponding `refundAddress`. |
 
-Note:
+#### Note
 - The format of Relayer Refund leaves is unchanged from Across v2.
 - Across v3 expands the utility of the `RelayerRefundLeaf` to include issuing depositor refunds on origin chains in the event of an expired `V3FundsDeposited` `fillDeadline`.
 
 ### Slow Relay Leaves
 Across v3 `SlowRelayLeaf` objects are defined by the `V3SlowFill` [data type](#data-types).
 
-Note:
+#### Note
 - The format of Slow Relay leaves is updated from Across v2.
 
 ## Definitions
@@ -344,7 +342,7 @@ For the purpose of computing depositor refunds, each `Deposit` shall be consider
 1. The `fillDeadline` timestamp elapsed within the [Bundle Block Range](#identifying-bundle-block-ranges) on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
 2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested`.
 
-Note:
+##### Note
 - Expired deposits shall be refunded to the `depositor` address on the origin SpokePool.
   - If the `depositor` address is not valid on the `originChainId`, the deposit refund shall be discarded.
 - Depositor refunds are to be issued as part of the relayer refund procedure.
@@ -358,7 +356,7 @@ For the purpose of computing slow fills to be issued to recipients, each `Slow F
 4. The `Slow Fill Request` `RelayData` is matched by a corresponding `Deposit` event that occurred within or before the [Bundle Block Range](#identifying-bundle-block-ranges) on the origin SpokePool,
 5. The `originChainId` and `destinationChainId` are not Lite chains.
 
-Note:
+#### Note
 - A slow fill request is made by supplying a complete copy of the relevant `RelayData` emitted by a `Deposit` event.
 - The resulting set of validated `Slow Fill Requests` shall be included as SlowFills in the subsequent root bundle proposal.
 
@@ -369,7 +367,7 @@ Each valid `Fill` is subject to an LP fee. The procedure for computing LP fees i
 - The event `inputToken` shall be mapped from the SpokePool address to a HubPool `l1Token` address by following the matching procedure outlined above.
 - The LP fee is computed between the `originChainId` specified by the `Deposit` and `repaymentChainId` specified by the relayer, where the `relayExecutionInfo.FillType != SlowFill` and the Fill `destinationChainId` otherwise.
 
-Note:
+#### Note
 - The LP fee is typically referenced as a multiplier of the `Deposit` `inputAmount`, named `realizedLpFeePct` elsewhere in this document.
 
 ### Computing Bundle LP Fees
@@ -404,10 +402,10 @@ For an expired `Deposit` event, the depositor refund amount shall be computed as
 For the purpose of computing the amount to issue to a recipient for a SlowFill, the relayer fee shall be nulled by applying the following procedure:
 - `updatedOutputAmount = (inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
 
-Constraint:
+#### Constraint
 - The `Deposit` `outputAmount` shall _not_ be considered when determining SlowFill amounts.
 
-Note:
+#### Note
 - The `Deposit` `outputAmount` specifies the exact amount to be received by the `recipient` for a standard fill, and is therefore exclusive of any relayer or LP fees paid.
 
 ### Finding the Opening Running Balance
@@ -455,7 +453,7 @@ else if abs(running_balance) >= spoke_balance_threshold:
   running_balance = running_balance - net_send_amount
 ```
 
-Note:
+#### Note
 The referenced `SpokeTargetBalances` is as specified by [UMIP-157 Token Constants](https://github.com/UMAprotocol/UMIPs/blob/pxrl/umip179/UMIPs/umip-157.md#token-constants):
 
 ## Constructing Root Bundles
@@ -486,7 +484,7 @@ The hash for each Pool Rebalance Leaf shall be constructed by using Solidity's s
 
 The Pool Rebalance Merkle Tree shall be constructed such that it is verifyable using [OpenZeppelin's MerkleProof](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/contracts/utils/cryptography/MerkleProof.sol) library.
 
-Note:
+#### Note
 - See examples [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/test/utils/cryptography/MerkleProof.test.js) for how to construct these types of trees.
 
 ### Constructing the Relayer Refund Root
@@ -521,7 +519,7 @@ The set of relayer refund leaves shall be ordered according to:
 
 The Relayer Refund Leaf `leafId` field shall be numbered according to the ordering established above, starting at 0.
 
-Note:
+#### Note
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
 ### Constructing the Slow Relay Root
@@ -538,7 +536,7 @@ The array of Slow Relay Leaf instances shall be sorted according to;
 1. `originChainId`, then
 2. `depositId`.
 
-Note:
+#### Note
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 - Deposits with disparate output tokens (i.e. where the outputToken is not the equivalent of inputToken on the destination chain) are explicitly not eligible for slow fills. Any instances of `Slow Fill Requests` for non-equivalent tokens shall be ignored.
 
@@ -547,15 +545,12 @@ Note:
 - Proposers should avoid relying on the deposit `outputAmount`, even for deposits where the `outputToken` is a known HubPool token. When computing fees, ensure that the `realizedLpFee` is _always_ subtracted from the `inputAmount`, rather than trying to infer them based on the spread between `inputAmount` and `outputAmount`.
 - Relayers are advised to factor in origin chain finality guarantees when making fills on destination chains. Origin chain re-organisation can lead to deposit re-ordering and can thus invalidate fills.
 
-# Across v2 -> V3 Transition
-Across v3 is supplementary to Across v2, adding extra logic support new types of deposits, fills and slow fill requests. At the point of upgrading to Across v3, it will no longer be possible for Across v2 `FundsDeposited` events to be emitted. In order to support continuity of service and to minimise disruption for third-party integrators, it will be possible for pre-existing `FundsDeposited` events to be filled via `FilledRelay` events. During this period, RootBundleProposals will contain relayer repayment and slow fill leaves for both Across v2 and v3.
-
-The V3 rules defined in this UMIP will apply beginning when the VERSION field in the ConfigStore is updated to 3 or higher. The ability for Across bundles to support V2 events may cease in a future VERSION increment.
-
-XXX Identify a transition point for the pending upgrade. This is likely to be handled via a `VERSION` bump.
+# Migration
+- Support for Across events with `bytes32` types (`FundsDeposited`, `FilledRelay`, ...) is required as at ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) 4. 
+- The `Legacy` events defined in this UMIP are marked as deprecated 7 days after the ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) migration from 3 to 4.
 
 # Implementation
-The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts-v2) repository.
+The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts) repository.
 
 # Security considerations
 Across v3 has been audited by OpenZeppelin.
