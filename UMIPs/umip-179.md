@@ -306,15 +306,12 @@ In addition to the description [UMIP-157](https://github.com/UMAprotocol/UMIPs/b
   DISABLED_CHAINS by proposing from and to the previous bundle end block.
 
 ### Computing RelayData Hashes
-#### V3RelayData
-The `V3RelayData` hash is computed as the `keccak256` hash over the ABI-encoded representation of the arguments `relayData`, `destinationChainId`, where:
-- `relayData` is of type `V3RelayData`.
+A `RelayData` hash is computed as the `keccak256` hash over the ABI-encoded representation of the arguments `relayData`, `destinationChainId`, where:
+- `relayData` is of type `V3RelayData` or `V3RelayDataLegacy`.
 - `destinationChainId` is of type `uint256`.
 
-#### V3RelayDataLegacy
-The `V3RelayDataLegacy` hash is computed as the `keccak256` hash over the ABI-encoded representation of the arguments `relayData`, `destinationChainId`, where:
-- `relayData` is of type `V3RelayDataLegacy`.
-- `destinationChainId` is of type `uint256`.
+#### Note
+- This method produces the identical hashes for `V3RelayData` and `V3RelayDataLegacy` for the same input data due to `address` promotion to `bytes32` prior to hashing.
 
 ### Computing Relayer Repayments & Depositor Refunds
 For the purpose of computing relayer repayments, the following procedures are completed:
