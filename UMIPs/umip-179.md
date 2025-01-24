@@ -59,7 +59,7 @@ The `V3RelayData` type underpins the transfer of funds in or out of a SpokePool 
 | message | bytes | Optional data that is forwarded to the recipient as part of a relay. |
 
 #### Note
-- `V3RelayData` specifies `bytes32` representation for addresses (`depositor`, `recipient`, ...) in order to interface with non-EVM chains. EVM addressed supplied shall be promoted to type `bytes32` with the upper bytes zeroed. 
+- `V3RelayData` specifies `bytes32` representation for addresses (`depositor`, `recipient`, ...) in order to interface with non-EVM chains. EVM addressed supplied shall be promoted to type `bytes32` with the upper 12 bytes zeroed. 
 
 ### V3RelayDataLegacy
 The `V3RelayDataLegacy` type is supported for backwards compatibility, but is slated for deprecation. `V3RelayDataLegacy` has the following delta to the `V3RelayData` type:
@@ -334,9 +334,10 @@ Each of the `Fills` emitted within the [Bundle Block Range](#identifying-bundle-
 If the `Deposit` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
 
 #### Validating Pre-fills
-For each of the `Deposits` emitted within the [Bundle Block Range](#identifying-bundle-block-ranges) where no corresponding `Fill` is identified on the destination chain, identify the valid `Fill` according to the following criteria:
+For each of the `Deposits` emitted within the [Bundle Block Range](#identifying-bundle-block-ranges) where no corresponding `Fill` is identified on the destination chain within the `Bundle Block Range`, identify the valid `Fill` according to the following criteria:
 1. Verify that the destination chain `FillStatus` for the `Deposit` `RelayData` is `Filled` as at the destination chain end block number for the proposal.
 2. Resolve the corresponding `Fill` on the destination chain.
+3. Verify that the `Fill` occurred prior to the current the [Bundle Block Range](#identifying-bundle-block-ranges) on the destination chain SpokePool.
 
 #### Note
 - No specific method is prescribed for resolving the fill on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the [Bundle Block Range](#identifying-bundle-block-ranges) could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
@@ -357,7 +358,7 @@ For the purpose of computing slow fills to be issued to recipients, each `Slow F
 1. The `inputToken` and `outputToken` addresses are equivalent at the deposit `quoteTimestamp`,
 2. The `fillDeadline` has not already elapsed relative to the `destinationChainId` bundle end block number,
 3. The destination SpokePool `FillStatus` mapping for the relevant `RelayData` hash is `SlowFillRequested`,
-4. The `Slow Fill Request` `RelayData` is matched by a corresponding `Deposit` event on the origin SpokePool,
+4. The `Slow Fill Request` `RelayData` is matched by a corresponding `Deposit` event that occurred within or before the [Bundle Block Range](#identifying-bundle-block-ranges) on the origin SpokePool,
 5. The `originChainId` and `destinationChainId` are not Lite chains.
 
 Note:
