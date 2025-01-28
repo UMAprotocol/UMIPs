@@ -197,7 +197,7 @@ The `FilledRelay` event extends the `V3RelayData` type by applying the following
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | message | omitted | This field is omitted from the `FilledRelay` event in favour of the `messageHash` field. |
-| messageHash | bytes32 | The keccak256 hash of the `V3RelayData` message field. This field is included in place of the `V3RelayData` message field. |
+| messageHash | bytes32 | The keccak256 hash of the `V3RelayData` message field where the message is non-empty, or `bytes32(0)` for an empty message. This field is included in place of the `V3RelayData` message field. |
 | relayer | bytes32 | The address completing relay on the destination SpokePool. |
 | repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
 | relayExecutionInfo | V3RelayExecutionEventInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). |
@@ -306,10 +306,17 @@ In addition to the description [UMIP-157](https://github.com/UMAprotocol/UMIPs/b
 - A "soft pause" of a chain is permitted in the event that the proposer cannot safely increment the bundle block range, or has no events to propose beyond the previous bundle block range. In this case, the proposer may repeat the procedure for
   DISABLED_CHAINS by proposing from and to the previous bundle end block.
 
+### Reconstructing FilledRelay messages
+The `FilledRelay` event emits the `messsageHash` field. This field is set as follows:
+- When the `RelayData` `message` field is empty (`0x`): `bytes32(0)`, OR
+- When the `RelayData` `message` field is non-empty (`0x...`): `keccak256(message)`.
+
 ### Computing RelayData Hashes
 A `RelayData` hash is computed as the `keccak256` hash over the ABI-encoded representation of the arguments `relayData`, `destinationChainId`, where:
 - `relayData` is of type `V3RelayData` or `V3RelayDataLegacy`.
 - `destinationChainId` is of type `uint256`.
+
+- When the `FilledRelay` event data omits the `message` field, the `message` field shall be populated according to the procedure specified in [Reconstructing FilledRelay messages](#resonstructing-filledrelay-messages).
 
 #### Note
 - This method produces the identical hashes for `V3RelayData` and `V3RelayDataLegacy` for the same input data due to `address` promotion to `bytes32` prior to hashing.
@@ -323,15 +330,18 @@ For the purpose of computing relayer repayments, the following procedures are co
 #### Note
 - Depositor refunds are issued via the Relayer Repayment workflow.
 
-#### Validating Fills
+### Validating Fills
 Each of the `Fills` emitted within the `Bundle Block Range` on a destination SpokePool shall be considered valid by verifying that:
 1. The `Fill` event `FillType` field is not set to `SlowFill`, AND
-2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`. This may be determined by comparing the hashes of the two objects, AND
+2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`, AND
 3. The corresponding `Deposit` event occurred within or before the `Bundle Block Range` on the origin chain SpokePool.
 
-If the `Deposit` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
+#### Note
+- If the `Deposit` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
+- `RelayData` equality can be determined by comparing the keccak256 hashes of two `RelayData` objects.
+- Fills of type `SlowFill` are valid, but are not relevant for computing relayer repayments.
 
-#### Validating Pre-fills
+### Validating Pre-fills
 For each of the `Deposits` emitted within the `Bundle Block Range` where no corresponding `Fill` is identified on the destination chain within the `Bundle Block Range`, identify the valid `Fill` according to the following criteria:
 1. Verify that the destination chain `FillStatus` for the `Deposit` `RelayData` is `Filled` as at the destination chain end block number for the proposal.
 2. Resolve the corresponding `Fill` on the destination chain.
@@ -340,12 +350,12 @@ For each of the `Deposits` emitted within the `Bundle Block Range` where no corr
 #### Note
 - No specific method is prescribed for resolving the fill on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the `Bundle Block Range` could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
 
-#### Finding Expired Deposits
+### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `Deposit` shall be considered expired by verifying that:
 1. The `fillDeadline` timestamp elapsed within the `Bundle Block Range` on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
 2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested`.
 
-##### Note
+#### Note
 - Expired deposits shall be refunded to the `depositor` address on the origin SpokePool.
   - If the `depositor` address is not valid on the `originChainId`, the deposit refund shall be discarded.
 - Depositor refunds are to be issued as part of the relayer refund procedure.
