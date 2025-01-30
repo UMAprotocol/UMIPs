@@ -59,7 +59,7 @@ The `V3RelayData` type underpins the transfer of funds in or out of a SpokePool 
 | message | bytes | Optional data that is forwarded to the recipient as part of a relay. |
 
 #### Note
-- `V3RelayData` specifies `bytes32` representation for addresses (`depositor`, `recipient`, ...) in order to interface with non-EVM chains. EVM addressed supplied shall be promoted to type `bytes32` with the upper 12 bytes zeroed. 
+- `V3RelayData` specifies `bytes32` representation for addresses (`depositor`, `recipient`, ...) in order to interface with non-EVM chains. The EVM address supplied shall be promoted to type `bytes32` with the upper 12 bytes zeroed. 
 
 ### V3RelayDataLegacy
 The `V3RelayDataLegacy` type is supported for backwards compatibility, but is slated for deprecation. `V3RelayDataLegacy` has the following delta to the `V3RelayData` type:
@@ -348,16 +348,15 @@ For each of the `Deposits` emitted within the `Bundle Block Range` where no corr
 3. Verify that the `Fill` occurred prior to the current the `Bundle Block Range` on the destination chain SpokePool.
 
 #### Note
-- No specific method is prescribed for resolving the fill on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the `Bundle Block Range` could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
+- No specific method is prescribed for resolving the `Fill` on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the `Bundle Block Range` could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
 
 ### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `Deposit` shall be considered expired by verifying that:
 1. The `fillDeadline` timestamp elapsed within the `Bundle Block Range` on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
-2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested`.
+2. The `FillStatus` on the destination SpokePool is set to `Unfilled` or `SlowFillRequested` as at the end of the `Bundle Block Range`.
 
 #### Note
 - Expired deposits shall be refunded to the `depositor` address on the origin SpokePool.
-  - If the `depositor` address is not valid on the `originChainId`, the deposit refund shall be discarded.
 - Depositor refunds are to be issued as part of the relayer refund procedure.
 - The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion within the `Bundle Block Range`.
 
@@ -378,7 +377,7 @@ For the purpose of computing slow fills to be issued to recipients, each `Slow F
 When an early `Slow Fill Request` is implied, the `Slow Fill Request` shall be validated as follows:
 1. The `fillDeadline` has not already elapsed relative to the `destinationChainId` bundle end block number,
 2. The `inputToken` and `outputToken` addresses are equivalent at the deposit `quoteTimestamp`,
-3. The `originChainId` and `destinationChainId` are not Lite chains.
+3. Neither the`originChainId` nor the `destinationChainId` is a `Lite` chain.
 
 #### Note
 - An early `Slow Fill Request` is implied where a `Deposit` emitted within the current `Bundle Block Range` has a `FillStatus` of `SlowFillRequested` as at the end of the current `Bundle Block Range` on the destination chain, but where no `Slow Fill Request` is identified within the current `Bundle Block Range`. This may occur where the `Slow Fill Request` was submitted prior to the current bundle.
