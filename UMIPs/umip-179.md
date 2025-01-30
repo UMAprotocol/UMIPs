@@ -188,7 +188,6 @@ The `RequestedV3SlowFill` event emits an `V3RelayDataLegacy` instance.
 
 #### Note
 - These events are emitted on the destination chain and signal to proposers that a slow fill has been requested for a specific deposit.
-- `RequestedV3SlowFill` events cannot be emitted until the `exclusivityDeadline` timestamp has elapsed on the destination chain.
 - `RequestedV3SlowFill` events cannot be emitted once the `fillDeadline` timestamp has elapsed on the destination chain.
 
 ### FilledRelay, FilledV3Relay
