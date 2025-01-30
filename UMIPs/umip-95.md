@@ -196,7 +196,7 @@ Coingecko computes prices using a volume-weighted approach.
 
 Historical prices can be query for any currency as well, but it only returns one update per day,therefore, using Coingecko for historical price would not be possible until they increase it.
 
-We do not reccommend using Coingecko price feed during voting disputes due to the lack of more granual historical data.
+We do not recommend using Coingecko price feed during voting disputes due to the lack of more granual historical data.
 
 
 ### FXMarketAPI
