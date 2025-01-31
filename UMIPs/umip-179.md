@@ -352,11 +352,10 @@ Each of the `Fills` emitted within the `Bundle Block Range` on a destination Spo
 For each of the `Deposits` emitted within the `Bundle Block Range` where no corresponding `Fill` is identified on the destination chain within the `Bundle Block Range`, identify the valid `Fill` according to the following criteria:
 1. Verify that the destination chain `FillStatus` for the `Deposit` `RelayData` is `Filled` as at the destination chain end block number for the proposal.
 2. Resolve the corresponding `Fill` on the destination chain.
-3. Verify that the `FillType` is `FastFill` or `ReplacedSlowFill` AND that the `Fill` occurred prior to the current the `Bundle Block Range` on the destination chain SpokePool, OR
-
-When the `FillType` is `SlowFill`, the `Deposit` shall be refunded to the `depositor` address on the origin chain.
+3. Verify that the `FillType` is `FastFill` or `ReplacedSlowFill` AND that the `Fill` occurred prior to the current the `Bundle Block Range` on the destination chain SpokePool.
 
 #### Note
+- When the `FillType` is `SlowFill`, the `Deposit` shall be refunded to the `depositor` address on the origin chain.
 - No specific method is prescribed for resolving the `Fill` on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the `Bundle Block Range` could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
 
 ### Finding Expired Deposits
