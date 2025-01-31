@@ -333,6 +333,7 @@ For the purpose of computing relayer repayments, the following procedures are co
 - Validating Fills
 - Validating Pre-Fills
 - Finding Expired Deposits
+- Finding Unfillable Deposits
 
 #### Note
 - Depositor refunds are issued via the Relayer Repayment workflow.
@@ -355,7 +356,6 @@ For each of the `Deposits` emitted within the `Bundle Block Range` where no corr
 3. Verify that the `FillType` is `FastFill` or `ReplacedSlowFill` AND that the `Fill` occurred prior to the current the `Bundle Block Range` on the destination chain SpokePool.
 
 #### Note
-- When the `FillType` is `SlowFill`, the `Deposit` shall be refunded to the `depositor` address on the origin chain.
 - No specific method is prescribed for resolving the `Fill` on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the `Bundle Block Range` could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
 
 ### Finding Expired Deposits
@@ -367,6 +367,17 @@ For the purpose of computing depositor refunds, each `Deposit` shall be consider
 - Expired deposits shall be refunded to the `depositor` address on the origin SpokePool.
 - Depositor refunds are to be issued as part of the relayer refund procedure.
 - The `fillDeadline` timestamp shall be resolved to a block number on the destination chain in order to determine inclusion within the `Bundle Block Range`.
+
+### Finding Unfillable Deposits
+For the purpose of computing depositor refunds, each duplicate `Deposit` shall be considered unfillable by verifying that:
+1. The `Deposit` is identical with another `Deposit`.
+2. The destination chain `FillStatus` for the `Deposit` is `Filled`.
+3. The destination chain `Fill` `FillType` was `SlowFill`.
+4. The destination chain `Fill` occurred within the current `BundleBlockRange`.
+
+#### Note
+- `Deposits` are considered identical when their `RelayData` matches.
+- `Deposits` are considered duplicate when they are emitted after their initial identical instance.
 
 ### Finding Slow Fill Requests
 For the purpose of computing slow fills to be issued to recipients, each `Slow Fill Request` emitted within the `Bundle Block Range` on a destination SpokePool shall be considered valid by verifying that:
@@ -519,8 +530,9 @@ The Pool Rebalance Merkle Tree shall be constructed such that it is verifyable u
 
 ### Constructing the Relayer Refund Root
 At least one Relayer Refund Leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
-- Valid `Fill` events, OR
-- Expired `Deposit` events, OR
+- Valid `Fills`, OR
+- Expired `Deposits`, OR
+- Unfillable `Deposits`, OR
 - A negative running balance net send amount.
 
 Each Relayer Refund Leaf shall be constructed as follows:
@@ -555,8 +567,11 @@ The Relayer Refund Leaf `leafId` field shall be numbered according to the orderi
 
 ### Constructing the Slow Relay Root
 One Slow Relay Leaf shall be produced per valid `Slow Fill Request` emitted within the `Bundle Block Range` for a destination SpokePool.
+One Slow Relay Leaf shall be produced per valid early `Slow Fill Request` where the corresponding `Deposit` was emitted within the `Bundle Block Range` for an origin SpokePool.
 
 A Slow Relay Leaf shall not be produced if the relevant `Slow Fill Request` `inputAmount` is equal to 0 and the `message` is a zero bytes string.
+
+When a `Slow Fill Request` corresponds to multiple identical `Deposits`, the applied `quoteTimestamp` shall be sourced from the earliest identical `Deposit`.
 
 Each Slow Relay Leaf shall be constructed as follows:
 1. Set `relayData` to the `RelayData` emitted by the validated `Slow Fill Request`.
