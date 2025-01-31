@@ -289,7 +289,7 @@ A `Slow Fill` is defined as an instance of either of the following events:
 ### Bundle Block Range
 The `Bundle Block Range` is the pair of start and end blocks for a given proposal. See [Identifying Bundle Block Ranges](#identifying-bundle-block-ranges) for guidance on identifying the `Bundle Block Range`.
 
-### Fill Statuses
+### Fill Status
 A `Deposit` is considered to be `Filled` on the destination chain when the destination `SpokePool` `FillStatus` mapping shows state `Filled` for the `Deposit` `RelayData` hash.
 
 ## Method
@@ -352,7 +352,9 @@ Each of the `Fills` emitted within the `Bundle Block Range` on a destination Spo
 For each of the `Deposits` emitted within the `Bundle Block Range` where no corresponding `Fill` is identified on the destination chain within the `Bundle Block Range`, identify the valid `Fill` according to the following criteria:
 1. Verify that the destination chain `FillStatus` for the `Deposit` `RelayData` is `Filled` as at the destination chain end block number for the proposal.
 2. Resolve the corresponding `Fill` on the destination chain.
-3. Verify that the `Fill` occurred prior to the current the `Bundle Block Range` on the destination chain SpokePool.
+3. Verify that the `FillType` is `FastFill` or `ReplacedSlowFill` AND that the `Fill` occurred prior to the current the `Bundle Block Range` on the destination chain SpokePool, OR
+
+When the `FillType` is `SlowFill`, the `Deposit` shall be refunded to the `depositor` address on the origin chain.
 
 #### Note
 - No specific method is prescribed for resolving the `Fill` on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the `Bundle Block Range` could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
@@ -529,8 +531,9 @@ Each Relayer Refund Leaf shall be constructed as follows:
     - If no relays are present, then the relevant token mapping from the previous successful proposal shall be used.
 - Each element of the `refundAddresses` and `refundAmounts` arrays shall be produced according to the defined procedure for computing relayer repayments.
     - One entry shall exist per unique address, containing the sum of any outstanding:
-        - Relayer repayments, and/or
-        - Expired deposits.
+        - Relayer repayments, and
+        - Expired deposits, and
+        - Pre-filled deposits where the `FillType` is `SlowFill`.
 - The `refundAddresses` and `refundAmounts` arrays shall be ordered according to the following criteria:
     1. `refundAmount` descending order, then
     2. `relayerAddress` ascending order (in case of duplicate `refundAmount` values).
