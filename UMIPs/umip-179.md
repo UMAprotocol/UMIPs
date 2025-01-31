@@ -284,6 +284,9 @@ A `Slow Fill` is defined as an instance of either of the following events:
 ### Bundle Block Range
 The `Bundle Block Range` is the pair of start and end blocks for a given proposal. See [Identifying Bundle Block Ranges](#identifying-bundle-block-ranges) for guidance on identifying the `Bundle Block Range`.
 
+### Fill Statuses
+A `Deposit` is considered to be `Filled` on the destination chain when the destination `SpokePool` `FillStatus` mapping shows state `Filled` for the `Deposit` `RelayData` hash.
+
 ## Method
 ### Identifying SpokePool Contracts
 The current SpokePool address for a specific chain is available by querying `HubPool.crossChainContracts()`. The chainId must be specified in the query. In case of SpokePool migations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events.
@@ -336,7 +339,7 @@ Each of the `Fills` emitted within the `Bundle Block Range` on a destination Spo
 3. The corresponding `Deposit` event occurred within or before the `Bundle Block Range` on the origin chain SpokePool.
 
 #### Note
-- If the `Deposit` event specifies `outputToken` 0x0 (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of 0x0.
+- If the `Deposit` event specifies `outputToken` `bytes32(0)` (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of the Zero Address.
 - `RelayData` equality can be determined by comparing the keccak256 hashes of two `RelayData` objects.
 - Fills of type `SlowFill` are valid, but are not relevant for computing relayer repayments.
 
@@ -567,8 +570,8 @@ The array of Slow Relay Leaf instances shall be sorted according to;
 - Relayers are advised to factor in origin chain finality guarantees when making fills on destination chains. Origin chain re-organisation can lead to deposit re-ordering and can thus invalidate fills.
 
 # Migration
-- Support for Across events with `bytes32` types (`FundsDeposited`, `FilledRelay`, ...) is required as at ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) 4. 
-- The `Legacy` events defined in this UMIP are marked as deprecated 7 days after the ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) migration from 3 to 4.
+- Support for Across events with `bytes32` types (`FundsDeposited`, `FilledRelay`, ...) is required as at ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) 5. 
+- The `Legacy` events defined in this UMIP are marked as deprecated 7 days after the ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) migration from 4 to 5.
 
 # Implementation
 The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts) repository.
