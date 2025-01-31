@@ -183,12 +183,17 @@ The `RequestedSpeedUpV3Deposit` event emits the following data:
 - Relayers may optionally append the updated request from a `RequestedSpeedUpDeposit` or `RequestedSpeedUpV3Deposit` event when filling a relay, but have no obligation to use the updated request.
 
 ### RequestedSlowFill, RequestedV3SlowFill
-The `RequestedSlowFill` event emits an `V3RelayData` instance.
+The `RequestedSlowFill` event extends the `V3RelayData` type by applying the following adjustments:
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| message | omitted | This field is omitted in favour of the `messageHash` field. |
+| messageHash | bytes32 | The keccak256 hash of the `V3RelayData` message field where the message is non-empty, or `bytes32(0)` for an empty message. This field is included in place of the `V3RelayData` message field. |
+
 The `RequestedV3SlowFill` event emits an `V3RelayDataLegacy` instance.
 
 #### Note
 - These events are emitted on the destination chain and signal to proposers that a slow fill has been requested for a specific deposit.
-- `RequestedV3SlowFill` events cannot be emitted once the `fillDeadline` timestamp has elapsed on the destination chain.
 
 ### FilledRelay, FilledV3Relay
 
