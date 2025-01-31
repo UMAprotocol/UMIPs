@@ -330,8 +330,8 @@ A `RelayData` hash is computed as the `keccak256` hash over the ABI-encoded repr
 
 ### Computing Relayer Repayments & Depositor Refunds
 For the purpose of computing relayer repayments, the following procedures are completed:
-- Finding Valid Fills
-- Finding Valid Pre-Fills
+- Validating Fills
+- Validating Pre-Fills
 - Finding Expired Deposits
 
 #### Note
@@ -377,7 +377,7 @@ For the purpose of computing slow fills to be issued to recipients, each `Slow F
 5. The `originChainId` and `destinationChainId` are not Lite chains.
 
 #### Note
-- A `slow Fill Request` is made by supplying a complete copy of the relevant `RelayData` emitted by a `Deposit` event.
+- A `Slow Fill Request` is made by supplying a complete copy of the relevant `RelayData` emitted by a `Deposit` event.
 - The resulting set of validated `Slow Fill Requests` shall be included as SlowFills in the subsequent root bundle proposal.
 - A `Slow Fill Request` may correspond to a `Deposit` from previous bundles.
 
