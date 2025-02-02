@@ -341,7 +341,7 @@ For the purpose of computing relayer repayments, the following procedures are co
 ### Validating Fills
 Each of the `Fills` emitted within the `Bundle Block Range` on a destination SpokePool shall be considered valid by verifying that:
 1. The `Fill` event `FillType` field is not set to `SlowFill`, AND
-2. The component `RelayData` maps exactly to a corresponding `Deposit` event emitted on the relevant `originChainId`, AND
+2. The component `RelayData` maps exactly to one or more corresponding `Deposit` events emitted on the relevant `originChainId`, AND
 3. The corresponding `Deposit` event occurred within or before the `Bundle Block Range` on the origin chain SpokePool.
 
 #### Note
@@ -373,7 +373,7 @@ For the purpose of computing depositor refunds, each duplicate `Deposit` shall b
 1. The `Deposit` is identical with another `Deposit`.
 2. The destination chain `FillStatus` for the `Deposit` is `Filled`.
 3. The destination chain `Fill` `FillType` was `SlowFill`.
-4. The destination chain `Fill` occurred within the current `BundleBlockRange`.
+4. The destination chain `Fill` occurred within the current `BundleBlockRange` or the `Deposit` occurred within the current `BundleBlockRange`.
 
 #### Note
 - `Deposits` are considered identical when their `RelayData` matches.
@@ -382,9 +382,9 @@ For the purpose of computing depositor refunds, each duplicate `Deposit` shall b
 ### Finding Slow Fill Requests
 For the purpose of computing slow fills to be issued to recipients, each `Slow Fill Request` emitted within the `Bundle Block Range` on a destination SpokePool shall be considered valid by verifying that:
 1. The `fillDeadline` is greater than `destinationChainId` bundle end block's `block.timestamp`,
-2. The `inputToken` and `outputToken` addresses are equivalent at the deposit `quoteTimestamp`,
-3. The destination SpokePool `FillStatus` mapping for the relevant `RelayData` hash is `SlowFillRequested` at the end of the `Bundle Block Range`,
-4. The `Slow Fill Request` `RelayData` is matched by a corresponding `Deposit` event that occurred within or before the `Bundle Block Range` on the origin SpokePool,
+2. The `Slow Fill Request` `RelayData` is matched by one or more corresponding `Deposit` events that occurred within or before the `Bundle Block Range` on the origin SpokePool,
+3. The `inputToken` and `outputToken` addresses are equivalent at the earliest matching deposit's `quoteTimestamp`,
+4. The destination SpokePool `FillStatus` mapping for the relevant `RelayData` hash is `SlowFillRequested` at the end of the `Bundle Block Range`,
 5. The `originChainId` and `destinationChainId` are not Lite chains.
 
 #### Note
@@ -395,7 +395,7 @@ For the purpose of computing slow fills to be issued to recipients, each `Slow F
 ### Finding Early Slow Fill Requests
 When an early `Slow Fill Request` is implied, the `Slow Fill Request` shall be validated as follows:
 1. The `fillDeadline` has not already elapsed relative to the `destinationChainId` bundle end block number,
-2. The `inputToken` and `outputToken` addresses are equivalent at the deposit `quoteTimestamp`,
+2. The `inputToken` and `outputToken` addresses are equivalent at the earliest matching deposit's `quoteTimestamp`,
 3. Neither the`originChainId` nor the `destinationChainId` is a `Lite` chain.
 
 #### Note
@@ -416,10 +416,15 @@ The bundle LP fee for a `Bundle Block Range` on a SpokePool and token pair shall
 - `FilledRelay`.
 - `FilledV3Relay`.
 
+#### Note
+
+Each `FilledRelay` or `FilledV3Relay` can have multiple associated deposit events. In the event of multiple matching deposit events, there will be multiple LP fees paid per event in the case of a non slow fill.
+
 ### Computing Relayer Repayments
-For a validated `Deposit` event, the relayer repayment amount shall be computed as follows:
+For each validated matching `Deposit` event, the relayer repayment amount shall be computed as follows:
 - `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `Deposit` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
+- For a given `Fill` that satisfies the requirements for relayer repayment, each matching `Deposit` generates a distinct repayment computed against its `quoteTimestamp`.
 
 The applied `repaymentChainId` shall be determined as follows:
 - When the `originChainId` is a `Lite chain` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE
@@ -441,7 +446,7 @@ For an expired `Deposit` event, the depositor refund amount shall be computed as
 
 ### Computing Slow Fill updated output amounts
 For the purpose of computing the amount to issue to a recipient for a SlowFill, the relayer fee shall be nulled by applying the following procedure:
-- `updatedOutputAmount = (inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the deposit `quoteTimestamp` between `originChainId` and `destinationChainId`.
+- `updatedOutputAmount = (inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the earliest matching deposit's `quoteTimestamp` between `originChainId` and `destinationChainId`.
 
 #### Constraint
 - The `Deposit` `outputAmount` shall _not_ be considered when determining SlowFill amounts.
@@ -467,7 +472,7 @@ The procedure for computing running balances for an `l1Token` and `chainId` pair
     - For each group of validated `Fill` and `Pre-fill` events, initialize a running balance at 0 and add the add the relayer repayment.
 
 3. Add deposit refunds:
-    - For each group of `Deposit` events that expired within the `Bundle Block Range`, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain.
+    - For each group of `Deposit` events that expired or were deemed unfillable within the `Bundle Block Range`, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain.
 
 4. Add slow fills:
     - For each group of validated `Slow Fill Requests`, add each slow relay's `updatedOutputAmount` to the group's running balance.
