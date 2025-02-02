@@ -381,7 +381,7 @@ For the purpose of computing depositor refunds, each duplicate `Deposit` shall b
 
 ### Finding Slow Fill Requests
 For the purpose of computing slow fills to be issued to recipients, each `Slow Fill Request` emitted within the `Bundle Block Range` on a destination SpokePool shall be considered valid by verifying that:
-1. The `fillDeadline` has not already elapsed relative to the `destinationChainId` bundle end block number,
+1. The `fillDeadline` is greater than `destinationChainId` bundle end block's `block.timestamp`,
 2. The `inputToken` and `outputToken` addresses are equivalent at the deposit `quoteTimestamp`,
 3. The destination SpokePool `FillStatus` mapping for the relevant `RelayData` hash is `SlowFillRequested` at the end of the `Bundle Block Range`,
 4. The `Slow Fill Request` `RelayData` is matched by a corresponding `Deposit` event that occurred within or before the `Bundle Block Range` on the origin SpokePool,
