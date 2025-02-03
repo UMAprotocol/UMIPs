@@ -597,8 +597,10 @@ The array of Slow Relay Leaf instances shall be sorted according to;
 - Relayers are advised to factor in origin chain finality guarantees when making fills on destination chains. Origin chain re-organisation can lead to deposit re-ordering and can thus invalidate fills.
 
 # Migration
-- Support for Across events with `bytes32` types (`FundsDeposited`, `FilledRelay`, ...) is required as at ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) 5. 
-- The `Legacy` events defined in this UMIP are marked as deprecated 7 days after the ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) migration from 4 to 5.
+- Support for the logic described above (BUT NOT the updated events with `bytes32` types, like `FundsDeposited`, `FilledRelay`, ...) is required as of ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) 5.
+- To ensure pre-fills are not double-refunded, the `Bundle Block Range` containing the version bump from 4 to 5 will follow the rules of this UMIP, but will not consider any `Fill` events from prior bundles for the purposes of generating relayer repayments. Similarly, no `Slow Fill Request` that was included in any prior bundle will be considered for the generation of a `Slow Relay Leaf`. All subsequent bundles will perform the logic exactly as described above.
+- Support for Across events with `bytes32` types (`FundsDeposited`, `FilledRelay`, ...) is required as of ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) 6. 
+- The `Legacy` events defined in this UMIP are marked as deprecated 7 days after the ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) migration from 5 to 6.
 
 # Implementation
 The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts) repository.
