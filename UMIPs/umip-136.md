@@ -51,7 +51,9 @@ $R^a_t = \int_{U_t}^{\hat{U}_t} R(u) du$
 
 To get the true rate charged on these loans, we need to de-annualize it to get the percentage:
 
-$R^w_t = (1 + R^a_t)^{\frac{1}{52}} - 1$
+$R^w_t = \min \left( (1 + R^a_t)^{\frac{1}{52}} - 1, 1 \right)$
+
+which bounds the LP fee to being less than or equal to 100% of the transfer amount.
 
 $U_t$ can be fetched on-chain by calling `liquidityUtilizationCurrent` method on the `BridgePool` contract at the latest available block number at or before the `quoteTimestamp`. $\hat{U}_t$ can be fetched by calling `liquidityUtilizationPostRelay` method on the `BridgePool` contract at the same block number passing the `amount` field from the `DepositData` struct as `relayedAmount` parameter. Normally the `BridgePool` contract for calling these methods should be the same as the `requester`, but in the unlikely scenario when `BridgePool` gets migrated with pending deposits on L2 one should calculate the utilization ratio on the `BridgePool` contract that was active at the time of `quoteTimestamp`. In order to identify the previous `BridgePool` one should look up the last `WhitelistToken` event emitted by the deposit contract on L2 before the relayed transaction's `quoteTimestamp` and use the address from event's `bridgePool` field.
 
