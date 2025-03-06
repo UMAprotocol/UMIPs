@@ -409,7 +409,7 @@ Each valid `Fill` is subject to an LP fee. The procedure for computing LP fees i
 - The LP fee is computed between the `originChainId` specified by the `Deposit` and `repaymentChainId` specified by the relayer, where the `relayExecutionInfo.FillType != SlowFill` and the Fill `destinationChainId` otherwise.
 - The LP fee as a multiplier of `inputAmount` (typically named `realizedLpFeePct` elsewhere in this document) shall be:
   - Promoted to 18 decimals, where 1e18 represents 100%, and
-  - Truncated (zeroed) between 0 and 1e10, providing 8 decimals of effective precision.
+  - Truncated to 8 decimals of effective precision, as follows: lpFee = (inputAmount / 1e10) * 1e10
 
 #### Note
 - The LP fee is typically referenced as a multiplier of the `Deposit` `inputAmount`, named `realizedLpFeePct` elsewhere in this document.
