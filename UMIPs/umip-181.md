@@ -4,7 +4,7 @@
 | ------------------- | -------------------------------------------------------------     |
 | UMIP Title          | Add `MULTIPLE_CHOICE_QUERY` as a supported price identifier       |
 | Authors             | David Adams                                                       |
-| Status              | Draft                                                             |
+| Status              | Approved                                                          |
 | Created             | April 4, 2024                                                     |
 
 # Summary 

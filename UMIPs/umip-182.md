@@ -4,7 +4,7 @@
 | -------------- | -------------------------------------------------------------------------------------------- |
 | UMIP Title     | Register Blast Parent Messenger in OracleHub and GovernorHub                                 |
 | Authors        | Reinis Martinsons (reinis@umaproject.org)                                                    |
-| Status         | Draft                                                                                        |
+| Status         | Approved                                                                                     |
 | Created        | April 18, 2024                                                                               |
 | Discourse Link | [UMA's Discourse](https://discourse.uma.xyz/t/umip-182-register-blast-parent-messenger/2117) |
 
