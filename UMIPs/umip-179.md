@@ -615,4 +615,6 @@ The array of Slow Relay Leaf instances shall be sorted according to;
 The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts) repository.
 
 # Security considerations
-Across v3 has been [audited by OpenZeppelin](https://blog.openzeppelin.com/across-v3-incremental-audit).
+Across v3 has been audited by OpenZeppelin:
+- https://blog.openzeppelin.com/across-v3-incremental-audit
+- https://blog.openzeppelin.com/across-v3-and-oval-incremental-audit
