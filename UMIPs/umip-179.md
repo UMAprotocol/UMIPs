@@ -444,10 +444,11 @@ If the applied `repayment address` is not valid for the applied `repaymentChainI
 - Examples of an invalid `relayer` address include:
     - An SVM address on an EVM chain.
 
-If a validated `FilledV3Relay` event specifies an invalid `repaymentChainId`, the proposer shall issue repayment on the fill destination chain.
+If a validated `Fill` specifies an invalid `repaymentChainId`, the proposer shall issue repayment on the fill destination chain.
 Reasons for the `repaymentChainId` to be considered invalid are:
 - `repaymentChainId` is not supported by Across.
 - `inputToken` is not supported as a repayment token on `repaymentChainId`.
+- The `relayer` address is not valid on the specified `repaymentChainId`.
 
 ### Computing Deposit Refunds
 For an expired `Deposit` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
