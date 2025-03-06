@@ -424,7 +424,7 @@ The bundle LP fee for a `Bundle Block Range` on a SpokePool and token pair shall
 Each `FilledRelay` or `FilledV3Relay` can have multiple associated deposit events. In the event of multiple matching deposit events, there will be multiple LP fees paid per event in the case of a non slow fill.
 
 ### Computing Relayer Repayments
-For each validated `Fill`, the relayer repayment amount shall be computed as follows:
+For each validated matching `Deposit` event, the relayer repayment amount shall be computed as follows:
 - `(inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed over the set of HubPool `l1Token`, `originChainId` and `repaymentChainId` at the HubPool block number corresponding to the relevant `Deposit` `quoteTimestamp`.
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 - For a given `Fill` that satisfies the requirements for relayer repayment, each matching `Deposit` generates a distinct repayment computed against its `quoteTimestamp`.
