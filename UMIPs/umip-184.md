@@ -4,7 +4,7 @@
 | Authors    | Dylan O’Reilly, Lee Poettcker, Chase Coleman                                                                          |
 | Created    | March 5, 2025                                                                                                         |
 | Snapshot   | [Snapshot](https://snapshot.box/#/s:uma.eth/proposal/0xfd0f453660188b4ed6157be5c8844db7fbdedffd4550a3b94e50c22ade78b8f6)|
-| Discussion | [Discourse](https://discourse.uma.xyz/t/umip-184-update-uma-emission-rate/2000)                                       |
+| Discussion | [Discourse](https://discourse.uma.xyz/t/uma-emissions-reduction/2140)                                       |
 
 ## Summary
 
