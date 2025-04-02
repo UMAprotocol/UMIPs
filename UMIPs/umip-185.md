@@ -14,7 +14,7 @@ This UMIP proposes to register the upgraded `OracleRootTunnel` and `OracleChildT
 
 ## Motivation
 
-This upgrade is focused on compressing ancillary data as Oracle requests are bridged to Ethereum mainnet, reducing the gas costs for the relayer bots and voting users. During the 1Q 2025, the average length of the ancillary data was ~1200 bytes, which can be compressed down to ~234 bytes for Polygon requests as the upgraded contracts bridge only the hash of the original ancillary data along with other necessary metadata so that to facilitate identifying the original dispute on the child network. In the testing we have observed ~60% gas savings for the price request call, and ~30% gas savings for the voters when using the compressed ancillary data.
+This upgrade is focused on compressing ancillary data as Oracle requests are bridged to Ethereum mainnet, reducing the gas costs for the relayer bots and voting users. During the Q1 2025, the average length of the ancillary data was ~1200 bytes. The upgraded contracts will only post the hash of the acnillary data and necessary metadata. Based on our testing of disputes from Polygon, this decreases the size of the data posted to Ethereum mainnet to ~234 bytes and results in ~60% gas savings for UMA's bot and ~30% gas savings for individual voters.
 
 ## Technical Specification
 
@@ -85,4 +85,4 @@ When observing the `RequestAdded` events on the Ethereum mainnet `VotingV2` cont
 
 When upgrading smart contracts, it is important to ensure that the new implementation is secure and the migration process is executed correctly. The proposed contract changes have been reviewed by the UMA team and audited by OpenZeppelin. In addition, OpenZeppelin has reviewed the proposed migration payload and UMA team has simulated its execution on the forked networks.
 
-Following the upgrade, special attention should be taken to all unsettled disputes that were originated before the upgrade and used the old contracts when bridging the requests to the Ethereum mainnet. Both `OracleSpoke` and `OracleChildTunnel` contracts have a dedicated `resolveLegacyRequest` function that will be used resolve these disputes after the upgrade.
+Following the upgrade, special attention should be taken to all unsettled disputes that were originated before the upgrade and used the old contracts when bridging the requests to Ethereum mainnet. Both `OracleSpoke` and `OracleChildTunnel` contracts have a dedicated `resolveLegacyRequest` function that will be used resolve these disputes after the upgrade.
