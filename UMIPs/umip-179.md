@@ -428,7 +428,9 @@ For each validated matching `Deposit` event, the relayer repayment amount shall 
 
 The applied `repaymentChainId` shall be determined as follows:
 - When the `originChainId` is a `Lite chain` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE
-- When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId`: `originChainId`, ELSE
+- When no `PoolRebalanceRoute` exists for the `inputToken` on the `Fill` `originChainId`: `originChainId`, ELSE
+- When no `PoolRebalanceRoute` exists for the `outputToken` on the `Fill` `destinationChainId`: `originChainId`, ELSE
+- When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId`: `destinationChainId`, ELSE
 - The `repaymentChainId` as specified in the `Fill`.
 
 The applied `repayment address` shall be determined as follows:
