@@ -345,7 +345,7 @@ Each of the `Fills` emitted within the `Bundle Block Range` on a destination Spo
 3. The corresponding `Deposit` event occurred within or before the `Bundle Block Range` on the origin chain SpokePool.
 
 #### Note
-- If the `Deposit` event specifies `outputToken` `bytes32(0)` (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of the Zero Address. If there is no equivalent SpokePool token on the destination chain, then this deposit should not be filled by a filler.
+- If the `Deposit` event specifies `outputToken` `bytes32(0)` (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of the Zero Address. If there is no equivalent SpokePool token on the destination chain, then this deposit cannot be filled successfully.
 - `RelayData` equality can be determined by comparing the keccak256 hashes of two `RelayData` objects.
 - Fills of type `SlowFill` are valid, but are not relevant for computing relayer repayments.
 
