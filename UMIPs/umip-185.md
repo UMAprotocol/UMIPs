@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP-185       |                                                                                              |
-| -------------- | -------------------------------------------------------------------------------------------- |
-| UMIP Title     | Upgrade Oracle Request Bridging Contracts                                                    |
-| Authors        | Reinis Martinsons (reinis@umaproject.org)                                                    |
-| Status         | Draft                                                                                        |
-| Created        | April 2, 2024                                                                                |
-| Discourse Link | [UMA's Discourse]() |
+| UMIP-185       |                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------ |
+| UMIP Title     | Upgrade Oracle Request Bridging Contracts                                                              |
+| Authors        | Reinis Martinsons (reinis@umaproject.org)                                                              |
+| Status         | Draft                                                                                                  |
+| Created        | April 2, 2024                                                                                          |
+| Discourse Link | [UMA's Discourse](https://discourse.uma.xyz/t/umip-185-upgrade-oracle-request-bridging-contracts/2178) |
 
 ## Summary
 
@@ -18,7 +18,7 @@ This upgrade is focused on compressing ancillary data as Oracle requests are bri
 
 ## Technical Specification
 
-As part of this upgrade, as per [this PR](TBD) to the `protocol` repo, the following contracts have been redeployed:
+As part of this upgrade, as per [PR 4816](https://github.com/UMAprotocol/protocol/pull/4816) to the `protocol` repo, the following contracts have been redeployed:
 
 - [OracleRootTunnel](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/polygon-cross-chain-oracle/OracleRootTunnel.sol) at [0x9B40E25dDd4518F36c50ce8AEf53Ee527419D55d](https://etherscan.io/address/0x9B40E25dDd4518F36c50ce8AEf53Ee527419D55d) on Ethereum mainnet
 - [OracleChildTunnel](https://github.com/UMAprotocol/protocol/blob/master/packages/core/contracts/polygon-cross-chain-oracle/OracleChildTunnel.sol) at [0xac60353a54873c446101216829a6A98cDbbC3f3D](https://polygonscan.com/address/0xac60353a54873c446101216829a6A98cDbbC3f3D) on Polygon
