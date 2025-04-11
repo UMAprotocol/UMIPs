@@ -429,12 +429,12 @@ For each validated matching `Deposit` event, the relayer repayment amount shall 
 The applied `repaymentChainId` shall be determined as follows:
 - When the `originChainId` is a `Lite chain` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE
 - When no `PoolRebalanceRoute` exists for the `inputToken` on the `Fill` `originChainId`: `originChainId`, ELSE
-- When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId`: `destinationChainId` if a `PoolRebalanceRoute` exists for the `outputToken` on the `Fill` `destinationChainId` otherwise the `originChainId`, ELSE
+- When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId`: `originChainId`, ELSE
 - The `repaymentChainId` as specified in the `Fill`.
 
 The applied `repayment address` shall be determined as follows:
 - When the `Fill` `relayer` address is valid for the applied `repaymentChainId`: `relayer`, ELSE
-- The `Fill` `msg.sender` address. In this case, change the applied `repaymentChainId` to the `destinationChainId` if a `PoolRebalanceRoute` exists for the `outputToken` on the `destinationChainId`.
+- The `Fill` `msg.sender` address. In this case, change the applied `repaymentChainId` to the `destinationChainId` if a `PoolRebalanceRoute` exists for both the `outputToken` on the `destinationChainId` and the `inputToken` on the `originChainId`.
 
 If the applied `repayment address` is not valid for the applied `repaymentChainId`, the repayment shall be discarded.
 
