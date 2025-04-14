@@ -544,9 +544,9 @@ At least one Relayer Refund Leaf shall be produced for each unique combination o
 - A negative running balance net send amount.
 
 Where `repaymentToken` is determined as follows for
-- `Fills`: the [equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) L2 token address for the `repaymentChainId`, as computed [here](#computing-relayer-repayments), of the `Fill.
+- `Fills`: the [equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) token address for the `repaymentChainId`, as computed [here](#computing-relayer-repayments), of the `Fill.
 - `Deposits`: the `inputToken`
-- negative running balance net send amounts: the L2 token address for the corresponding `l1Token` considered in Pool Rebalance Root production
+- negative running balance net send amounts: the token address for the corresponding `l1Token` considered in Pool Rebalance Root production
 
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
