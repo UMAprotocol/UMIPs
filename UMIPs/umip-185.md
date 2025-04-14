@@ -4,7 +4,7 @@
 | -------------- | ------------------------------------------------------------------------------------------------------ |
 | UMIP Title     | Upgrade Oracle Request Bridging Contracts                                                              |
 | Authors        | Reinis Martinsons (reinis@umaproject.org)                                                              |
-| Status         | Draft                                                                                                  |
+| Status         | Approved                                                                                               |
 | Created        | April 2, 2024                                                                                          |
 | Discourse Link | [UMA's Discourse](https://discourse.uma.xyz/t/umip-185-upgrade-oracle-request-bridging-contracts/2178) |
 
