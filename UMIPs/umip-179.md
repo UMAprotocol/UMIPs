@@ -543,14 +543,14 @@ At least one Relayer Refund Leaf shall be produced for each unique combination o
 - Unfillable `Deposits`, OR
 - A negative running balance net send amount.
 
-Where `repayment` token is determined as follows for
-- `Fills`: the [equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) L2 token address for the `repaymentChainId`, as computed [here](#computing-relayer-repayments), of the `Fill.
+Where `repaymentToken` is determined as follows for
+- `Fills`: the [equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) token address for the `repaymentChainId`, as computed [here](#computing-relayer-repayments), of the `Fill.
 - `Deposits`: the `inputToken`
-- negative running balance net send amounts: the L2 token address for the corresponding `l1Token` considered in Pool Rebalance Root production
+- negative running balance net send amounts: the token address for the corresponding `l1Token` considered in Pool Rebalance Root production
 
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
-- `l2TokenAddress` shall be set to the `repayment` token as computed previously
+- `l2TokenAddress` shall be set to the `repaymentToken` as computed previously
     - HubPool and SpokePool token mappings shall be made according to the highest `quoteTimestamp` of any relays in the group.
     - If no relays are present, then the relevant token mapping from the previous successful proposal shall be used.
 - Each element of the `refundAddresses` and `refundAmounts` arrays shall be produced according to the defined procedure for computing relayer repayments.
