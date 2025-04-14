@@ -550,7 +550,7 @@ Where `repaymentToken` is determined as follows for
 
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
-- `l2TokenAddress` shall be set to the `repayment` token as computed previously
+- `l2TokenAddress` shall be set to the `repaymentToken` as computed previously
     - HubPool and SpokePool token mappings shall be made according to the highest `quoteTimestamp` of any relays in the group.
     - If no relays are present, then the relevant token mapping from the previous successful proposal shall be used.
 - Each element of the `refundAddresses` and `refundAmounts` arrays shall be produced according to the defined procedure for computing relayer repayments.
