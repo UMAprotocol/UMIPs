@@ -426,15 +426,15 @@ For each validated matching `Deposit` event, the relayer repayment amount shall 
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 - For a given `Fill` that satisfies the requirements for relayer repayment, each matching `Deposit` generates a distinct repayment computed against its `quoteTimestamp`.
 
-The applied `repaymentChainId` shall be determined as follows:
-- When the `originChainId` is a `Lite chain` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE
-- When no `PoolRebalanceRoute` exists for the `inputToken` on the `Fill` `originChainId` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE
-- When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE
+The applied `repaymentChainId` shall be determined as follows all at the time of the relevant bundle's hub chain end block:
+- When the `originChainId` is a `Lite chain`: `originChainId`, ELSE
+- When no `PoolRebalanceRoute` exists for the `inputToken` on the `Fill` `originChainId`: `originChainId`, ELSE
+- When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId`: `originChainId`, ELSE
 - The `repaymentChainId` as specified in the `Fill`.
 
 The applied `repayment address` shall be determined as follows:
 - When the `Fill` `relayer` address is valid for the applied `repaymentChainId`: `relayer`, ELSE
-- The `Fill` `msg.sender` address. In this case, change the applied `repaymentChainId` to the `destinationChainId` if a `PoolRebalanceRoute` exists for both the `outputToken` on the `destinationChainId` and the `inputToken` on the `originChainId` as at the `Deposit` `quoteTimestamp`.
+- The `Fill` `msg.sender` address. In this case, change the applied `repaymentChainId` to the `destinationChainId` if a `PoolRebalanceRoute` exists for both the `outputToken` on the `destinationChainId` and the `inputToken` on the `originChainId` as at the bundle's hub chain end block
 
 If the applied `repayment address` is not valid for the applied `repaymentChainId`, the repayment shall be discarded.
 
