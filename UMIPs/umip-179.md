@@ -345,7 +345,7 @@ Each of the `Fills` emitted within the `Bundle Block Range` on a destination Spo
 3. The corresponding `Deposit` event occurred within or before the `Bundle Block Range` on the origin chain SpokePool.
 
 #### Note
-- If the `Deposit` event specifies `outputToken` `bytes32(0)` (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of the Zero Address.
+- If the `Deposit` event specifies `outputToken` `bytes32(0)` (i.e. the Zero Address), the equivalent SpokePool token on the destination chain shall be substituted in. For the purpose of determining `RelayData` equivalency, the updated/substituted `outputToken` shall be used in place of the Zero Address. If there is no equivalent SpokePool token on the destination chain at the `Deposit` `quoteTimestamp`, then any fill for this deposit will not be repaid regardless of whether it is fillable on the destination.
 - `RelayData` equality can be determined by comparing the keccak256 hashes of two `RelayData` objects.
 - Fills of type `SlowFill` are valid, but are not relevant for computing relayer repayments.
 
@@ -426,16 +426,19 @@ For each validated matching `Deposit` event, the relayer repayment amount shall 
 - The applicable rate model shall be sourced from the AcrossConfigStore contract for the relevant `l1Token`.
 - For a given `Fill` that satisfies the requirements for relayer repayment, each matching `Deposit` generates a distinct repayment computed against its `quoteTimestamp`.
 
-The applied `repaymentChainId` shall be determined as follows:
-- When the `originChainId` is a `Lite chain` as at the `Deposit` `quoteTimestamp`: `originChainId`, ELSE
-- When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId`: `destinationChainId`, ELSE
+The applied `repaymentToken` will be equal to the [equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) token as the `inputToken` on the `repaymentChainId`, where the applied `repaymentChainId` shall be determined as follows (all at the time of the relevant bundle's hub chain end block):
+- When the `originChainId` is a `Lite chain`: `originChainId`, ELSE
+- When no `PoolRebalanceRoute` exists for the `inputToken` on the `Fill` `originChainId`: `originChainId`, ELSE
+- When no `PoolRebalanceRoute` exists for the `repaymentToken` on the `Fill` `repaymentChainId`: `originChainId`, ELSE
 - The `repaymentChainId` as specified in the `Fill`.
 
 The applied `repayment address` shall be determined as follows:
 - When the `Fill` `relayer` address is valid for the applied `repaymentChainId`: `relayer`, ELSE
-- The `Fill` `msg.sender` address.
+- The `Fill` `msg.sender` address. In this case, change the applied `repaymentChainId` to the `destinationChainId` if a `PoolRebalanceRoute` exists for both the `outputToken` on the `destinationChainId` and the `inputToken` on the `originChainId` as at the bundle's hub chain end block
 
 If the applied `repayment address` is not valid for the applied `repaymentChainId`, the repayment shall be discarded.
+
+The rules above enforce that a `repaymentToken` for a successful relayer repayment is always equal to a token that is [equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) to the `inputToken` at the time of relevant bundle's hub chain end block.
 
 #### Note
 - Examples of an invalid `relayer` address include:
@@ -505,7 +508,9 @@ The referenced `SpokeTargetBalances` is as specified by [UMIP-157 Token Constant
 ## Constructing Root Bundles
 
 ### Constructing the Pool Rebalance Root
-One Pool Rebalance Leaf shall be produced per unique `chainId` & `l1Token` pair, where the corresponding `Deposit`, `Fill` or`Slow Fill Request` events were emitted by the relevant SpokePool within the [Bundle Block Range](#identifying-bundle-block-ranges).
+One Pool Rebalance Leaf shall be produced per unique `chainId` & `l1Token` pair, where the corresponding `Deposit`, `Fill` or`Slow Fill Request` events were emitted by the relevant SpokePool within the [Bundle Block Range](#identifying-bundle-block-ranges). The following events can be discarded because they have no impact on the Pool Rebalance Root:
+- `Deposit` events whose `inputToken` does not [map](#resolving-spokepool-tokens-to-their-hubpool-equivalent) to an `l1Token`.
+- `Fill` events whose `repaymentToken` on the `repaymentChainId` as computed [here](#computing-relayer-repayments) does not [map](#resolving-spokepool-tokens-to-their-hubpool-equivalent) to an `l1Token`.
 
 Each Pool Rebalance Leaf shall be constructed as follows:
 1. For each unique `chainId` and `l1Token` pair:
@@ -513,7 +518,7 @@ Each Pool Rebalance Leaf shall be constructed as follows:
     2. Set the `groupIndex` to 0.
 2. Within each Pool Rebalance Leaf instance, the arrays `l1Tokens`, `runningBalances`, `netSendAmounts` and `bundleLpFees` shall be:
     1 Ordered by `l1Token`, and
-    2 Of the same (on-zero length.
+    2 Of the same non-zero length.
 
 In the event that the number of `l1Token` entries contained within a single Pool Rebalance Leaf exceeds [`MAX_POOL_REBALANCE_LEAF_SIZE`](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants):
 1. Additional Pool Rebalance Leaf instances shall be produced to accomodate the excess.
@@ -534,15 +539,20 @@ The Pool Rebalance Merkle Tree shall be constructed such that it is verifyable u
 - See examples [here](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/742e85be7c08dff21410ba4aa9c60f6a033befb8/test/utils/cryptography/MerkleProof.test.js) for how to construct these types of trees.
 
 ### Constructing the Relayer Refund Root
-At least one Relayer Refund Leaf shall be produced for each unique combination of SpokePool and `l1Token` for any of the following conditions:
+At least one Relayer Refund Leaf shall be produced for each unique combination of SpokePool and `repaymentToken` for any of the following conditions:
 - Valid `Fills`, OR
 - Expired `Deposits`, OR
 - Unfillable `Deposits`, OR
 - A negative running balance net send amount.
 
+Where `repaymentToken` is determined as follows for
+- `Fills`: the [equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) token address for the `repaymentChainId`, as computed [here](#computing-relayer-repayments), of the `Fill.
+- `Deposits`: the `inputToken`
+- negative running balance net send amounts: the token address for the corresponding `l1Token` considered in Pool Rebalance Root production
+
 Each Relayer Refund Leaf shall be constructed as follows:
 - `amountToReturn` shall be set to `max(-netSendAmount, 0)`.
-- `l2TokenAddress` shall be set to the L2 token address for the corresponding `l1Token` considered in Pool Rebalance Root production.
+- `l2TokenAddress` shall be set to the `repaymentToken` as computed previously
     - HubPool and SpokePool token mappings shall be made according to the highest `quoteTimestamp` of any relays in the group.
     - If no relays are present, then the relevant token mapping from the previous successful proposal shall be used.
 - Each element of the `refundAddresses` and `refundAmounts` arrays shall be produced according to the defined procedure for computing relayer repayments.
