@@ -59,18 +59,7 @@ The `V3RelayData` type underpins the transfer of funds in or out of a SpokePool 
 | message | bytes | Optional data that is forwarded to the recipient as part of a relay. |
 
 #### Note
-- `V3RelayData` specifies `bytes32` representation for addresses (`depositor`, `recipient`, ...) in order to interface with non-EVM chains. The EVM address supplied shall be promoted to type `bytes32` with the upper 12 bytes zeroed. 
-
-### V3RelayDataLegacy
-The `V3RelayDataLegacy` type is supported for backwards compatibility, but is slated for deprecation. `V3RelayDataLegacy` has the following delta to the `V3RelayData` type:
-| Name | Type |
-| :--- |:---- |
-| depositor | address |
-| recipient | address |
-| exclusiveRelayer | address |
-| inputToken | address |
-| outputToken | address |
-| depositId | uint32 |
+- `V3RelayData` specifies `bytes32` representation for addresses (`depositor`, `recipient`, ...) in order to interface with non-EVM chains. The EVM address supplied shall be promoted to type `bytes32` with the upper 12 bytes zeroed.
 
 ## V3RelayExecutionParams
 The `V3RelayExecutionParams` type is supplied by a relayer or executor when completing a fill. `V3RelayExecutionParams` is defined as follows:
@@ -102,7 +91,7 @@ A FillType instance is emitted with each `FilledV3Relay` event (see below).
 | SlowFill | 2 | The relay was completed via slow fill. |
 
 ### V3RelayExecutionEventInfo
-A V3RelayExecutionEventInfo instance is emitted with each `FilledV3Relay` event (see below).
+A V3RelayExecutionEventInfo instance is emitted with each `FilledRelay` event (see below).
 
 | Name | Type | Description |
 | :--- |:---- | :---------- |
@@ -113,50 +102,38 @@ A V3RelayExecutionEventInfo instance is emitted with each `FilledV3Relay` event 
 | fillType | FillType | Type of fill completed (see `FillType` above). |
 
 ### V3SlowFill
-A V3SlowFill instance is emitted with each `FilledV3Relay` event (see below).
+A V3SlowFill instance is emitted with each `FilledRelay` event (see below).
 
 | Name | Type | Description |
 | :--- |:---- | :---------- |
-| relayData | V3RelayData | `V3RelayData` instance to uniquely associate the SlowFill with `V3FundsDeposited` and `RequestedV3SlowFill` events. |
+| relayData | V3RelayData | `V3RelayData` instance to uniquely associate the SlowFill with `FundsDeposited` and `RequestedSlowFill` events. |
 | chainId | uint256 | The chain ID of the SpokePool completing the SlowFill. |
-| updatedOutputAmount | uint256 | The amount sent to `recipient` as part of a SlowFill. This should typically be equal to or greater than the `V3FundsDeposited` `outputAmount`. |
+| updatedOutputAmount | uint256 | The amount sent to `recipient` as part of a SlowFill. This should typically be equal to or greater than the `FundsDeposited` `outputAmount`. |
 | repaymentChainId | uint256 | The chain specified by the depositor for fill repayment. |
 | fillType | FillType | Type of fill completed. |
 
 #### Notes
-The `updatedRecipient` field is normally set to the `recipient` from the corresponding `V3FundsDeposited` event. In the event that the relayer completes the fill with an accompanying `RequestedSpeedUpV3Deposit` event, `updatedRecipient` will be set to the address approved by the update.
+The `updatedRecipient` field is normally set to the `recipient` from the corresponding `FundsDeposited` event. In the event that the relayer completes the fill with an accompanying `RequestedSpeedUpDeposit` event, `updatedRecipient` will be set to the address approved by the update.
 
 ## Events
 Across V3 defines the following events:
 - FundsDeposited
-- V3FundsDeposited
 - RequestedSpeedUpDeposit
-- RequestedSpeedUpV3Deposit
-- FilledRelay
-- FilledV3Relay
 - RequestedSlowFill
-- RequestedV3SlowFill
+- FilledRelay
 - ClaimedRelayerRefund
 
-### Event Deprecation
-The following events are marked for deprecation. See [Migration](#migration) for more information.
-- V3FundsDeposited
-- RequestedSpeedUpV3Deposit
-- FilledV3Relay
-- RequestedV3SlowFill
-
-### FundsDeposited, V3FundsDeposited
-The `FundsDeposited` event emits the unique `V3RelayData` for an individual deposit. No additional fields are defined. 
-The `V3FundsDeposited` event emits the unique `V3RelayDataLegacy` for an individual deposit. No additional fields are defined.
+### FundsDeposited
+The `FundsDeposited` event emits the unique `V3RelayData` for an individual deposit. No additional fields are defined.
 
 #### Note
 - Consumers of these events should append the `originChainId` in order to avoid unintentionally mixing events from different chains.
-- The `FundsDeposited` and `V3FundsDeposited` `outputToken` field is not required to be a known HubPool `l1Token`. In-protocol arbitrary token swaps are supported by Across v3.
+- The `FundsDeposited` `outputToken` field is not required to be a known HubPool `l1Token`. In-protocol arbitrary token swaps are supported by Across v3.
 - The address identified by `exclusiveRelayer` has exclusive right to complete the relay on the destination chain until `exclusivityDeadline` has elapsed.
 - If `exclusivityDeadline` is set to a past timestamp, any address is eligible to fill the relay.
 - Any deposit that remains unfilled after the specified `fillDeadline` shall be refunded to the `depositor` address via the origin SpokePool in a subsequent settlement bundle.
 
-### RequestedSpeedUpDeposit, RequestedSpeedUpV3Deposit
+### RequestedSpeedUpDeposit
 The `RequestedSpeedUpDeposit` event emits the following data.
 
 | Name | Type | Description |
@@ -168,21 +145,10 @@ The `RequestedSpeedUpDeposit` event emits the following data.
 | updatedMessage | bytes | The new message to be supplied to the recipient. |
 | depositorSignature | bytes | A signature by the depositor authorizing the above updated fields. |
 
-The `RequestedSpeedUpV3Deposit` event emits the following data:
-
-| Name | Type | Description |
-| :--- | :--- | :---------- |
-| depositId | uint32 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
-| depositor | address | The depositor of the corresponding `V3FundsDeposited` event to be updated. |
-| updatedOutputAmount | uint256 | The new outputAmount approved by the depositor. This should be _lower_ than the original deposit `outputAmount`. |
-| updatedRecipient | address | The new recipient to receive the funds. |
-| updatedMessage | bytes | The new message to be supplied to the recipient. |
-| depositorSignature | bytes | A signature by the depositor authorizing the above updated fields. |
-
 #### Note
-- Relayers may optionally append the updated request from a `RequestedSpeedUpDeposit` or `RequestedSpeedUpV3Deposit` event when filling a relay, but have no obligation to use the updated request.
+- Relayers may optionally append the updated request from a `RequestedSpeedUpDeposit` event when filling a relay, but have no obligation to use the updated request.
 
-### RequestedSlowFill, RequestedV3SlowFill
+### RequestedSlowFill
 The `RequestedSlowFill` event extends the `V3RelayData` type by applying the following adjustments:
 
 | Name | Type | Description |
@@ -190,12 +156,10 @@ The `RequestedSlowFill` event extends the `V3RelayData` type by applying the fol
 | message | omitted | This field is omitted in favour of the `messageHash` field. |
 | messageHash | bytes32 | The keccak256 hash of the `V3RelayData` message field where the message is non-empty, or `bytes32(0)` for an empty message. This field is included in place of the `V3RelayData` message field. |
 
-The `RequestedV3SlowFill` event emits an `V3RelayDataLegacy` instance.
-
 #### Note
-- These events are emitted on the destination chain and signal to proposers that a slow fill has been requested for a specific deposit.
+- This event is emitted on the destination chain and signal to proposers that a slow fill has been requested for a specific deposit.
 
-### FilledRelay, FilledV3Relay
+### FilledRelay
 
 The `FilledRelay` event extends the `V3RelayData` type by applying the following adjustments:
 | Name | Type | Description |
@@ -206,15 +170,8 @@ The `FilledRelay` event extends the `V3RelayData` type by applying the following
 | repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
 | relayExecutionInfo | V3RelayExecutionEventInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). |
 
-The `FilledV3Relay` event extends the `V3RelayDataLegacy` type by adding the following fields:
-| Name | Type | Description |
-| :--- | :--- | :---------- |
-| relayer | address | The address completing relay on the destination SpokePool. |
-| repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
-| relayExecutionInfo | V3RelayExecutionEventInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). |
-
 #### Note
-- Consumers of these events should append the `destinationChainId` attribute in order to avoid unintentioanlly mixing events from different chains.
+- Consumers of this event should append the `destinationChainId` attribute in order to avoid unintentioanlly mixing events from different chains.
 
 # Root Bundle Proposals
 
@@ -256,10 +213,10 @@ A `PoolRebalanceLeaf` shall consist of the following:
 
 #### Note
 - The format of Relayer Refund leaves is unchanged from Across v2.
-- Across v3 expands the utility of the `RelayerRefundLeaf` to include issuing depositor refunds on origin chains in the event of an expired `V3FundsDeposited` `fillDeadline`.
+- Across v3 expands the utility of the `RelayerRefundLeaf` to include issuing depositor refunds on origin chains in the event of an expired `Deposit` `fillDeadline`.
 
 ### Slow Relay Leaves
-Across v3 `SlowRelayLeaf` objects are defined by the `V3SlowFill` [data type](#data-types).
+Across `SlowRelayLeaf` objects are defined by the `V3SlowFill` [data type](#data-types).
 
 #### Note
 - The format of Slow Relay leaves is updated from Across v2.
@@ -269,22 +226,18 @@ Across v3 `SlowRelayLeaf` objects are defined by the `V3SlowFill` [data type](#d
 ### Deposits
 A `Deposit` is defined as an instance of either of the following events:
 - `FundsDeposited`.
-- `V3FundsDeposited`.
 
 ### Fills
 A `Fill` is defined as an instance of either of the following events:
 - `FilledRelay`.
-- `FilledV3Relay`.
 
 ### Slow Fill Requests
 A `Slow Fill` is defined as an instance of either of the following events:
 - `RequestedSlowFill`.
-- `RequestedV3SlowFill`.
 
 ### RelayData
 `RelayData` is defined as an instance of etiher of the following data types:
 - `V3RelayData`.
-- `V3RelayDataLegacy`.
 
 ### Bundle Block Range
 The `Bundle Block Range` is the pair of start and end blocks for a given proposal. See [Identifying Bundle Block Ranges](#identifying-bundle-block-ranges) for guidance on identifying the `Bundle Block Range`.
@@ -320,13 +273,13 @@ The `FilledRelay` event emits the `messsageHash` field. This field is set as fol
 
 ### Computing RelayData Hashes
 A `RelayData` hash is computed as the `keccak256` hash over the ABI-encoded representation of the arguments `relayData`, `destinationChainId`, where:
-- `relayData` is of type `V3RelayData` or `V3RelayDataLegacy`.
+- `relayData` is of type `V3RelayData`.
 - `destinationChainId` is of type `uint256`.
 
 - When the `FilledRelay` event data omits the `message` field, the `message` field shall be populated according to the procedure specified in [Reconstructing FilledRelay messages](#resonstructing-filledrelay-messages).
 
 #### Note
-- This method produces the identical hashes for `V3RelayData` and `V3RelayDataLegacy` for the same input data due to `address` promotion to `bytes32` prior to hashing.
+- This method produces the identical hashes for `V3RelayData` and now-deprecated `V3RelayDataLegacy` types for the same input data due to `address` promotion to `bytes32` prior to hashing.
 
 ### Computing Relayer Repayments & Depositor Refunds
 For the purpose of computing relayer repayments, the following procedures are completed:
@@ -407,6 +360,9 @@ Each valid `Fill` is subject to an LP fee. The procedure for computing LP fees i
 - The `HubPool` `liquidityUtilizationCurrent()` and `liquidityUtilizationPostRelay()` functions shall be used instead of the `BridgePool` variant.
 - The event `inputToken` shall be mapped from the SpokePool address to a HubPool `l1Token` address by following the matching procedure outlined above.
 - The LP fee is computed between the `originChainId` specified by the `Deposit` and `repaymentChainId` specified by the relayer, where the `relayExecutionInfo.FillType != SlowFill` and the Fill `destinationChainId` otherwise.
+- The LP fee as a multiplier of `inputAmount` (typically named `realizedLpFeePct` elsewhere in this document) shall be:
+  - Promoted to 18 decimals, where 1e18 represents 100%, and
+  - Truncated to 8 decimals of effective precision, as follows: lpFee = (inputAmount / 1e10) * 1e10
 
 #### Note
 - The LP fee is typically referenced as a multiplier of the `Deposit` `inputAmount`, named `realizedLpFeePct` elsewhere in this document.
@@ -414,11 +370,9 @@ Each valid `Fill` is subject to an LP fee. The procedure for computing LP fees i
 ### Computing Bundle LP Fees
 The bundle LP fee for a `Bundle Block Range` on a SpokePool and token pair shall be determined by summing the applicable LP fees for each of the following validated events:
 - `FilledRelay`.
-- `FilledV3Relay`.
 
 #### Note
-
-Each `FilledRelay` or `FilledV3Relay` can have multiple associated deposit events. In the event of multiple matching deposit events, there will be multiple LP fees paid per event in the case of a non slow fill.
+Each `Fill` can have multiple associated deposit events. In the event of multiple matching deposit events, there will be multiple LP fees paid per event in the case of a non slow fill.
 
 ### Computing Relayer Repayments
 For each validated matching `Deposit` event, the relayer repayment amount shall be computed as follows:
@@ -444,12 +398,18 @@ The rules above enforce that a `repaymentToken` for a successful relayer repayme
 - Examples of an invalid `relayer` address include:
     - An SVM address on an EVM chain.
 
+If a validated `Fill` specifies an invalid `repaymentChainId`, the proposer shall issue repayment on the fill destination chain.
+Reasons for the `repaymentChainId` to be considered invalid are:
+- `repaymentChainId` is not supported by Across.
+- `inputToken` is not supported as a repayment token on `repaymentChainId`.
+- The `relayer` address is not valid on the specified `repaymentChainId`.
+
 ### Computing Deposit Refunds
 For an expired `Deposit` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
 
 ### Computing Slow Fill updated output amounts
 For the purpose of computing the amount to issue to a recipient for a SlowFill, the relayer fee shall be nulled by applying the following procedure:
-- `updatedOutputAmount = (inputAmount * (1 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the earliest matching deposit's `quoteTimestamp` between `originChainId` and `destinationChainId`.
+- `updatedOutputAmount = (inputAmount * (1e18 - realizedLpFeePct)) / 1e18`, where `realizedLpFeePct` is computed at the earliest matching deposit's `quoteTimestamp` between `originChainId` and `destinationChainId`.
 
 #### Constraint
 - The `Deposit` `outputAmount` shall _not_ be considered when determining SlowFill amounts.
@@ -616,4 +576,6 @@ The array of Slow Relay Leaf instances shall be sorted according to;
 The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts) repository.
 
 # Security considerations
-Across v3 has been audited by OpenZeppelin.
+Across v3 has been audited by OpenZeppelin:
+- https://blog.openzeppelin.com/across-v3-incremental-audit
+- https://blog.openzeppelin.com/across-v3-and-oval-incremental-audit
