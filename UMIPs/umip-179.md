@@ -617,3 +617,209 @@ The Across v3 implementation is available in the Across [contracts-v2](https://g
 
 # Security considerations
 Across v3 has been audited by OpenZeppelin.
+
+# SVM support
+
+The same rules as specified in the rest of this price identifier applies in principle to Across support for SVM chains (Solana at the moment) whereas this section describes the scope of the SVM support and any considerations that are specific to SVM.
+
+## Global Constants
+
+As SVM does not have a concept of chain IDs it should be derived by using the 48 least significant bits of `keccak256` hashed value of the chain name. As an illustration, the chain ID for Solana mainnet is `34268394551451` that can be derived as:
+
+```bash
+cast to-dec $(cast shr $(cast shl $(cast keccak solana-mainnet) $((256-48))) $((256-48)))
+```
+
+## <a id="svm-data-types"></a>Data Types
+
+Across supports only selected data types on SVM as listed in the sections below.
+
+The supported data structures hold the same items as their EVM counterparts with their type adjusted to what is natively supported on SVM:
+
+| EVM Type | SVM Type | Comment |
+| :--- |:---- | :---------- |
+| bytes32 | Pubkey | Used only when representing addresses and their underlying byte representation should be the same. |
+| uint256 | u64 | Used only for numbers that should fit into 64 bits. SVM numbers are encoded as little-endian, so the byte order is reversed compared to EVM. |
+| uint256 | [u8; 32] | Only used for deposit IDs as they could exceed 64 bits in case of deterministic IDs. Here the byte order is big-endian matching the EVM representation. |
+| uint32 | u32 | Used for numbers that fit into 32 bits. SVM numbers are encoded as little-endian, so the byte order is reversed compared to EVM. |
+| bytes | Vec&lt;u8&gt; | Used for arbitrary byte arrays. In SVM this is encoded as the first 4 bytes holding the length of the array (little-endian encoded) followed by the array byte items. |
+
+Also note that SVM uses snake case for struct field names compared to camel case in EVM.
+
+### RelayData
+
+`RelayData` in SVM represents the same data as `V3RelayData` in EVM:
+
+| Name | Type |
+| :--- |:---- |
+| depositor | Pubkey |
+| recipient | Pubkey |
+| exclusive_relayer | Pubkey |
+| input_token | Pubkey |
+| output_token | Pubkey |
+| input_amount | u64 |
+| output_amount | u64 |
+| origin_chain_id | u64
+| deposit_id | [u8; 32] |
+| fill_deadline | u32 |
+| exclusivity_deadline | u32 |
+| message | Vec&lt;u8&gt; |
+
+### FillStatus
+
+`RelayData` and its destination `chain_id` are mapped to a `FillStatus` via `FillStatusAccount` that is a PDA (Program Derived Address) derived from `svm_spoke` program ID using the string `fills` and 32 byte `relay_hash` as the seeds. `relay_hash` is computed using `solana_program::keccak` over the `RelayData` and destination `chain_id` as described in [Computing RelayData Hashes](#computing-relaydata-hashes).
+
+`FillStatusAccount` stores following fields:
+
+| Name | Type | Description |
+| :--- |:---- | :---------- |
+| status | FillStatus | The status of the mapped fill, see below. |
+| relayer | Pubkey | Address of the relayer that made the fill to control who can close this PDA. |
+| fill_deadline | u32 | Fill deadline to control when this PDA can be safely closed. |
+
+`FillStatus` is an enum with the same values as in EVM, but one should consider the fact that on SVM it is only useful for internal program logic as the `FillStatusAccount` can be closed by the relayer after the fill deadline has passed, so the status is not persisted onchain indefinitely. In order to reconstruct the status of a fill, one should look for `FilledRelay` and `RequestedSlowFill` events in all transactions where the `FillStatusAccount` was involved (`getSignaturesForAddress` RPC method can be useful). If there are no such events, then the fill can be considered `Unfilled`. If the `FilledRelay` is found as the last event, then the fill is considered `Filled`. If there is only a `RequestedSlowFill` event, then the fill is considered `RequestedSlowFill`.
+
+### FillType
+
+`FillType` enum is emitted with each `FilledRelay` event on SVM with the same interpretation as when emitted with `FilledV3Relay` events on EVM.
+
+### <a id="svm-relay-execution-event-info"></a>RelayExecutionEventInfo
+
+`RelayExecutionEventInfo` instance is emitted with each `FilledRelay` event on SVM similar as `V3RelayExecutionEventInfo` in `FilledV3Relay` events on EVM:
+
+| Name | Type | Description |
+| :--- |:---- | :---------- |
+| updated_recipient | Pubkey | The recipient of the funds being transferred. This always matches the original recipient as there is no speedup functionality in the `svm_spoke` program. |
+| updated_message_hash | [u8; 32] | The hash of the message sent to the recipient. This is computed as `solana_program::keccak::hash(message)` where `message` is the `message` bytes in the `RelayData`. If the `message` field is empty, this will be set to `[0u8; 32]`. |
+| updated_output_amount | u64 | The amount of the tokens being transferred. This always matches the original amount as there is no speedup functionality in the `svm_spoke` program. |
+| fill_type | FillType | Type of fill completed (see `FillType` above). |
+
+### SlowFill
+
+A `SlowFill` instance is used to calculate slow relay root when proposing and verifying the root bundle. It is also passed as `slow_fill_leaf` parameter to the `svm_spoke` `execute_slow_relay_leaf` instruction upon executing a slow fill:
+
+| Name | Type | Description |
+| :--- |:---- | :---------- |
+| relay_data | RelayData | `RelayData` instance to uniquely associate the `SlowFill` with `FundsDeposited` and `RequestedSlowFill` events. |
+| chain_id | u64 | The chain ID of the SpokePool completing the `SlowFill`. This is used only when proposing and verifying the root bundle while on execution `svm_spoke` overrides it with its configured chain ID similar as in EVM. |
+| updated_output_amount | u64 | The amount sent to `recipient` as part of a `SlowFill`. |
+
+## Events
+
+`svm_spoke` program uses Anchor's [`emit_cpi`](https://www.anchor-lang.com/docs/features/events#emit_cpi) macro to emit events that are comparable with EVM events. On SVM Across has the following events that are relevant to this UMIP:
+
+- FundsDeposited
+- FilledRelay
+- RequestedSlowFill
+
+### FundsDeposited
+
+The `FundsDeposited` event extends the `RelayData` type by applying the following adjustments:
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| origin_chain_id | omitted | This field is omitted from the `FundsDeposited` event. |
+| destination_chain_id | u64 | Same as `destinationChainId` on EVM. |
+| quote_timestamp | u32 | Same as `quoteTimestamp` on EVM. |
+
+### FilledRelay
+
+The `FilledRelay` event extends the `RelayData` type by applying the following adjustments:
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| message | omitted | This field is omitted from the `FilledRelay` event in favour of the `message_hash` field. |
+| message_hash | [u8; 32] | The hash of the message sent to the recipient. This is computed as `solana_program::keccak::hash(message)` where `message` is the `message` bytes in the `RelayData`. If the `message` field is empty, this will be set to `[0u8; 32]`. |
+| relayer | Pubkey | The address completing relay on the destination SpokePool, same as in EVM. |
+| repayment_chain_id | u64 | The repayment chain ID requested by the relayer completing the fill, same as in EVM. |
+| relay_execution_info | RelayExecutionEventInfo | See details in the [RelayExecutionEventInfo](#svm-relay-execution-event-info) section above. |
+
+### RequestedSlowFill
+
+The `RequestedSlowFill` event extends the `RelayData` type by applying the following adjustments:
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| message | omitted | This field is omitted in favour of the `message_hash` field. |
+| message_hash | [u8; 32] | The hash of the message sent to the recipient. This is computed as `solana_program::keccak::hash(message)` where `message` is the `message` bytes in the `RelayData`. If the `message` field is empty, this will be set to `[0u8; 32]`. |
+
+## Root Bundle Proposals
+
+For SVM chains slot numbers are used instead of block numbers when specifying the start and end block of the root bundle proposal.
+
+### Relayer Refund Leaves
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| amount_to_return | u64 | Same as `amountToReturn` for EVM leaves. |
+| chain_id | u64 | Same as `chainId` for EVM leaves. |
+| refund_amounts | Vec&lt;u64&gt; | Same as `refundAmounts` for EVM leaves. |
+| leaf_id | u32 | Same as `leafId` for EVM leaves. |
+| mint_public_key | Pubkey | Same as `l2TokenAddress` for EVM leaves. |
+| refund_addresses | Vec&lt;Pubkey&gt; | Same as `refundAddresses` for EVM leaves. |
+
+#### Note
+
+When proposing and verifying the root bundle, `RelayerRefundLeaf` for SVM chains should be serialized using Borsh serialization format and keeping the SVM specific encoding as described in the [Data Types](#svm-data-types) section above. In addition, the encoded `RelayerRefundLeaf` must be prefixed with 64 bytes of zeroes to protect against any possibility of an EVM leaf being used on SVM or vice versa.
+
+### Slow Relay Leaves
+
+`SlowRelayLeaf` objects for SVM chains are defined by the `SlowFill` [data type](#svm-data-types).
+
+#### Note
+
+When proposing and verifying the root bundle, `SlowFillLeaf` for SVM chains should be serialized using Borsh serialization format and keeping the SVM specific encoding as described in the [Data Types](#svm-data-types) section above. In addition, the encoded `SlowFillLeaf` must be prefixed with 64 bytes of zeroes to protect against any possibility of an EVM leaf being used on SVM or vice versa.
+
+### Definitions
+
+#### Deposits
+
+On SVM chains a `Deposit` is defined as an instance `FundsDeposited` event.
+
+#### Fills
+
+On SVM chains a `Fill` is defined as an instance of `FilledRelay` event.
+
+#### Slow Fill Requests
+
+On SVM chains a `Slow Fill` is defined as an instance of `RequestedSlowFill` event.
+
+#### RelayData
+
+On SVM chains, `RelayData` is defined as an instance of the `RelayData` data type as described in the [Data Types](#svm-data-types) section above.
+
+#### Bundle Block Range
+
+On SVM chains the `Bundle Block Range` is the pair of start and end slots for a given proposal. See [Identifying Bundle Block Ranges](#identifying-bundle-block-ranges) for guidance on identifying the `Bundle Block Range`.
+
+#### Fill Status
+
+A `Deposit` is considered to be `Filled` on the destination SVM chain when its `FillStatus` is resolved to `Filled` using `FillStatusAccount` as described in the [Data Types](#svm-data-types) section above.
+
+### Method
+
+#### Identifying SVM SpokePool Programs
+
+The procedure for identifying the current SpokePool program for a specific SVM chain is as follows:
+
+1. Query the `HubPool` contract for the `crossChainContracts()` mapping using the `chainId` of the SVM chain to get the address of chain specific `adapter` contract.
+2. Query the `adapter` contract for the `SOLANA_SPOKE_POOL_BYTES32()` method to get the `bytes32` representation of SVM program ID.
+3. Convert the `bytes32` representation to a Base58 encoded `Pubkey` of SVM SpokePool program.
+
+In case of SpokePool migrations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events and querying the previous `adapter` contract.
+
+#### Resolving SVM SpokePool tokens to their HubPool equivalent
+
+Convert Base58 encoded `Pubkey` of SVM chain SpokePool token to its `bytes32` representation and convert to EVM address by trimming off the first 12 bytes. Use this EVM token address representation as the `destinationToken` following the instructions in the generic [Resolving SpokePool tokens to their HubPool equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) section above.
+
+#### Reconstructing SVM FilledRelay messages
+
+The `FilledRelay` event on SVM emits the `message_hash` field. This field is set as follows:
+- When the `RelayData` `message` field is empty: `[0u8; 32]`, OR
+- When the `RelayData` `message` field is non-empty: `solana_program::keccak::hash(message)`.
+
+#### Computing SVM RelayData Hashes
+
+A `RelayData` hash on SVM is computed as the `solana_program::keccak` hash over the Borsh serialized representation of concatenated `relay_data` and `destination_chain_id`, where:
+- `relay_data` is derived from `RelayData` replacing the `message` field (type Vec&lt;u8&gt;) with `message_hash` (type [u8; 32]) as described in the [Reconstructing SVM FilledRelay messages](#reconstructing-svm-filledrelay-messages) section above, and
+- `destination_chain_id` is little-endian encoded `u64` representation of destination chain ID.
