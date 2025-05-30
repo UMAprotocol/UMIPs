@@ -704,10 +704,6 @@ A `SlowFill` instance is used to calculate slow relay root when proposing and ve
 | chain_id | u64 | The chain ID of the SpokePool completing the `SlowFill`. This is used only when proposing and verifying the root bundle while on execution `svm_spoke` overrides it with its configured chain ID similar as in EVM. |
 | updated_output_amount | u64 | The amount sent to `recipient` as part of a `SlowFill`. |
 
-#### Notes
-
-When proposing and verifying the root bundle, `SlowFill` should be serialized using Borsh serialization format and keeping the SVM specific encoding as described in the [Data Types](#svm-data-types) section above. In addition, the encoded `SlowFill` must be prefixed with 64 bytes of zeroes to protect against any possibility of an EVM leaf being used on SVM or vice versa.
-
 ## Events
 
 `svm_spoke` program uses Anchor's [`emit_cpi`](https://www.anchor-lang.com/docs/features/events#emit_cpi) macro to emit events that are comparable with EVM events. On SVM Across has the following events that are relevant to this UMIP:
@@ -746,3 +742,84 @@ The `RequestedSlowFill` event extends the `RelayData` type by applying the follo
 | :--- | :--- | :---------- |
 | message | omitted | This field is omitted in favour of the `message_hash` field. |
 | message_hash | [u8; 32] | The hash of the message sent to the recipient. This is computed as `solana_program::keccak::hash(message)` where `message` is the `message` bytes in the `RelayData`. If the `message` field is empty, this will be set to `[0u8; 32]`. |
+
+## Root Bundle Proposals
+
+For SVM chains slot numbers are used instead of block numbers when specifying the start and end block of the root bundle proposal.
+
+### Relayer Refund Leaves
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| amount_to_return | u64 | Same as `amountToReturn` for EVM leaves. |
+| chain_id | u64 | Same as `chainId` for EVM leaves. |
+| refund_amounts | Vec&lt;u64&gt; | Same as `refundAmounts` for EVM leaves. |
+| leaf_id | u32 | Same as `leafId` for EVM leaves. |
+| mint_public_key | Pubkey | Same as `l2TokenAddress` for EVM leaves. |
+| refund_addresses | Vec&lt;Pubkey&gt; | Same as `refundAddresses` for EVM leaves. |
+
+#### Note
+
+When proposing and verifying the root bundle, `RelayerRefundLeaf` for SVM chains should be serialized using Borsh serialization format and keeping the SVM specific encoding as described in the [Data Types](#svm-data-types) section above. In addition, the encoded `RelayerRefundLeaf` must be prefixed with 64 bytes of zeroes to protect against any possibility of an EVM leaf being used on SVM or vice versa.
+
+### Slow Relay Leaves
+
+`SlowRelayLeaf` objects for SVM chains are defined by the `SlowFill` [data type](#svm-data-types).
+
+#### Note
+
+When proposing and verifying the root bundle, `SlowFillLeaf` for SVM chains should be serialized using Borsh serialization format and keeping the SVM specific encoding as described in the [Data Types](#svm-data-types) section above. In addition, the encoded `SlowFillLeaf` must be prefixed with 64 bytes of zeroes to protect against any possibility of an EVM leaf being used on SVM or vice versa.
+
+### Definitions
+
+#### Deposits
+
+On SVM chains a `Deposit` is defined as an instance `FundsDeposited` event.
+
+#### Fills
+
+On SVM chains a `Fill` is defined as an instance of `FilledRelay` event.
+
+#### Slow Fill Requests
+
+On SVM chains a `Slow Fill` is defined as an instance of `RequestedSlowFill` event.
+
+#### RelayData
+
+On SVM chains, `RelayData` is defined as an instance of the `RelayData` data type as described in the [Data Types](#svm-data-types) section above.
+
+#### Bundle Block Range
+
+On SVM chains the `Bundle Block Range` is the pair of start and end slots for a given proposal. See [Identifying Bundle Block Ranges](#identifying-bundle-block-ranges) for guidance on identifying the `Bundle Block Range`.
+
+#### Fill Status
+
+A `Deposit` is considered to be `Filled` on the destination SVM chain when its `FillStatus` is resolved to `Filled` using `FillStatusAccount` as described in the [Data Types](#svm-data-types) section above.
+
+### Method
+
+#### Identifying SVM SpokePool Programs
+
+The procedure for identifying the current SpokePool program for a specific SVM chain is as follows:
+
+1. Query the `HubPool` contract for the `crossChainContracts()` mapping using the `chainId` of the SVM chain to get the address of chain specific `adapter` contract.
+2. Query the `adapter` contract for the `SOLANA_SPOKE_POOL_BYTES32()` method to get the `bytes32` representation of SVM program ID.
+3. Convert the `bytes32` representation to a Base58 encoded `Pubkey` of SVM SpokePool program.
+
+In case of SpokePool migrations, historical SpokePool addresses can be identified by scraping HubPool `CrossChainContractsSet` events and querying the previous `adapter` contract.
+
+#### Resolving SVM SpokePool tokens to their HubPool equivalent
+
+Convert Base58 encoded `Pubkey` of SVM chain SpokePool token to its `bytes32` representation and convert to EVM address by trimming off the first 12 bytes. Use this EVM token address representation as the `destinationToken` following the instructions in the generic [Resolving SpokePool tokens to their HubPool equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) section above.
+
+#### Reconstructing SVM FilledRelay messages
+
+The `FilledRelay` event on SVM emits the `message_hash` field. This field is set as follows:
+- When the `RelayData` `message` field is empty: `[0u8; 32]`, OR
+- When the `RelayData` `message` field is non-empty: `solana_program::keccak::hash(message)`.
+
+#### Computing SVM RelayData Hashes
+
+A `RelayData` hash on SVM is computed as the `solana_program::keccak` hash over the Borsh serialized representation of concatenated `relay_data` and `destination_chain_id`, where:
+- `relay_data` is derived from `RelayData` replacing the `message` field (type Vec&lt;u8&gt;) with `message_hash` (type [u8; 32]) as described in the [Reconstructing SVM FilledRelay messages](#reconstructing-svm-filledrelay-messages) section above, and
+- `destination_chain_id` is little-endian encoded `u64` representation of destination chain ID.
