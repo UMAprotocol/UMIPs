@@ -630,7 +630,7 @@ As SVM does not have a concept of chain IDs it should be derived by using the 48
 cast to-dec $(cast shr $(cast shl $(cast keccak solana-mainnet) $((256-48))) $((256-48)))
 ```
 
-## <a id="svm-data-types"></a>Data Types
+## SVM Data Types
 
 Across supports only selected data types on SVM as listed in the sections below.
 
@@ -667,7 +667,7 @@ Also note that SVM uses snake case for struct field names compared to camel case
 
 ### FillStatus
 
-`RelayData` and its destination `chain_id` are mapped to a `FillStatus` via `FillStatusAccount` that is a PDA (Program Derived Address) derived from `svm_spoke` program ID using the string `fills` and 32 byte `relay_hash` as the seeds. `relay_hash` is computed using `solana_program::keccak` over the `RelayData` and destination `chain_id` as described in [Computing RelayData Hashes](#computing-relaydata-hashes).
+`RelayData` and its destination `chain_id` are mapped to a `FillStatus` via `FillStatusAccount` that is a PDA (Program Derived Address) derived from `svm_spoke` program ID using the string `fills` and 32 byte `relay_hash` as the seeds. `relay_hash` is computed using `solana_program::keccak` over the `RelayData` and `destination_chain_id` as described in [Computing SVM RelayData Hashes](#computing-svm-relaydata-hashes).
 
 `FillStatusAccount` stores following fields:
 
@@ -760,7 +760,7 @@ For SVM chains slot numbers are used instead of block numbers when specifying th
 
 #### Note
 
-When proposing and verifying the root bundle, `RelayerRefundLeaf` for SVM chains should be serialized using Borsh serialization format and keeping the SVM specific encoding as described in the [Data Types](#svm-data-types) section above. In addition, the encoded `RelayerRefundLeaf` must be prefixed with 64 bytes of zeroes to protect against any possibility of an EVM leaf being used on SVM or vice versa.
+When proposing and verifying the root bundle, `RelayerRefundLeaf` for SVM chains should be serialized using Borsh serialization format and keeping the SVM specific encoding as described in the [SVM Data Types](#svm-data-types) section above. In addition, the encoded `RelayerRefundLeaf` must be prefixed with 64 bytes of zeroes to protect against any possibility of an EVM leaf being used on SVM or vice versa.
 
 ### Slow Relay Leaves
 
@@ -768,7 +768,7 @@ When proposing and verifying the root bundle, `RelayerRefundLeaf` for SVM chains
 
 #### Note
 
-When proposing and verifying the root bundle, `SlowFillLeaf` for SVM chains should be serialized using Borsh serialization format and keeping the SVM specific encoding as described in the [Data Types](#svm-data-types) section above. In addition, the encoded `SlowFillLeaf` must be prefixed with 64 bytes of zeroes to protect against any possibility of an EVM leaf being used on SVM or vice versa.
+When proposing and verifying the root bundle, `SlowFillLeaf` for SVM chains should be serialized using Borsh serialization format and keeping the SVM specific encoding as described in the [SVM Data Types](#svm-data-types) section above. In addition, the encoded `SlowFillLeaf` must be prefixed with 64 bytes of zeroes to protect against any possibility of an EVM leaf being used on SVM or vice versa.
 
 ### Definitions
 
@@ -786,7 +786,7 @@ On SVM chains a `Slow Fill` is defined as an instance of `RequestedSlowFill` eve
 
 #### RelayData
 
-On SVM chains, `RelayData` is defined as an instance of the `RelayData` data type as described in the [Data Types](#svm-data-types) section above.
+On SVM chains, `RelayData` is defined as an instance of the `RelayData` data type as described in the [SVM Data Types](#svm-data-types) section above.
 
 #### Bundle Block Range
 
@@ -794,7 +794,7 @@ On SVM chains the `Bundle Block Range` is the pair of start and end slots for a 
 
 #### Fill Status
 
-A `Deposit` is considered to be `Filled` on the destination SVM chain when its `FillStatus` is resolved to `Filled` using `FillStatusAccount` as described in the [Data Types](#svm-data-types) section above.
+A `Deposit` is considered to be `Filled` on the destination SVM chain when its `FillStatus` is resolved to `Filled` using `FillStatusAccount` as described in the [SVM Data Types](#svm-data-types) section above.
 
 ### Method
 
@@ -821,5 +821,5 @@ The `FilledRelay` event on SVM emits the `message_hash` field. This field is set
 #### Computing SVM RelayData Hashes
 
 A `RelayData` hash on SVM is computed as the `solana_program::keccak` hash over the Borsh serialized representation of concatenated `relay_data` and `destination_chain_id`, where:
-- `relay_data` is derived from `RelayData` replacing the `message` field (type Vec&lt;u8&gt;) with `message_hash` (type [u8; 32]) as described in the [Reconstructing SVM FilledRelay messages](#reconstructing-svm-filledrelay-messages) section above, and
+- `relay_data` is derived from `RelayData` replacing the `message` field (type Vec&lt;u8&gt;) with its `message_hash` (type [u8; 32]) as described in the [Reconstructing SVM FilledRelay messages](#reconstructing-svm-filledrelay-messages) section above, and
 - `destination_chain_id` is little-endian encoded `u64` representation of destination chain ID.
