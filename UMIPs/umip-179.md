@@ -743,7 +743,9 @@ The `RequestedSlowFill` event extends the `RelayData` type by applying the follo
 | message | omitted | This field is omitted in favour of the `message_hash` field. |
 | message_hash | [u8; 32] | The hash of the message sent to the recipient. This is computed as `solana_program::keccak::hash(message)` where `message` is the `message` bytes in the `RelayData`. If the `message` field is empty, this will be set to `[0u8; 32]`. |
 
-## Root Bundle Proposals
+## SVM Inputs to Root Bundle Proposals
+
+All the generic [Root Bundle Proposals](#root-bundle-proposals) rules apply to SVM chains except as specified in this section and its subsections below.
 
 For SVM chains slot numbers are used instead of block numbers when specifying the start and end block of the root bundle proposal.
 
@@ -810,7 +812,7 @@ In case of SpokePool migrations, historical SpokePool addresses can be identifie
 
 #### Resolving SVM SpokePool tokens to their HubPool equivalent
 
-Convert Base58 encoded `Pubkey` of SVM chain SpokePool token to its `bytes32` representation and convert to EVM address by trimming off the first 12 bytes. Use this EVM token address representation as the `destinationToken` following the instructions in the generic [Resolving SpokePool tokens to their HubPool equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) section above.
+Convert Base58 encoded `Pubkey` of SVM chain SpokePool token to its `bytes32` representation and convert to EVM address by trimming off the first 12 bytes. Use this EVM token address representation as the `destinationToken` following the instructions in the generic [Resolving SpokePool tokens to their HubPool equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) section above. The integrators should be aware of this SVM address trimming and bear the responsibility to use the correct SVM token address that would correctly resolve to the `l1Token` address.
 
 #### Reconstructing SVM FilledRelay messages
 
@@ -823,4 +825,24 @@ The `FilledRelay` event on SVM emits the `message_hash` field. This field is set
 A `RelayData` hash on SVM is computed as the `solana_program::keccak` hash over the Borsh serialized representation of concatenated `relay_data` and `destination_chain_id`, where:
 - `relay_data` is derived from `RelayData` replacing the `message` field (type Vec&lt;u8&gt;) with its `message_hash` (type [u8; 32]) as described in the [Reconstructing SVM FilledRelay messages](#reconstructing-svm-filledrelay-messages) section above, and
 - `destination_chain_id` is little-endian encoded `u64` representation of destination chain ID.
+
+#### Validating Fills
+
+When validating fills between EVM and SVM chains, one should consider the differences in the field naming, types and encodings used on SVM chains as described in the [SVM Data Types](#svm-data-types) section above. In order to compare the `RelayData` one should be able to safely convert between EVM and SVM representations as in practice all amounts should fit into 64 bits.
+
+#### Finding Expired Deposits
+
+When evaluating if the `fillDeadline` / `fill_deadline` timestamp elapsed within the `Bundle Block Range` on the SVM destination SpokePool, one can use `getBlock` RPC method for the destination chain's bundle start and end block and use the `blockTime` field to compare against the `fillDeadline` / `fill_deadline` timestamp.
+
+#### Finding Slow Fill Requests
+
+When evaluating if the `fillDeadline` / `fill_deadline` timestamp is greater than `destinationChainId` bundle end block time, one can use `getBlock` RPC method for the destination chain's bundle end block and use the `blockTime` field to compare against the `fillDeadline` / `fill_deadline` timestamp.
+
+#### Computing Relayer Repayments
+
+All the rules for computing relayer repayments as described in the generic [Computing Relayer Repayments](#computing-relayer-repayments) section above apply to SVM chains, except there is no `Fill` `msg.sender` address fallback logic when the `Fill` or resolved `repaymentChainId` is SVM chain. When the resolved `repaymentChainId` is SVM chain, the applied repayment token can be distributed to the associated token account derived from the `relayer` refund address. The relayer can also claim their refunds to any custom token account using the `Fill` `relayer` account as the signer. It is the responsibility of the relayer to ensure it passes the correct `Fill` `relayer` address that they control and that is valid for the resolved `repaymentChainId`.
+
+## Implementation
+
+The SVM SpokePool implementation is available as the `svm_spoke` program in the Across [contracts](https://github.com/across-protocol/contracts/tree/master/programs/svm-spoke) repository.
 
