@@ -823,3 +823,4 @@ The `FilledRelay` event on SVM emits the `message_hash` field. This field is set
 A `RelayData` hash on SVM is computed as the `solana_program::keccak` hash over the Borsh serialized representation of concatenated `relay_data` and `destination_chain_id`, where:
 - `relay_data` is derived from `RelayData` replacing the `message` field (type Vec&lt;u8&gt;) with its `message_hash` (type [u8; 32]) as described in the [Reconstructing SVM FilledRelay messages](#reconstructing-svm-filledrelay-messages) section above, and
 - `destination_chain_id` is little-endian encoded `u64` representation of destination chain ID.
+
