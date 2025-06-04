@@ -632,7 +632,7 @@ cast to-dec $(cast shr $(cast shl $(cast keccak solana-mainnet) $((256-48))) $((
 
 ## SVM Data Types
 
-Across supports only selected data types on SVM as listed in the sections below.
+Across supports the following data types on SVM:
 
 The supported data structures hold the same items as their EVM counterparts with their type adjusted to what is natively supported on SVM:
 
