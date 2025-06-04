@@ -659,7 +659,7 @@ Also note that SVM uses snake case for struct field names compared to camel case
 | output_token | Pubkey |
 | input_amount | u64 |
 | output_amount | u64 |
-| origin_chain_id | u64
+| origin_chain_id | u64 |
 | deposit_id | [u8; 32] |
 | fill_deadline | u32 |
 | exclusivity_deadline | u32 |
