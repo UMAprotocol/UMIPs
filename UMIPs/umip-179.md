@@ -151,9 +151,8 @@ A V3RelayExecutionEventInfo instance is emitted with each `FilledV3Relay` event 
 | Name | Type | Description |
 | :--- |:---- | :---------- |
 | updatedRecipient | bytes32 | The recipient of the funds being transferred. This may be the `recipient` identified in the original deposit, or an updated `recipient` following a `RequestedSpeedUpV3Deposit` event. |
+| updatedMessageHash | bytes32 | The hash of the updated message sent to the recipient. This is computed as `keccak256(message)` where `message` is the `message` bytes in the `RelayData`. If the updated `message` field is empty, this will be set to `bytes32(0)`. |
 | updatedOutputAmount | uint256 | The amount sent to `updatedRecipient` by the relayer completing the fill. |
-| updatedMessage | bytes | Data that is forwarded to the recipient as part of a relay. |
-| repaymentChainId | uint256 | The chain specified by the depositor for fill repayment. |
 | fillType | FillType | Type of fill completed (see `FillType` above). |
 
 #### SVM support
