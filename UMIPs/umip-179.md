@@ -109,17 +109,6 @@ The `V3RelayDataLegacy` type is supported for backwards compatibility, but is sl
 | outputToken | address |
 | depositId | uint32 |
 
-## V3RelayExecutionParams
-The `V3RelayExecutionParams` type is supplied by a relayer or executor when completing a fill. `V3RelayExecutionParams` is defined as follows:
-| Name | Type | Description |
-| :--- |:---- | :---------- |
-| relay | V3RelayData | The V3RelayData object corresponding to the origin chain deposit to be filled. |
-| relayHash | bytes32 | The keccak256 hash of the V3RelayData object. See also [Computing RelayData hashes](#computing-relaydata-hashes). |
-| updatedOutputAmount | uint256 | The effective amount to be received by the recipient. This may be different to the deposit outputAmount. |
-| updatedRecipient | bytes32 | The effective recipient address. This may be different to the deposit recipient. |
-| updatedMessage | bytes | The effective message (if any) to be executed by the destination SpokePool. |
-| repaymentChainId | uint256 | The repayment chain ID requested by the relayer completing the fill. This field is not relevant for slow fills. |
-
 ### FillStatus
 A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instance. This mapping can be queried with the hashed `V3RelayData` for a deposit, allowing the status for the corresponding fill to be queried.
 
