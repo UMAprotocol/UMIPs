@@ -167,15 +167,13 @@ A V3RelayExecutionEventInfo instance is emitted with each `FilledV3Relay` event 
 | fill_type | FillType | Type of fill completed (see `FillType` above). |
 
 ### V3SlowFill
-A V3SlowFill instance is emitted with each `FilledV3Relay` event (see below).
+A `V3SlowFill` instance is used to calculate slow relay root when proposing and verifying the root bundle. It is also passed as `slowFillLeaf` parameter to the SpokePool `executeSlowRelayLeaf` call upon executing a slow fill:
 
 | Name | Type | Description |
 | :--- |:---- | :---------- |
 | relayData | V3RelayData | `V3RelayData` instance to uniquely associate the SlowFill with `V3FundsDeposited` and `RequestedV3SlowFill` events. |
-| chainId | uint256 | The chain ID of the SpokePool completing the SlowFill. |
+| chainId | uint256 | The chain ID of the SpokePool completing the SlowFill. This is used only when proposing and verifying the root bundle while on execution SpokePool overrides it with its actual chain ID. |
 | updatedOutputAmount | uint256 | The amount sent to `recipient` as part of a SlowFill. This should typically be equal to or greater than the `V3FundsDeposited` `outputAmount`. |
-| repaymentChainId | uint256 | The chain specified by the depositor for fill repayment. |
-| fillType | FillType | Type of fill completed. |
 
 #### Notes
 The `updatedRecipient` field is normally set to the `recipient` from the corresponding `V3FundsDeposited` event. In the event that the relayer completes the fill with an accompanying `RequestedSpeedUpV3Deposit` event, `updatedRecipient` will be set to the address approved by the update.
