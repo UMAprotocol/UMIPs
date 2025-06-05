@@ -214,7 +214,7 @@ Across V3 defines the following events:
 - RequestedV3SlowFill
 - ClaimedRelayerRefund
 
-`svm_spoke` program uses Anchor's [`emit_cpi`](https://www.anchor-lang.com/docs/features/events#emit_cpi) macro to emit events that are comparable with EVM events. On SVM Across supports only a subset of events as explicitly documented.
+`svm_spoke` program uses Anchor's [`emit_cpi`](https://www.anchor-lang.com/docs/features/events#emit_cpi) macro to emit events that are comparable with EVM events. On SVM Across supports only a subset of events as explicitly documented in the relevant subsections below.
 
 ### Event Deprecation
 The following events are marked for deprecation. See [Migration](#migration) for more information.
@@ -542,6 +542,10 @@ For each of the `Deposits` emitted within the `Bundle Block Range` where no corr
 #### Note
 - No specific method is prescribed for resolving the `Fill` on the destination chain. An `eth_getLogs` request can facilitate this, and if required, the `Bundle Block Range` could be narrowed by a binary search over the `FillStatus` field. This is left as an implementation decision.
 
+#### SVM support
+
+In order to resolve the `Fill` on the destination SVM chain, one can inspect transactions where the `FillStatusAccount` PDA was involved (using `getSignaturesForAddress` RPC method) as described on the SVM supported [Data Types](#data-types) section above and looking for the emitted `FilledRelay` event.
+
 ### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `Deposit` shall be considered expired by verifying that:
 1. The `fillDeadline` timestamp elapsed within the `Bundle Block Range` on the destination SpokePool (i.e. the `fillDeadline` expired between the `block.timestamp` of the destination chain's bundle start and end block),
@@ -777,6 +781,10 @@ The Relayer Refund Leaf `leafId` field shall be numbered according to the orderi
 #### Note
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 
+#### SVM support
+
+When ordering the leaves by `l2TokenAddress` for SVM chains, one should decode `mint_public_key` field `Pubkey` to its `bytes32` representation.
+
 ### Constructing the Slow Relay Root
 One Slow Relay Leaf shall be produced per valid `Slow Fill Request` emitted within the `Bundle Block Range` for a destination SpokePool.
 One Slow Relay Leaf shall be produced per valid early `Slow Fill Request` where the corresponding `Deposit` was emitted within the `Bundle Block Range` for an origin SpokePool.
@@ -797,6 +805,10 @@ The array of Slow Relay Leaf instances shall be sorted according to;
 #### Note
 - Once these leaves are constructed, they can be used to form a merkle root as described in the previous section.
 - Deposits with disparate output tokens (i.e. where the outputToken is not the equivalent of inputToken on the destination chain) are explicitly not eligible for slow fills. Any instances of `Slow Fill Requests` for non-equivalent tokens shall be ignored.
+
+#### SVM support
+
+When ordering the leaves by `depositId` for SVM chains, one should convert `deposit_id` field `[u8; 32]` to `uint256` using big-endian encoding.
 
 # Recommendations
 - Proposers are responsible for detecting and mitigating incorrect or inconsistent RPC data. Proposers should take steps to validate the correctness of their RPC data before proposing.
