@@ -337,8 +337,8 @@ A `PoolRebalanceLeaf` shall consist of the following:
 | :--- | :--- | :---------- |
 | chainId | uint256 | The SpokePool `chainId` referenced by the `PoolRebalanceLeaf`. |
 | bundleLpFees | uint256[] | Ordered array of `bungleLpFee` values for the corresponding `l1Token`. |
-| netSendAmounts | uint256[] | Ordered array of `netSendAmount` values for the corresponding `l1Token`. |
-| runningBalances | uint256[] | Ordered array of `runningBalance` values for the corresponding `l1Token`. |
+| netSendAmounts | int256[] | Ordered array of `netSendAmount` values for the corresponding `l1Token`. |
+| runningBalances | int256[] | Ordered array of `runningBalance` values for the corresponding `l1Token`. |
 | groupIndex | uint256 | Indicates whether the corresponding `RelayerRefund` and `SlowRelay` roots shall be relayed to the corresponding SpokePool. |
 | leafId | uint8 | Index of the `PoolRebalanceLeaf` within the ordered array of `PoolRebalanceLeaves`. |
 | l1Tokens | address[] | Ordered array of HubPool `l1Token` addresses.
@@ -349,12 +349,12 @@ A `PoolRebalanceLeaf` shall consist of the following:
 ### Relayer Refund Leaves
 | Name | Type | Description |
 | :--- | :--- | :---------- |
-| chainId | uint256 | The SpokePool `chainId` referenced by the `RelayerRebalanceLeaf`. |
-| leafId | uint8 | Index of the `RelayerRefundLeaf` within the ordered array of `RelayerRefundLeaves`. |
-| l2TokenAddress | address[] | The SpokePool token used by this `RelayerRefundLeaf`.
 | amountToReturn | uint256 | Amount of `l2TokenAddress` to return to the HubPool. |
-| refundAddresses | uint256[] | Ordered array of addresses to be refunded by this `RelayerRefundLeaf`. |
+| chainId | uint256 | The SpokePool `chainId` referenced by the `RelayerRebalanceLeaf`. |
 | refundAmounts | uint256[] | Ordered array of amounts of `l2TokenAddress`to be refunded to the corresponding `refundAddress`. |
+| leafId | uint32 | Index of the `RelayerRefundLeaf` within the ordered array of `RelayerRefundLeaves`. |
+| l2TokenAddress | bytes32 | The SpokePool token used by this `RelayerRefundLeaf`.
+| refundAddresses | bytes32[] | Ordered array of addresses to be refunded by this `RelayerRefundLeaf`. |
 
 #### Note
 - The format of Relayer Refund leaves is unchanged from Across v2.
