@@ -291,14 +291,14 @@ The `FilledRelay` event extends the `V3RelayData` type by applying the following
 | message | omitted | This field is omitted from the `FilledRelay` event in favour of the `messageHash` field. |
 | messageHash | bytes32 | The keccak256 hash of the `V3RelayData` message field where the message is non-empty, or `bytes32(0)` for an empty message. This field is included in place of the `V3RelayData` message field. |
 | relayer | bytes32 | The address completing relay on the destination SpokePool. |
-| repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
+| repaymentChainId | uint256 | The repayment chain ID requested by the relayer completing the fill. |
 | relayExecutionInfo | V3RelayExecutionEventInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). |
 
 The `FilledV3Relay` event extends the `V3RelayDataLegacy` type by adding the following fields:
 | Name | Type | Description |
 | :--- | :--- | :---------- |
 | relayer | address | The address completing relay on the destination SpokePool. |
-| repaymentChainId | uint256 | The depositId of the corresponding `V3FundsDeposited` event to be updated. |
+| repaymentChainId | uint256 | The repayment chain ID requested by the relayer completing the fill. |
 | relayExecutionInfo | V3RelayExecutionEventInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). |
 
 #### Note
