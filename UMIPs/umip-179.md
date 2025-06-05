@@ -210,8 +210,13 @@ The following events are marked for deprecation. See [Migration](#migration) for
 - RequestedV3SlowFill
 
 ### FundsDeposited, V3FundsDeposited
-The `FundsDeposited` event emits the unique `V3RelayData` for an individual deposit. No additional fields are defined. 
-The `V3FundsDeposited` event emits the unique `V3RelayDataLegacy` for an individual deposit. No additional fields are defined.
+The `FundsDeposited` event extends the `V3RelayData` type and `V3FundsDeposited` event extends the `V3RelayDataLegacy` type by applying the following adjustments:
+
+| Name | Type | Description |
+| :--- | :--- | :---------- |
+| originChainId | omitted | This field is omitted from the `FundsDeposited` and `V3FundsDeposited` events. |
+| destinationChainId | uint256 | Chain ID indicating where this deposit should be filled. |
+| quoteTimestamp | uint32 | Timestamp that determines the fee paid by the depositor. |
 
 #### Note
 - Consumers of these events should append the `originChainId` in order to avoid unintentionally mixing events from different chains.
