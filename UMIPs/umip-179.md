@@ -549,7 +549,7 @@ For the purpose of computing depositor refunds, each `Deposit` shall be consider
 
 #### SVM support
 
-When evaluating if the `fillDeadline` / `fill_deadline` timestamp elapsed within the `Bundle Block Range` on the SVM destination SpokePool, one can use `getBlock` RPC method for the destination chain's bundle start and end block and use the `blockTime` field to compare against the `fillDeadline` / `fill_deadline` timestamp.
+When evaluating if the `fillDeadline` / `fill_deadline` timestamp elapsed within the `Bundle Block Range` on the SVM destination SpokePool, one can use `getBlock` RPC method for the destination chain's bundle start and end slot and use the `blockTime` field to compare against the `fillDeadline` / `fill_deadline` timestamp.
 
 ### Finding Unfillable Deposits
 For the purpose of computing depositor refunds, each duplicate `Deposit` shall be considered unfillable by verifying that:
@@ -577,7 +577,7 @@ For the purpose of computing slow fills to be issued to recipients, each `Slow F
 
 #### SVM support
 
-When evaluating if the `fillDeadline` / `fill_deadline` timestamp is greater than `destinationChainId` bundle end block time, one can use `getBlock` RPC method for the destination chain's bundle end block and use the `blockTime` field to compare against the `fillDeadline` / `fill_deadline` timestamp.
+When evaluating if the `fillDeadline` / `fill_deadline` timestamp is greater than `destinationChainId` bundle end slot time, one can use `getBlock` RPC method for the destination chain's bundle end slot and use the `blockTime` field to compare against the `fillDeadline` / `fill_deadline` timestamp.
 
 ### Finding Early Slow Fill Requests
 When an early `Slow Fill Request` is implied, the `Slow Fill Request` shall be validated as follows:
