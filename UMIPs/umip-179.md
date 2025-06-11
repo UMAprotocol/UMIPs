@@ -623,14 +623,11 @@ The applied `repayment address` shall be determined as follows:
 - When the `Fill` `relayer` address is valid for the applied `repaymentChainId`: `relayer`, ELSE
 - The `Fill` `msg.sender` address. In this case, change the applied `repaymentChainId` to the `destinationChainId` if a `PoolRebalanceRoute` exists for both the `outputToken` on the `destinationChainId` and the `inputToken` on the `originChainId` as at the bundle's hub chain end block
 
-If the applied `repayment address` is not valid for the applied `repaymentChainId`, the repayment shall be discarded.
+If the applied `repayment address` is not valid for the applied `repaymentChainId`, the repayment shall be discarded from the relayer refund root but still considered when [computing running balances & net send amounts](#computing-running-balances--net-send-amounts). Examples of an invalid `relayer` address include:
+- An SVM address on an EVM chain.
+- An EVM address on an SVM chain. Even though in theory one might hold a corresponding private key, Across would not support refunding a relayer on a SVM chain to an address that has zeroes in its first 12 bytes.
 
 The rules above enforce that a `repaymentToken` for a successful relayer repayment is always equal to a token that is [equivalent](#resolving-spokepool-tokens-to-their-hubpool-equivalent) to the `inputToken` at the time of relevant bundle's hub chain end block.
-
-#### Note
-- Examples of an invalid `relayer` address include:
-    - An SVM address on an EVM chain.
-    - An EVM address on an SVM chain. Even though in theory one might hold a corresponding private key, Across would not support refunding a relayer on a SVM chain to an address that has zeroes in its first 12 bytes.
 
 #### SVM support
 
