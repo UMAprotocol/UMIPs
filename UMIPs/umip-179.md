@@ -53,7 +53,7 @@ Only selected data types are supported on SVM chains as indicated in the relevan
 | :--- |:---- | :---------- |
 | bytes32 | Pubkey | Used only when representing addresses and their underlying byte representation should be the same. |
 | uint256 | u64 | Used only for numbers that should fit into 64 bits. SVM numbers are encoded as little-endian, so the byte order is reversed compared to EVM. |
-| uint256 | [u8; 32] | Only used for deposit IDs as they could exceed 64 bits in case of deterministic IDs. Here the byte order is big-endian matching the EVM representation. |
+| uint256 | [u8; 32] | Used for numbers that cannot possibly fit into 64 bits. This is used for deposit IDs and foreign token amounts. Here the byte order is big-endian matching the EVM representation. |
 | uint32 | u32 | Used for numbers that fit into 32 bits. SVM numbers are encoded as little-endian, so the byte order is reversed compared to EVM. |
 | bytes | Vec&lt;u8&gt; | Used for arbitrary byte arrays. In SVM this is encoded as the first 4 bytes holding the length of the array (little-endian encoded) followed by the array byte items. |
 
@@ -90,13 +90,17 @@ The `V3RelayData` type underpins the transfer of funds in or out of a SpokePool 
 | exclusive_relayer | Pubkey |
 | input_token | Pubkey |
 | output_token | Pubkey |
-| input_amount | u64 |
-| output_amount | u64 |
+| input_amount | u64 / [u8; 32] |
+| output_amount | u64 / [u8; 32] |
 | origin_chain_id | u64 |
 | deposit_id | [u8; 32] |
 | fill_deadline | u32 |
 | exclusivity_deadline | u32 |
 | message | Vec&lt;u8&gt; |
+
+`input_amount` and `output_amount` types depend on their use case:
+- little-endian encoded `u64` for native token amounts (`input_amount` for deposits and `output_amount` for fills)
+- big-endian encoded `[u8; 32]` for foreign token amounts (`output_amount` for deposits and `input_amount` for fills)
 
 ### V3RelayDataLegacy
 The `V3RelayDataLegacy` type is supported for backwards compatibility, but is slated for deprecation. `V3RelayDataLegacy` has the following delta to the `V3RelayData` type:
