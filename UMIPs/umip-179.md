@@ -472,6 +472,10 @@ In addition to the description [UMIP-157](https://github.com/UMAprotocol/UMIPs/b
 - A "soft pause" of a chain is permitted in the event that the proposer cannot safely increment the bundle block range, or has no events to propose beyond the previous bundle block range. In this case, the proposer may repeat the procedure for
   DISABLED_CHAINS by proposing from and to the previous bundle end block.
 
+#### SVM support
+
+Bundle block ranges for SVM chains are identified by their slot numbers. For the end slot, only such slot should be used that has a corresponding block produced for it.
+
 ### Reconstructing FilledRelay messages
 The `FilledRelay` event emits the `messsageHash` field. This field is set as follows:
 - When the `RelayData` `message` field is empty (`0x`): `bytes32(0)`, OR
@@ -549,7 +553,7 @@ For the purpose of computing depositor refunds, each `Deposit` shall be consider
 
 #### SVM support
 
-When evaluating if the `fillDeadline` / `fill_deadline` timestamp elapsed within the `Bundle Block Range` on the SVM destination SpokePool, one can use `getBlock` RPC method for the destination chain's bundle start and end slot and use the `blockTime` field to compare against the `fillDeadline` / `fill_deadline` timestamp.
+When evaluating if the `fillDeadline` / `fill_deadline` timestamp elapsed within the `Bundle Block Range` on the SVM destination SpokePool, one can use `getBlock` RPC method for the destination chain's bundle start and end slot and use the `blockTime` field to compare against the `fillDeadline` / `fill_deadline` timestamp. End slot must always have a corresponding block produced, but if there is none for the start block, one should get the timestamp from the last produced block before such empty start slot.
 
 ### Finding Unfillable Deposits
 For the purpose of computing depositor refunds, each duplicate `Deposit` shall be considered unfillable by verifying that:
