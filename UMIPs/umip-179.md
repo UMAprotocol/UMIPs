@@ -357,7 +357,7 @@ A `PoolRebalanceLeaf` shall consist of the following:
 | chainId | uint256 | The SpokePool `chainId` referenced by the `RelayerRebalanceLeaf`. |
 | refundAmounts | uint256[] | Ordered array of amounts of `l2TokenAddress`to be refunded to the corresponding `refundAddress`. |
 | leafId | uint32 | Index of the `RelayerRefundLeaf` within the ordered array of `RelayerRefundLeaves`. |
-| l2TokenAddress | bytes32 | The SpokePool token used by this `RelayerRefundLeaf`.
+| l2TokenAddress | bytes32 | The SpokePool token used by this `RelayerRefundLeaf`. |
 | refundAddresses | bytes32[] | Ordered array of addresses to be refunded by this `RelayerRefundLeaf`. |
 
 #### Note
