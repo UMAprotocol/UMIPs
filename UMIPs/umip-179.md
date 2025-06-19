@@ -294,7 +294,7 @@ The `FilledRelay` event extends the `V3RelayData` type by applying the following
 | :--- | :--- | :---------- |
 | message | omitted | This field is omitted from the `FilledRelay` event in favour of the `messageHash` field. |
 | messageHash | bytes32 | The keccak256 hash of the `V3RelayData` message field where the message is non-empty, or `bytes32(0)` for an empty message. This field is included in place of the `V3RelayData` message field. |
-| relayer | bytes32 | The address completing relay on the destination SpokePool. |
+| relayer | bytes32 | The repayment address supplied by the relayer to be refunded on the applied repayment chain. |
 | repaymentChainId | uint256 | The repayment chain ID requested by the relayer completing the fill. |
 | relayExecutionInfo | V3RelayExecutionEventInfo | The effective `recipient`, `message` and `outputAmount`, as well as the `FillType` performed (FastFill, ReplacedSlowFill, SlowFill). |
 
@@ -316,7 +316,7 @@ The `FilledRelay` event extends the `RelayData` type by applying the following a
 | :--- | :--- | :---------- |
 | message | omitted | This field is omitted from the `FilledRelay` event in favour of the `message_hash` field. |
 | message_hash | [u8; 32] | The hash of the message sent to the recipient. This is computed as `solana_program::keccak::hash(message)` where `message` is the `message` bytes in the `RelayData`. If the `message` field is empty, this will be set to `[0u8; 32]`. |
-| relayer | Pubkey | The address completing relay on the destination SpokePool, same as in EVM. |
+| relayer | Pubkey | The repayment address supplied by the relayer to be refunded on the applied repayment chain, same as in EVM. |
 | repayment_chain_id | u64 | The repayment chain ID requested by the relayer completing the fill, same as in EVM. |
 | relay_execution_info | RelayExecutionEventInfo | See details in the SVM support for [RelayExecutionEventInfo](#v3relayexecutioneventinfo) section above. |
 
