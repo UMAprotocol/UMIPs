@@ -61,7 +61,7 @@ In order to account for the changes to the fee market included in EIP-1559, the 
 ```python
 def return_median(t, N)
     assert N in [1, 4, 24, 168, 720]
-    minimum_ranges = {1: 200, 4: 800, 24: 4800, 168: 33600, 720: 134400} # a mapping between the durations 1HR, 4HR, 24HR (1D), 168HR (1W), 720HR(1M) and the corresponding mimimum number of blocks that must have been mined within the period.
+    minimum_ranges = {1: 200, 4: 800, 24: 4800, 168: 33600, 720: 134400} # a mapping between the durations 1HR, 4HR, 24HR (1D), 168HR (1W), 720HR(1M) and the corresponding minimum number of blocks that must have been mined within the period.
     
     # `t` is number of seconds since the epoch (unix time)
     end_block = block.at(timestamp=t) # rounded down
