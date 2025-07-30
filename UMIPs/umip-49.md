@@ -19,7 +19,7 @@ The DVM currently does not support the DAIPHP or PHPDAI price index. Supporting 
 Examples of a person interacting with a contract that uses this price identifier would be;
 
     - In trading pairs on Philippine cryptocurrency exchanges
-    - Basis for on chain, on demand liquidity in cross border remittance (our team is starting with the Singapore Philippine corridor with [ZkSync](https://zksync.io/faq/intro.html), [Argent](http://argent.xyz/), [SG stablecoin on ramp](https://www.xfers.com/sg/) and [PH off ramp](https://www.bloom.solutions/) who would use the synthetic Philippine Peso )
+    - Basis for on chain, on demand liquidity in cross border remittance (our team is starting with the Singapore Philippine corridor with [ZkSync](https://docs.lite.zksync.io/userdocs/intro/#introduction), [Argent](http://argent.xyz/), [SG stablecoin on ramp](https://www.xfers.com/sg/) and [PH off ramp](https://www.bloom.solutions/) who would use the synthetic Philippine Peso )
 
 More information on what we aim to achieve can be found here: [website](https://halodao.com)
 
