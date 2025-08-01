@@ -17,7 +17,7 @@ The new ManagedOptimisticOracleV2 contract is designed to be used by a single in
 ## Technical Specification
 All new oracle deployments must be given permission by the UMA DAO to send their disputes to the DVM for resolution. If this proposal passes, this would be done by the following transactions:
 - Call `addMember` on the [Polygon Registry](https://polygonscan.com/address/0x5f25b1647fa8eaea0e15edd413c7afcbe613b6f4) granting the [GovernorChildTunnel](https://polygonscan.com/address/0xb4AeaD497FCbEAA3C37919032d42C29682f46376) the contract creator role.
-- Call `registerContract` on the [Polygon Registry](https://polygonscan.com/address/0x5f25b1647fa8eaea0e15edd413c7afcbe613b6f4) with empty `parties` array and the new [ManagedOptimisticOracleV2](https://polygonscan.com/address/0xac60353a54873c446101216829a6a98cdbbc3f3d) as the `contractAddress`.
+- Call `registerContract` on the [Polygon Registry](https://polygonscan.com/address/0x5f25b1647fa8eaea0e15edd413c7afcbe613b6f4) with empty `parties` array and the new [ManagedOptimisticOracleV2](https://polygonscan.com/address/0x2C0367a9DB231dDeBd88a94b4f6461a6e47C58B1) as the `contractAddress`.
 - Call `removeMember` on the [Polygon Registry](https://polygonscan.com/address/0x5f25b1647fa8eaea0e15edd413c7afcbe613b6f4) to remove the [GovernorChildTunnel](https://polygonscan.com/address/0xb4AeaD497FCbEAA3C37919032d42C29682f46376) contract creator role.
 
 ## Implementation
