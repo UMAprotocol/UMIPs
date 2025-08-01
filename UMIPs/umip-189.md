@@ -15,8 +15,10 @@ The current OptimisticOracleV2 contract allows integrations to revise a requestâ
 The new ManagedOptimisticOracleV2 contract is designed to be used by a single integration and gives the integrator admin access to easily modify the bond, liveness, and who can propose for all of their requests.
 
 ## Technical Specification
-All new oracle deployments must be given permission by the UMA DAO to send their disputes to the DVM for resolution. If this proposal passes, this would be done by the following transaction:  
-Call `registerContract` on the [Polygon Registry](https://polygonscan.com/address/0x5f25b1647fa8eaea0e15edd413c7afcbe613b6f4) with the new ManagedOptimisticOracleV2 address (address to be added by onchain vote) as the only address in the `parties` field and the [OracleChildTunnel](https://polygonscan.com/address/0xac60353a54873c446101216829a6a98cdbbc3f3d) as the `contractAddress`.
+All new oracle deployments must be given permission by the UMA DAO to send their disputes to the DVM for resolution. If this proposal passes, this would be done by the following transactions:
+- Call `addMember` on the [Polygon Registry](https://polygonscan.com/address/0x5f25b1647fa8eaea0e15edd413c7afcbe613b6f4) granting the [GovernorChildTunnel](https://polygonscan.com/address/0xb4AeaD497FCbEAA3C37919032d42C29682f46376) the contract creator role.
+- Call `registerContract` on the [Polygon Registry](https://polygonscan.com/address/0x5f25b1647fa8eaea0e15edd413c7afcbe613b6f4) with empty `parties` array and the new [ManagedOptimisticOracleV2](https://polygonscan.com/address/0xac60353a54873c446101216829a6a98cdbbc3f3d) as the `contractAddress`.
+- Call `removeMember` on the [Polygon Registry](https://polygonscan.com/address/0x5f25b1647fa8eaea0e15edd413c7afcbe613b6f4) to remove the [GovernorChildTunnel](https://polygonscan.com/address/0xb4AeaD497FCbEAA3C37919032d42C29682f46376) contract creator role.
 
 ## Implementation
 The ManagedOptimisticOracleV2 contract can be reviewed [here](https://github.com/UMAprotocol/managed-oracle/blob/master/src/optimistic-oracle-v2/implementation/ManagedOptimisticOracleV2.sol). A summary of the changes from OptimisticOracleV2 is given below.
@@ -26,7 +28,7 @@ The ManagedOptimisticOracleV2 is intended to only serve a single integration. Th
   - add and remove request managers 
   - set the default proposer whitelist which applies all new requests
   - set the requester whitelist which controls who can make requests
-  - set the minimum liveness and maximum bond that the request manager can set a request to
+  - set the minimum liveness and minimum / maximum bond that the request manager can set a request to
 
 - **requestManager**: address used more frequently to:
   - revise an unproposed requestâ€™s bond size, liveness and set the proposer whitelist 
@@ -39,5 +41,5 @@ UMA DAO governance will still have all the same parameter controls it has over t
 ManagedOptimisticOracleV2 includes minor changes to the long running and previously audited OptimisticOracleV2 contract. ManagedOptimisticOracleV2 is undergoing an internal audit that will be completed before this UMIP proceeds to an onchain vote with an OpenZeppelin audit to follow ASAP. If this UMIP passes, this contract should only be used for low risk use cases until the OpenZeppelin audit has been completed. 
 
 ## Voting
-**YES**: approve the ManagedOptimisticOracleV2 at (address to be provided for onchain vote) managed by Polymarket to send disputes to the DVM.  
-**NO**: do NOT approve the ManagedOptimisticOracleV2 at (address to be provided for onchain vote) managed by Polymarket to send disputes to the DVM.
+**YES**: approve the ManagedOptimisticOracleV2 at `0x2C0367a9DB231dDeBd88a94b4f6461a6e47C58B1` managed by Polymarket to send disputes to the DVM.  
+**NO**: do NOT approve the ManagedOptimisticOracleV2 at `0x2C0367a9DB231dDeBd88a94b4f6461a6e47C58B1` managed by Polymarket to send disputes to the DVM.
