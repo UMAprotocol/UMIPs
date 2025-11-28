@@ -1,12 +1,12 @@
 ## Headers
 
-| UMIP-192       |                                                                          |
-| -------------- | ------------------------------------------------------------------------ |
-| UMIP Title     | Retire `ASSERT_TRUTH` as a supported price identifier                    |
-| Authors        | Reinis Martinsons (reinis@umaproject.org)                                |
-| Status         | Draft                                                                    |
-| Created        | November 28, 2025                                                        |
-| Discourse Link | XXX                                                                      |
+| UMIP-192       |                                                                                           |
+| -------------- | ----------------------------------------------------------------------------------------- |
+| UMIP Title     | Retire `ASSERT_TRUTH` as a supported price identifier                                     |
+| Authors        | Reinis Martinsons (reinis@umaproject.org)                                                 |
+| Status         | Draft                                                                                     |
+| Created        | November 28, 2025                                                                         |
+| Discourse Link | https://discourse.uma.xyz/t/feat-retire-assert-truth-as-a-supported-price-identifier/2245 |
 
 ## Summary
 
@@ -48,11 +48,11 @@ Removing support for the `ASSERT_TRUTH` price identifier will make any subsequen
 
 This proposal will have the following undesirable effects on the `OptimisticOracleV3` contract:
 
-1. OOV3 has a public constant `defaultIdentifier` that is set to `ASSERT_TRUTH`. This public read only function will be
- misleading after `ASSERT_TRUTH` is deprecated.
-2. OOV3's  `assertTruthWithDefaults` function uses the `defaultIdentifier` as the assertion's identifier. After
- execution of this proposal, this function will always revert. However, this function is not actively used by any
- integrations.
+1. OOV3 has a public constant [`defaultIdentifier`](https://github.com/UMAprotocol/protocol/blob/8ca2d830f412394240fae89420e608901c85d4f1/packages/core/contracts/optimistic-oracle-v3/implementation/OptimisticOracleV3.sol#L45)
+ that is set to `ASSERT_TRUTH`. This public read only function will be misleading after `ASSERT_TRUTH` is deprecated.
+2. OOV3's  [`assertTruthWithDefaults`](https://github.com/UMAprotocol/protocol/blob/8ca2d830f412394240fae89420e608901c85d4f1/packages/core/contracts/optimistic-oracle-v3/implementation/OptimisticOracleV3.sol#L98)
+ function uses the `defaultIdentifier` as the assertion's identifier. After execution of this proposal, this function
+ will always revert. However, this function is not actively used by any integrations.
 3. Existing smart contracts that make OOV3 assertions may not be able to update their assertion's identifier from the
  deprecated `ASSERT_TRUTH` identifier. These integrations will need to update and redeploy their smart contracts to use
  the new `ASSERT_TRUTH2` identifier.
