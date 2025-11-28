@@ -6,7 +6,7 @@
 | Authors        | Reinis Martinsons (reinis@umaproject.org)                                |
 | Status         | Draft                                                                    |
 | Created        | November 28, 2025                                                        |
-| Discourse Link | XXX                                                                      |
+| Discourse Link | https://discourse.uma.xyz/t/feat-umip-191-whitelist-assert-truth2/2244   |
 
 # Summary
 
