@@ -513,6 +513,7 @@ For the purpose of computing relayer repayments, the following procedures are co
 - Validating Fills
 - Validating Pre-Fills
 - Finding Expired Deposits
+- Finding Abandoned-Destination Deposits
 - Finding Unfillable Deposits
 
 #### Note
@@ -565,7 +566,7 @@ A `Deposit` whose `destinationChainId` does not correspond to an active protocol
 
 A `Deposit` shall be considered to have an abandoned destination when either of the following holds:
 1. The `destinationChainId` is **not** present in the `CHAIN_ID_INDICES` list as of the HubPool block resolved from the `Deposit`'s `fillDeadline` timestamp (i.e. the destination was never onboarded through the `fillDeadline`). Because `CHAIN_ID_INDICES` is append-only, absence at the `fillDeadline` implies absence for the entire interval between the `Deposit` and its `fillDeadline`.
-2. The `destinationChainId` is present in the `DISABLED_CHAINS` list as of the HubPool block resolved from the `Deposit`'s origin `block.timestamp`, **and** remains present in the `DISABLED_CHAINS` list as of the HubPool block resolved from the `Deposit`'s `fillDeadline` (i.e. the destination was disabled for the entire interval between the `Deposit` and its `fillDeadline`).
+2. The `destinationChainId` is present in the `DISABLED_CHAINS` list **continuously** over the HubPool block interval from the block resolved from the `Deposit`'s origin `block.timestamp` through the block resolved from the `Deposit`'s `fillDeadline`. Concretely, this requires that the `destinationChainId` is present in the `DISABLED_CHAINS` list at the deposit-time block, is present at the `fillDeadline` block, **and** is not removed from `DISABLED_CHAINS` (re-enabled) by any `DISABLED_CHAINS` update occurring within that interval. Unlike `CHAIN_ID_INDICES`, the `DISABLED_CHAINS` list is **not** append-only — chains may be re-enabled — so membership at the two endpoints alone does **not** establish continuous disablement: a destination that was disabled at the deposit, re-enabled, and disabled again before the `fillDeadline` would satisfy both endpoint checks yet expose an interval during which a `Fill` could be included in a `Bundle Block Range` and repaid. The proposer shall therefore confirm that every `DISABLED_CHAINS` value effective during the interval contains the `destinationChainId`.
 
 An abandoned-destination `Deposit` shall be considered refundable by verifying that:
 1. The `fillDeadline` timestamp elapsed within the `Bundle Block Range` on the **origin** `SpokePool` (i.e. the `fillDeadline` expired between the `block.timestamp` of the origin chain's bundle start and end block).
@@ -577,6 +578,7 @@ An abandoned-destination `Deposit` shall be considered refundable by verifying t
 - Membership of `CHAIN_ID_INDICES` and `DISABLED_CHAINS` is resolved using the HubPool chain block corresponding to the referenced timestamp. The `Deposit`'s origin `block.timestamp` is an origin-chain clock; where it falls near a `DISABLED_CHAINS` transition, it shall be resolved conservatively — the destination is treated as disabled at deposit time only when the origin `block.timestamp` resolves to a HubPool block at or after the `DISABLED_CHAINS` addition. The `quoteTimestamp` is intentionally **not** used for these determinations, so that the rule is independent of `depositQuoteTimeBuffer`.
 - Consistent with [Finding Expired Deposits](#finding-expired-deposits), only `Deposits` whose `fillDeadline` elapses within the current origin `Bundle Block Range` are refunded; `Deposits` whose `fillDeadline` elapsed before the origin bundle start are assumed to have been resolved in a prior bundle. This rule therefore applies to `Deposits` from the activation of this clause onward and does not retroactively settle `Deposits` whose `fillDeadline` elapsed before activation.
 - This procedure is gated on the `AcrossConfigStore` `VERSION` global; proposers shall apply it only for bundles proposed at or after the `VERSION` at which it is introduced.
+- **Scope — deposits made while the destination was active are intentionally excluded.** This rule refunds only `Deposits` whose destination was orphaned (never in `CHAIN_ID_INDICES`) or was **already** in `DISABLED_CHAINS` at the deposit (and stayed so continuously through the `fillDeadline`). A `Deposit` made while its destination was active whose destination is *subsequently* added to `DISABLED_CHAINS` before a `Bundle Block Range` covers its `fillDeadline` is **not** treated as abandoned-destination refundable, because such a `Deposit` may have been validly filled and repaid before the destination was disabled. Distinguishing that case would require reading the destination `SpokePool`'s `FillStatus`, which cannot be relied upon for a disabled destination (its `SpokePool` may be unresolvable), so refunding it on the origin clock without that check could double-pay against an already-repaid `Fill`. Such `Deposits` remain resolvable through a discretionary admin refund and are outside the scope of this automated rule.
 
 ### Finding Unfillable Deposits
 For the purpose of computing depositor refunds, each duplicate `Deposit` shall be considered unfillable by verifying that:
@@ -661,7 +663,7 @@ The rules above enforce that a `repaymentToken` for a successful relayer repayme
 All the rules for computing relayer repayments as described in the generic [Computing Relayer Repayments](#computing-relayer-repayments) section above apply to SVM chains, except there is no `Fill` `msg.sender` address fallback logic when the `Fill` or resolved `repaymentChainId` is SVM chain. When the resolved `repaymentChainId` is SVM chain, the applied repayment token can be distributed to the associated token account derived from the `relayer` refund address. The relayer can also claim their refunds to any custom token account using the `Fill` `relayer` account as the signer. It is the responsibility of the relayer to ensure it passes the correct `Fill` `relayer` address that they control and that is valid for the resolved `repaymentChainId`.
 
 ### Computing Deposit Refunds
-For an expired `Deposit` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`.
+For an expired `Deposit` event, the depositor refund amount shall be computed as `inputAmount` units of `inputToken`. An abandoned-destination `Deposit` (see [Finding Abandoned-Destination Deposits](#finding-abandoned-destination-deposits)) shall be refunded identically: the depositor refund amount shall be computed as `inputAmount` units of `inputToken` on the origin chain.
 
 ### Computing Slow Fill updated output amounts
 For the purpose of computing the amount to issue to a recipient for a SlowFill, the relayer fee shall be nulled by applying the following procedure:
@@ -691,7 +693,7 @@ The procedure for computing running balances for an `l1Token` and `chainId` pair
     - For each group of validated `Fill` and `Pre-fill` events, initialize a running balance at 0 and add the add the relayer repayment.
 
 3. Add deposit refunds:
-    - For each group of `Deposit` events that expired or were deemed unfillable within the `Bundle Block Range`, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain.
+    - For each group of `Deposit` events that expired, were deemed unfillable, or were deemed abandoned-destination refundable within the `Bundle Block Range`, sum the total deposit refunds on the origin chain. Add the amount to the exsting relayer refunds for that chain. Abandoned-destination `Deposits` are evaluated for inclusion against the **origin** `Bundle Block Range` (their `fillDeadline` is resolved on the origin chain), consistent with [Finding Abandoned-Destination Deposits](#finding-abandoned-destination-deposits); in all other respects their refund is accounted for identically to an expired `Deposit`.
 
 4. Add slow fills:
     - For each group of validated `Slow Fill Requests`, add each slow relay's `updatedOutputAmount` to the group's running balance.
