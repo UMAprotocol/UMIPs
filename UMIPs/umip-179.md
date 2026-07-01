@@ -475,6 +475,7 @@ In addition to the description [UMIP-157](https://github.com/UMAprotocol/UMIPs/b
 - Proposers may opt to reduce the size of the proposal block range for each chain in the event that RPC provider data inconsistencies are detected, and
 - A "soft pause" of a chain is permitted in the event that the proposer cannot safely increment the bundle block range, or has no events to propose beyond the previous bundle block range. In this case, the proposer may repeat the procedure for
   DISABLED_CHAINS by proposing from and to the previous bundle end block.
+- When a chain is removed from the `DISABLED_CHAINS` list (i.e. re-enabled), the proposer shall resume that chain's `Bundle Block Range` from the block at which it was re-enabled. The range shall not span the interval during which the chain was in `DISABLED_CHAINS`. Consequently, any `Fill` that occurred on the chain while it was in `DISABLED_CHAINS` is never included in a `Bundle Block Range` and is not eligible for repayment. This ensures that a depositor refund issued for a disabled destination (see [Finding Abandoned-Destination Deposits](#finding-abandoned-destination-deposits)) can never be accompanied by a later relayer repayment for the same `Deposit`.
 
 #### SVM support
 
@@ -558,6 +559,24 @@ For the purpose of computing depositor refunds, each `Deposit` shall be consider
 #### SVM support
 
 When evaluating if the `fillDeadline` / `fill_deadline` timestamp elapsed within the `Bundle Block Range` on the SVM destination SpokePool, one can use `getBlock` RPC method for the destination chain's bundle start and end slot and use the `blockTime` field to compare against the `fillDeadline` / `fill_deadline` timestamp. End slot must always have a corresponding block produced, but if there is none for the start block, one should get the timestamp from the last produced block before such empty start slot.
+
+### Finding Abandoned-Destination Deposits
+A `Deposit` whose `destinationChainId` does not correspond to an active protocol chain cannot be evaluated against a destination `Bundle Block Range`, because no destination `SpokePool` block range or `FillStatus` can be resolved for it. To ensure such funds cannot be permanently stranded on the origin `SpokePool`, these `Deposits` shall be refunded to the `depositor` on the origin chain.
+
+A `Deposit` shall be considered to have an abandoned destination when either of the following holds:
+1. The `destinationChainId` is **not** present in the `CHAIN_ID_INDICES` list as of the HubPool block resolved from the `Deposit`'s `fillDeadline` timestamp (i.e. the destination was never onboarded through the `fillDeadline`). Because `CHAIN_ID_INDICES` is append-only, absence at the `fillDeadline` implies absence for the entire interval between the `Deposit` and its `fillDeadline`.
+2. The `destinationChainId` is present in the `DISABLED_CHAINS` list as of the HubPool block resolved from the `Deposit`'s origin `block.timestamp`, **and** remains present in the `DISABLED_CHAINS` list as of the HubPool block resolved from the `Deposit`'s `fillDeadline` (i.e. the destination was disabled for the entire interval between the `Deposit` and its `fillDeadline`).
+
+An abandoned-destination `Deposit` shall be considered refundable by verifying that:
+1. The `fillDeadline` timestamp elapsed within the `Bundle Block Range` on the **origin** `SpokePool` (i.e. the `fillDeadline` expired between the `block.timestamp` of the origin chain's bundle start and end block).
+
+#### Note
+- Abandoned-destination refunds shall be issued to the `depositor` address on the origin `SpokePool` as part of the relayer refund procedure, identically to expired-deposit refunds.
+- The reference clock is the **origin** chain. No destination `SpokePool` exists or is resolvable for these `Deposits`, so — unlike [Finding Expired Deposits](#finding-expired-deposits) — the `fillDeadline` is resolved to a block on the origin chain, and no destination `FillStatus` is consulted.
+- No destination `FillStatus` check is required because no repayable `Fill` can exist for an abandoned-destination `Deposit`: a destination absent from `CHAIN_ID_INDICES` has never had a `SpokePool`, and a destination that was in `DISABLED_CHAINS` for the whole `Deposit`-to-`fillDeadline` interval can only have `Fills` inside a disabled interval, which are never included in a `Bundle Block Range` (see [Identifying Bundle Block Ranges](#identifying-bundle-block-ranges)).
+- Membership of `CHAIN_ID_INDICES` and `DISABLED_CHAINS` is resolved using the HubPool chain block corresponding to the referenced timestamp. The `Deposit`'s origin `block.timestamp` is an origin-chain clock; where it falls near a `DISABLED_CHAINS` transition, it shall be resolved conservatively — the destination is treated as disabled at deposit time only when the origin `block.timestamp` resolves to a HubPool block at or after the `DISABLED_CHAINS` addition. The `quoteTimestamp` is intentionally **not** used for these determinations, so that the rule is independent of `depositQuoteTimeBuffer`.
+- Consistent with [Finding Expired Deposits](#finding-expired-deposits), only `Deposits` whose `fillDeadline` elapses within the current origin `Bundle Block Range` are refunded; `Deposits` whose `fillDeadline` elapsed before the origin bundle start are assumed to have been resolved in a prior bundle. This rule therefore applies to `Deposits` from the activation of this clause onward and does not retroactively settle `Deposits` whose `fillDeadline` elapsed before activation.
+- This procedure is gated on the `AcrossConfigStore` `VERSION` global; proposers shall apply it only for bundles proposed at or after the `VERSION` at which it is introduced.
 
 ### Finding Unfillable Deposits
 For the purpose of computing depositor refunds, each duplicate `Deposit` shall be considered unfillable by verifying that:
