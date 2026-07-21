@@ -371,7 +371,7 @@ Their primary sorting index should be `originChainId` and the secondary sorting 
 
 You can then construct a merkle root similar to how it's done in the previous two sections.
 
-# Determing the Result
+# Determining the Result
 
 Three conditions must be met for the proposal to be deemed valid:
 1. The roots computed above match the ones in the proposal.
