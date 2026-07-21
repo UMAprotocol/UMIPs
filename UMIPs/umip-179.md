@@ -7,7 +7,7 @@
 - Discourse Link: N/A
 
 # Summary
-This UMIP defines the updated protocol specification for Across V3. It deprecates specific sections of the existing Across protocol specification as described in [UMIP-157](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md).
+This UMIP defines the updated protocol specification for Across V3. It deprecates specific sections of the existing Across protocol specification as described in [UMIP-157](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md).
 
 # Motivation
 Across v3 is a major refinement of the Across v2 specification, adding support for new features whilst simplifying the existing protocol.
@@ -25,13 +25,13 @@ Updating the specification of the ACROSS-V2 price identifier is required in orde
 # Technical Specification
 ## Overview
 The following sections from UMIP-157 are explicitly retained for use in Across v3:
-- [Across v2 Architecture](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#across-v2-architecture)
-- [Definitions](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#definitions)
-- [Ancillary Data Specifications](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#ancillary-data-specifications)
-- [Configuration Constants](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#configuration-constants)
-- [Preliminary Information](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#preliminary-information)
-- [Proposal Information](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#proposal-information)
-- [Determining the Result](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#determining-the-result)
+- [Across v2 Architecture](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#across-v2-architecture)
+- [Definitions](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#definitions)
+- [Ancillary Data Specifications](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#ancillary-data-specifications)
+- [Configuration Constants](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#configuration-constants)
+- [Preliminary Information](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#preliminary-information)
+- [Proposal Information](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#proposal-information)
+- [Determining the Result](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#determining-the-result)
 
 ## Global Constants
 All global constants from UMIP-157 will be retained for use in Across v3. The global variables stored in addition to UMIP-157 in the [AcrossConfigStore](https://etherscan.io/address/0x3b03509645713718b78951126e0a6de6f10043f5#code) are:
@@ -717,7 +717,7 @@ Each Pool Rebalance Leaf shall be constructed as follows:
     1 Ordered by `l1Token`, and
     2 Of the same non-zero length.
 
-In the event that the number of `l1Token` entries contained within a single Pool Rebalance Leaf exceeds [`MAX_POOL_REBALANCE_LEAF_SIZE`](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants):
+In the event that the number of `l1Token` entries contained within a single Pool Rebalance Leaf exceeds [`MAX_POOL_REBALANCE_LEAF_SIZE`](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#global-constants):
 1. Additional Pool Rebalance Leaf instances shall be produced to accomodate the excess.
 2. The ordering of `l1Tokens`, `bundleLpFees`, `runningBalance` and `neSendAmounts,` shall be maintained across the ordered array of leaves.
 3. `groupIndex` shall be incremented for each subsequent leaf.
@@ -762,7 +762,7 @@ Each Relayer Refund Leaf shall be constructed as follows:
     2. `relayerAddress` ascending order (in case of duplicate `refundAmount` values).
 - Remove any elements from `refundAmounts` where the amount is 0 and also remove the same indexed element from `refundAddresses`. These two arrays shall be the same length after this step.
 
-In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#global-constants) refunds:
+In the event that the number of refunds contained within a Relayer Refund leaf should exceed [`MAX_RELAYER_REPAYMENT_LEAF_SIZE`](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#global-constants) refunds:
 1. Additional `RelayerRefundLeaf` instances shall be produced to accomodate the excess.
 2. The ordering of `refundAddresses` and `refundAmounts` shall be maintained across the ordered array of leaves.
 3. Only the first leaf for a given `l2TokenAddress` shall contain a non-zero `amountToReturn`.
@@ -812,10 +812,10 @@ When ordering the leaves by `depositId` for SVM chains, one should convert `depo
 - Relayers are advised to factor in origin chain finality guarantees when making fills on destination chains. Origin chain re-organisation can lead to deposit re-ordering and can thus invalidate fills.
 
 # Migration
-- Support for the logic described above (BUT NOT the updated events with `bytes32` types, like `FundsDeposited`, `FilledRelay`, ...) is required as of ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) 5.
+- Support for the logic described above (BUT NOT the updated events with `bytes32` types, like `FundsDeposited`, `FilledRelay`, ...) is required as of ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#versions) 5.
 - To ensure pre-fills are not double-refunded, the `Bundle Block Range` containing the version bump from 4 to 5 will follow the rules of this UMIP, but will not consider any `Fill` events from prior bundles for the purposes of generating relayer repayments. Similarly, no `Slow Fill Request` that was included in any prior bundle will be considered for the generation of a `Slow Relay Leaf`. All subsequent bundles will perform the logic exactly as described above.
-- Support for Across events with `bytes32` types (`FundsDeposited`, `FilledRelay`, ...) is required as of ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) 6. 
-- The `Legacy` events defined in this UMIP are marked as deprecated 7 days after the ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/7b1a046098d3e2583abd0372c5e9c6003b46ad92/UMIPs/umip-157.md#versions) migration from 5 to 6.
+- Support for Across events with `bytes32` types (`FundsDeposited`, `FilledRelay`, ...) is required as of ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#versions) 6. 
+- The `Legacy` events defined in this UMIP are marked as deprecated 7 days after the ConfigStore [VERSION](https://github.com/UMAprotocol/UMIPs/blob/ad84c2a415442cf2235acfee1339790c73c725cd/UMIPs/umip-157.md#versions) migration from 5 to 6.
 
 # Implementation
 The Across v3 implementation is available in the Across [contracts-v2](https://github.com/across-protocol/contracts) repository.
