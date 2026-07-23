@@ -150,6 +150,8 @@ Considering only events that pass these checks, the status is:
 - Otherwise, `RequestedSlowFill` if any matching `RequestedSlowFill` event is found, provided the implementation has established complete event history coverage through the slot at which the status is being evaluated.
 - Otherwise, `Unfilled`, provided the implementation has established complete event history coverage for the queried `FillStatusAccount`.
 
+Status reconstruction uses monotonic state precedence rather than selecting the chronologically latest event. `Filled` is terminal, and a successful `RequestedSlowFill` transition cannot follow `Filled` for the same relay. The current `svm_spoke` `fill_relay`, `request_slow_fill` and `execute_slow_relay_leaf` instructions all declare the relay's derived `FillStatusAccount` writable, so same-relay status transitions are serialized even though their common `State` account is read-only. Events for different relays use different `FillStatusAccount` PDAs and may execute in parallel, but their relative execution order is irrelevant to per-relay status reconstruction.
+
 Status reconstruction must not rely on slot-only event ordering. If no matching `FilledRelay` is found and complete event history coverage cannot be established, the status cannot be determined using this reconstruction procedure; in particular, an implementation must not infer either `RequestedSlowFill` or `Unfilled`.
 
 ### FillType
