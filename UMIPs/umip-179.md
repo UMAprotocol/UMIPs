@@ -136,15 +136,13 @@ A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instanc
 
 `FillStatus` is an enum with the same values as in EVM, but one should consider the fact that on SVM it is only useful for internal program logic as the `FillStatusAccount` can be closed by the relayer after the fill deadline has passed, so the status is not persisted onchain indefinitely.
 
-In order to reconstruct the status of a fill, `getSignaturesForAddress` can be used to enumerate candidate transactions where the `FillStatusAccount` was involved. This signature lookup must not be treated as an event filter: an SVM transaction can reference arbitrary additional accounts and can contain multiple instructions that emit valid events for different relays.
+In order to reconstruct the status of a fill, `getSignaturesForAddress` can be used to enumerate candidate transactions where the `FillStatusAccount` was involved. This signature lookup must not be treated as an event filter: an SVM transaction can reference arbitrary additional accounts and can contain multiple instructions that emit valid events for different relays. Each candidate transaction and decoded event must first satisfy the common SVM [event validation and filtering](#svm-event-validation-and-filtering) requirements.
 
-For each candidate transaction, an implementation must:
+Considering each candidate `FilledRelay` or `RequestedSlowFill` event that satisfies those requirements, an implementation must:
 
-1. Verify that the transaction executed successfully.
-2. Accept only genuine Anchor `emit_cpi` events emitted by the applicable `svm_spoke` program, including validation of the canonical event authority and Anchor CPI event discriminator.
-3. Decode each candidate `FilledRelay` or `RequestedSlowFill` event and reconstruct its `RelayData` hash using the destination chain ID.
-4. Derive the event's `FillStatusAccount` from the reconstructed `RelayData` hash and discard the event unless it matches the queried `FillStatusAccount`.
-5. Exclude matching events that occurred after the slot at which the status is being evaluated.
+1. Reconstruct its `RelayData` hash using the destination chain ID.
+2. Derive the event's `FillStatusAccount` from the reconstructed `RelayData` hash and discard the event unless it matches the queried `FillStatusAccount`.
+3. Exclude matching events that occurred after the slot at which the status is being evaluated.
 
 Considering only events that pass these checks, the status is:
 
@@ -223,6 +221,34 @@ Across V3 defines the following events:
 - ClaimedRelayerRefund
 
 `svm_spoke` program uses Anchor's [`emit_cpi`](https://www.anchor-lang.com/docs/features/events#emit_cpi) macro to emit events that are comparable with EVM events. On SVM Across supports only a subset of events as explicitly documented in the relevant subsections below.
+
+### SVM event validation and filtering
+
+SVM RPC methods that return transactions involving a program or account are candidate-enumeration mechanisms, not event filters. The presence of a program, PDA or any other account in a transaction does not by itself associate every event in that transaction with the queried address.
+
+Before using any supported SVM event to propose or verify root bundle data, an implementation must:
+
+1. Verify that the transaction executed successfully and falls within the evaluated slot range.
+2. Accept only genuine Anchor `emit_cpi` event instructions emitted by the relevant `svm_spoke` program for the evaluated bundle range. This includes resolving all transaction account keys, including addresses loaded dynamically, and verifying that the event instruction invokes the expected program, its account list consists of the canonical event-authority PDA, and its instruction data begins with the Anchor CPI event discriminator.
+3. Decode the event using the event discriminator and IDL schema applicable to that `svm_spoke` program version. Payloads that do not decode as a supported event under that schema must be discarded.
+4. Preserve every distinct event occurrence and its SVM [event identity and chronology](#svm-event-identity-and-chronology) metadata before applying event-specific filters.
+5. Apply the complete event-specific semantic predicate after decoding; matching the event name alone is insufficient. When transactions were enumerated using an account or PDA, the event's corresponding protocol identity must be reconstructed from its payload and chain context and must match the queried identity. For example, `FundsDeposited` identity includes the origin chain ID, while `FilledRelay` and `RequestedSlowFill` identity includes the destination chain ID when reconstructing the `RelayData` hash and `FillStatusAccount`. Unrelated events in the same transaction must be discarded.
+
+An implementation must not select the first or last decoded event, or collapse events with identical payloads, before applying these authenticity and semantic checks. Event-specific rules that require an earliest or latest event may be applied only to the resulting matching events using the chronology defined below.
+
+An empty filtered result establishes that no matching event occurred only if the implementation has established complete coverage of the requested slot range. This requires exhausting pagination and obtaining all transactions needed to evaluate the returned signatures. Truncated pagination, unavailable or pruned transactions, or inconsistent RPC responses make the event history incomplete and must not be interpreted as an empty event set. This UMIP does not prescribe the operational action a proposer, verifier or third-party relayer must take when complete event history cannot be established.
+
+When `svm_spoke` migrations are relevant to an evaluated range, events must be accepted only from the program or programs identified for that range according to [Identifying SpokePool Contracts](#identifying-spokepool-contracts), and each event must be decoded using the schema corresponding to its emitting program version.
+
+### SVM event identity and chronology
+
+UMIP-157 defines event chronology using `blockNumber`, `transactionIndex` and `logIndex`. For SVM events these fields are interpreted as follows:
+
+- `blockNumber` is the slot containing the transaction.
+- `transactionIndex` is the zero-based position of the transaction within the block returned for that slot.
+- `logIndex` is the zero-based position of the Anchor `emit_cpi` event instruction in a flattening of the transaction's ordered inner-instruction trace.
+
+Implementations may additionally retain the outer instruction index and inner instruction index from which `logIndex` is derived. The canonical occurrence identity of an SVM event is its emitting program ID, transaction signature, outer instruction index and inner instruction index. Events with identical decoded payloads but different occurrence identities remain distinct events. Slot-only ordering is insufficient whenever two events can occur in the same slot.
 
 ### Event Deprecation
 The following events are marked for deprecation. See [Migration](#migration) for more information.
@@ -843,4 +869,4 @@ The SVM SpokePool implementation is available as the `svm_spoke` program in the 
 # Security considerations
 Across v3 has been audited by OpenZeppelin.
 
-SVM account-based transaction queries are not equivalent to EVM indexed event queries. The presence of an account in an SVM transaction does not prove that every event emitted by that transaction is associated with the account. Implementations must authenticate each decoded event and validate its complete protocol identity before using it to propose or verify root bundle data.
+SVM account-based transaction queries are not equivalent to EVM indexed event queries. Implementations must follow the common SVM [event validation and filtering](#svm-event-validation-and-filtering) requirements before using decoded events to propose or verify root bundle data.
