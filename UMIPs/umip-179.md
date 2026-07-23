@@ -134,7 +134,25 @@ A mapping of `RelayData` -> `FillStatus` is stored within each SpokePool instanc
 | relayer | Pubkey | Address of the relayer that made the fill to control who can close this PDA. |
 | fill_deadline | u32 | Fill deadline to control when this PDA can be safely closed. |
 
-`FillStatus` is an enum with the same values as in EVM, but one should consider the fact that on SVM it is only useful for internal program logic as the `FillStatusAccount` can be closed by the relayer after the fill deadline has passed, so the status is not persisted onchain indefinitely. In order to reconstruct the status of a fill, one should look for `FilledRelay` and `RequestedSlowFill` events in all transactions where the `FillStatusAccount` was involved (`getSignaturesForAddress` RPC method can be useful). If there are no such events, then the fill can be considered `Unfilled`. If the `FilledRelay` is found as the last event, then the fill is considered `Filled`. If there is only a `RequestedSlowFill` event, then the fill is considered `RequestedSlowFill`.
+`FillStatus` is an enum with the same values as in EVM, but one should consider the fact that on SVM it is only useful for internal program logic as the `FillStatusAccount` can be closed by the relayer after the fill deadline has passed, so the status is not persisted onchain indefinitely.
+
+In order to reconstruct the status of a fill, `getSignaturesForAddress` can be used to enumerate candidate transactions where the `FillStatusAccount` was involved. This signature lookup must not be treated as an event filter: an SVM transaction can reference arbitrary additional accounts and can contain multiple instructions that emit valid events for different relays.
+
+For each candidate transaction, an implementation must:
+
+1. Verify that the transaction executed successfully.
+2. Accept only genuine Anchor `emit_cpi` events emitted by the applicable `svm_spoke` program, including validation of the canonical event authority and Anchor CPI event discriminator.
+3. Decode each candidate `FilledRelay` or `RequestedSlowFill` event and reconstruct its `RelayData` hash using the destination chain ID.
+4. Derive the event's `FillStatusAccount` from the reconstructed `RelayData` hash and discard the event unless it matches the queried `FillStatusAccount`.
+5. Exclude matching events that occurred after the slot at which the status is being evaluated.
+
+Considering only events that pass these checks, the status is:
+
+- `Filled` if any matching `FilledRelay` event is found.
+- Otherwise, `RequestedSlowFill` if any matching `RequestedSlowFill` event is found.
+- Otherwise, `Unfilled`, provided the implementation has established complete event history coverage for the queried `FillStatusAccount`.
+
+`Filled` is a terminal state, so status reconstruction must not rely on slot-only event ordering. If complete event history coverage cannot be established, an implementation must not infer `Unfilled` and the status cannot be determined using this reconstruction procedure.
 
 ### FillType
 A FillType instance is emitted with each `FilledV3Relay` event (see below).
@@ -543,7 +561,7 @@ For each of the `Deposits` emitted within the `Bundle Block Range` where no corr
 
 #### SVM support
 
-In order to resolve the `Fill` on the destination SVM chain, one can inspect transactions where the `FillStatusAccount` PDA was involved (using `getSignaturesForAddress` RPC method) as described on the SVM supported [Data Types](#data-types) section above and looking for the emitted `FilledRelay` event.
+In order to resolve the `Fill` on the destination SVM chain, one can use `getSignaturesForAddress` to enumerate candidate transactions where the `FillStatusAccount` PDA was involved. Each candidate `FilledRelay` event must be validated and matched to the queried `FillStatusAccount` by following the SVM status reconstruction procedure described in the supported [FillStatus data type](#fillstatus) section above. The resolved `Fill` must be the matching `FilledRelay` event; events for other relays in the same transaction must be discarded.
 
 ### Finding Expired Deposits
 For the purpose of computing depositor refunds, each `Deposit` shall be considered expired by verifying that:
@@ -824,3 +842,5 @@ The SVM SpokePool implementation is available as the `svm_spoke` program in the 
 
 # Security considerations
 Across v3 has been audited by OpenZeppelin.
+
+SVM account-based transaction queries are not equivalent to EVM indexed event queries. The presence of an account in an SVM transaction does not prove that every event emitted by that transaction is associated with the account. Implementations must authenticate each decoded event and validate its complete protocol identity before using it to propose or verify root bundle data.
