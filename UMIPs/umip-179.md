@@ -231,24 +231,22 @@ Before using any supported SVM event to propose or verify root bundle data, an i
 1. Verify that the transaction executed successfully and falls within the evaluated slot range.
 2. Accept only genuine Anchor `emit_cpi` event instructions emitted by the relevant `svm_spoke` program for the evaluated bundle range. This includes resolving all transaction account keys, including addresses loaded dynamically, and verifying that the event instruction invokes the expected program, its account list consists of the canonical event-authority PDA, and its instruction data begins with the Anchor CPI event discriminator.
 3. Decode the event using the event discriminator and IDL schema applicable to that `svm_spoke` program version. Payloads that do not decode as a supported event under that schema must be discarded.
-4. Preserve every distinct event occurrence and its SVM [event identity and chronology](#svm-event-identity-and-chronology) metadata before applying event-specific filters.
+4. Preserve every distinct event occurrence and its SVM [event identity and ordering](#svm-event-identity-and-ordering) metadata before applying event-specific filters.
 5. Apply the complete event-specific semantic predicate after decoding; matching the event name alone is insufficient. When transactions were enumerated using an account or PDA, the event's corresponding protocol identity must be reconstructed from its payload and chain context and must match the queried identity. For example, `FundsDeposited` identity includes the origin chain ID, while `FilledRelay` and `RequestedSlowFill` identity includes the destination chain ID when reconstructing the `RelayData` hash and `FillStatusAccount`. Unrelated events in the same transaction must be discarded.
 
-An implementation must not select the first or last decoded event, or collapse events with identical payloads, before applying these authenticity and semantic checks. Event-specific rules that require an earliest or latest event may be applied only to the resulting matching events using the chronology defined below.
+An implementation must not select the first or last decoded event, or collapse events with identical payloads, before applying these authenticity and semantic checks. Event-specific rules that require an earliest or latest event may be applied only where the relative ordering of the resulting matching events is defined below.
 
 An empty filtered result establishes that no matching event occurred only if the implementation has established complete coverage of the requested slot range. This requires exhausting pagination and obtaining all transactions needed to evaluate the returned signatures. Truncated pagination, unavailable or pruned transactions, or inconsistent RPC responses make the event history incomplete and must not be interpreted as an empty event set. This UMIP does not prescribe the operational action a proposer, verifier or third-party relayer must take when complete event history cannot be established.
 
 When `svm_spoke` migrations are relevant to an evaluated range, events must be accepted only from the program or programs identified for that range according to [Identifying SpokePool Contracts](#identifying-spokepool-contracts), and each event must be decoded using the schema corresponding to its emitting program version.
 
-### SVM event identity and chronology
+### SVM event identity and ordering
 
-UMIP-157 defines event chronology using `blockNumber`, `transactionIndex` and `logIndex`. For SVM events these fields are interpreted as follows:
+UMIP-157 defines EVM event chronology using `blockNumber`, `transactionIndex` and `logIndex`. For SVM events, the slot containing a transaction is analogous to `blockNumber`, but this UMIP does not define SVM equivalents for `transactionIndex` or `logIndex`. In particular, the position of a transaction in a `getBlock` response or any other RPC response order must not be treated as protocol-level transaction ordering.
 
-- `blockNumber` is the slot containing the transaction.
-- `transactionIndex` is the zero-based position of the transaction within the block returned for that slot.
-- `logIndex` is the zero-based position of the Anchor `emit_cpi` event instruction in a flattening of the transaction's ordered inner-instruction trace.
+The canonical occurrence identity of an SVM event is its emitting program ID, transaction signature, outer instruction index and zero-based position within the corresponding ordered inner-instruction list. These coordinates identify distinct events and determine event order within one transaction. Events with identical decoded payloads but different occurrence identities remain distinct events.
 
-Implementations may additionally retain the outer instruction index and inner instruction index from which `logIndex` is derived. The canonical occurrence identity of an SVM event is its emitting program ID, transaction signature, outer instruction index and inner instruction index. Events with identical decoded payloads but different occurrence identities remain distinct events. Slot-only ordering is insufficient whenever two events can occur in the same slot.
+An event in a lower slot is earlier than an event in a higher slot. Instructions and events within one transaction follow their transaction execution order. The relative order of events emitted by different transactions in the same slot is unspecified. Any procedure whose result could otherwise depend on that relative order must use order-independent validation or protocol-state precedence rather than selecting the first or last transaction returned by an RPC provider.
 
 ### Event Deprecation
 The following events are marked for deprecation. See [Migration](#migration) for more information.
